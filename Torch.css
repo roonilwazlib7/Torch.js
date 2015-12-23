@@ -1,0 +1,30 @@
+/*Fonts*/
+
+@font-face
+{
+    font-family: arcade;
+    src: url(fonts/arcade.ttf);
+}
+
+
+#canvas-container
+{
+   width: 100%;
+   text-align:center;
+}
+
+canvas
+{
+   display: inline;
+   border: 2px solid white;
+}
+
+body
+{
+    background-color: black;
+}
+
+canvas
+{
+
+}
