@@ -5,11 +5,20 @@
         ;"Load";
         this.game = game;
         this.game.Assets = {
-            GetTexture: function()
+            game: game,
+            GetTexture: function(id)
             {
-
+                return this.game.Assets.Textures[id];
             },
-            GetSound: function()
+            GetTexturePack: function(id)
+            {
+                return this.game.Assets.TexturePacks[id];
+            },
+            GetTextureSheet: function(id)
+            {
+                return this.game.Assets.TextureSheets[id];
+            },
+            GetSound: function(id)
             {
 
             },
@@ -69,7 +78,6 @@
         var that = this;
         var rows = totalHeight / clipHeight;
         var columns = totalWidth / clipWidth;
-        console.log(rows, columns);
         var sheet = [];
 
         that.Stack.push({
@@ -100,7 +108,6 @@
     Load.Prop("Load", function(finishFunction)
     {
         var that = this;
-        console.log(that.Stack);
         for (var i = 0; i < that.Stack.length; i++)
         {
             switch(that.Stack[i]._torch_asset)

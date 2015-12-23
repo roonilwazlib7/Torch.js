@@ -140,7 +140,7 @@ var TorchError = new Class(function(error)
 
     var Game = new Class(function(canvasId, width, height, name)
     {
-        console.log("%c   Torchv0.0.1   ", "background-color:#cc5200; color:white");
+        console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
         this.canvasId = canvasId;
         this.canvasNode = document.getElementById(canvasId);
         this.canvas = this.canvasNode.getContext("2d");
@@ -178,6 +178,7 @@ var TorchError = new Class(function(error)
         that.canvasNode.height = that.height;
 
         that.load();
+        
         that.Load.Load(function()
         {
             that.init();
@@ -208,16 +209,27 @@ var TorchError = new Class(function(error)
     Game.Prop("Run", function(timestamp)
     {
         var that = this;
-        var en = Torch;
-        
+
         that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
 
-        this.draw();
-        this.update();
-        this.Viewport.Update();
+        that.draw();
+        that.update();
+        that.Viewport.Update();
+        that.DrawItems();
 
         that.fps = (1000 / that.deltaTime);
 
+        that.animations.forEach(function(animation)
+        {
+            animation.Run();
+        });
+
+        Torch.Loop(timestamp);
+    });
+
+    Game.Prop("DrawItems", function()
+    {
+        var that = this;
         var drawList = [];
         drawList = drawList.concat(that.textList);
         drawList = drawList.concat(that.spriteList);
@@ -252,14 +264,7 @@ var TorchError = new Class(function(error)
                 break;
             }
         });
-
-        that.animations.forEach(function(animation)
-        {
-            animation.Run();
-        });
-
-        Torch.Loop(timestamp);
-    });
+    })
 
     Game.Prop("Zoom", function(speed)
     {
@@ -355,15 +360,11 @@ var TorchError = new Class(function(error)
     [
         [
             "keydown", function(e){
-                e.preventDefault();
-                e.stopPropagation();
                 Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
             }
         ],
         [
             "keyup", function(e){
-                e.preventDefault();
-                e.stopPropagation();
                 Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
             }
         ]
@@ -418,7 +419,8 @@ var TorchError = new Class(function(error)
                 var that = this;
                 if (that.followSprite)
                 {
-
+                    that.x = that.followSprite.origX - that.followSprite.Rectangle.x;
+                    that.y = that.followSprite.origY - that.followSprite.Rectangle.y;
                 }
             },
 
@@ -440,6 +442,8 @@ var TorchError = new Class(function(error)
             Follow: function(sprite)
             {
                 this.followSprite = sprite;
+                sprite.origX = sprite.Rectangle.x;
+                sprite.origY = sprite.Rectangle.y;
             }
 	});
 
