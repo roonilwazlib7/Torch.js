@@ -5,6 +5,11 @@
     font-family: arcade;
     src: url(fonts/arcade.ttf);
 }
+@font-face
+{
+    font-family: pixel;
+    src: url(fonts/pixel.ttf);
+}
 
 
 #canvas-container
@@ -26,5 +31,5 @@ body
 
 canvas
 {
-
+    cursor: pointer;
 }

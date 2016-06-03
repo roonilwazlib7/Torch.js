@@ -5,11 +5,12 @@ torchStats.DT = new Torch.Text("", 500, 680, {font : "16px Consolas" , fillStyle
 torchStats.FPS = new Torch.Text("", 500, 700, {font : "16px Consolas" , fillStyle : "black"});
 torchStats.Zoom = new Torch.Text("", 945, 700, {font : "16px Consolas" , fillStyle : "black"});
 
-torchStats.Mouse.Fix();
-torchStats.Viewport.Fix();
-torchStats.DT.Fix();
-torchStats.FPS.Fix();
-torchStats.Zoom.Fix();
+torchStats.Mouse.Fixed();
+torchStats.Viewport.Fixed();
+torchStats.DT.Fixed();
+torchStats.FPS.Fixed();
+torchStats.Zoom.Fixed();
+
 
 /*
 *   Create a new Torch game on the canvas with the id 'canvas'
@@ -35,6 +36,7 @@ function Load()
     //Load a basic texture with the id test
     game.Load.Texture("images/test.png", "test");
     game.Load.Texture("images/torch_logo.png", "torch");
+    game.Load.Texture("images/torch_log____o.png", "torch");
     //Load a series of textures in the images/sample/sample folder with images sample_1.png, sample_2.png, sample_3.png
     game.Load.TexturePack("images/sample/sample", "sample", 3, "png");
     game.Load.TexturePack("images/blood_pack_1/blood_a/blood_a", "blood", 6, "png");
@@ -114,6 +116,12 @@ function Init()
     game.Add(torchStats.FPS);
     game.Add(torchStats.Zoom);
 
+    var Alex = function(){
+        this.InitSprite(0,0);
+    }
+    Alex.is(Torch.Sprite).is(Torch.Text);
+    console.log(new Alex());
+
     //bind to a single texture
     logo.Bind.Texture("torch");
     game.World.Center(logo);
@@ -135,5 +143,5 @@ function Init()
 
 
 
-
+//start the game
 game.Start(Load, Update, Draw, Init);

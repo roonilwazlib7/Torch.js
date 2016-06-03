@@ -1,528 +1,577 @@
-var Torch = {};
-Torch.activeGame = null;
-Torch.animations = [];
-
-Torch.Run = function(Game)
+Function.prototype.is = function(otherFunction)
 {
-    var that = Torch;
-    //that.WireUpEvents();
-    window.requestAnimationFrame(function(timestamp)
+    var proto = this.prototype;
+    var items = Object.create(otherFunction.prototype);
+    for (key in items)
     {
-        that.activeGame.Run(timestamp, that.activeGame);
-    });
-};
-
-Torch.Loop = function(timestamp)
-{
-    var that = Torch;
-
-
-    if (!that.activeGame.time)
-    {
-        that.activeGame.time = timestamp
+        proto[key] = items[key];
     }
+    return this; //allow chaining
+}
 
-    that.activeGame.deltaTime = timestamp - that.activeGame.time;
-
-    that.activeGame.time = timestamp;
-
-
-    window.requestAnimationFrame(function(timestamp)
-    {
-        that.activeGame.Run(timestamp, that.activeGame);
-    });
-};
-(function(){
-
-	var Rectangle = new Class(function(x, y, width, height){
-		;"Rectangle";
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-	});
-
-	Rectangle.Prop("x", 0);
-	Rectangle.Prop("y", 0);
-	Rectangle.Prop("width", 0);
-	Rectangle.Prop("height", 0);
-
-	Rectangle.Prop("Intersects", function(rectangle)
-	{
-		var a = this;
-		var b = rectangle;
-		if (a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	});
-
-	Rectangle.Prop("Scale", function(scale)
-	{
-		this.width = scale * Pipin.Viewport.width;
-		this.height = scale * Pipin.Viewport.height;
-	});
-
-	Torch.Rectangle = Rectangle;
-
-})();
-
-(function(){
-
-	var Vector = new Class(function(x, y){
-		;"Vector";
-		this.x = x;
-		this.y = y;
-	});
-
-	Vector.Prop("Normalize", function()
-	{
-		var that = this;
-		var r = (that.x * that.x) + (that.y * that.y);
-		r = Math.sqrt(r);
-
-		var x = that.x;
-		var y = that.y;
-
-		that.x = x / r;
-		that.y = y / r;
-	});
-
-	Torch.Vector = Vector;
-
-})();
-
-var TorchError = new Class(function(error)
+var Torch =
 {
-    ;"TorchError";
-    throw "Torch Error: " + error;
-});
-
-
-
-(function()
-{
-
-    var World = new Class(function(game)
-    {
-        ;"World";
-        this.game = game;
-        this.bounds = { left: 0, right: 1280, top: 0, bottom: 720};
-    });
-
-    World.Prop("Center", function(sprite)
-    {
+    activeGame: null,
+    animations: [],
+    Tween: {
+        Linear: 0,
+        Quadratic: 1,
+        Cubic: 2,
+        Inverse: 3,
+        InverseSquare: 4,
+        SquareRoot: 5
+    },
+    Run: function(Game){
         var that = this;
-        var pointCenterX = (that.bounds.right - that.bounds.left) / 2;
-        var pointCenterY = (that.bounds.bottom - that.bounds.top) / 2;
-
-        sprite.Rectangle.x = (pointCenterX - ( sprite.Rectangle.width / 2) );
-        sprite.Rectangle.y = (pointCenterY - ( sprite.Rectangle.height / 2) );
-    });
-
-    World.Prop("SetBounds", function(left, right, top, bottom)
-    {
-        var that = this;
-        that.bounds = {left: left, right: right, top: top, bottom: bottom};
-    });
-
-    Torch.World= World;
-
-})();
-
-
-(function()
-{
-
-    var Game = new Class(function(canvasId, width, height, name)
-    {
-        console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
-        this.canvasId = canvasId;
-        this.canvasNode = document.getElementById(canvasId);
-        this.canvas = this.canvasNode.getContext("2d");
-        this.width = width;
-        this.height = height;
-        this.name = name;
-        this.Load = new Torch.Load(this);
-        this.World = new Torch.World(this);
-        this.Clear("#cc5200");
-        this.Viewport.game = this;
-        var that = this;
-
-    });
-
-    Game.Prop("deltaTime", 0);
-    Game.Prop("fps", 0);
-    Game.Prop("zoom", 1);
-    Game.Prop("time", null);
-    Game.Prop("LastTimeStamp", null);
-    Game.Prop("spriteList", []);
-    Game.Prop("textList", []);
-    Game.Prop("animations", []);
-    Game.Prop("Text", {});
-
-    Game.Prop("Start", function(load, update, draw, init)
-    {
-        var that = this;
-        this.load = load;
-        this.update = update;
-        this.draw = draw;
-        this.init = init;
-        this.DrawStack = [];
-
-        that.canvasNode.width = that.width;
-        that.canvasNode.height = that.height;
-
-        that.load();
-        
-        that.Load.Load(function()
+        window.requestAnimationFrame(function(timestamp)
         {
+            that.activeGame.Run(timestamp, that.activeGame);
+        });
+    },
+    Loop: function(timestamp){
+        var that = this;
+        if (!that.activeGame.time)
+        {
+            that.activeGame.time = timestamp
+        }
+
+        that.activeGame.deltaTime = timestamp - that.activeGame.time;
+
+        that.activeGame.time = timestamp;
+
+
+        window.requestAnimationFrame(function(timestamp)
+        {
+            that.activeGame.Run(timestamp, that.activeGame);
+        });
+    },
+    Error: function(message)
+    {
+        console.log("%c   " + "Torch Error! -->" + message, "background-color:#black; color:red");
+    },
+
+    //classes
+    Rectangle: (function(){
+        var Rectangle = function(x, y, width, height){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        };
+        var proto = Rectangle.prototype;
+        proto.Intersects = function(rectangle)
+        {
+            var a = this;
+            var b = rectangle;
+            if (a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        };
+
+        return Rectangle;
+
+    })(),
+
+    Vector: (function(){
+        var Vector = function(x,y){
+            this.x = x;
+            this.y = y;
+        }
+        var proto = Vector.prototype;
+        proto.Normalize = function(){
+            var that = this;
+            var r = (that.x * that.x) + (that.y * that.y);
+            r = Math.sqrt(r);
+
+            var x = that.x;
+            var y = that.y;
+
+            that.x = x / r;
+            that.y = y / r;
+        };
+        proto.GetDistance = function(otherVector){
+            var that = this;
+            var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
+            return Math.sqrt(raw);
+        }
+
+        return Vector;
+    })()
+};
+/*
+        Torch.World
+*/
+Torch.World = function(game)
+{
+    this.game = game;
+    this.bounds = { left: 0, right: 1280, top: 0, bottom: 720};
+};
+Torch.World.prototype.Center = function(sprite)
+{
+    var that = this;
+    var pointCenterX = (that.bounds.right - that.bounds.left) / 2;
+    var pointCenterY = (that.bounds.bottom - that.bounds.top) / 2;
+
+    sprite.Rectangle.x = (pointCenterX - ( sprite.Rectangle.width / 2) );
+    sprite.Rectangle.y = (pointCenterY - ( sprite.Rectangle.height / 2) );
+};
+Torch.World.SetBounds = function(left, right, top, bottom)
+{
+    var that = this;
+    that.bounds = {left: left, right: right, top: top, bottom: bottom};
+}
+
+/*
+        Torch.Game
+*/
+
+Torch.Game = function(canvasId, width, height, name){
+    console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
+    this.canvasId = canvasId;
+    this.canvasNode = document.getElementById(canvasId);
+    this.canvas = this.canvasNode.getContext("2d");
+
+    this.width = width;
+    this.height = height;
+    this.name = name;
+
+    this.Load = new Torch.Load(this);
+    this.World = new Torch.World(this);
+
+    this.Clear("#cc5200");
+    console.log(this.Clear);
+
+    this.Viewport = this.MakeViewport();
+
+    this.deltaTime = 0;
+    this.fps = 0;
+    this.zoom = 1;
+    this.gameHasRunSuccessfully = false;
+    this.gameFailedToRun = false;
+    this.paused = false;
+    this.time = null;
+    this.LastTimeStamp = null;
+    this.spriteList = new Array();
+    this.textList = new Array();
+    this.animations = new Array();
+    this.DrawStack = new Array();
+    this.AddStack = new Array();
+    this.Text = new Object();
+    this.Lags = 0;
+    this.NoLags = 0;
+    this.LagTime = 0;
+    this.uidCounter = 0;
+};
+Torch.Game.prototype.Start = function(load, update, draw, init)
+{
+    var that = this;
+    this.load = load;
+    this.update = update;
+    this.draw = draw;
+    this.init = init;
+
+    that.canvasNode.width = that.width;
+    that.canvasNode.height = that.height;
+
+    that.load();
+
+    that.Load.Load(function()
+    {
+        try {
             that.init();
             that.WireUpEvents();
             Torch.activeGame = that;
             Torch.Run(that);
-        });
-
-
-
-    });
-    Game.Prop("Add", function(o)
-    {
-        var that = this;
-        switch (o._torch_add)
-        {
-            case "Text":
-                that.textList.push(o);
-                o.listPosition = that.textList.length - 1;
-            break;
-            case "Sprite":
-                o.game = that;
-                that.spriteList.push(o);
-                o.listPosition = that.spriteList.length - 1;
-            break;
+        } catch (e) {
+            that.FatalError(e);
         }
+
     });
-    Game.Prop("Run", function(timestamp)
+};
+Torch.Game.prototype.Add = function(o)
+{
+    var that = this;
+    if (!o._torch_add){
+        Torch.Error("Invalid object added to game. object:");
+        console.log(o);
+    }
+
+    switch (o._torch_add)
     {
-        var that = this;
+        case "Sprite":
+            o.game = that;
+            that.AddStack.push(o);
+            o._torch_uid = "TORCHSPRITE" + that.uidCounter.toString();
+            that.uidCounter++;
+        break;
+        default:
+            alert("error");
+            break;
+    }
+};
+Torch.Game.prototype.Remove = function(o)
+{
+    var that = this;
+    o.Update = function(){};
+    o.Draw = function(){};
+    o.draw = false;
+    o.text = "";
+    switch (o._torch_add)
+    {
+        case "Sprite":
+            that.spriteList.splice( o.listPosition, 1);
+        break;
 
-        that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
+    }
+};
+Torch.Game.prototype.RunGame = function(timestamp)
+{
+    var that = this;
+    that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
+    //don't update when paused
 
-        that.draw();
-        that.update();
-        that.Viewport.Update();
-        that.DrawItems();
+    that.draw();
+    that.update();
+    that.Viewport.Update();
+    that.UpdateAndDrawSprites();
 
-        that.fps = (1000 / that.deltaTime);
 
-        that.animations.forEach(function(animation)
-        {
-            animation.Run();
-        });
 
-        Torch.Loop(timestamp);
+
+    if (that.debug) that.debug();
+
+    that.fps = (1000 / that.deltaTime);
+
+    that.animations.forEach(function(animation)
+    {
+        animation.Run();
     });
 
-    Game.Prop("DrawItems", function()
+    Torch.Loop(timestamp);
+};
+Torch.Game.prototype.Run = function(timestamp)
+{
+    var that = this;
+    if (!that.gameHasRunSuccessfully && !that.gameFailedToRun)
     {
-        var that = this;
-        var drawList = [];
-        drawList = drawList.concat(that.textList);
-        drawList = drawList.concat(that.spriteList);
-
-        drawList.sort(function(a, b){
-            return a.drawIndex - b.drawIndex;
-        });
-
-        drawList.forEach(function(drawItem)
+        try
         {
-            switch (drawItem._torch_add)
+            that.RunGame(timestamp);
+            that.gameHasRunSuccessfully = true;
+
+        }
+        catch (e)
+        {
+            Torch.Error("Game Has Failed To Run!");
+            Torch.Error(e);
+            that.gameFailedToRun = true;
+            that.FatalError(e);
+        }
+    }
+    if (that.gameHasRunSuccessfully)
+    {
+        that.RunGame(timestamp);
+    }
+
+};
+Torch.Game.prototype.FatalError = function(error)
+{
+    var that = this;
+    that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
+    that.canvasNode.style.backgroundColor = "black";
+    that.canvas.fillStyle = "red";
+    that.canvas.font = "bold 16px Consolas";
+    that.canvas.fillText("Fatal Error!", 40, 40);
+
+    that.canvas.font = "16px Consolas";
+    var split = error.stack.split("\n");
+    for (var i = 0; i < split.length; i++)
+    {
+        that.canvas.fillText(error.stack.split("\n")[i], 40, 100 + (20 * i));
+    }
+    console.trace();
+
+};
+Torch.Game.prototype.UpdateAndDrawSprites = function()
+{
+    var that = this;
+    var drawList = [];
+    drawList = drawList.concat(that.spriteList);
+    var cleanedDrawList = [];
+    drawList.sort(function(a, b){
+        return a.drawIndex - b.drawIndex;
+    });
+
+    for (var i = 0; i < drawList.length; i++)
+    {
+        var sprite = drawList[i];
+        if (!sprite.trash)
+        {
+            if (sprite.draw)
             {
-                case "Text":
-                    var text = drawItem;
-                    if (text.show)
-                    {
-                        var cordX = text.fixed ? text.x : text.x + that.Viewport.x;
-                        var cordY = text.fixed ? text.y : text.y + that.Viewport.y;
-                        if (!text.additionalParameters) text.additionalParameters = {};
-                        that.canvas.save();
-                        that.canvas.font = text.additionalParameters.font ? text.additionalParameters.font : that.canvas.font;
-                        that.canvas.fillStyle = text.additionalParameters.fillStyle ? text.additionalParameters.fillStyle : that.canvas.fillStyle;
-                        that.canvas.fillText(text.text, cordX, cordY);
-                        that.canvas.restore();
-                    }
-                break;
-
-                case "Sprite":
-                    var sprite = drawItem;
-                    sprite.Draw();
-                    sprite.Update();
-                break;
+                sprite.Draw();
             }
-        });
-    })
-
-    Game.Prop("Zoom", function(speed)
-    {
-        var that = this;
-        that.zoom += that.deltaTime * speed;
-        that.canvasNode.style.zoom = that.zoom;
-    });
-    Game.Prop("Draw", function(texture, rectangle, params)
-    {
-        //console.log("drawing...");
-        var that = this;
-
-        viewRect = that.Viewport.GetViewRectangle(that);
-        if (!rectangle.Intersects(viewRect)) return;
-        if (!params) params = {};
-        that.canvas.save(); //save the state of the  canvas
-
-        var x = rectangle.x + that.Viewport.x; //get x coordinate for drawing, adjust for viewport position
-        var y = rectangle.y + that.Viewport.y; //get y coordinates for drawing, adjust for viewport position
-        var width = rectangle.width;
-        var height = rectangle.height;
-        var rotation = params.rotation ? params.rotation + that.Viewport.rotation: that.Viewport.rotation;
-
-        that.canvas.globalAlpha = params.alpha ? params.alpha : that.canvas.globalAlpha;
-        that.canvas.translate(x + width / 2, y + height / 2);
-        that.canvas.rotate(rotation);
-        if (params.clipWidth)
-        {
-            that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+            if (!sprite.game.paused)
+            {
+                sprite.Update();
+            }
+            else if (sprite.keepUpdatingWhenPaused)
+            {
+                sprite.Update();
+            }
+            cleanedDrawList.push(sprite);
         }
-        else
-        {
-            //console.log("drawing...");
-            //console.log(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
-            that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
-        }
+    }
 
-        that.canvas.rotate(0);
-        that.canvas.globalAlpha = 1;
+    that.spriteList = cleanedDrawList;
 
-        that.canvas.restore();
-    });
-
-    Game.Prop("Clear", function(color)
+    for (var i = 0; i < that.AddStack.length; i++)
     {
-        var that = this;
-        that.canvasNode.style.backgroundColor = color;
-    });
+        var o = that.AddStack[i];
+        that.spriteList.push(o);
+        o.listPosition = that.spriteList.length - 1;
+    }
 
+    that.AddStack = new Array();
+};
+Torch.Game.prototype.Zoom = function(speed)
+{
+    var that = this;
+    that.zoom += that.deltaTime * speed;
+    that.canvasNode.style.zoom = that.zoom;
+}
+Torch.Game.prototype.Draw = function(texture, rectangle, params)
+{
+    var that = this;
 
-    Game.Prop("getCanvasEvents", function()
+    viewRect = that.Viewport.GetViewRectangle(that);
+
+    if (!rectangle.Intersects(viewRect)) return;
+    if (!params) params = {};
+
+    that.canvas.save();
+
+    var x = rectangle.x + that.Viewport.x;
+    var y = rectangle.y + that.Viewport.y;
+    var width = rectangle.width;
+    var height = rectangle.height;
+
+    var rotation = params.rotation ? params.rotation + that.Viewport.rotation: that.Viewport.rotation;
+
+    that.canvas.globalAlpha = params.alpha ? params.alpha : that.canvas.globalAlpha;
+
+    that.canvas.translate(x + width / 2, y + height / 2);
+
+    that.canvas.rotate(rotation);
+
+    if (params.clipWidth)
     {
-        var that = this;
-        var evts = [
-            [
-                "mousemove", function(e){
-                    that.Mouse.SetMousePos(that.canvasNode, e, that);
-                }
-            ],
-            [
-                "mousedown", function(){
-                    that.Mouse.down = true;
-                }
-            ],
-            [
-                "mouseup", function(){
-                    that.Mouse.down = false;
-                }
-            ],
-            [
-                "touchstart", function(){
-                    that.Mouse.down = true;
-                }
-            ],
-            [
-                "touchend", function(){
-                    that.Mouse.down = false;
-                }
-            ],
-            [
-                "click", function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-            ]
-        ];
+        that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+    }
+    else
+    {
+        that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
+    }
 
-        return evts;
-    });
+    that.canvas.rotate(0);
+    that.canvas.globalAlpha = 1;
 
-    var bodyEvents =
-    [
+    that.canvas.restore();
+};
+Torch.Game.prototype.Clear = function(color)
+{
+    var that = this;
+    that.canvasNode.style.backgroundColor = color;
+}
+Torch.Game.prototype.getCanvasEvents = function()
+{
+    var that = this;
+    var evts = [
         [
-            "keydown", function(e){
-                Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+            "mousemove", function(e){
+                that.Mouse.SetMousePos(that.canvasNode, e, that);
             }
         ],
         [
-            "keyup", function(e){
-                Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+            "mousedown", function(){
+                that.Mouse.down = true;
+            }
+        ],
+        [
+            "mouseup", function(){
+                that.Mouse.down = false;
+            }
+        ],
+        [
+            "touchstart", function(){
+                that.Mouse.down = true;
+            }
+        ],
+        [
+            "touchend", function(){
+                that.Mouse.down = false;
+            }
+        ],
+        [
+            "click", function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
         ]
     ];
 
-    var Keys = (function(){
-        var _keys = [];
-        for (i = 0; i < 230; i++)
-        {
-            var _char = String.fromCharCode(i).toUpperCase();
-            switch (i)
-            {
-                case 37:
-                _keys["LeftArrow"] = {down:false};
-                break;
-
-                case 38:
-                _keys["UpArrow"] = {down:false};
-                break;
-
-                case 39:
-                _keys["RightArrow"] = {down:false};
-                break;
-
-                case 40:
-                _keys["DownArrow"] = {down:false};
-
-                default:
-                _keys[_char] = {down:false};
-                break;
-            }
-
-
-        }
-        return _keys;
-    })();
-
-    Game.Prop("Keys", Keys);
-
-    Game.Prop("Viewport",
-    {
-			x: 0,
-			y: 0,
-			width: 1280,
-			height: 720,
-			maxWidth: $("body").width(),
-			maxHeight: $("body").height(),
-			rotation: 0,
-
-            Update: function()
-            {
-                var that = this;
-                if (that.followSprite)
-                {
-                    that.x = that.followSprite.origX - that.followSprite.Rectangle.x;
-                    that.y = that.followSprite.origY - that.followSprite.Rectangle.y;
+    return evts;
+}
+Torch.Game.prototype.WireUpEvents = function()
+{
+    var that = this;
+    var bodyEvents =
+    [
+        [
+            "keydown", function(e){
+                if (e.keyCode == 32) that.Keys.Space.down = true;
+                else{
+                    that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
                 }
-            },
 
-			Maximize: function(){
-				$(canvasElement).attr("width", Viewport.maxWidth);
-
-				$(canvasElement).attr("height", Viewport.maxWidth * 0.5);
-
-				Viewport.width = Viewport.maxWidth;
-				Viewport.height = Viewport.maxWidth * 0.5;
-			},
-
-			GetViewRectangle: function(game)
-            {
-                var that = this.game//game;
-				 return new Torch.Rectangle(-that.Viewport.x, -that.Viewport.y, that.Viewport.width, that.Viewport.height);
-			},
-
-            Follow: function(sprite)
-            {
-                this.followSprite = sprite;
-                sprite.origX = sprite.Rectangle.x;
-                sprite.origY = sprite.Rectangle.y;
             }
-	});
+        ],
+        [
+            "keyup", function(e){
+                if (e.keyCode == 32) that.Keys.Space.down = false;
+                else{
+                    that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+                }
 
-    Game.Prop("Mouse",
+            }
+        ]
+    ];
+    $(that.getCanvasEvents()).each(function(){
+        var eventItem = $(this);
+        that.canvasNode.addEventListener(eventItem[0], eventItem[1], false);
+    });
+
+    $(bodyEvents).each(function(){
+        var eventItem = $(this);
+        document.body.addEventListener(eventItem[0], eventItem[1], false);
+    });
+};
+Torch.Game.prototype.Keys = (function(){
+    var _keys = [];
+    for (i = 0; i < 230; i++)
     {
+        var _char = String.fromCharCode(i).toUpperCase();
+        switch (i)
+        {
+            case 37:
+            _keys["LeftArrow"] = {down:false};
+            break;
+
+            case 38:
+            _keys["UpArrow"] = {down:false};
+            break;
+
+            case 39:
+            _keys["RightArrow"] = {down:false};
+            break;
+
+            case 40:
+            _keys["DownArrow"] = {down:false};
+
+            default:
+            _keys[_char] = {down:false};
+            break;
+        }
+
+
+    }
+    _keys["Space"] = {down:false};
+    return _keys;
+})();
+Torch.Game.prototype.MakeViewport = function(){
+    var that = this;
+    var Viewport = {
         x: 0,
         y: 0,
-        down: false,
-        SetMousePos: function(c, evt, game)
-        {
-            var rect = c.getBoundingClientRect();
+        width: 1280,
+        height: 720,
+        maxWidth: $("body").width(),
+        maxHeight: $("body").height(),
+        rotation: 0,
 
-            game.Mouse.x = evt.clientX - rect.left;
-            game.Mouse.y = evt.clientY - rect.top;
+        Update: function()
+        {
+            var that = this;
+            if (that.followSprite)
+            {
+                that.x = that.followSprite.origX - that.followSprite.Rectangle.x;
+                that.y = that.followSprite.origY - that.followSprite.Rectangle.y;
+            }
         },
-        GetRectangle: function(game)
+
+        Maximize: function(){
+            var that = this;
+            var canvasElement = that.game.canvasNode;
+            $(canvasElement).attr("width",that.game.Viewport.maxWidth);
+
+            $(canvasElement).attr("height", that.game.Viewport.maxWidth * 0.5);
+
+            that.width = that.game.Viewport.maxWidth;
+            that.height = that.game.Viewport.maxWidth * 0.5;
+        },
+
+        GetViewRectangle: function(game)
         {
-            return new Torch.Rectangle(game.Mouse.x - game.Viewport.x, game.Mouse.y - game.Viewport.y, 5, 5);
+            var that = this.game//game;
+             return new Torch.Rectangle(-that.Viewport.x, -that.Viewport.y, that.Viewport.width, that.Viewport.height);
+        },
+
+        Follow: function(sprite)
+        {
+            this.followSprite = sprite;
+            sprite.origX = sprite.Rectangle.x;
+            sprite.origY = sprite.Rectangle.y;
+        },
+
+        Center: function(sprite)
+        {
+        //    this.x = sprite.Rectangle.x + (this.width / 8);
+        },
+
+        Latch: function(sprite)
+        {
+            this.x = (1280 / 2) + ( 0 - sprite.Rectangle.x );
         }
-    });
+    };
+    Viewport.game = that;
+    return Viewport;
+};
 
-
-    Game.Prop("WireUpEvents", function()
+Torch.Game.prototype.Mouse = {
+    x: 0,
+    y: 0,
+    down: false,
+    SetMousePos: function(c, evt, game)
     {
-        var that = this;
-        $(that.getCanvasEvents()).each(function(){
-            var eventItem = $(this);
-            that.canvasNode.addEventListener(eventItem[0], eventItem[1], false);
-        });
+        var rect = c.getBoundingClientRect();
 
-        $(bodyEvents).each(function(){
-            var eventItem = $(this);
-            document.body.addEventListener(eventItem[0], eventItem[1], false);
-        });
-    });
+        game.Mouse.x = evt.clientX - rect.left;
+        game.Mouse.y = evt.clientY - rect.top;
+    },
+    GetRectangle: function(game)
+    {
+        return new Torch.Rectangle(game.Mouse.x - game.Viewport.x, game.Mouse.y - game.Viewport.y, 5, 5);
+    }
+};
 
-
-
-
-    Torch.Game = Game;
-})();
-
-
-
-
-(function(Game)
+Torch.Game.prototype.TogglePause = function()
 {
-
-    var Text = new Class(function(text, x, y, additionalParameters)
-    {
-        var that = this;
-        that.text = text;
-        that.y = y;
-        that.x = x;
-        that.show = true;
-        that.additionalParameters = additionalParameters;
-        that._torch_add = "Text";
-        that.drawIndex = 1;
-        that.fixed = false;
-    });
-
-    Text.Prop("Hide", function()
-    {
-        var that = this;
-        that.show = false;
-    });
-
-    Text.Prop("Show", function()
-    {
-        var that = this;
-        that.show = true;
-    });
-
-    Text.Prop("Fix", function()
-    {
-        var that = this;
-        that.fixed = true;
-    });
-
-    Torch.Text = Text;
-
-})();
+    if (!this.paused) this.paused = true;
+    else this.paused = false;
+}

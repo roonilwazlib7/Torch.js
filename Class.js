@@ -8,6 +8,11 @@
 *	Examples below
 */
 
+VOID = "VOID___";
+STRING = "STRING___";
+NUMBER = "NUMBER___";
+OBJECT = "OBJECT___"
+
 
 var Class;
 
@@ -26,6 +31,10 @@ var Class;
 
 	var CLASS = function(constructor)
 	{
+		if (typeof constructor == "object")
+		{
+			return Class2(constructor);
+		}
 		var strict = true;
 		var _Class; //variable to hold Class object
 
@@ -60,6 +69,8 @@ var Class;
 			//check to make sure classToInheritFrom is a Class
 			if (!classToInheritFrom.___CLASS___)
 			{
+				console.log(classToInheritFrom);
+				window.error = classToInheritFrom;
 				throw "Class Error: Inherits: invalid argument. argument is not a Class";
 			}
 			//get all the properties of classToInheritFrom and
