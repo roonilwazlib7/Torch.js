@@ -9,14 +9,8 @@
 
 var BlockSpawn =
 {
-    startPoint: {x:0,y:400},
+    startPoint: {x:-16,y:400},
     Items: [
-        /*{
-            SpawnType: "BasicBlock",
-            Position: {x: "right", y: "down"},
-            width: 16,
-            height: 16
-        },*/
         {
             SpawnType: "BasicBlock",
             Strip: true,
@@ -29,7 +23,7 @@ var BlockSpawn =
             copies: 2
         },
         {
-            PositionSet: {x: 320, y: 400}
+            PositionSet: {x: 304, y: 400}
         },
         /*
         {
@@ -50,17 +44,26 @@ var BlockSpawn =
             PositionSet: {x: 400, y:400}
         },*/
         {
-            ItemType: "BasicBlock",
+            SpawnType: "BasicBlock",
             Strip: true,
             StripPattern: "solid-mass"
         },
         {
-            PositionSet: {x: 640, y: 400}
+            PositionSet: {x: 624, y: 400}
         },
         {
-            ItemType: "BasicBlock",
+            SpawnType: "BasicBlock",
             Strip: true,
             StripPattern: "solid-mass"
+        },
+        {
+            Position: {x: 750, y: 336}
+        },
+        {
+            SpawnType: "Pipe",
+            Position: {x: "right", y: "down"},
+            width: 32,
+            height: 32
         }
     ]
 }

@@ -9,6 +9,10 @@ var Spawner = {
         QuestionBlock: function(position, scaffoldObject)
         {
             return new QuestionBlock(position, scaffoldObject);
+        },
+        Pipe: function(position, scaffoldObject)
+        {
+            return new Pipe(position, scaffoldObject);
         }
     },
     /*
@@ -154,8 +158,11 @@ var Spawner = {
                 }
                 else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
-                    item.Sprite = that.SpawnTypes[item.SpawnType](item.Position);
-                    item.spawned = true;
+                    if (item.SpawnType)
+                    {
+                        item.Sprite = that.SpawnTypes[item.SpawnType](item.Position);
+                        item.spawned = true;
+                    }
                 }
                 if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
