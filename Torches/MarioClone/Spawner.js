@@ -83,10 +83,20 @@ var Spawner = {
         var that = this;
         var StripPath = item.StripPath;
         if (item.copies) StripPath = that.CopyString(StripPath, item.copies);
+        var savedPos = {x: currentPosition.x, y: currentPosition.y};
         var paths = StripPath.split(";");
         var currentStripPos = currentPosition;
         for (var i = 0; i < paths.length; i++)
         {
+            if (paths[i] == "!") {
+                if (item.reset == "down")
+                {
+                    currentStripPos = {x: savedPos.x, y: savedPos.y + item.height};
+                    savedPos.y = savedPos.y + item.height;
+                }
+
+                continue;
+            }
             var first = paths[i].split(",")[0];
             var second = paths[i].split(",")[1];
 
@@ -121,7 +131,10 @@ var Spawner = {
                     newItem.Position.y = "stay";
                 break;
             }
+
             currentStripPos =  that.SpawnSingleItem(newItem, currentStripPos);
+
+
         }
         return currentStripPos;
     },

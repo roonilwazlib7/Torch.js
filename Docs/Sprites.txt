@@ -1,0 +1,20 @@
+______________
+Torch.Sprite
+______________
+
+Some basic info on the Torch.Sprite class
+
+If you want an object to be drawn in the game, it should
+be a Torch.Sprite. Torch games maintain a list of sprites
+and draws and update them. Sprites come with prebuilt functionality
+
+Sprite Functions:
+
+  ()Sprite.Bind
+    Bind is an object that has a few different functions:
+      ()Bind.Texture
+        Binds the sprite to a single texture
+        Usage:
+              mySprite.Bind.Texture("texture_id");
+      ()Bind.TextureSheet
+        Binds the sprite

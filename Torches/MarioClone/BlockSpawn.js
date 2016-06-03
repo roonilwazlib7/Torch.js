@@ -9,7 +9,7 @@
 
 var BlockSpawn =
 {
-    startPoint: {x:150,y:150},
+    startPoint: {x:0,y:400},
     Items: [
         /*{
             SpawnType: "BasicBlock",
@@ -20,23 +20,25 @@ var BlockSpawn =
         {
             SpawnType: "BasicBlock",
             Strip: true,
-            StoreStripPattern: "stairs",
+            StoreStripPattern: "solid-mass",
             Position: {x: "right", y: "up"},
-            StripPath: "r,s;r,s;r,s;r,s;r,s;",
-            width: 16,
+            StripPath: "r,s;r,s;r,s;r,s;r,s;r,s;r,s;r,s;r,s;r,s;!;", //10 bricks, 32 * 10
+            reset: "down",
+            width: 32,
             height: 16,
-            copies: 10
+            copies: 2
         },
         {
-            PositionSet: {x:150, y:100}
+            PositionSet: {x: 320, y: 400}
         },
+        /*
         {
             SpawnType: "QuestionBlock",
             Position: {x:"right", y: "up"},
             width: 16,
             height: 16
-        }
-        /*,
+        },
+        ,
         {
             SpawnType: "BasicBlock",
             Position: {x: 2000, y: 50},
@@ -46,11 +48,19 @@ var BlockSpawn =
         },
         {
             PositionSet: {x: 400, y:400}
+        },*/
+        {
+            ItemType: "BasicBlock",
+            Strip: true,
+            StripPattern: "solid-mass"
+        },
+        {
+            PositionSet: {x: 640, y: 400}
         },
         {
             ItemType: "BasicBlock",
             Strip: true,
-            StripPattern: "stairs"
-        }*/
+            StripPattern: "solid-mass"
+        }
     ]
 }
