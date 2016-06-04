@@ -435,20 +435,53 @@ Torch.Game.prototype.WireUpEvents = function()
     [
         [
             "keydown", function(e){
-                if (e.keyCode == 32) that.Keys.Space.down = true;
-                else{
-                    that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+                switch (e.keyCode)
+                {
+                    case 32:
+                        that.Keys.Space.down = true;
+                        break;
+                    case 37:
+                        that.Keys.LeftArrow.down = true;
+                        break;
+                    case 38:
+                        that.Keys.UpArrow.down = true;
+                        break;
+                    case 39:
+                        that.Keys.RightArrow.down = true;
+                        break;
+                    case 40:
+                        that.Keys.DownArrow.down = true;
+                        break;
+                    default:
+                        that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+                        break;
                 }
 
             }
         ],
         [
             "keyup", function(e){
-                if (e.keyCode == 32) that.Keys.Space.down = false;
-                else{
-                    that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+                switch (e.keyCode)
+                {
+                    case 32:
+                        that.Keys.Space.down = false;
+                        break;
+                    case 37:
+                        that.Keys.LeftArrow.down = false;
+                        break;
+                    case 38:
+                        that.Keys.UpArrow.down = false;
+                        break;
+                    case 39:
+                        that.Keys.RightArrow.down = false;
+                        break;
+                    case 40:
+                        that.Keys.DownArrow.down = false;
+                        break;
+                    default:
+                        that.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+                        break;
                 }
-
             }
         ]
     ];

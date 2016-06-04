@@ -64,6 +64,20 @@ var BlockSpawn =
             Position: {x: "right", y: "down"},
             width: 32,
             height: 32
+        },
+        {
+            Position: {x: 400, y: 300}
+        },
+        {
+            SpawnType: "BasicBlock",
+            Strip: true,
+            StoreStripPattern: "th",
+            Position: {x: "right", y: "up"},
+            StripPath: "r,s;r,s;r,s;", //10 bricks, 32 * 10
+            reset: "down",
+            width: 32,
+            height: 16,
+            copies: 2
         }
     ]
 }

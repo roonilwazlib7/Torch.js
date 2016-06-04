@@ -60,7 +60,6 @@ Torch.Animation.prototype.Reset = function()
 */
 Torch.Animation.TexturePack = function(texturePack, game)
 {
-	;"TextureList";
 	this.step = 50;
 	this.maxIndex = texturePack.length - 1;
 	this.textureIndex = 0;
@@ -123,10 +122,6 @@ Torch.Animation.TextureSheet.prototype.Update = function()
 		//that.TextureSheet = null;
 		that.hasRun = true;
 		if (that.finishCallBack) that.finishCallBack();
-		if (that.sprite && that.sprite.once && that.sprite.TextureSheet)
-		{
-			that.sprite.game.Remove(that.sprite);
-		}
 	}
 };
 Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()

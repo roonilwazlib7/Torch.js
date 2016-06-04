@@ -9,14 +9,16 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
     var tex = that.sprite.game.Assets.Textures[textureId];
+
     if (that.sprite.TextureSheetAnimation)
     {
         that.sprite.TextureSheetAnimation.Stop();
         that.sprite.DrawParams = {};
-        that.sprite.TextureSheetAnimation.Kill = true;
-        //that.sprite.anim = null;
+        //that.sprite.TextureSheetAnimation.Kill = true;
+        that.sprite.anim = null;
         that.sprite.TextureSheet = null;
     }
+
     that.sprite.DrawTexture = tex;
     that.sprite.Rectangle.width = tex.width;
     that.sprite.Rectangle.height = tex.height;
