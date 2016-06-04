@@ -82,7 +82,6 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.clickAwayTrigger = false;
     this.trash = false;
     this.DrawParams = {};
-    this.additionalUpdates = [];
     this.drawIndex = 0;
     this._torch_add = "Sprite";
     this._torch_uid = "";
@@ -96,21 +95,15 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.draw = true;
     this.wasClicked = false;
 }
-Torch.Sprite.prototype.Fixed = function()
+Torch.Sprite.prototype.ToggleFixed = function()
 {
-    this.fixed = true;
-}
-Torch.Sprite.prototype.UnFixed = function()
-{
-    this.fixed = false;
+    var that = this;
+    if (that.fixed) that.fixed = false;
+    else that.fixed = true;
 }
 Torch.Sprite.prototype.BaseUpdate = function()
 {
     var that = this;
-    if (that.TextureSheetAnimation && that.TextureSheetAnimation.hasRun && that.TextureSheetAnimation.Kill)
-    {
-        that.game.Remove(this);
-    }
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);
@@ -171,62 +164,6 @@ Torch.Sprite.prototype.BaseUpdate = function()
     else if (that.game.Mouse.down && !that.mouseOver)
     {
         that.clickAwayTrigger = true;
-    }
-
-    that.additionalUpdates.forEach(function(update)
-    {
-        update(that);
-    });
-
-    if (that.moveToPoint)
-    {
-        that.elapsedMoveToTime += that.game.deltaTime;
-
-        var v = new Torch.Vector(that.moveToPoint.x - that.Rectangle.x, that.moveToPoint.y - that.Rectangle.y);
-        v.Normalize();
-        var moveToSpeed = that.defaultEasing * that.moveToSpeed;
-        switch(that.moveToTween)
-        {
-            case Torch.Tween.Linear:
-                that.Rectangle.x += v.x * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * moveToSpeed * that.game.deltaTime;
-            break;
-
-            case Torch.Tween.Quadratic:
-                that.Rectangle.x += v.x * (that.elapsedMoveToTime * that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * (that.elapsedMoveToTime * that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-            break;
-
-            case Torch.Tween.Cubic:
-                that.Rectangle.x += v.x * (that.elapsedMoveToTime * that.elapsedMoveToTime * that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * (that.elapsedMoveToTime * that.elapsedMoveToTime * that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-            break;
-
-            case Torch.Tween.Inverse:
-                that.Rectangle.x += v.x * (1 / that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * (1 / that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-            break;
-
-            case Torch.Tween.InverseSquare:
-                that.Rectangle.x += v.x * (1 / Math.pow(that.elapsedMoveToTime, 2) ) * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * (1 / Math.pow(that.elapsedMoveToTime, 2) )* moveToSpeed * that.game.deltaTime;
-            break;
-
-            case Torch.Tween.SquareRoot:
-                that.Rectangle.x += v.x * Math.sqrt(that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-                that.Rectangle.y += v.y * Math.sqrt(that.elapsedMoveToTime) * moveToSpeed * that.game.deltaTime;
-            break;
-        }
-
-        var distVec = new Torch.Vector(that.Rectangle.x, that.Rectangle.y);
-        if (distVec.GetDistance(that.moveToPoint) <= 10)
-        {
-            that.Rectangle.x = that.moveToPoint.x;
-            that.Rectangle.y = that.moveToPoint.y;
-            that.moveToPoint = null;
-            that.elapsedMoveToTime = 0;
-            if (that.onMoveFinish) that.onMoveFinish(that);
-        }
     }
 }
 Torch.Sprite.prototype.Update = function()
