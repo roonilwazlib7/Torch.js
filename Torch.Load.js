@@ -132,7 +132,7 @@ Torch.Load.prototype.Load = function(finishFunction)
                     that.textures[this.refId].width = this.width;
                     that.textures[this.refId].height = this.height;
                     that.finish_stack--;
-                    console.log(this);
+                    Torch.Message("Loaded Image:" + this.src, "yellow");
                 }
             break;
             case "sound":
@@ -140,13 +140,13 @@ Torch.Load.prototype.Load = function(finishFunction)
                 aud.src = that.Stack[i].path;
                 that.Stack[i].audio = aud;
                 that.sound[that.Stack[i].id] = that.Stack[i];
-                console.log(that.sound[that.Stack[i].id]);
                 that.finish_stack--;
                 aud.toggle = function(){
                     var that = this;
                     that.currentTime = 0;
                     that.play();
                 }
+                Torch.Message("Loaded Sound:" + aud.src, "yellow");
             break;
         }
 

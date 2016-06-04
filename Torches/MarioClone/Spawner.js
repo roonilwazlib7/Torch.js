@@ -28,7 +28,6 @@ var Spawner = {
             builtString += str;
         }
         builtString = builtString.substring(0, builtString.length - 1);
-        console.log(builtString);
         return builtString;
     },
     Spawn: function(spawnData)

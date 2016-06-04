@@ -193,7 +193,6 @@ Torch.Sprite.prototype.Draw = function()
         that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
     }
 }
-//Events
 Torch.Sprite.prototype.Click = function(eventFunction)
 {
     var that = this;
@@ -287,72 +286,6 @@ Torch.Sprite.prototype.Trash = function()
 {
     this.trash = true;
 }
-Torch.Sprite.prototype.TieLocation = function(otherSprite, adjustments)
-{
-    var that = this;
-    var adjust = {};
-    adjust.x = adjustments.x ? adjustments.x : 0;
-    adjust.y = adjustments.y ? adjustments.y : 0;
-    that.AddUpdate(function(sprite)
-    {
-        sprite.Rectangle.x = otherSprite.Rectangle.x + adjust.x;
-        sprite.Rectangle.y = otherSprite.Rectangle.y + adjust.y;
-    });
-}
-
-Torch.Canvas = function(textLayers, x, y, maxFontSize)
-{
-    var that = this;
-    that._torch_add = "Sprite";
-    that.maxFontSize = maxFontSize;
-    that.textLayers = textLayers;
-    that.InitSprite(x,y);
-    that.DrawTexture = that.GetBitmap();
-    that.Rectangle.width = that.DrawTexture.image.width;
-    that.Rectangle.height = that.DrawTexture.image.height;
-    that.drawIndex = 100;
-};
-
-Torch.Canvas.prototype.ApplyLayer = function(layer, cnv)
-{
-    var that = this;
-    if (layer.font) cnv.font = layer.font;
-    if (layer.fillStyle) {
-        cnv.fillStyle = layer.fillStyle;
-        cnv.fillText(layer.text, 10, that.maxFontSize / 1.3);
-    }
-    if (layer.strokeStyle) {
-        cnv.strokeStyle = layer.strokeStyle;
-        cnv.strokeText(layer.text, 10, 10);
-    }
-}
-
-Torch.Canvas.prototype.GetBitmap = function()
-{
-    var that = this;
-    var cv = document.createElement("canvas");
-
-    cv.width = that.textLayers[0].text.length * that.maxFontSize * 0.8;
-    cv.height = that.maxFontSize;
-    cnv = cv.getContext("2d");
-
-    for (var i = 0; i < that.textLayers.length; i++)
-    {
-        if (that.textLayers[i].background)
-        {
-            cnv.fillStyle = that.textLayers[i].background;
-            cnv.fillRect(0,0,cv.width,cv.height)
-        }
-        that.ApplyLayer(that.textLayers[i], cnv);
-    }
-
-
-    var image = new Image();
-    image.src = cv.toDataURL();
-    return {image: image};
-}
-
-
 /*
         Torch.Text
 */

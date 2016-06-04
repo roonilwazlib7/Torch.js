@@ -49,7 +49,16 @@ var Torch =
     {
         console.log("%c   " + "Torch Error! -->" + message, "background-color:#black; color:red");
     },
-
+    Message: function(message, color)
+    {
+        if ( $("#torch_message").length > 0 )
+        {
+            var message = $("<p>" + message + "</p>");
+            message.css("font-weight", "bold");
+            if (color) message.css("color", color);
+            $("#torch_message").append(message);
+        }
+    },
     //classes
     Rectangle: (function(){
         var Rectangle = function(x, y, width, height){
@@ -104,29 +113,6 @@ var Torch =
     })()
 };
 /*
-        Torch.World
-*/
-Torch.World = function(game)
-{
-    this.game = game;
-    this.bounds = { left: 0, right: 1280, top: 0, bottom: 720};
-};
-Torch.World.prototype.Center = function(sprite)
-{
-    var that = this;
-    var pointCenterX = (that.bounds.right - that.bounds.left) / 2;
-    var pointCenterY = (that.bounds.bottom - that.bounds.top) / 2;
-
-    sprite.Rectangle.x = (pointCenterX - ( sprite.Rectangle.width / 2) );
-    sprite.Rectangle.y = (pointCenterY - ( sprite.Rectangle.height / 2) );
-};
-Torch.World.SetBounds = function(left, right, top, bottom)
-{
-    var that = this;
-    that.bounds = {left: left, right: right, top: top, bottom: bottom};
-}
-
-/*
         Torch.Game
 */
 
@@ -141,10 +127,8 @@ Torch.Game = function(canvasId, width, height, name){
     this.name = name;
 
     this.Load = new Torch.Load(this);
-    this.World = new Torch.World(this);
 
     this.Clear("#cc5200");
-    console.log(this.Clear);
 
     this.Viewport = this.MakeViewport();
 
@@ -214,21 +198,6 @@ Torch.Game.prototype.Add = function(o)
             break;
     }
 };
-Torch.Game.prototype.Remove = function(o)
-{
-    var that = this;
-    o.Update = function(){};
-    o.Draw = function(){};
-    o.draw = false;
-    o.text = "";
-    switch (o._torch_add)
-    {
-        case "Sprite":
-            that.spriteList.splice( o.listPosition, 1);
-        break;
-
-    }
-};
 Torch.Game.prototype.RunGame = function(timestamp)
 {
     var that = this;
@@ -240,17 +209,15 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.Viewport.Update();
     that.UpdateAndDrawSprites();
 
-
-
-
     if (that.debug) that.debug();
 
     that.fps = (1000 / that.deltaTime);
 
-    that.animations.forEach(function(animation)
+    for (var i = 0; i < that.animations.length; i++)
     {
-        animation.Run();
-    });
+        var anim = that.animations[i];
+        anim.Run();
+    }
 
     Torch.Loop(timestamp);
 };
@@ -317,10 +284,6 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
                 sprite.Draw();
             }
             if (!sprite.game.paused)
-            {
-                sprite.Update();
-            }
-            else if (sprite.keepUpdatingWhenPaused)
             {
                 sprite.Update();
             }
