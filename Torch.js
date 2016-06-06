@@ -48,6 +48,10 @@ var Torch =
     Error: function(message)
     {
         console.log("%c   " + "Torch Error! -->" + message, "background-color:#black; color:red");
+        Torch.Message("Torch Error! -->" + message, "red");
+        Torch.activeGame = null;
+        Torch = message;
+        throw message;
     },
     Message: function(message, color)
     {
@@ -261,6 +265,11 @@ Torch.Game.prototype.FatalError = function(error)
     {
         that.canvas.fillText(error.stack.split("\n")[i], 40, 100 + (20 * i));
     }
+    if (typeof(Torch) == "string")
+    {
+        that.canvas.clearRect(0,0,1000,1000);
+        that.canvas.fillText(Torch, 40, 100);
+    }
     console.trace();
 
 };
@@ -297,7 +306,6 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
     {
         var o = that.AddStack[i];
         that.spriteList.push(o);
-        o.listPosition = that.spriteList.length - 1;
     }
 
     that.AddStack = new Array();

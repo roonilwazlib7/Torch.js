@@ -66,6 +66,8 @@ Torch.Sprite = function(x,y)
 };
 Torch.Sprite.prototype.InitSprite = function(x,y)
 {
+    if (x == null || x == undefined) Torch.Error("argument 'x' is required");
+    if (y == null || y == undefined) Torch.Error("argument 'y' is required");
     this.Bind = new Torch.Bind(this);
     this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
     this.game = null;
@@ -213,52 +215,6 @@ Torch.Sprite.prototype.MouseLeave = function(eventFunction)
     var that = this;
     that.onMouseLeave = eventFunction;
 }
-Torch.Sprite.prototype.Move = function(movePoint, speed, moveFinish, tween)
-{
-    var that = this;
-    that.moveToPoint = movePoint;
-    that.moveToSpeed = speed;
-    that.onMoveFinish = moveFinish;
-
-    if (!tween)
-    {
-        that.moveToTween = Torch.Tween.Linear;
-    }
-    else
-    {
-        that.moveToTween = tween;
-        switch (tween)
-        {
-            case "Torch-Tween-Linear":
-                that.defaultEasing = 0.1;
-            break;
-
-            case "Torch-Tween-Quadratic":
-                that.defaultEasing = 0.000001;
-            break;
-
-            case "Torch-Tween-Cubic":
-                that.defaultEasing = 0.00000001;
-            break;
-
-            case "Torch-Tween-Inverse":
-                that.defaultEasing = 50;
-            break;
-
-            case "Torch-Tween-SquareRoot":
-                that.defaultEasing = 0.01;
-            break;
-
-            case "Torch-Tween-InverseSquare":
-                that.defaultEasing = 1500;
-            break;
-
-            default:
-                that.defaultEasing = 0.1;
-            break
-        }
-    }
-}
 Torch.Sprite.prototype.OnceEffect = function()
 {
     var that = this;
@@ -268,11 +224,6 @@ Torch.Sprite.prototype.Once = function()
 {
     var that = this;
     that.once = true;
-}
-Torch.Sprite.prototype.AddUpdate = function(updateFunction)
-{
-    var that = this;
-    that.additionalUpdates.push(updateFunction);
 }
 Torch.Sprite.prototype.Hide = function()
 {

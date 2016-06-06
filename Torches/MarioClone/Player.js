@@ -1,6 +1,6 @@
 var Player = function()
 {
-    this.InitSprite(50,300);
+    this.InitSprite(50);
     Game.Add(this);
     this.Bind.Texture("player");
     this.MoveState = "Idle"; //Idle, Right, Left
