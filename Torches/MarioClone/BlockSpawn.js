@@ -80,10 +80,21 @@ var BlockSpawn =
             copies: 2
         },
         {
+            PositionSet: {x: 400, y: 400}
+        },
+        {
+            SpawnType: "BasicBlock",
+            Strip: true,
+            Position: {x:"right", y:"down"},
+            StripPath: "s,u;s,u;s,u",
+            width: 32,
+            height: 16
+        }
+        /*{
             SpawnType: "Goomba",
             Position: {x: "right", y: "up"},
             width: 16,
             height: 16
-        }
+        }*/
     ]
 }

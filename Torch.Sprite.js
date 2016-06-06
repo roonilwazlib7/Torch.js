@@ -20,8 +20,10 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
     }
 
     that.sprite.DrawTexture = tex;
-    that.sprite.Rectangle.width = tex.width;
-    that.sprite.Rectangle.height = tex.height;
+    var scale = 1;
+    if (Torch.Scale) scale = Torch.Scale;
+    that.sprite.Rectangle.width = tex.width * scale;
+    that.sprite.Rectangle.height = tex.height * scale;
 };
 Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
 {
@@ -70,6 +72,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     if (y == null || y == undefined) Torch.Error("argument 'y' is required");
     this.Bind = new Torch.Bind(this);
     this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
+    this.BoundingBox = new Torch.Rectangle(x, y, 0, 0);
     this.game = null;
     this.DrawTexture = null;
     this.TexturePack = null;
@@ -97,6 +100,13 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.draw = true;
     this.wasClicked = false;
 }
+Torch.Sprite.prototype.GetBoundingBox = function()
+{
+    var that = this;
+    var bound = 1;
+    var boundingBox = new Torch.Rectangle(that.Rectangle.x + bound, that.Rectangle.y + bound, that.Rectangle.width - bound,that.Rectangle.height - bound);
+    return boundingBox;
+};
 Torch.Sprite.prototype.ToggleFixed = function()
 {
     var that = this;
@@ -106,6 +116,7 @@ Torch.Sprite.prototype.ToggleFixed = function()
 Torch.Sprite.prototype.BaseUpdate = function()
 {
     var that = this;
+    that.BoundingBox = that.GetBoundingBox();
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);

@@ -66,7 +66,6 @@ var Spawner = {
     {
         var that = this;
         var computedPosition = {x: 0, y:0};
-
         if (item.Position.x == "right")computedPosition.x = currentPosition.x + item.width;
         else if (item.Position.x == "left")computedPosition.x = currentPosition.x - item.width;
         else if (item.Position.x == "stay")computedPosition.x = currentPosition.x;

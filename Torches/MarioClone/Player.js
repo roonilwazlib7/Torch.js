@@ -13,8 +13,9 @@ var Player = function()
     this.jumping = false;
     this.jumpStart = 0;
     this.jumpTime = 0;
-    this.jumpHeightMax = 50;
-    this.jumpSpeed = 0.001;
+    this.jumpHeightMax = 100;
+    this.jumpSpeed = 0.00001;
+    this.initalJumpSpeed = 5;
 }
 Player.is(Torch.Sprite).is(PhysicsObject);
 
@@ -34,7 +35,7 @@ Player.prototype.Update = function()
         if (dif < that.jumpHeightMax)
         {
             that.jumpTime += Game.deltaTime;
-            that.Rectangle.y -= (that.jumpTime * that.jumpTime) * that.jumpSpeed;
+            that.Rectangle.y -= ( that.initalJumpSpeed - (that.jumpTime * that.jumpTime) * that.jumpSpeed );
         }
         else{
             that.jumping = false;

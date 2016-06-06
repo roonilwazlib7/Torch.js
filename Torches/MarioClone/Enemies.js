@@ -16,7 +16,7 @@ Goomba.prototype.Update = function()
 Goomba.prototype.HandleActorCollision = function(player)
 {
     var that = this;
-    var bump = 25;
+    var bump = 10;
     if (player.Rectangle.x < that.Rectangle.x )player.Rectangle.x -= bump;
     else player.Rectangle.x += bump;
 
@@ -24,6 +24,22 @@ Goomba.prototype.HandleActorCollision = function(player)
     {
         player.MoveState = "Idle";
         player.Bind.Texture("player");
-        player.moveLocked = true;
+        player.LockMovement();
+        var time = 0;
+        var startY = player.Rectangle.y;
+        player.Collision = function()
+        {
+            var dif = Math.abs( startY - player.Rectangle.y )
+            if (!player.blockAbove && dif < 30)
+            {
+                player.Rectangle.y -= player.jumpSpeed * (time * time);
+                player.Rectangle.x -= player.jumpSpeed * time * 50;
+                time += Game.deltaTime
+            }
+            else
+            {
+                player.Collision = null;
+            }
+        }
     }
 }
