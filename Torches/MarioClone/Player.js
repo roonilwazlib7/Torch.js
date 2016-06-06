@@ -1,22 +1,47 @@
 var Player = function()
 {
-    this.InitSprite(50);
+    this.PLAYER = true;
+    this.InitSprite(50, 350);
     Game.Add(this);
     this.Bind.Texture("player");
     this.MoveState = "Idle"; //Idle, Right, Left
-    this.blockInFront = false;
-    this.blockInBack = false;
-    this.blockAbove = false;
     this.JumpWasPressed = false;
+    this.moveLocked = false;
+    this.falling = false;
+    this.fallTime = 0;
+
+    this.jumping = false;
+    this.jumpStart = 0;
+    this.jumpTime = 0;
+    this.jumpHeightMax = 50;
+    this.jumpSpeed = 0.001;
 }
-Player.is(Torch.Sprite);
+Player.is(Torch.Sprite).is(PhysicsObject);
 
 Player.prototype.Update = function()
 {
     var that = this;
     that.BaseUpdate();
-    that.Move();
-    that.Fall();
+    if (!that.moveLocked)that.Move();
+    that.PhysicsObject();
+    if (!Game.Keys.W.down)
+    {
+        that.JumpWasPressed = false;
+    }
+    if (that.jumping)
+    {
+        var dif = Math.abs( that.Rectangle.y - that.jumpStart )
+        if (dif < that.jumpHeightMax)
+        {
+            that.jumpTime += Game.deltaTime;
+            that.Rectangle.y -= (that.jumpTime * that.jumpTime) * that.jumpSpeed;
+        }
+        else{
+            that.jumping = false;
+            that.jumpTime = 0;
+            that.jumpStart = 0;
+        }
+    }
 }
 Player.prototype.Move = function()
 {
@@ -41,10 +66,11 @@ Player.prototype.Move = function()
             that.Bind.TextureSheet("player_left");
         }
     }
-    if (Game.Keys.W.down && !that.blockAbove && !that.JumpWasPressed && that.blockBelow)
+    if (Game.Keys.W.down && !that.blockAbove && !that.JumpWasPressed && that.blockBelow && !that.jumping)
     {
-        rec.y -= 50;
         that.JumpWasPressed = true;
+        that.jumpStart = that.Rectangle.y;
+        that.jumping = true;
         if (that.MoveState != "Jump")
         {
             that.MoveState = "Jump";
@@ -59,54 +85,5 @@ Player.prototype.Move = function()
             that.Bind.Texture("player");
         }
     }
-    if (!Game.Keys.W.down)
-    {
-        that.JumpWasPressed = false;
-    }
-}
-Player.prototype.Fall = function()
-{
-    var that = this;
 
-    var touchingBlock = false;
-    that.blockInFront = false;
-    that.blockInBack = false;
-    that.blockAbove = false;
-    var notGround = 0;
-    for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
-    {
-        var item = Spawner.SpawnScaffold[i];
-        if (item.spawned && item.Sprite && item.Sprite.BLOCK)
-        {
-            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && (that.Rectangle.y + that.Rectangle.height - 10) < item.Sprite.Rectangle.y)
-            {
-                that.Rectangle.y = item.Sprite.Rectangle.y - that.Rectangle.height;
-                that.blockBelow = true;
-                that.firstTouch = true;
-            }
-            else{
-                notGround++;
-            }
-            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && (that.Rectangle.y + that.Rectangle.height - 5) > item.Sprite.Rectangle.y)
-            {
-                that.Rectangle.y = item.Sprite.Rectangle.y + that.Rectangle.height;
-                that.blockAbove = true;
-            }
-            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && item.Sprite.Rectangle.x > that.Rectangle.x)
-            {
-                that.blockInFront = true;
-            }
-            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && item.Sprite.Rectangle.x < that.Rectangle.x)
-            {
-                that.blockInBack = true;
-            }
-        }
-    }
-    if (!that.blockBelow){
-        that.Rectangle.y += Game.GetGravity();
-        if (that.firstTouch && !that.goMessage){
-           Torch.Message("Not on ground (" + notGround + ")");
-           that.goMessage = true;
-       }
-    }
 }

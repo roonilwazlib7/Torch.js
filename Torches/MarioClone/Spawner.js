@@ -13,6 +13,10 @@ var Spawner = {
         Pipe: function(position, scaffoldObject)
         {
             return new Pipe(position, scaffoldObject);
+        },
+        Goomba: function(position, scaffoldObject)
+        {
+            return new Goomba(position, scaffoldObject);
         }
     },
     /*

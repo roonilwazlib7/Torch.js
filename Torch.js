@@ -206,7 +206,6 @@ Torch.Game.prototype.RunGame = function(timestamp)
 {
     var that = this;
     that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
-    //don't update when paused
 
     that.draw();
     that.update();
@@ -282,20 +281,20 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
     drawList.sort(function(a, b){
         return a.drawIndex - b.drawIndex;
     });
-
+    for (var j = 0; j < drawList.length; j++)
+    {
+        var sprite = drawList[j];
+        if (sprite.draw && !sprite.trash)
+        {
+            sprite.Draw();
+        }
+    }
     for (var i = 0; i < drawList.length; i++)
     {
         var sprite = drawList[i];
         if (!sprite.trash)
         {
-            if (sprite.draw)
-            {
-                sprite.Draw();
-            }
-            if (!sprite.game.paused)
-            {
-                sprite.Update();
-            }
+            sprite.Update();
             cleanedDrawList.push(sprite);
         }
     }

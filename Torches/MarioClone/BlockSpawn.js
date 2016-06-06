@@ -20,7 +20,7 @@ var BlockSpawn =
             reset: "down",
             width: 32,
             height: 16,
-            copies: 10
+            copies: 20
         },
         {
             PositionSet: {x: 304, y: 400}
@@ -78,6 +78,12 @@ var BlockSpawn =
             width: 32,
             height: 16,
             copies: 2
+        },
+        {
+            SpawnType: "Goomba",
+            Position: {x: "right", y: "up"},
+            width: 16,
+            height: 16
         }
     ]
 }

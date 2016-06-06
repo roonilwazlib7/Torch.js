@@ -237,6 +237,11 @@ Torch.Sprite.prototype.Trash = function()
 {
     this.trash = true;
 }
+Torch.Sprite.prototype.NotSelf = function(otherSprite)
+{
+    var that = this;
+    return (otherSprite._torch_uid != that._torch_uid);
+}
 /*
         Torch.Text
 */
