@@ -17,7 +17,7 @@ Torch.Debug = function(game)
 
 
         var infoString = "Debug Info For:" + game.name + "<br>";
-            infoString += "fps:" + game.fps + "<br>";
+            infoString += "fps:" + Game.fps + "<br>";
             infoString += "SpriteLoad:" + game.spriteList.length + "<br>";
             infoString += "Lags:" + game.Lags + "<br>";
             infoString += "NoLags:" + game.NoLags + "<br>";

@@ -7,6 +7,7 @@ var Player = function()
     this.blockInFront = false;
     this.blockInBack = false;
     this.blockAbove = false;
+    this.JumpWasPressed = false;
 }
 Player.is(Torch.Sprite);
 
@@ -40,9 +41,10 @@ Player.prototype.Move = function()
             that.Bind.TextureSheet("player_left");
         }
     }
-    if (Game.Keys.W.down && !that.blockAbove)
+    if (Game.Keys.W.down && !that.blockAbove && !that.JumpWasPressed && that.blockBelow)
     {
-        rec.y -= speed;
+        rec.y -= 50;
+        that.JumpWasPressed = true;
         if (that.MoveState != "Jump")
         {
             that.MoveState = "Jump";
@@ -57,6 +59,10 @@ Player.prototype.Move = function()
             that.Bind.Texture("player");
         }
     }
+    if (!Game.Keys.W.down)
+    {
+        that.JumpWasPressed = false;
+    }
 }
 Player.prototype.Fall = function()
 {
@@ -66,15 +72,20 @@ Player.prototype.Fall = function()
     that.blockInFront = false;
     that.blockInBack = false;
     that.blockAbove = false;
+    var notGround = 0;
     for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
     {
         var item = Spawner.SpawnScaffold[i];
         if (item.spawned && item.Sprite && item.Sprite.BLOCK)
         {
-            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && (that.Rectangle.y + that.Rectangle.height - 5) < item.Sprite.Rectangle.y)
+            if (that.Rectangle.Intersects(item.Sprite.Rectangle) && (that.Rectangle.y + that.Rectangle.height - 10) < item.Sprite.Rectangle.y)
             {
                 that.Rectangle.y = item.Sprite.Rectangle.y - that.Rectangle.height;
-                touchingBlock = true;
+                that.blockBelow = true;
+                that.firstTouch = true;
+            }
+            else{
+                notGround++;
             }
             if (that.Rectangle.Intersects(item.Sprite.Rectangle) && (that.Rectangle.y + that.Rectangle.height - 5) > item.Sprite.Rectangle.y)
             {
@@ -91,8 +102,11 @@ Player.prototype.Fall = function()
             }
         }
     }
-    if (!touchingBlock){
+    if (!that.blockBelow){
         that.Rectangle.y += Game.GetGravity();
-        if (that.firstTouch) console.log("down");
+        if (that.firstTouch && !that.goMessage){
+           Torch.Message("Not on ground (" + notGround + ")");
+           that.goMessage = true;
+       }
     }
 }

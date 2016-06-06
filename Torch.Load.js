@@ -151,12 +151,15 @@ Torch.Load.prototype.Load = function(finishFunction)
         }
 
     }
+    var TIME_TO_LOAD = 0;
     _l = setInterval(function()
     {
+        TIME_TO_LOAD++
         if (that.finish_stack <= 0)
         {
             finishFunction();
             clearInterval(_l);
+            Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
         }
     }, 1000/60);
 }
