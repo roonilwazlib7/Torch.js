@@ -73,6 +73,22 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.Bind = new Torch.Bind(this);
     this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
     this.BoundingBox = new Torch.Rectangle(x, y, 0, 0);
+    this.Body = {
+        x: {
+            velocity: 0,
+            acceleration: 0,
+            lv: 0,
+            la: 0,
+            aTime: 0
+        },
+        y: {
+            velocity: 0,
+            acceleration: 0,
+            lv: 0,
+            la: 0,
+            aTime: 0
+        }
+    }
     this.game = null;
     this.DrawTexture = null;
     this.TexturePack = null;
@@ -107,6 +123,35 @@ Torch.Sprite.prototype.GetBoundingBox = function()
     var boundingBox = new Torch.Rectangle(that.Rectangle.x + bound, that.Rectangle.y + bound, that.Rectangle.width - bound,that.Rectangle.height - bound);
     return boundingBox;
 };
+Torch.Sprite.prototype.UpdateBody = function()
+{
+    var that = this;
+    var velX = that.Body.x.velocity;
+    var velY = that.Body.y.velocity;
+    if (that.Body.x.acceleration != that.Body.x.la)
+    {
+        that.Body.x.la = that.Body.x.acceleration;
+        that.Body.x.aTime = 0;
+    }
+    if (that.Body.x.acceleration != 0)
+    {
+        that.Body.x.aTime += that.game.deltaTime;
+        velX += that.Body.x.aTime * that.Body.x.acceleration;
+    }
+    if (that.Body.y.acceleration != that.Body.y.la)
+    {
+        that.Body.y.la = that.Body.y.acceleration;
+        that.Body.y.aTime = 0;
+    }
+    if (that.Body.y.acceleration != 0)
+    {
+        that.Body.y.aTime += that.game.deltaTime;
+        velY += that.Body.y.aTime * that.Body.y.acceleration;
+    }
+    that.Rectangle.x += velX * that.game.deltaTime;
+    that.Rectangle.y += velY * that.game.deltaTime;
+};
+
 Torch.Sprite.prototype.ToggleFixed = function()
 {
     var that = this;
@@ -116,6 +161,7 @@ Torch.Sprite.prototype.ToggleFixed = function()
 Torch.Sprite.prototype.BaseUpdate = function()
 {
     var that = this;
+    that.UpdateBody();
     that.BoundingBox = that.GetBoundingBox();
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {

@@ -1,0 +1,18 @@
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\pixlPlus.csprojResolveAssemblyReference.cache
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\pixlPlus.csproj.GenerateResource.Cache
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+c:\users\alexander.smith\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.csprojResolveAssemblyReference.cache
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.csproj.GenerateResource.Cache

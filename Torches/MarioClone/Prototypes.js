@@ -24,7 +24,7 @@ PhysicsObject.prototype.PhysicsObject = function()
             }
             if (that.BoundingBox.Intersects(item.Sprite.BoundingBox) && (that.BoundingBox.y + that.BoundingBox.height - 5) > item.Sprite.BoundingBox.y)
             {
-                //that.Rectangle.y = item.Sprite.Rectangle.y + that.Rectangle.height;
+                that.Rectangle.y = item.Sprite.Rectangle.y + that.Rectangle.height;
                 that.blockAbove = true;
             }
             if (that.BoundingBox.Intersects(item.Sprite.BoundingBox) && item.Sprite.BoundingBox.x > that.BoundingBox.x && that.BoundingBox.y > item.Sprite.Rectangle.y)

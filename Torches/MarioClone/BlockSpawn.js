@@ -20,7 +20,7 @@ var BlockSpawn =
             reset: "down",
             width: 32,
             height: 16,
-            copies: 20
+            copies: 2
         },
         {
             PositionSet: {x: 304, y: 400}

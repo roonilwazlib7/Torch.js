@@ -34,13 +34,23 @@ Player.prototype.Update = function()
         var dif = Math.abs( that.Rectangle.y - that.jumpStart )
         if (dif < that.jumpHeightMax)
         {
-            that.jumpTime += Game.deltaTime;
-            that.Rectangle.y -= ( that.initalJumpSpeed - (that.jumpTime * that.jumpTime) * that.jumpSpeed );
+
         }
         else{
+            that.Body.y.acceleration = 0;
+            that.Body.y.velocity = 0;
             that.jumping = false;
             that.jumpTime = 0;
             that.jumpStart = 0;
+        }
+        if (that.blockAbove)
+        {
+            that.Body.y.acceleration = 0;
+            that.Body.y.velocity = 0;
+            that.jumping = false;
+            that.jumpTime = 0;
+            that.jumpStart = 0;
+            Torch.Message("topper");
         }
     }
 }
@@ -51,7 +61,7 @@ Player.prototype.Move = function()
     var speed = Game.deltaTime * 0.3;
     if (Game.Keys.D.down && !that.blockInFront)
     {
-        rec.x += speed;
+        that.Body.x.velocity = 0.1;
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
@@ -60,7 +70,7 @@ Player.prototype.Move = function()
     }
     if (Game.Keys.A.down && !that.blockInBack)
     {
-        rec.x -= speed;
+        that.Body.x.velocity = -0.1;
         if (that.MoveState != "Left")
         {
             that.MoveState = "Left";
@@ -72,6 +82,8 @@ Player.prototype.Move = function()
         that.JumpWasPressed = true;
         that.jumpStart = that.Rectangle.y;
         that.jumping = true;
+        that.Body.y.velocity = -1.2;
+        that.Body.y.acceleration = 0.005;
         if (that.MoveState != "Jump")
         {
             that.MoveState = "Jump";
@@ -80,11 +92,20 @@ Player.prototype.Move = function()
     }
     if (!Game.Keys.A.down && !Game.Keys.D.down && !Game.Keys.W.down)
     {
+        that.Body.x.velocity = 0;
         if (that.MoveState != "Idle")
         {
             that.MoveState = "Idle";
             that.Bind.Texture("player");
         }
+    }
+    if (that.blockInFront || that.blockInBac)
+    {
+        if (that.blockInFront)
+        {
+            that.Body.x.velocity = -0.01;
+        }
+
     }
 
 }
