@@ -3,7 +3,6 @@ var Player = function()
     this.PLAYER = true;
     this.InitSprite(50, 350);
     Game.Add(this);
-    this.Bind.Texture("player");
     this.MoveState = "Idle"; //Idle, Right, Left
     this.JumpWasPressed = false;
     this.moveLocked = false;
@@ -16,6 +15,25 @@ var Player = function()
     this.jumpHeightMax = 100;
     this.jumpSpeed = 0.00001;
     this.initalJumpSpeed = 5;
+    this.IdlePattern = [
+        '.....11111......',
+        '....111111111...',
+        '....2223323.....',
+        '...2323332333...',
+        '...23223332333..',
+        '...2233332222...',
+        '.....3333333....',
+        '....221222......',
+        '...2221221222...',
+        '..222211112222..',
+        '..332131131233..',
+        '..333111111333..',
+        '..331111111133..',
+        '....111..111....',
+        '...222....222...',
+        '..2222....2222..'
+    ];
+    this.Bind.PixlTexture(this.IdlePattern);
 }
 Player.is(Torch.Sprite).is(PhysicsObject);
 
@@ -50,7 +68,6 @@ Player.prototype.Update = function()
             that.jumping = false;
             that.jumpTime = 0;
             that.jumpStart = 0;
-            Torch.Message("topper");
         }
     }
 }
@@ -96,7 +113,8 @@ Player.prototype.Move = function()
         if (that.MoveState != "Idle")
         {
             that.MoveState = "Idle";
-            that.Bind.Texture("player");
+            //that.Bind.Texture("player");
+            that.Bind.PixlTexture(that.IdlePattern);
         }
     }
     if (that.blockInFront || that.blockInBac)

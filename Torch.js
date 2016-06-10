@@ -275,6 +275,7 @@ Torch.Game.prototype.FatalError = function(error)
 Torch.Game.prototype.UpdateAndDrawSprites = function()
 {
     var that = this;
+    if (that.loading) return;
     var drawList = [];
     drawList = drawList.concat(that.spriteList);
     var cleanedDrawList = [];

@@ -59,6 +59,32 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight;
 }
+Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
+{
+    var that = this;
+
+    if (that.sprite.TextureSheetAnimation)
+    {
+        that.sprite.TextureSheetAnimation.Stop();
+        that.sprite.DrawParams = {};
+        that.sprite.anim = null;
+        that.sprite.TextureSheet = null;
+    }
+
+    var tex = pixl(pixlData, colorPallette);
+    var im = new Image();
+    im.src = tex.src;
+    im.onload = function()
+    {
+        var scale = 1;
+        if (Torch.Scale) scale = Torch.Scale;
+        that.sprite.Rectangle.width = im.width * scale;
+        that.sprite.Rectangle.height = im.height * scale;
+        that.sprite.DrawTexture = tex;
+    }
+
+
+}
 /*
         Torch.Sprite
 */
