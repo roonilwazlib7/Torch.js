@@ -11,6 +11,7 @@ PhysicsObject.prototype.PhysicsObject = function()
     that.blockInFront = false;
     that.blockInBack = false;
     that.blockAbove = false;
+    var shouldBeFalling = true;
     for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
     {
         var item = Spawner.SpawnScaffold[i];
@@ -34,6 +35,8 @@ PhysicsObject.prototype.PhysicsObject = function()
                             //colDir = "b";
                             that.Rectangle.y -= offset.y;
                             that.Body.y.acceleration = 0;
+                            that.Body.y.velocity = 0;
+                            shouldBeFalling = false;
                         }
 
                     }
@@ -54,4 +57,5 @@ PhysicsObject.prototype.PhysicsObject = function()
             }
         }
     }
+    if (shouldBeFalling) that.Body.y.acceleration = Game.Gravity;
 }

@@ -86,6 +86,10 @@ Player.prototype.Move = function()
             that.Bind.TextureSheet("player_left");
         }
     }
+    if (Game.Keys.W.down)
+    {
+        that.Body.y.velocity = -0.5;
+    }
     if (!Game.Keys.A.down && !Game.Keys.D.down && !Game.Keys.W.down)
     {
         that.Body.x.velocity = 0;
