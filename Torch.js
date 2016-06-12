@@ -72,13 +72,30 @@ var Torch =
             this.height = height;
         };
         var proto = Rectangle.prototype;
+        proto.GetOffset = function(rectangle)
+        {
+            var that = this;
+            var vx = ( that.x + ( that.width / 2 ) ) - ( rectangle.x + ( rectangle.width / 2 ) );
+            var vy = ( that.y + (that.height / 2 ) ) - ( rectangle.y + ( rectangle.height / 2 ) );
+            var halfWidths = (that.width / 2) + (rectangle.width / 2);
+            var halfHeights = (that.height / 2) + (rectangle.height / 2);
+
+            return {
+                x: halfWidths - Math.abs(vx),
+                y: halfHeights - Math.abs(vy),
+                vx: vx,
+                vy: vy,
+                halfWidths: halfWidths,
+                halfHeights: halfHeights
+            };
+        }
         proto.Intersects = function(rectangle)
         {
             var a = this;
             var b = rectangle;
             if (a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y)
             {
-                return true;
+                return a.GetOffset(b);
             }
             else
             {

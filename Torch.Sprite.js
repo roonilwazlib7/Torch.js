@@ -5,23 +5,41 @@ Torch.Bind = function(sprite)
 {
     this.sprite = sprite;
 }
+Torch.Bind.prototype.Reset = function()
+{
+    var that = this;
+    var sprite = that.sprite;
+
+    if (sprite.TextureSheetAnimation)
+    {
+        that.sprite.TextureSheetAnimation.Stop();
+        that.sprite.DrawParams = {};
+        that.sprite.anim = null;
+        that.sprite.TextureSheet = null;
+    }
+    if (sprite.TexturePackAnimation)
+    {
+        that.sprite.TexturePackAnimation.Stop();
+        that.sprite.DrawParams = {};
+        that.sprite.anim = null;
+        that.sprite.TexturePack = null;
+    }
+
+}
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
     var tex = that.sprite.game.Assets.Textures[textureId];
-
-    if (that.sprite.TextureSheetAnimation)
-    {
-        that.sprite.TextureSheetAnimation.Stop();
-        that.sprite.DrawParams = {};
-        //that.sprite.TextureSheetAnimation.Kill = true;
-        that.sprite.anim = null;
-        that.sprite.TextureSheet = null;
-    }
-
-    that.sprite.DrawTexture = tex;
     var scale = 1;
-    if (Torch.Scale) scale = Torch.Scale;
+
+    that.Reset();
+
+    if (Torch.Scale)
+    {
+        scale = Torch.Scale;
+    }
+    that.sprite.DrawTexture = tex;
+
     that.sprite.Rectangle.width = tex.width * scale;
     that.sprite.Rectangle.height = tex.height * scale;
 };
@@ -62,17 +80,10 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 {
     var that = this;
-
-    if (that.sprite.TextureSheetAnimation)
-    {
-        that.sprite.TextureSheetAnimation.Stop();
-        that.sprite.DrawParams = {};
-        that.sprite.anim = null;
-        that.sprite.TextureSheet = null;
-    }
-
     var tex = pixl(pixlData, colorPallette);
     var im = new Image();
+
+    that.Reset();
     im.src = tex.src;
     im.onload = function()
     {
@@ -132,12 +143,6 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.drawIndex = 0;
     this._torch_add = "Sprite";
     this._torch_uid = "";
-    this.moveToPoint = null;
-    this.moveToSpeed = null;
-    this.moveToTween = null;
-    this.elapsedMoveToTime = null;
-    this.defaultEasing = null;
-    this.debugged = false;
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
@@ -188,7 +193,38 @@ Torch.Sprite.prototype.BaseUpdate = function()
 {
     var that = this;
     that.UpdateBody();
-    that.BoundingBox = that.GetBoundingBox();
+    that.UpdateEvents();
+}
+Torch.Sprite.prototype.Update = function()
+{
+    var that = this
+    that.BaseUpdate();
+}
+Torch.Sprite.prototype.Draw = function()
+{
+    var that = this;
+    var DrawRec = new Torch.Rectangle(that.Rectangle.x, that.Rectangle.y, that.Rectangle.width, that.Rectangle.height);
+    if (that.fixed)
+    {
+        DrawRec.x -= that.game.Viewport.x;
+        DrawRec.y -= that.game.Viewport.y;
+    }
+    if (that.TexturePack)
+    {
+        that.game.Draw(that.TexturePackAnimation.GetCurrentFrame(), DrawRec, that.DrawParams);
+    }
+    else if (that.TextureSheet)
+    {
+        that.game.Draw(that.DrawTexture, DrawRec, that.TextureSheetAnimation.GetCurrentFrame());
+    }
+    else
+    {
+        that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
+    }
+}
+Torch.Sprite.prototype.UpdateEvents = function()
+{
+    var that = this;
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);
@@ -249,33 +285,6 @@ Torch.Sprite.prototype.BaseUpdate = function()
     else if (that.game.Mouse.down && !that.mouseOver)
     {
         that.clickAwayTrigger = true;
-    }
-}
-Torch.Sprite.prototype.Update = function()
-{
-    var that = this
-    that.BaseUpdate();
-}
-Torch.Sprite.prototype.Draw = function()
-{
-    var that = this;
-    var DrawRec = new Torch.Rectangle(that.Rectangle.x, that.Rectangle.y, that.Rectangle.width, that.Rectangle.height);//{x: that.Rectangle.x, y: that.Rectangle.y, width: that.Rectangle.width, height: that.Rectangle.height}//Object.Clone(that.Rectangle);
-    if (that.fixed)
-    {
-        DrawRec.x -= that.game.Viewport.x;
-        DrawRec.y -= that.game.Viewport.y;
-    }
-    if (that.TexturePack)
-    {
-        that.game.Draw(that.TexturePackAnimation.GetCurrentFrame(), DrawRec, that.DrawParams);
-    }
-    else if (that.TextureSheet)
-    {
-        that.game.Draw(that.DrawTexture, DrawRec, that.TextureSheetAnimation.GetCurrentFrame());
-    }
-    else
-    {
-        that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
     }
 }
 Torch.Sprite.prototype.Click = function(eventFunction)
