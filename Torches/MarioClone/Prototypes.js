@@ -7,11 +7,8 @@ PhysicsObject.prototype.blockAbove = false;
 PhysicsObject.prototype.PhysicsObject = function()
 {
     var that = this;
-    that.blockBelow = false;
-    that.blockInFront = false;
-    that.blockInBack = false;
-    that.blockAbove = false;
-    var shouldBeFalling = true;
+    that.onGround = false;
+    that.onRight = false;
     for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
     {
         var item = Spawner.SpawnScaffold[i];
@@ -23,12 +20,30 @@ PhysicsObject.prototype.PhysicsObject = function()
             {
                 if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
                 {
-                    if (offset.x > offset.y)
+                    if (offset.x < offset.y)
+                    {
+                        if (offset.vx > 0)
+                        {
+                            //colDir = "l";
+                            that.Rectangle.x += offset.x;
+                            that.Body.x.velocity = 0;
+                            that.onRight = true;
+                        }
+                        else
+                        {
+                            //colDir = "r";
+                            that.Rectangle.x -= offset.x;
+                            that.Body.x.velocity = 0;
+                        }
+
+                    }
+                    else if (offset.x > offset.y)
                     {
                         if (offset.vy > 0)
                         {
                             //colDir = "t";
                             that.Rectangle.y += offset.y;
+                            that.Body.y.velocity = 0;
                         }
                         else
                         {
@@ -36,26 +51,13 @@ PhysicsObject.prototype.PhysicsObject = function()
                             that.Rectangle.y -= offset.y;
                             that.Body.y.acceleration = 0;
                             that.Body.y.velocity = 0;
-                            shouldBeFalling = false;
-                        }
-
-                    }
-                    else
-                    {
-                        if (offset.vx > 0)
-                        {
-                            //colDir = "l";
-                            that.Rectangle.x += offset.x;
-                        }
-                        else
-                        {
-                            //colDir = "r";
-                            that.Rectangle.x -= offset.x;
+                            that.onGround = true;
                         }
                     }
+                    else Torch.Message("same");
                 }
             }
         }
     }
-    if (shouldBeFalling) that.Body.y.acceleration = Game.Gravity;
+    if (!that.onGround) that.Body.y.acceleration = Game.Gravity;
 }

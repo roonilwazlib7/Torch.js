@@ -68,7 +68,7 @@ var BlockSpawn =
         {
             Position: {x: 400, y: 300}
         },
-        {
+        /*{
             SpawnType: "BasicBlock",
             Strip: true,
             StoreStripPattern: "th",
@@ -78,7 +78,7 @@ var BlockSpawn =
             width: 32,
             height: 16,
             copies: 2
-        },
+        },*/
         {
             PositionSet: {x: 400, y: 400}
         },
@@ -86,7 +86,7 @@ var BlockSpawn =
             SpawnType: "BasicBlock",
             Strip: true,
             Position: {x:"right", y:"down"},
-            StripPath: "s,u;s,u;s,u",
+            StripPath: "s,u;s,u;s,u;s,u;s,u;s,u",
             width: 32,
             height: 16
         }

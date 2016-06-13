@@ -52,7 +52,7 @@ var Player = function()
         '.........2222..3..........3333..............333.........3333..........3333......',
         '......2222222333.........233333..............333.....3333333...........333....3.',
     ];
-    this.Bind.PixlTexture(this.IdlePattern);
+    this.Bind.Texture("player");
 }
 Player.is(Torch.Sprite).is(PhysicsObject);
 
@@ -68,7 +68,7 @@ Player.prototype.Move = function()
     var that = this;
     var rec = that.Rectangle;
     var speed = Game.deltaTime * 0.3;
-    if (Game.Keys.D.down)
+    if (Game.Keys.D.down && !that.onRight)
     {
         that.Body.x.velocity = 0.1;
         if (that.MoveState != "Right")
@@ -96,7 +96,7 @@ Player.prototype.Move = function()
         if (that.MoveState != "Idle")
         {
             that.MoveState = "Idle";
-            that.Bind.PixlTexture(that.IdlePattern);
+            that.Bind.Texture("player");
         }
     }
 }
