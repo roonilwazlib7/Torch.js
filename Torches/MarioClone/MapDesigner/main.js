@@ -61,11 +61,16 @@ var Cursor = {
     Init: function()
     {
         var that = this;
-        $("select").change(function(){
-            SELECTED_ITEM = $(this).val();
+        $(".dropdown").find("a").click(function(){
+            SELECTED_ITEM = $(this).html();
+            $("#drop-val").html(SELECTED_ITEM);
+            $("#prev-im").attr("src", "Images/" + SELECTED_ITEM + ".png");
         });
         $("#btn-import").click(function(){
             that.Import();
+        });
+        $("#btn-export").click(function(){
+            $("#import").val(JSON.stringify(MapData));    
         });
         $(document).bind("keypress",function(e){
             switch (e.keyCode)
@@ -90,10 +95,6 @@ var Cursor = {
                     that.Place();
                     e.preventDefault();
                 break;
-                case 32:
-                    $("#out").html(JSON.stringify(MapData));
-                    e.preventDefault();
-                    break;
             }
         });
     }
