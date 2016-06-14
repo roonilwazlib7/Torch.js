@@ -89,12 +89,12 @@ var BlockSpawn =
             StripPath: "s,u;s,u;s,u;s,u;s,u;s,u",
             width: 32,
             height: 16
-        }
-        /*{
+        },
+        {
             SpawnType: "Goomba",
             Position: {x: "right", y: "up"},
             width: 16,
             height: 16
-        }*/
+        }
     ]
 }

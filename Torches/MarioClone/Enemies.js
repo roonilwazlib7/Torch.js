@@ -1,45 +1,48 @@
+var WalkState = {};
+WalkState.Execute = function(goom)
+{
+    if (goom.onRight || goom.onLeft)
+    {
+        goom.direction *= -1;
+        goom.Body.x.velocity = goom.direction * goom.speed;
+    }
+};
+WalkState.Enter = function(goom){
+    goom.Body.x.velocity = goom.speed * goom.direction;
+};
+WalkState.Exit = function(goom){};
+
+var StateMachine = function(){}
+StateMachine.prototype.StateMachine = function()
+{
+    var that = this;
+    that.CurrentState.Execute(that);
+    if (that.GlobalState) that.GlobalState.Execute(that);
+}
+StateMachine.prototype.SwitchState = function(newState)
+{
+    var that = this;
+    if (that.CurrentState) that.CurrentState.Exit(that);
+    that.CurrentState = newState;
+    newState.Enter(that);
+}
+
 var Goomba = function(x,y)
 {
     this.InitSprite(150, 350);
     Game.Add(this);
     this.Bind.TextureSheet("goomba");
     this.ENEMY = true;
+    this.direction = 1;
+    this.speed = 0.07;
+    this.SwitchState(WalkState);
 }
-Goomba.is(Torch.Sprite).is(PhysicsObject);
+Goomba.is(Torch.Sprite).is(PhysicsObject).is(StateMachine);
 
 Goomba.prototype.Update = function()
 {
     var that = this;
     that.BaseUpdate();
     that.PhysicsObject();
-}
-Goomba.prototype.HandleActorCollision = function(player)
-{
-    var that = this;
-    var bump = 10;
-    if (player.Rectangle.x < that.Rectangle.x )player.Rectangle.x -= bump;
-    else player.Rectangle.x += bump;
-
-    if (player.PLAYER)
-    {
-        player.MoveState = "Idle";
-        player.Bind.Texture("player");
-        player.LockMovement();
-        var time = 0;
-        var startY = player.Rectangle.y;
-        player.Collision = function()
-        {
-            var dif = Math.abs( startY - player.Rectangle.y )
-            if (!player.blockAbove && dif < 30)
-            {
-                player.Rectangle.y -= player.jumpSpeed * (time * time);
-                player.Rectangle.x -= player.jumpSpeed * time * 50;
-                time += Game.deltaTime
-            }
-            else
-            {
-                player.Collision = null;
-            }
-        }
-    }
+    that.StateMachine();
 }

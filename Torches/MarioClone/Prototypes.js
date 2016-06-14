@@ -9,35 +9,40 @@ PhysicsObject.prototype.PhysicsObject = function()
     var that = this;
     that.onGround = false;
     that.onRight = false;
+    that.onLeft = false;
     for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
     {
         var item = Spawner.SpawnScaffold[i];
         var rect = that.Rectangle;
-        if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && that.PLAYER)
+        if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && (that.PLAYER || that.ENEMY) )
         {
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
             if (offset)
             {
                 if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
                 {
-                    if (offset.x < offset.y)
+                    if (offset.x < offset.y && Math.abs(offset.x) >= 0.2)
                     {
+                        that.Body.y.velocity = 0;
                         if (offset.vx > 0)
                         {
                             //colDir = "l";
                             that.Rectangle.x += offset.x;
                             that.Body.x.velocity = 0;
-                            that.onRight = true;
+                            that.onLeft = true;
+                            Torch.Message(offset.x);
                         }
                         else
                         {
                             //colDir = "r";
                             that.Rectangle.x -= offset.x;
                             that.Body.x.velocity = 0;
+                            that.onRight = true;
+                            Torch.Message(offset.x);
                         }
 
                     }
-                    else if (offset.x > offset.y)
+                    else
                     {
                         if (offset.vy > 0)
                         {
@@ -54,7 +59,6 @@ PhysicsObject.prototype.PhysicsObject = function()
                             that.onGround = true;
                         }
                     }
-                    else Torch.Message("same");
                 }
             }
         }
