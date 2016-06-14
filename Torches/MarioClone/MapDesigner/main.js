@@ -43,6 +43,7 @@ var Cursor = {
             height: Items[SELECTED_ITEM].height,
             args: Items[SELECTED_ITEM].args
         });
+        Stack.push(im);
     },
     Import: function()
     {
@@ -62,7 +63,7 @@ var Cursor = {
     Init: function()
     {
         var that = this;
-        $(".dropdown").find("a").click(function(){
+        $(".dropup").find("a").click(function(){
             SELECTED_ITEM = $(this).html();
             $("#drop-val").html(SELECTED_ITEM);
             $("#prev-im").attr("src", "Images/" + Items[SELECTED_ITEM].spawn + ".png");
@@ -97,6 +98,11 @@ var Cursor = {
                 case 13:
                     that.Place();
                     e.preventDefault();
+                break;
+                case 122:
+                    $( Stack[Stack.length - 1]).remove();
+                    Stack.pop();
+                    MapData.pop();
                 break;
             }
         });
@@ -175,3 +181,4 @@ Items = {
     }
 }
 MapData = [];
+Stack = [];
