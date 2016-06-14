@@ -95,6 +95,24 @@ var BlockSpawn =
             Position: {x: "right", y: "up"},
             width: 16,
             height: 16
+        },
+        {
+            PositionSet: {x: 600, y:100}
+        },
+        {
+            SpawnType: "Goomba",
+            Position: {x: "right", y: "up"},
+            width: 16,
+            height: 16
+        },
+        {
+            PositionSet: {x: 700, y: 150}
+        },
+        {
+            SpawnType: "Goomba",
+            Position: {x: "right", y: "up"},
+            width: 16,
+            height: 16
         }
     ]
 }

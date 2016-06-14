@@ -27,9 +27,9 @@ StateMachine.prototype.SwitchState = function(newState)
     newState.Enter(that);
 }
 
-var Goomba = function(x,y)
+var Goomba = function(position)
 {
-    this.InitSprite(150, 350);
+    this.InitSprite(position.x, position.y);
     Game.Add(this);
     this.Bind.TextureSheet("goomba");
     this.ENEMY = true;
@@ -45,4 +45,39 @@ Goomba.prototype.Update = function()
     that.BaseUpdate();
     that.PhysicsObject();
     that.StateMachine();
+}
+Goomba.prototype.EnemyCollision = function(item, offset)
+{
+    var that = this;
+    if (offset)
+    {
+        if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
+        {
+            if (offset.x < offset.y && Math.abs(offset.x) >= 0.2)
+            {
+                that.Body.y.velocity = 0;
+                if (offset.vx > 0)
+                {
+                    //colDir = "l";
+                    that.Rectangle.x += offset.x - 1;
+                    that.Body.x.velocity = 0;
+                    that.onLeft = true;
+                }
+                else
+                {
+                    //colDir = "r";
+                    that.Rectangle.x -= offset.x + 1;
+                    that.Body.x.velocity = 0;
+                    that.onRight = true;
+                }
+
+            }
+        }
+        that.direction *= -1;
+        that.Body.x.velocity = that.direction * that.speed;
+
+        item.Sprite.direction *= -1;
+        item.Sprite.Body.velocity = item.Sprite.direction * item.Sprite.speed;
+    }
+
 }
