@@ -66,6 +66,8 @@ var Cursor = {
             SELECTED_ITEM = $(this).html();
             $("#drop-val").html(SELECTED_ITEM);
             $("#prev-im").attr("src", "Images/" + Items[SELECTED_ITEM].spawn + ".png");
+            that.html.style.width = Items[SELECTED_ITEM].width;
+            that.html.style.height = Items[SELECTED_ITEM].height;
         });
         $("#btn-import").click(function(){
             that.Import();
@@ -152,6 +154,24 @@ Items = {
         image: "Images/Goomba.png",
         width: 16,
         height: 16
+    },
+    "Cloud": {
+        spawn: "Cloud",
+        image: "Images/Cloud.png",
+        width: 32,
+        height: 24
+    },
+    "Bush": {
+        spawn: "Bush",
+        image: "Images/Bush.png",
+        width: 32,
+        height: 16
+    },
+    "Hill": {
+        spawn: "Hill",
+        image: "Images/Hill.png",
+        width: 74,
+        height: 32
     }
 }
 MapData = [];

@@ -23,6 +23,7 @@ var Goomba = function(position)
     this.direction = 1;
     this.speed = -0.03;
     this.SwitchState(WalkState);
+    this.drawIndex = 10;
 }
 Goomba.is(Torch.Sprite).is(PhysicsObject).is(StateMachine);
 Goomba.prototype.OnTrash = function()

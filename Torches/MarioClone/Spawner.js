@@ -21,6 +21,18 @@ var Spawner = {
         Goomba: function(position, scaffoldObject)
         {
             return new Goomba(position, scaffoldObject);
+        },
+        Cloud: function(position)
+        {
+            return new Cloud(position);
+        },
+        Bush: function(position)
+        {
+            return new Bush(position);
+        },
+        Hill: function(position)
+        {
+            return new Hill(position);
         }
     },
     /*

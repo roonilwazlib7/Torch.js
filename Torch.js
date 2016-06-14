@@ -254,6 +254,7 @@ Torch.Game.prototype.Run = function(timestamp)
         }
         catch (e)
         {
+            console.trace();
             Torch.Error("Game Has Failed To Run!");
             Torch.Error(e);
             that.gameFailedToRun = true;

@@ -18,6 +18,7 @@ var Player = function()
     this.initalJumpSpeed = 5;
     this.Body.x.maxVelocity = 0.3;
     this.Bind.Texture("player");
+    this.drawIndex = 10;
 }
 Player.is(Torch.Sprite).is(PhysicsObject);
 
@@ -27,7 +28,7 @@ Player.prototype.Update = function()
     that.BaseUpdate();
     if (!that.moveLocked)that.Move();
     that.PhysicsObject();
-    Game.Viewport.x = -that.Rectangle.x + 100;// - 200;
+    //Game.Viewport.x = -that.Rectangle.x + 100;// - 200;
 }
 Player.prototype.Move = function()
 {
