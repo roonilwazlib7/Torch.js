@@ -117,15 +117,9 @@ var pixl = function(data, optionalColorPallette, optionalExportType)
     //export it
     exportObject = {
         src : exportImage,
-        image: new Image(),
+        image: new Image(exportImage),
         time: exportTime,
     };
-
-    exportObject.image.src = exportObject.src;
-    exportObject.image.onload = function()
-    {
-        pixl.Stack.push(exportObject);
-    }
 
     return exportObject;
 }
@@ -140,7 +134,6 @@ pixl.LowerBits = function()
 {
     pixl.higherBits = false;
 }
-pixl.Stack = [];
 
 
 
@@ -330,3 +323,44 @@ pixl.util.Mix = function(pal1, pal2)
 //TODO
 //Add some default pallettes
 pixl.pal = {};
+
+//TODO
+//Add text stuff
+//canvas.fillText is incredibly slow, faster to convert it to an image
+pixl.Text = function(text)
+{
+    this.text = text;
+    this.font = "arcade";
+    this.fontSize = 30;
+    this.color = "red";
+    this.DrawText = null;
+    this.ChangeText(text);
+};
+pixl.Text.prototype.Font = function (font)
+{
+    var that = this;
+    that.font = font;
+    that.ChangeText(that.text);
+};
+pixl.Text.prototype.ChangeText = function(text)
+{
+    var that = this;
+    var canvas,
+        renderingCanvas,
+        exportImage;
+    that.text = text;
+    canvas = document.createElement("CANVAS");
+    canvas.width = text.length * (that.fontSize / 2);
+    canvas.height = 100;
+    renderingCanvas = canvas.getContext("2d");
+    renderingCanvas.fillStyle = that.color;
+    renderingCanvas.font = that.fontSize + "px " + that.font//"30px Arial";
+    renderingCanvas.fillText(text,0,that.fontSize);
+    exportImage = new Image();
+    exportImage.src = canvas.toDataURL();
+
+
+    that.DrawText = exportImage;
+
+
+}

@@ -99,4 +99,38 @@ Player.prototype.Move = function()
             that.Bind.Texture("player");
         }
     }
-}
+};
+Player.prototype.EnemyCollision = function(item, offset)
+{
+    var that = this;
+    if (offset)
+    {
+        if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
+        {
+            if (offset.x < offset.y && Math.abs(offset.x) >= 0.2)
+            {
+
+            }
+            else
+            {
+                if (offset.vy > 0)
+                {
+                    //colDir = "t";
+                    that.Rectangle.y += offset.y;
+                    that.Body.y.velocity = 0;
+                }
+                else
+                {
+                    //colDir = "b";
+                    that.Rectangle.y -= offset.y;
+                    //that.Body.y.acceleration = 0;
+                    that.Body.y.velocity = -0.1;
+                    item.Sprite.Trash();
+                    //that.onGround = true;
+                }
+            }
+        }
+
+    }
+
+};

@@ -1,3 +1,4 @@
+//states for Goomba's AI
 var WalkState = {};
 WalkState.Execute = function(goom)
 {
@@ -11,30 +12,16 @@ WalkState.Enter = function(goom){
     goom.Body.x.velocity = goom.speed * goom.direction;
 };
 WalkState.Exit = function(goom){};
-
-var StateMachine = function(){}
-StateMachine.prototype.StateMachine = function()
-{
-    var that = this;
-    that.CurrentState.Execute(that);
-    if (that.GlobalState) that.GlobalState.Execute(that);
-}
-StateMachine.prototype.SwitchState = function(newState)
-{
-    var that = this;
-    if (that.CurrentState) that.CurrentState.Exit(that);
-    that.CurrentState = newState;
-    newState.Enter(that);
-}
-
+//Goomba class
 var Goomba = function(position)
 {
     this.InitSprite(position.x, position.y);
     Game.Add(this);
-    this.Bind.TextureSheet("goomba");
+    this.Bind.TextureSheet("goomba", {step: 800});
     this.ENEMY = true;
+    this.ENEMY_TYPE = "Goomba";
     this.direction = 1;
-    this.speed = 0.07;
+    this.speed = 0.03;
     this.SwitchState(WalkState);
 }
 Goomba.is(Torch.Sprite).is(PhysicsObject).is(StateMachine);
@@ -77,7 +64,9 @@ Goomba.prototype.EnemyCollision = function(item, offset)
         that.Body.x.velocity = that.direction * that.speed;
 
         item.Sprite.direction *= -1;
-        item.Sprite.Body.velocity = item.Sprite.direction * item.Sprite.speed;
+        item.Sprite.Body.x.velocity = item.Sprite.direction * item.Sprite.speed;
+
+        //Torch.Message(that.Body.x.velocity + "," + item.Sprite.Body.)
     }
 
 }
