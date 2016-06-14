@@ -186,7 +186,7 @@ var Spawner = {
                         spr.spawnItem = item;
                     }
                 }
-                if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+                if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
                     item.Sprite.Trash();
                     item.Sprite = null;
