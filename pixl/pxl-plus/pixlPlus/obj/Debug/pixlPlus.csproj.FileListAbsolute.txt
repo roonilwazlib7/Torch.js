@@ -16,3 +16,10 @@ C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.cspro
 C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\alexander.smith\Desktop\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.csproj.GenerateResource.Cache
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\Alex\Desktop\Dev\Projects\js\Torch.js\pixl\pxl-plus\pixlPlus\obj\Debug\pixlPlus.csproj.GenerateResource.Cache

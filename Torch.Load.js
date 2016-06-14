@@ -60,6 +60,17 @@ Torch.Load.prototype.Texture = function(path, id)
     });
     that.finish_stack++;
 };
+Torch.Load.prototype.PixlTexture = function(pattern, pallette, id)
+{
+    var that = this;
+    console.log(pattern);
+    var imSrc = pixl(pattern, pallette).src;
+    that.Stack.push({
+        _torch_asset: "texture",
+        id: id,
+        path: imSrc
+    });
+};
 Torch.Load.prototype.TexturePack = function(path, id, range, fileType)
 {
     var that = this;
@@ -132,7 +143,7 @@ Torch.Load.prototype.Load = function(finishFunction)
                     that.textures[this.refId].width = this.width;
                     that.textures[this.refId].height = this.height;
                     that.finish_stack--;
-                    Torch.Message("Loaded Image:" + this.src, "yellow");
+                    //Torch.Message("Loaded Image:" + this.src, "yellow");
                 }
             break;
             case "sound":
@@ -146,7 +157,7 @@ Torch.Load.prototype.Load = function(finishFunction)
                     that.currentTime = 0;
                     that.play();
                 }
-                Torch.Message("Loaded Sound:" + aud.src, "yellow");
+                //Torch.Message("Loaded Sound:" + aud.src, "yellow");
             break;
         }
 

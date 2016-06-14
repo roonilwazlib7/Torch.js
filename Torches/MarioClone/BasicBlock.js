@@ -9,7 +9,18 @@ var BasicBlock = function(position, scaffoldObject)
 }
 BasicBlock.is(SpawnItem);
 
-var QuestionBlock = function(position, scaffoldObject)
+var BasicBrick = function(position, scaffoldObject)
+{
+    this.InitSprite(position.x, position.y);
+    this.position = position;
+    this.scaffoldObject = scaffoldObject;
+    Game.Add(this);
+    this.Bind.Texture("BasicBrick");
+    this.BLOCK = true;
+}
+BasicBrick.is(SpawnItem);
+
+var MysteryBlock = function(position, scaffoldObject)
 {
     this.InitSprite(position.x, position.y);
     this.position = position;
@@ -18,7 +29,7 @@ var QuestionBlock = function(position, scaffoldObject)
     this.Bind.Texture("QuestionBlock");
     this.BLOCK = true;
 }
-QuestionBlock.is(SpawnItem);
+MysteryBlock.is(SpawnItem);
 
 var Pipe = function(position, scaffoldObject)
 {

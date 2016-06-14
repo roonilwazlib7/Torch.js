@@ -21,7 +21,7 @@ var Goomba = function(position)
     this.ENEMY = true;
     this.ENEMY_TYPE = "Goomba";
     this.direction = 1;
-    this.speed = 0.03;
+    this.speed = -0.03;
     this.SwitchState(WalkState);
 }
 Goomba.is(Torch.Sprite).is(PhysicsObject).is(StateMachine);

@@ -6,9 +6,13 @@ var Spawner = {
         {
             return new BasicBlock(position, scaffoldObject);
         },
-        QuestionBlock: function(position, scaffoldObject)
+        BasicBrick: function(position, scaffoldObject)
         {
-            return new QuestionBlock(position, scaffoldObject);
+            return new BasicBrick(position, scaffoldObject);
+        },
+        MysteryBlock: function(position, scaffoldObject)
+        {
+            return new MysteryBlock(position, scaffoldObject);
         },
         Pipe: function(position, scaffoldObject)
         {

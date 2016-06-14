@@ -339,7 +339,7 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     viewRect = that.Viewport.GetViewRectangle(that);
 
-    if (!rectangle.Intersects(viewRect)) return;
+    //if (!rectangle.Intersects(viewRect)) return;
     if (!params) params = {};
 
     that.canvas.save();
