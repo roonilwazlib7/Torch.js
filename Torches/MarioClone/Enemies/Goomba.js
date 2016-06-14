@@ -25,7 +25,11 @@ var Goomba = function(position)
     this.SwitchState(WalkState);
 }
 Goomba.is(Torch.Sprite).is(PhysicsObject).is(StateMachine);
-
+Goomba.prototype.OnTrash = function()
+{
+    this.spawnItem.Sprite = null;
+    Torch.Message("Trashing: " + this._torch_uid);
+};
 Goomba.prototype.Update = function()
 {
     var that = this;

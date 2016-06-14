@@ -159,18 +159,22 @@ var Spawner = {
                 var viewRect = Game.Viewport.GetViewRectangle();
                 if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
                 {
-                    item.Sprite = that.SpawnTypes[item.SpawnType](item.Position);
+                    var spr = that.SpawnTypes[item.SpawnType](item.Position);
+                    item.Sprite = spr;
                     item.spawned = true;
+                    spr.spawnItem = item;
                 }
                 else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
                     if (item.SpawnType)
                     {
-                        item.Sprite = that.SpawnTypes[item.SpawnType](item.Position);
+                        var spr = that.SpawnTypes[item.SpawnType](item.Position);
+                        item.Sprite = spr;
                         item.spawned = true;
+                        spr.spawnItem = item;
                     }
                 }
-                if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
+                if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
                 {
                     item.Sprite.Trash();
                     item.Sprite = null;

@@ -315,6 +315,10 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
             if (!sprite.game.paused)sprite.Update();
             cleanedDrawList.push(sprite);
         }
+        else
+        {
+            if (sprite.OnTrash) sprite.OnTrash();
+        }
     }
 
     that.spriteList = cleanedDrawList;

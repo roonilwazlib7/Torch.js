@@ -27,6 +27,7 @@ Player.prototype.Update = function()
     that.BaseUpdate();
     if (!that.moveLocked)that.Move();
     that.PhysicsObject();
+    Game.Viewport.x = -that.Rectangle.x + 100;// - 200;
 }
 Player.prototype.Move = function()
 {
