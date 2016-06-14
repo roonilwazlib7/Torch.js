@@ -116,14 +116,16 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
             acceleration: 0,
             lv: 0,
             la: 0,
-            aTime: 0
+            aTime: 0,
+            maxVelocity: 100
         },
         y: {
             velocity: 0,
             acceleration: 0,
             lv: 0,
             la: 0,
-            aTime: 0
+            aTime: 0,
+            maxVelocity: 100
         }
     }
     this.game = null;
@@ -179,7 +181,14 @@ Torch.Sprite.prototype.UpdateBody = function()
         that.Body.y.aTime += that.game.deltaTime;
         velY += that.Body.y.aTime * that.Body.y.acceleration;
     }
-    that.Rectangle.x += velX * that.game.deltaTime;
+    if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
+    {
+        that.Rectangle.x += velX * that.game.deltaTime;
+    }
+    else
+    {
+        that.Rectangle.x += that.Body.x.maxVelocity * that.game.deltaTime;
+    }
     that.Rectangle.y += velY * that.game.deltaTime;
 };
 

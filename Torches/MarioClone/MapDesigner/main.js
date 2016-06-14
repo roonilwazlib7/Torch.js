@@ -37,10 +37,11 @@ var Cursor = {
         im.css("top", 8 + that.y);
         $("body").append(im);
         MapData.push({
-            SpawnType: SELECTED_ITEM,
+            SpawnType: Items[SELECTED_ITEM].spawn,
             Position: {x: that.x, y: that.y},
             width: Items[SELECTED_ITEM].width,
-            height: Items[SELECTED_ITEM].height
+            height: Items[SELECTED_ITEM].height,
+            args: Items[SELECTED_ITEM].args
         });
     },
     Import: function()
@@ -64,13 +65,13 @@ var Cursor = {
         $(".dropdown").find("a").click(function(){
             SELECTED_ITEM = $(this).html();
             $("#drop-val").html(SELECTED_ITEM);
-            $("#prev-im").attr("src", "Images/" + SELECTED_ITEM + ".png");
+            $("#prev-im").attr("src", "Images/" + Items[SELECTED_ITEM].spawn + ".png");
         });
         $("#btn-import").click(function(){
             that.Import();
         });
         $("#btn-export").click(function(){
-            $("#import").val(JSON.stringify(MapData));    
+            $("#import").val(JSON.stringify(MapData));
         });
         $(document).bind("keypress",function(e){
             switch (e.keyCode)
@@ -105,26 +106,49 @@ Cursor.Init();
 SELECTED_ITEM = "BasicBlock";
 Items = {
     "BasicBlock": {
+        spawn: "BasicBlock",
         image: "Images/BasicGround.png",
         width: 32,
         height: 16
     },
     "BasicBrick": {
+        spawn: "BasicBrick",
         image: "Images/BasicBrick.png",
         width: 16,
         height: 16
     },
+    "BasicBrick(Coin)": {
+        spawn: "BasicBrick",
+        image: "Images/BasicBrick.png",
+        width: 16,
+        height: 16,
+        args: {
+            coin: true
+        }
+    },
     "MysteryBlock": {
+        spawn: "MysteryBlock",
         image: "Images/MysteryBlock.png",
         width: 16,
         height: 16
     },
+    "MysteryBlock(Coin)":{
+        spawn: "MysteryBlock",
+        image: "Images/MysteryBlock.png",
+        width: 16,
+        height: 16,
+        args: {
+            coin: true
+        }
+    },
     "Pipe": {
+        spawn: "Pipe",
         image: "Images/Pipe.png",
         width: 32,
         height: 32
     },
     "Goomba": {
+        spawn: "Goomba",
         image: "Images/Goomba.png",
         width: 16,
         height: 16

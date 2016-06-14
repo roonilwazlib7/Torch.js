@@ -16,6 +16,7 @@ var Player = function()
     this.jumpHeightMax = 100;
     this.jumpSpeed = 0.00001;
     this.initalJumpSpeed = 5;
+    this.Body.x.maxVelocity = 0.3;
     this.Bind.Texture("player");
 }
 Player.is(Torch.Sprite).is(PhysicsObject);
@@ -34,7 +35,7 @@ Player.prototype.Move = function()
     var speed = Game.deltaTime * 0.3;
     if (Game.Keys.D.down && !that.onRight)
     {
-        that.Body.x.velocity = 0.1;
+        that.Body.x.acceleration = 0.0001;
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
@@ -43,7 +44,7 @@ Player.prototype.Move = function()
     }
     if (Game.Keys.A.down)
     {
-        that.Body.x.velocity = -0.1;
+        that.Body.x.acceleration = -0.0001;
         if (that.MoveState != "Left")
         {
             that.MoveState = "Left";
@@ -56,6 +57,7 @@ Player.prototype.Move = function()
     }
     if (!Game.Keys.A.down && !Game.Keys.D.down)
     {
+        that.Body.x.acceleration = 0;
         that.Body.x.velocity = 0;
         if (that.MoveState != "Idle")
         {
