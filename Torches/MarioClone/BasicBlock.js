@@ -26,7 +26,7 @@ var MysteryBlock = function(position, scaffoldObject)
     this.position = position;
     this.scaffoldObject = scaffoldObject;
     Game.Add(this);
-    this.Bind.Texture("QuestionBlock");
+    this.Bind.TextureSheet("QuestionBlock", {step: 150, delay: 10});
     this.BLOCK = true;
 }
 MysteryBlock.is(SpawnItem);

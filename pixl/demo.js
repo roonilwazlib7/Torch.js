@@ -295,6 +295,7 @@ function examples()
 
     var _letterL = pixl(letterL);
     var _box = pixl(box);
+    pixl.pixelSize = 2;
     var _mario = pixl(mario, marioPallette);
     var _mario_jpeg = pixl(mario, marioPallette, "image/jpeg");
     var _random = pixl(random);
@@ -316,8 +317,8 @@ function examples()
     var _marioBox = pixl(marioBox);
     var _marioMario = pixl(marioMario, marioPallette);
     var _marioCloudBlend = pixl(marioCloudBlend);
-    var _elf = pixl(ElfGen, ElfPallette);
-    var _default_elf = pixl(ElfGen);
+    //var _elf = pixl(ElfGen, ElfPallette);
+    //var _default_elf = pixl(ElfGen);
 
     var makeSample = function(im, desc)
     {
@@ -345,7 +346,7 @@ function examples()
     makeSample(_marioMario, "Mario/Mario with 'pixl.util.HorizontalMerge'");
     makeSample(_marioCloudBlend, "Mario/Cloud Guy with 'pixl.util.Blend'");
     makeSample(_marioCloudBlend, "Mario/Cloud Guy with 'pixl.util.Blend'");
-    makeSample(_elf, "Fantactics Elf");
+    //makeSample(_elf, "Fantactics Elf");
     //makeSample(_explodeMario, "Mario with 'pixl.util.ExplodePixels'");
 }
 examples();

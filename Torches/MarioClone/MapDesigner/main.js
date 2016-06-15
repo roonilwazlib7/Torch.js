@@ -63,6 +63,14 @@ var Cursor = {
     Init: function()
     {
         var that = this;
+        $("#btn-resize").click(function(){
+            var width = $("#map-width").val();
+            var height = $("#map-height").val();
+            $("#main").css({
+                width: width,
+                height: height
+            });
+        });
         $(".dropup").find("a").click(function(){
             SELECTED_ITEM = $(this).html();
             $("#drop-val").html(SELECTED_ITEM);

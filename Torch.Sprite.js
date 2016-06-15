@@ -68,7 +68,11 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 
     var anim = new Torch.Animation.TextureSheet(that.sprite.TextureSheet, that.sprite.game);
     anim.sprite = that.sprite;
-
+    if (optionalParameters.delay)
+    {
+        anim.delay = optionalParameters.delay;
+        anim.delayCount = anim.delay;
+    }
     if (optionalParameters.step) anim.step = optionalParameters.step;
 
     anim.Start();

@@ -102,6 +102,8 @@ Torch.Animation.TextureSheet = function(TextureSheet, game)
 	this.TextureSheet = TextureSheet;
 	this.game = game;
 	this.elapsedTime = 0;
+	this.delay = 0;
+	this.delayCount = 0;
 	game.animations.push(this);
 };
 Torch.Animation.TextureSheet.is(Torch.Animation);
@@ -115,13 +117,19 @@ Torch.Animation.TextureSheet.prototype.Update = function()
 		that.elapsedTime = 0;
 		that.textureIndex++;
 	}
-	if (that.textureIndex >= that.maxIndex)
+	if (that.textureIndex >= that.maxIndex && that.delayCount <= 0)
 	{
 		if (!that.Kill) that.textureIndex = 0;
 		//if (that.Kill) that.textureIndex = that.TextureSheet.length - 1;
 		//that.TextureSheet = null;
 		that.hasRun = true;
 		if (that.finishCallBack) that.finishCallBack();
+		that.delayCount = that.delay;
+	}
+	else if (that.textureIndex >= that.maxIndex)
+	{
+		that.delayCount -= Game.deltaTime;
+		that.textureIndex--;
 	}
 };
 Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
