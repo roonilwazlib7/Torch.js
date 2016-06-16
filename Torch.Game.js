@@ -33,6 +33,13 @@ Torch.Game = function(canvasId, width, height, name){
     this.LagTime = 0;
     this.uidCounter = 0;
 };
+Torch.Game.prototype.PixelScale = function()
+{
+    var that = this;
+    that.canvas.webkitImageSmoothingEnabled = false;
+    that.canvas.mozImageSmoothingEnabled = false;
+    that.canvas.imageSmoothingEnabled = false; /// future
+};
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;

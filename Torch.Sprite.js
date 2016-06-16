@@ -189,7 +189,8 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     else
     {
-        that.Rectangle.x += that.Body.x.maxVelocity * that.game.deltaTime;
+        var dir = velX < 0 ? -1 : 1;
+        that.Rectangle.x += dir * that.Body.x.maxVelocity * that.game.deltaTime;
     }
     that.Rectangle.y += velY * that.game.deltaTime;
 };
