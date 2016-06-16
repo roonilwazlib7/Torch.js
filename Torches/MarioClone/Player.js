@@ -28,14 +28,13 @@ Player.prototype.Update = function()
     that.BaseUpdate();
     if (!that.moveLocked)that.Move();
     that.PhysicsObject();
-    //Game.Viewport.x = -that.Rectangle.x + 100;// - 200;
 }
 Player.prototype.Move = function()
 {
     var that = this;
     var rec = that.Rectangle;
     var speed = Game.deltaTime * 0.3;
-    if (Game.Keys.D.down && !that.onRight)
+    if ( (Game.Keys.D.down || ( Game.GamePads[0] && Game.GamePads[0].DPadRight.down) ) && !that.onRight)
     {
         that.Body.x.acceleration = 0.0001;
         if (that.MoveState != "Right")
@@ -44,7 +43,7 @@ Player.prototype.Move = function()
             that.Bind.TextureSheet("player_right");
         }
     }
-    if (Game.Keys.A.down)
+    if (Game.Keys.A.down || ( Game.GamePads[0] && Game.GamePads[0].DPadLeft.down) )
     {
         that.Body.x.acceleration = -0.0001;
         if (that.MoveState != "Left")
@@ -53,11 +52,11 @@ Player.prototype.Move = function()
             that.Bind.TextureSheet("player_left");
         }
     }
-    if (Game.Keys.W.down)
+    if (Game.Keys.W.down || ( Game.GamePads[0] && Game.GamePads[0].A.down) )
     {
         that.Body.y.velocity = -0.5;
     }
-    if (!Game.Keys.A.down && !Game.Keys.D.down)
+    if ( (!Game.Keys.A.down && !Game.GamePads[0].DPadLeft.down) && (!Game.Keys.D.down && !Game.GamePads[0].DPadRight.down) )
     {
         that.Body.x.acceleration = 0;
         that.Body.x.velocity = 0;

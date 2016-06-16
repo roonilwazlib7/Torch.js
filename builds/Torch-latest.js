@@ -499,10 +499,6 @@ var Torch =
         return Vector;
     })()
 };
-/*
-        Torch.Game
-*/
-
 Torch.Game = function(canvasId, width, height, name){
     console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
@@ -603,6 +599,16 @@ Torch.Game.prototype.RunGame = function(timestamp)
     {
         var anim = that.animations[i];
         anim.Run();
+    }
+    that.GamePads = [];
+    var pads = navigator.getGamepads();
+    for (var i = 0; i < pads.length; i++)
+    {
+        var pd = pads[i];
+        if (pd)
+        {
+            that.GamePads.push(new Torch.GamePad(pd));
+        }
     }
 
     Torch.Loop(timestamp);
@@ -710,13 +716,13 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     viewRect = that.Viewport.GetViewRectangle(that);
 
-    //if (!rectangle.Intersects(viewRect)) return;
+    if (!rectangle.Intersects(viewRect)) return;
     if (!params) params = {};
 
     that.canvas.save();
 
-    var x = rectangle.x + that.Viewport.x;
-    var y = rectangle.y + that.Viewport.y;
+    var x = Math.round(rectangle.x + that.Viewport.x);
+    var y = Math.round(rectangle.y + that.Viewport.y);
     var width = rectangle.width;
     var height = rectangle.height;
 
@@ -728,13 +734,27 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     that.canvas.rotate(rotation);
 
-    if (params.clipWidth)
+    if (params.IsTextureSheet)
     {
-        that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+        if (params.tint)
+        {
+            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel, params.clipX, params.clipY, params.clipWidth, params.clipHeight);
+        }
+        else
+        {
+            that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+        }
     }
     else
     {
-        that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
+        if (params.tint)
+        {
+            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel)
+        }
+        else
+        {
+            that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
+        }
     }
 
     that.canvas.rotate(0);
@@ -742,6 +762,43 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     that.canvas.restore();
 };
+Torch.Game.prototype.DrawTint = function(texture, x, y, width, height, spriteTint, spriteTintLevel, clipX, clipY, clipWidth, clipHeight)
+{
+    //do all transformations (rotate, translate, etc) before Drawing
+    var that = this;
+    var buffer = document.createElement("canvas");
+    var renderBuffer;
+    var tintLevel = spriteTintLevel ? spriteTintLevel : 0.5;
+
+    buffer.width = width;
+    buffer.height = height;
+
+    renderBuffer = buffer.getContext("2d");
+    renderBuffer.fillStyle = spriteTint;
+
+    if (clipX)
+    {
+        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
+        renderBuffer.globalCompositeOperation = "destination-atop";
+        renderBuffer.drawImage(texture,clipX,clipY,clipWidth,clipHeight,0,0,width,height);
+
+        that.canvas.drawImage(texture,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
+        that.canvas.globalAlpha = tintLevel;
+        that.canvas.drawImage(buffer, x, y);
+    }
+    else
+    {
+        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
+        renderBuffer.globalCompositeOperation = "destination-atop";
+        renderBuffer.drawImage(texture,0,0);
+
+        that.canvas.drawImage(texture,x,y);
+        that.canvas.globalAlpha = tintLevel;
+        that.canvas.drawImage(buffer, x, y);
+    }
+
+
+}
 Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
@@ -853,6 +910,18 @@ Torch.Game.prototype.WireUpEvents = function()
         var eventItem = $(this);
         document.body.addEventListener(eventItem[0], eventItem[1], false);
     });
+    window.addEventListener("gamepadconnected", function(e) {
+        var gp = navigator.getGamepads()[e.gamepad.index];
+        that.GamePads.push(new Torch.GamePad(gp));
+        console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+        e.gamepad.index, e.gamepad.id,
+        e.gamepad.buttons.length, e.gamepad.axes.length);
+    });
+    var pads = navigator.getGamepads();
+    for (var i = 0; i < pads.length; i++)
+    {
+        //that.GamePads.push(new Torch.GamePad(pads[i]));
+    }
 };
 Torch.Game.prototype.Keys = (function(){
     var _keys = [];
@@ -1300,14 +1369,12 @@ Torch.Bind.prototype.Reset = function()
     if (sprite.TextureSheetAnimation)
     {
         that.sprite.TextureSheetAnimation.Stop();
-        that.sprite.DrawParams = {};
         that.sprite.anim = null;
         that.sprite.TextureSheet = null;
     }
     if (sprite.TexturePackAnimation)
     {
         that.sprite.TexturePackAnimation.Stop();
-        that.sprite.DrawParams = {};
         that.sprite.anim = null;
         that.sprite.TexturePack = null;
     }
@@ -1515,7 +1582,14 @@ Torch.Sprite.prototype.Draw = function()
     }
     else if (that.TextureSheet)
     {
-        that.game.Draw(that.DrawTexture, DrawRec, that.TextureSheetAnimation.GetCurrentFrame());
+        var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
+        var frame = that.TextureSheetAnimation.GetCurrentFrame();
+        Params.clipX = frame.clipX;
+        Params.clipY = frame.clipY;
+        Params.clipWidth = frame.clipWidth;
+        Params.clipHeight = frame.clipHeight;
+        Params.IsTextureSheet = true;
+        that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
     else
     {
@@ -1733,4 +1807,52 @@ Torch.Debug = function(game)
         }
 
     };
+}
+Torch.Game.prototype.GamePads = [];
+
+Torch.GamePad = function(nativeGamePad)
+{
+    var that = this;
+    this.nativeGamePad = nativeGamePad;
+    if (that.nativeGamePad)
+    {
+        that.A = {down: that.nativeGamePad.buttons[0].pressed};
+        that.B = {down: that.nativeGamePad.buttons[1].pressed};
+        that.X = {down: that.nativeGamePad.buttons[2].pressed};
+        that.Y = {down: that.nativeGamePad.buttons[3].pressed};
+
+        that.DPadLeft = {down: that.nativeGamePad.buttons[14].pressed};
+        that.DPadRight = {down: that.nativeGamePad.buttons[15].pressed};
+        that.DPadUp = {down: that.nativeGamePad.buttons[13].pressed};
+        that.DPadDown = {down: that.nativeGamePad.buttons[12].pressed};
+
+        that.Start = {down: that.nativeGamePad.buttons[9].pressed};
+        that.Back = {down: that.nativeGamePad.buttons[8].pressed};
+
+        that.LeftTrigger = {down: that.nativeGamePad.buttons[6].pressed};
+        that.RightTrigger = {down: that.nativeGamePad.buttons[7].pressed};
+
+        that.LeftBumper = {down: that.nativeGamePad.buttons[4].pressed};
+        that.RightBumper = {down: that.nativeGamePad.buttons[5].pressed};
+
+        that.RightStick = {down: that.nativeGamePad.buttons[11].pressed};
+        that.LeftStick = {down: that.nativeGamePad.buttons[10].pressed};
+    }
+}
+Torch.GamePad.prototype.Debug = function()
+{
+    var that = this;
+    for (var i = 0; i < that.nativeGamePad.buttons.length; i++)
+    {
+        if (that.nativeGamePad.buttons[i].pressed)
+        {
+            console.log(that.nativeGamePad.buttons[i]);
+            console.log("pressed");
+        }
+    }
+}
+Torch.GamePad.prototype.A = function()
+{
+    var that = this;
+    return that.nativeGamePad.buttons[4];
 }
