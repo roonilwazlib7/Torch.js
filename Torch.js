@@ -344,13 +344,13 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     viewRect = that.Viewport.GetViewRectangle(that);
 
-    //if (!rectangle.Intersects(viewRect)) return;
+    if (!rectangle.Intersects(viewRect)) return;
     if (!params) params = {};
 
     that.canvas.save();
 
-    var x = rectangle.x + that.Viewport.x;
-    var y = rectangle.y + that.Viewport.y;
+    var x = Math.round(rectangle.x + that.Viewport.x);
+    var y = Math.round(rectangle.y + that.Viewport.y);
     var width = rectangle.width;
     var height = rectangle.height;
 
@@ -362,13 +362,27 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     that.canvas.rotate(rotation);
 
-    if (params.clipWidth)
+    if (params.IsTextureSheet)
     {
-        that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+        if (params.tint)
+        {
+            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel, params.clipX, params.clipY, params.clipWidth, params.clipHeight);
+        }
+        else
+        {
+            that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
+        }
     }
     else
     {
-        that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
+        if (params.tint)
+        {
+            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel)
+        }
+        else
+        {
+            that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
+        }
     }
 
     that.canvas.rotate(0);
@@ -376,6 +390,43 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     that.canvas.restore();
 };
+Torch.Game.prototype.DrawTint = function(texture, x, y, width, height, spriteTint, spriteTintLevel, clipX, clipY, clipWidth, clipHeight)
+{
+    //do all transformations (rotate, translate, etc) before Drawing
+    var that = this;
+    var buffer = document.createElement("canvas");
+    var renderBuffer;
+    var tintLevel = spriteTintLevel ? spriteTintLevel : 0.5;
+
+    buffer.width = width;
+    buffer.height = height;
+
+    renderBuffer = buffer.getContext("2d");
+    renderBuffer.fillStyle = spriteTint;
+
+    if (clipX)
+    {
+        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
+        renderBuffer.globalCompositeOperation = "destination-atop";
+        renderBuffer.drawImage(texture,clipX,clipY,clipWidth,clipHeight,0,0,width,height);
+
+        that.canvas.drawImage(texture,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
+        that.canvas.globalAlpha = tintLevel;
+        that.canvas.drawImage(buffer, x, y);
+    }
+    else
+    {
+        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
+        renderBuffer.globalCompositeOperation = "destination-atop";
+        renderBuffer.drawImage(texture,0,0);
+
+        that.canvas.drawImage(texture,x,y);
+        that.canvas.globalAlpha = tintLevel;
+        that.canvas.drawImage(buffer, x, y);
+    }
+
+
+}
 Torch.Game.prototype.Clear = function(color)
 {
     var that = this;

@@ -13,14 +13,12 @@ Torch.Bind.prototype.Reset = function()
     if (sprite.TextureSheetAnimation)
     {
         that.sprite.TextureSheetAnimation.Stop();
-        that.sprite.DrawParams = {};
         that.sprite.anim = null;
         that.sprite.TextureSheet = null;
     }
     if (sprite.TexturePackAnimation)
     {
         that.sprite.TexturePackAnimation.Stop();
-        that.sprite.DrawParams = {};
         that.sprite.anim = null;
         that.sprite.TexturePack = null;
     }
@@ -228,7 +226,14 @@ Torch.Sprite.prototype.Draw = function()
     }
     else if (that.TextureSheet)
     {
-        that.game.Draw(that.DrawTexture, DrawRec, that.TextureSheetAnimation.GetCurrentFrame());
+        var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
+        var frame = that.TextureSheetAnimation.GetCurrentFrame();
+        Params.clipX = frame.clipX;
+        Params.clipY = frame.clipY;
+        Params.clipWidth = frame.clipWidth;
+        Params.clipHeight = frame.clipHeight;
+        Params.IsTextureSheet = true;
+        that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
     else
     {

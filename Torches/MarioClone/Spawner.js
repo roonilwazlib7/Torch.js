@@ -175,6 +175,7 @@ var Spawner = {
                     item.Sprite = spr;
                     item.spawned = true;
                     spr.spawnItem = item;
+                    spr.DrawParams = {tint: "green"};
                 }
                 else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
