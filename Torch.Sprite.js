@@ -251,7 +251,8 @@ Torch.Sprite.prototype.UpdateEvents = function()
     }
     else if (that.fixed)
     {
-        var reComputedMouseRec = Object.Clone( that.game.Mouse.GetRectangle(that.game) );
+        var mouseRec = that.game.Mouse.GetRectangle(that.game);
+        var reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
         reComputedMouseRec.x += that.game.Viewport.x;
         reComputedMouseRec.y += that.game.Viewport.y;
         if (reComputedMouseRec.Intersects(that.Rectangle))

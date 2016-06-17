@@ -173,9 +173,11 @@ var Spawner = {
                 }
                 if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
                 {
-                    item.Sprite.Trash();
-                    item.Sprite = null;
-                    item.spawned = false;
+                    //TODO
+                    //fix this
+                    //item.Sprite.Trash();
+                    //item.Sprite = null;
+                    //item.spawned = false;
                 }
 
             }

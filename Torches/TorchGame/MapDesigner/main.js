@@ -1,6 +1,7 @@
 var Cursor = {
     x: 0,
     y: 0,
+    slideX: -500,
     dim: function(){
         return this.scale * 16;
     },
@@ -44,7 +45,7 @@ var Cursor = {
         $("body").append(im);
         MapData.push({
             SpawnType: Items[SELECTED_ITEM].spawn,
-            Position: {x: that.x, y: that.y},
+            Position: {x: that.x + that.slideX, y: that.y},
             width: Items[SELECTED_ITEM].width * that.scale,
             height: Items[SELECTED_ITEM].height * that.scale,
             args: Items[SELECTED_ITEM].args

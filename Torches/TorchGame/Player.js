@@ -11,11 +11,7 @@ var Player = function()
     this.fallTime = 0;
 
     this.jumping = false;
-    this.jumpStart = 0;
-    this.jumpTime = 0;
-    this.jumpHeightMax = 100;
-    this.jumpSpeed = 0.00001;
-    this.initalJumpSpeed = 5;
+    this.movementAcceleration = 0.001;
     this.Body.x.maxVelocity = 0.3;
     this.Bind.Texture("player");
     this.Scale();
@@ -29,6 +25,8 @@ Player.prototype.Update = function()
     that.BaseUpdate();
     if (!that.moveLocked)that.Move();
     that.PhysicsObject();
+
+    Game.Viewport.x = -that.Rectangle.x + 450;
 }
 Player.prototype.Move = function()
 {
@@ -37,7 +35,7 @@ Player.prototype.Move = function()
     var speed = Game.deltaTime * 0.3;
     if ( Game.Keys.D.down && !that.onRight)
     {
-        that.Body.x.acceleration = 0.0001;
+        that.Body.x.acceleration = that.movementAcceleration;;
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
@@ -46,7 +44,7 @@ Player.prototype.Move = function()
     }
     if (Game.Keys.A.down && !that.onLeft)
     {
-        that.Body.x.acceleration = -0.0001;
+        that.Body.x.acceleration = -that.movementAcceleration;;
         if (that.MoveState != "Left")
         {
             that.MoveState = "Left";
@@ -55,7 +53,7 @@ Player.prototype.Move = function()
     }
     if (Game.Keys.W.down)
     {
-        that.Body.y.velocity = -0.5;
+        that.Body.y.velocity = -0.6;
     }
     if ( !Game.Keys.A.down  && !Game.Keys.D.down )
     {
@@ -69,7 +67,7 @@ Player.prototype.Move = function()
         }
     }
 };
-Player.MoveWithPad = function()
+Player.prototype.MoveWithPad = function()
 {
     var that = this;
     var rec = that.Rectangle;
