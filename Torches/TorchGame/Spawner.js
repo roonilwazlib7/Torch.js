@@ -18,9 +18,9 @@ var Spawner = {
         {
             return new Tree(position, scaffoldObject);
         },
-        DayDoor: function(position, scaffoldObject)
+        DayDoor: function(position, scaffoldObject, addData)
         {
-            return new DayDoor(position, scaffoldObject);
+            return new DayDoor(position, scaffoldObject, addData);
         },
         NightDoor: function(position, scaffoldObject)
         {
@@ -41,6 +41,19 @@ var Spawner = {
         }
         builtString = builtString.substring(0, builtString.length - 1);
         return builtString;
+    },
+    UnSpawn: function()
+    {
+        var that = this;
+        for (var i = 0; i < that.SpawnScaffold.length; i++)
+        {
+            if (that.SpawnScaffold[i].Sprite)
+            {
+                that.SpawnScaffold[i].Sprite.Trash();
+            }
+        }
+        that.SpawnScaffold = [];
+        that.StoredStripPatterns = [];
     },
     Spawn: function(spawnData)
     {
@@ -86,7 +99,8 @@ var Spawner = {
 
         var bluePrint = {
             SpawnType: item.SpawnType,
-            Position: computedPosition
+            Position: computedPosition,
+            addData: item.addData
         };
         if (item.DisableDynamicSpawning) bluePrint.DisableDynamicSpawning = true;
         that.SpawnScaffold.push(bluePrint);
@@ -163,7 +177,7 @@ var Spawner = {
                 var viewRect = Game.Viewport.GetViewRectangle();
                 if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
                 {
-                    var spr = that.SpawnTypes[item.SpawnType](item.Position);
+                    var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
                     item.Sprite = spr;
                     item.spawned = true;
                     spr.spawnItem = item;
@@ -173,7 +187,7 @@ var Spawner = {
                 {
                     if (item.SpawnType)
                     {
-                        var spr = that.SpawnTypes[item.SpawnType](item.Position);
+                        var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
                         item.Sprite = spr;
                         item.spawned = true;
                         spr.spawnItem = item;

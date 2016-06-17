@@ -70,6 +70,18 @@ PhysicsObject.prototype.PhysicsObject = function()
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
             if (that.EnemyCollision) that.EnemyCollision(item, offset);
         }
+        if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
+        {
+            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
+            if (offset && Game.Keys.G.down)
+            {
+                //we're gonna want to clean this up
+                Spawner.UnSpawn();
+                Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
+                Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
+                Game.Player.Rectangle.x = item.Sprite.addData.y || 0;
+            }
+        }
     }
     if (!that.onGround) that.Body.y.acceleration = Game.Gravity;
 }

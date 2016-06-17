@@ -7,6 +7,7 @@ var Door = function()
 {
 }
 Door.is(Torch.Sprite).is(SpawnItem);
+Door.prototype.DOOR = true;
 
 var NightDoor = function(position, scaffoldObject)
 {
@@ -21,7 +22,7 @@ var NightDoor = function(position, scaffoldObject)
 }
 NightDoor.is(Door);
 
-var DayDoor = function(position, scaffoldObject)
+var DayDoor = function(position, scaffoldObject, addData)
 {
     this.InitSprite(position.x, position.y);
     this.position = position;
@@ -31,5 +32,6 @@ var DayDoor = function(position, scaffoldObject)
     this.Scale();
     this.BLOCK = false;
     this.drawIndex = 10;
+    this.addData = addData;
 }
 DayDoor.is(Door);

@@ -15,7 +15,7 @@ var Player = function()
     this.Body.x.maxVelocity = 0.3;
     this.Bind.Texture("player");
     this.Scale();
-    this.drawIndex = 10;
+    this.drawIndex = 20;
 }
 Player.is(Torch.Sprite).is(PhysicsObject).is(SpawnItem);
 
