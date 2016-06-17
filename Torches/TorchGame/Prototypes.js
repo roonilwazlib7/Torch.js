@@ -73,13 +73,21 @@ PhysicsObject.prototype.PhysicsObject = function()
         if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
         {
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (offset && Game.Keys.G.down)
+            if (offset)
             {
-                //we're gonna want to clean this up
-                Spawner.UnSpawn();
-                Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
-                Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
-                Game.Player.Rectangle.x = item.Sprite.addData.y || 0;
+                item.Sprite.SignGroup.Show();
+                if (Game.Keys.G.down)
+                {
+                    //we're gonna want to clean this up
+                    Spawner.UnSpawn();
+                    Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
+                    Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
+                    Game.Player.Rectangle.x = item.Sprite.addData.y || 0;
+                }
+            }
+            else
+            {
+                item.Sprite.SignGroup.Hide();
             }
         }
     }

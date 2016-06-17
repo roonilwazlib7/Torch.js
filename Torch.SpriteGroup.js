@@ -24,4 +24,22 @@ Torch.SpriteGroup.prototype.Shift = function(transition)
         if (transition.x) sprite.Rectangle.x = sprite.anchorX + transition.x;
         //if (transition.y) sprite.Rectangle.y = sprite.Rectangle.y + transition.y;
     }
+};
+Torch.SpriteGroup.prototype.Hide = function()
+{
+    var that = this;
+    for (var i = 0; i < that.sprites.length; i++)
+    {
+        var sprite = that.sprites[i];
+        sprite.draw = false;
+    }
+};
+Torch.SpriteGroup.prototype.Show = function()
+{
+    var that = this;
+    for (var i = 0; i < that.sprites.length; i++)
+    {
+        var sprite = that.sprites[i];
+        sprite.draw = true;
+    }
 }
