@@ -68,9 +68,9 @@ var DayTimeSystem = function()
 {
     this.NightColor = "black";
     this.DayColor = "#0052cc";
-    this.OrbParalaxOffsetConstantOrb = 5;
-    this.OrbParalaxOffsetConstantClouds = 4;
-    this.OrbParalaxOffsetConstantStars = 3;
+    this.OrbParalaxOffsetConstantOrb = 6;
+    this.OrbParalaxOffsetConstantClouds = 5;
+    this.OrbParalaxOffsetConstantStars = 4;
     this.time = 0;
     this.timeToSwitch = 10000;
     //this.DayTime = "DAY";
