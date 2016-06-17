@@ -3,12 +3,13 @@ var DayTimeSystem = function()
 {
     var that = this;
     this.NightColor = {r: 0, g: 0, b: 0};
-    this.DayColor = {r: 0, g: 10, b: 120};
+    this.DayColor = {r: 51, g: 204, b: 255};
     this.OrbParalaxOffsetConstantOrb = 6;
     this.OrbParalaxOffsetConstantClouds = 5;
     this.OrbParalaxOffsetConstantStars = 4;
     this.time = 0;
-    this.timeToSwitch = 10000;
+    this.timeToSwitch = 15000; //between day and night
+    this.timeToSwitchColors = 5000;
     //this.DayTime = "DAY";
     //this.Switch("NIGHT");
     that.DayTime = "NIGHT";
@@ -79,12 +80,12 @@ DayTimeSystem.prototype.Switch = function(switchTo)
     }
     if (switchTo == "NIGHT")
     {
-        that.FadeColorSwitch(that.DayColor, that.NightColor, 1000, "NIGHT");
+        that.FadeColorSwitch(that.DayColor, that.NightColor, that.timeToSwitchColors, "NIGHT");
         that.DayTime = "NIGHT";
     }
     else
     {
-        that.FadeColorSwitch(that.NightColor, that.DayColor, 1000, "DAY");
+        that.FadeColorSwitch(that.NightColor, that.DayColor, that.timeToSwitchColors, "DAY");
         that.DayTime = "DAY";
     }
 }
@@ -135,7 +136,7 @@ DayTimeSystem.prototype.GetStars = function()
     var stars = [];
     for (var i = 0; i < 7; i++)
     {
-        var x = ( 3500 * Math.random() );
+        var x = ( 2500 * Math.random() );
         var y = 55 * Math.random();
         stars.push(new Star(x,y));
     }
