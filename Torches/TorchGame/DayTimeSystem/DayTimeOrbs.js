@@ -2,6 +2,7 @@ function DayTimeOrbsAssets(game)
 {
     game.Load.Texture("Art/sun.png", "Sun");
     game.Load.Texture("Art/moon.png", "Moon");
+    game.Load.Texture("Art/cloud.png", "Cloud");
 }
 var DayTimeOrb = function() //sun and mooon
 {}
@@ -38,13 +39,26 @@ var Moon = function()
 }
 Moon.is(DayTimeOrb);
 
+//cloud
+var Cloud = function(x, y)
+{
+    var that = this;
+    that.InitSprite(x,y);
+    Game.Add(that);
+    that.Bind.Texture("Cloud");
+    that.Scale();
+}
+Cloud.is(Torch.Sprite).is(SpawnItem);
+
 //here for now
 var DayTimeSystem = function()
 {
-    this.OrbParalaxOffsetConstant = 5;
+    this.OrbParalaxOffsetConstantOrb = 5;
+    this.OrbParalaxOffsetConstantSkyItems = 4;
     this.time = 0;
     this.timeToSwitch = 10000;
     this.DayTime = "DAY";
+    this.GetClouds();
 }
 DayTimeSystem.prototype.Switch = function(switchTo)
 {
@@ -69,8 +83,14 @@ DayTimeSystem.prototype.Update = function()
     var that = this;
     if (that.Orb)
     {
-        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstant );
+        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstantOrb );
         that.Orb.Rectangle.x = that.Orb.anchor + offSet;
+    }
+    if (that.BackgroundSkyItems)
+    {
+        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstantSkyItems );
+        //that.Orb.Rectangle.x = that.Orb.anchor + offSet;
+        that.BackgroundSkyItems.Shift({x: offSet});
     }
     that.time += Game.deltaTime;
     if (that.time >= that.timeToSwitch)
@@ -84,4 +104,12 @@ DayTimeSystem.prototype.Update = function()
             that.Switch("DAY");
         }
     }
+};
+DayTimeSystem.prototype.GetClouds = function()
+{
+    var that = this;
+    var cloud1 = new Cloud(100, 50);
+    var cloud2 = new Cloud(650, 75);
+    var cloud3 = new Cloud(1025, 50);
+    that.BackgroundSkyItems = new Torch.SpriteGroup([cloud1, cloud2, cloud3]);
 }
