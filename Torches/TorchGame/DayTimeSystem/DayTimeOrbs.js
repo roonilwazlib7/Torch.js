@@ -5,6 +5,25 @@ function DayTimeOrbsAssets(game)
     game.Load.Texture("Art/cloud.png", "Cloud");
     game.Load.Texture("Art/star.png", "Star");
 }
+DayTimeOrbStateMachine = function(orb)
+{
+    this.orb = orb;
+    this.currentState = null;
+};
+DayTimeOrbStateMachine.prototype.Update = function()
+{
+    var that = this;
+    if (that.currentState) {
+        that.currentState.Execute(that.orb);
+    }
+}
+DayTimeOrbStateMachine.prototype.Switch = function(newState)
+{
+    var that = this
+    if (that.currentState && that.currentState.End) that.currentState.End(that.orb);
+    if (newState.Start) newState.Start(that.orb);
+    that.currentState = newState;
+}
 var DayTimeOrb = function() //sun and mooon
 {}
 DayTimeOrb.prototype.DayTimeOrb = function()
@@ -16,8 +35,43 @@ DayTimeOrb.prototype.DayTimeOrb = function()
     that.Scale();
     that.drawIndex = -2;
     that.anchor = 1000;
+    that.stateMachine = new DayTimeOrbStateMachine(that);
+    that.idleState = {
+        Execute: function(orb)
+        {
+            console.log("executing...");
+        }
+    };
+    this.transitionOutState = {
+        Execute: function(orb)
+        {
+            orb.Rectangle.y -= Game.deltaTime;
+        }
+    };
+    this.transitionInState = {
+        Execute: function(orb)
+        {
+            orb.Rectangle.y += Game.deltaTime;
+            if (orb.Rectangle.y >= 20)
+            {
+                orb.stateMachine.Switch(orb.idleState);
+            }
+        }
+    }
+    this.stateMachine.Switch(this.idleState);
 }
 DayTimeOrb.is(Torch.Sprite).is(SpawnItem);
+DayTimeOrb.prototype.Update = function()
+{
+    var that = this;
+    that.BaseUpdate();
+    that.stateMachine.Update();
+}
+DayTimeOrb.prototype.TransitionOut = function()
+{
+    var that = this;
+    that.Rectangle.y -= Game.deltaTime;
+}
 
 //sun
 var Sun = function()
@@ -62,92 +116,3 @@ var Star = function(x, y)
     that.drawIndex = 4;
 }
 Star.is(Torch.Sprite).is(SpawnItem);
-
-//here for now
-var DayTimeSystem = function()
-{
-    this.NightColor = "black";
-    this.DayColor = "#0052cc";
-    this.OrbParalaxOffsetConstantOrb = 6;
-    this.OrbParalaxOffsetConstantClouds = 5;
-    this.OrbParalaxOffsetConstantStars = 4;
-    this.time = 0;
-    this.timeToSwitch = 10000;
-    //this.DayTime = "DAY";
-    this.Switch("NIGHT");
-    this.GetClouds();
-}
-DayTimeSystem.prototype.Switch = function(switchTo)
-{
-    var that = this;
-    that.time = 0;
-    if (that.Orb) that.Orb.Trash();
-    if (switchTo == "NIGHT")
-    {
-        Game.Clear(that.NightColor);
-        that.DayTime = "NIGHT";
-        that.Orb = new Moon();
-        that.GetStars();
-    }
-    else
-    {
-        Game.Clear(that.DayColor);
-        that.DayTime = "DAY";
-        that.Orb = new Sun();
-        that.Stars.Trash();
-        that.Stars = null;
-    }
-}
-DayTimeSystem.prototype.Update = function()
-{
-    var that = this;
-    if (that.Orb)
-    {
-        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstantOrb );
-        that.Orb.Rectangle.x = that.Orb.anchor + offSet;
-    }
-    if (that.Clouds)
-    {
-        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstantSkyItems );
-        //that.Orb.Rectangle.x = that.Orb.anchor + offSet;
-        that.Clouds.Shift({x: offSet});
-    }
-    if (that.Stars)
-    {
-        var offSet = ( ( 0 - Game.Player.Rectangle.x ) / that.OrbParalaxOffsetConstantStars );
-        //that.Orb.Rectangle.x = that.Orb.anchor + offSet;
-        that.Stars.Shift({x: offSet});
-    }
-    that.time += Game.deltaTime;
-    if (that.time >= that.timeToSwitch)
-    {
-        if (that.DayTime == "DAY")
-        {
-            that.Switch("NIGHT");
-        }
-        else
-        {
-            that.Switch("DAY");
-        }
-    }
-};
-DayTimeSystem.prototype.GetClouds = function()
-{
-    var that = this;
-    var cloud1 = new Cloud(100, 50);
-    var cloud2 = new Cloud(650, 75);
-    var cloud3 = new Cloud(1025, 50);
-    that.Clouds = new Torch.SpriteGroup([cloud1, cloud2, cloud3]);
-};
-DayTimeSystem.prototype.GetStars = function()
-{
-    var that = this;
-    var stars = [];
-    for (var i = 0; i < 7; i++)
-    {
-        var x = 2500 * Math.random();
-        var y = 55 * Math.random();
-        stars.push(new Star(x,y));
-    }
-    that.Stars = new Torch.SpriteGroup(stars);
-}

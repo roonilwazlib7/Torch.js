@@ -1,1 +1,2 @@
-cmd: C:\Python27\python.exe Build.py
+cmd: C:\Python27\python.exe Build.py #windows
+#cmd: python Build.py #linux
