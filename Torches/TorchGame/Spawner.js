@@ -17,6 +17,14 @@ var Spawner = {
         Tree: function(position, scaffoldObject)
         {
             return new Tree(position, scaffoldObject);
+        },
+        DayDoor: function(position, scaffoldObject)
+        {
+            return new DayDoor(position, scaffoldObject);
+        },
+        NightDoor: function(position, scaffoldObject)
+        {
+            return new NightDoor(position, scaffoldObject);
         }
     },
     /*

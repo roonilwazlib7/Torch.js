@@ -135,7 +135,7 @@ DayTimeSystem.prototype.GetStars = function()
     var stars = [];
     for (var i = 0; i < 7; i++)
     {
-        var x = 2500 * Math.random();
+        var x = ( 3500 * Math.random() );
         var y = 55 * Math.random();
         stars.push(new Star(x,y));
     }

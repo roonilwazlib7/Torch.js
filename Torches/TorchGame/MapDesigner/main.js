@@ -158,6 +158,18 @@ Items = {
         width: 32,
         height: 32
     },
+    "NightDoor": {
+        spawn: "NightDoor",
+        image: "Images/NightDoor.png",
+        width: 16,
+        height: 16
+    },
+    "DayDoor": {
+        spawn: "DayDoor",
+        image: "Images/DayDoor.png",
+        width: 16,
+        height: 16
+    },
 }
 MapData = [];
 Stack = [];
