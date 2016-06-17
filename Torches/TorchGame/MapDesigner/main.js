@@ -36,6 +36,7 @@ var Cursor = {
         var that = this;
         var path = Items[SELECTED_ITEM].image;
         var im = $("<img src='" + path + "' />");
+        var addData = $("#addData").val();
         im.css("position", "absolute");
         im.css("left", 8 + that.x);
         im.css("top", 8 + that.y);
@@ -43,13 +44,18 @@ var Cursor = {
         im[0].height = im[0].height * that.scale;
         im[0].style.imageRendering = "pixelated";
         $("body").append(im);
-        MapData.push({
+        var mapItem = {
             SpawnType: Items[SELECTED_ITEM].spawn,
             Position: {x: that.x + that.slideX, y: that.y},
             width: Items[SELECTED_ITEM].width * that.scale,
             height: Items[SELECTED_ITEM].height * that.scale,
             args: Items[SELECTED_ITEM].args
-        });
+        }
+        if (addData != "")
+        {
+            mapItem.addData = JSON.parse(addData);
+        }
+        MapData.push(mapItem);
         Stack.push(im);
     },
     Import: function()
