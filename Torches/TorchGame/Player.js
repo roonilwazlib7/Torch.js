@@ -13,7 +13,8 @@ var Player = function()
     this.jumping = false;
     this.movementAcceleration = 0.001;
     this.Body.x.maxVelocity = 0.3;
-    this.Bind.Texture("player");
+    this.idleStep = 300;
+    this.Bind.TextureSheet("player_idle", {step:this.idleStep});
     this.Scale();
     this.drawIndex = 20;
 }
@@ -39,7 +40,8 @@ Player.prototype.Move = function()
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
-            //that.Bind.TextureSheet("player_right");
+            that.Bind.TextureSheet("player_right");
+            that.Scale();
         }
     }
     if (Game.Keys.A.down && !that.onLeft)
@@ -62,7 +64,7 @@ Player.prototype.Move = function()
         if (that.MoveState != "Idle")
         {
             that.MoveState = "Idle";
-            that.Bind.Texture("player");
+            this.Bind.TextureSheet("player_idle", {step:that.idleStep});
             that.Scale();
         }
     }
