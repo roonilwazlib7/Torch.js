@@ -7,6 +7,14 @@ Torch.SpriteGroup = function(sprites)
         that.sprites[i].anchorX = that.sprites[i].Rectangle.x;
     }
 };
+Torch.SpriteGroup.prototype.Trash = function()
+{
+    var that = this;
+    for (var i = 0; i < that.sprites.length; i++)
+    {
+        that.sprites[i].Trash();
+    }
+};
 Torch.SpriteGroup.prototype.Shift = function(transition)
 {
     var that = this;
