@@ -30,3 +30,15 @@ var Hill = function(position, scaffoldObject)
     this.BLOCK = false;
 }
 Hill.is(SpawnItem);
+
+//this is probably an easier way to do it
+var Background = function(position, scaffoldObject, addData)
+{
+    this.InitSprite(position.x, position.y);
+    this.position = position;
+    this.scaffoldObject = scaffoldObject;
+    Game.Add(this);
+    this.Bind.Texture(addData.Texture);
+    this.BLOCK = false;
+}
+Hill.is(SpawnItem);

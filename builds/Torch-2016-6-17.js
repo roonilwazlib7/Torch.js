@@ -445,6 +445,7 @@ Torch.Rectangle.prototype.GetOffset = function(rectangle)
     var halfWidths = (that.width / 2) + (rectangle.width / 2);
     var halfHeights = (that.height / 2) + (rectangle.height / 2);
     var sharedXPlane = (that.x + that.width) - (rectangle.x + rectangle.width);
+    var sharedYPlane = (that.y + that.height) - (rectangle.y + rectangle.height);
 
     return {
         x: halfWidths - Math.abs(vx),
@@ -453,7 +454,8 @@ Torch.Rectangle.prototype.GetOffset = function(rectangle)
         vy: vy,
         halfWidths: halfWidths,
         halfHeights: halfHeights,
-        sharedXPlane: sharedXPlane
+        sharedXPlane: sharedXPlane,
+        sharedYPlane: sharedYPlane
     };
 }
 Torch.Rectangle.prototype.Intersects = function(rectangle)
@@ -493,7 +495,7 @@ Torch.Vector.prototype.GetDistance = function(otherVector)
     return Math.sqrt(raw);
 }
 Torch.Game = function(canvasId, width, height, name){
-    console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
+    console.log("%c   " + Torch.version + "  ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
     this.canvasNode = document.getElementById(canvasId);
     this.canvas = this.canvasNode.getContext("2d");
@@ -1901,3 +1903,6 @@ Torch.SpriteGroup.prototype.Show = function()
         sprite.draw = true;
     }
 }
+
+
+Torch.version='Torch-2016-6-17'

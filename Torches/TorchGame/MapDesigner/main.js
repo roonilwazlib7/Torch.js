@@ -76,6 +76,13 @@ var Cursor = {
     Init: function()
     {
         var that = this;
+        var LOCKED = false;
+        $("textarea").focus(function(){
+            LOCKED = true;
+        });
+        $("textarea").blur(function(){
+            LOCKED = false;
+        });
         $("#btn-resize").click(function(){
             var width = $("#map-width").val();
             var height = $("#map-height").val();
@@ -90,12 +97,13 @@ var Cursor = {
             $("#prev-im").attr("src", "Images/" + Items[SELECTED_ITEM].spawn + ".png");
             that.html.style.width = Items[SELECTED_ITEM].width * that.scale;
             that.html.style.height = Items[SELECTED_ITEM].height * that.scale;
+
         });
         $("#btn-import").click(function(){
             that.Import();
         });
         $("#btn-export").click(function(){
-            $("#import").val(JSON.stringify(MapData));
+            $("#import").val("Items:" + JSON.stringify(MapData, null, 4));
         });
         $(document).bind("keypress",function(e){
             switch (e.keyCode)
@@ -117,6 +125,7 @@ var Cursor = {
                     e.preventDefault();
                 break;
                 case 13:
+                    if (LOCKED) return;
                     that.Place();
                     e.preventDefault();
                 break;
