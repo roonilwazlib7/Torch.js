@@ -27,7 +27,7 @@ Player.prototype.Update = function()
     if (!that.moveLocked)that.Move();
     that.PhysicsObject();
 
-    Game.Viewport.x = -that.Rectangle.x + 450;
+    if (that.Rectangle.x > -50) Game.Viewport.x = -that.Rectangle.x + 450;
 }
 Player.prototype.Move = function()
 {
