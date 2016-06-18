@@ -100,7 +100,9 @@ var Spawner = {
         var bluePrint = {
             SpawnType: item.SpawnType,
             Position: computedPosition,
-            addData: item.addData
+            addData: item.addData,
+            width: item.width,
+            height: item.height
         };
         if (item.DisableDynamicSpawning) bluePrint.DisableDynamicSpawning = true;
         that.SpawnScaffold.push(bluePrint);
@@ -183,7 +185,7 @@ var Spawner = {
                     spr.spawnItem = item;
                     spr.DrawParams = {tint: "green"};
                 }
-                else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
+                else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
                 {
                     if (item.SpawnType)
                     {
@@ -193,7 +195,7 @@ var Spawner = {
                         spr.spawnItem = item;
                     }
                 }
-                if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+                else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
                 {
                     item.Sprite.Trash();
                     item.Sprite = null;

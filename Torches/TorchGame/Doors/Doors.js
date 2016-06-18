@@ -9,6 +9,14 @@ var Door = function()
 }
 Door.is(Torch.Sprite).is(SpawnItem);
 Door.prototype.DOOR = true;
+Door.prototype.OnTrash = function()
+{
+    var that = this;
+    if (that.SignGroup)
+    {
+        that.SignGroup.Trash();
+    }
+}
 
 var Sign = function(x,y)
 {
