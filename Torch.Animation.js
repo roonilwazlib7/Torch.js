@@ -13,23 +13,6 @@ Torch.Animation.prototype.Run = function()
 	{
 		that.Stop();
 	}
-	if (that.hasRun && (that.KillOnFirstRun || that.Kill))
-	{
-		that.Stop();
-		var cleanedAnims = [];
-		for (var i = 0; i < Torch.animations.length; i++)
-		{
-			if (i == that.animationPosition)
-			{
-
-			}
-			else
-			{
-				cleanedAnims.push(Torch.Animation.animations[i]);
-			}
-		}
-		Torch.animations = cleanedAnims;
-	}
 };
 Torch.Animation.prototype.Start = function()
 {

@@ -1,10 +1,18 @@
-var PhysicsObject = function(){}
-PhysicsObject.prototype.fallTime = 0;
-PhysicsObject.prototype.blockBelow = false;
-PhysicsObject.prototype.blockInFront = false;
-PhysicsObject.prototype.blockInBack = false;
-PhysicsObject.prototype.blockAbove = false;
-PhysicsObject.prototype.BlockCollision = function(item, offset)
+//planning on integrating this into a platformer physics library
+//for torch
+
+
+Torch.Platformer = {};
+Torch.Platformer.Actor = function() //anything that has any interaction
+{
+}
+Torch.Platformer.Actor.prototype.ACTOR = true;
+Torch.Platformer.Actor.prototype.currentFriction = 1;
+Torch.Platformer.Actor.prototype.onGround = false;
+Torch.Platformer.Actor.prototype.onLeft = false;
+Torch.Platformer.Actor.prototype.onTop = false;
+Torch.Platformer.Actor.prototype.onRight = false;
+Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
 {
     var that = this;
     if (offset)
@@ -54,10 +62,11 @@ PhysicsObject.prototype.BlockCollision = function(item, offset)
         }
     }
 }
-PhysicsObject.prototype.PhysicsObject = function()
+Torch.Platformer.Actor.prototype.UpdateActor = function()
 {
     var that = this;
     that.onGround = false;
+    that.onTop = false;
     that.onRight = false;
     that.onLeft = false;
     for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
@@ -98,3 +107,8 @@ PhysicsObject.prototype.PhysicsObject = function()
     }
     if (!that.onGround) that.Body.y.acceleration = Game.Gravity;
 }
+
+
+Torch.Platformer.Block = function(){};
+Torch.Platformer.Block.prototype.BLOCK = true;
+Torch.Platformer.Block.prototype.friction = 1;

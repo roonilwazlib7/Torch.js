@@ -18,14 +18,14 @@ var Player = function()
     this.Scale();
     this.drawIndex = 20;
 }
-Player.is(Torch.Sprite).is(PhysicsObject).is(SpawnItem);
+Player.is(Torch.Sprite).is(Torch.Platformer.Actor).is(SpawnItem);
 
 Player.prototype.Update = function()
 {
     var that = this;
     that.BaseUpdate();
     if (!that.moveLocked)that.Move();
-    that.PhysicsObject();
+    that.UpdateActor();
 
     if (that.Rectangle.x > -50) Game.Viewport.x = -that.Rectangle.x + 450;
 }
