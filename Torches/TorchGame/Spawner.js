@@ -193,13 +193,11 @@ var Spawner = {
                         spr.spawnItem = item;
                     }
                 }
-                if (item.spawned && !viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: 10, height: 10} ) )
+                if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
                 {
-                    //TODO
-                    //fix this
-                    //item.Sprite.Trash();
-                    //item.Sprite = null;
-                    //item.spawned = false;
+                    item.Sprite.Trash();
+                    item.Sprite = null;
+                    item.spawned = false;
                 }
 
             }
