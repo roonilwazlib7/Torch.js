@@ -38,13 +38,17 @@ PhysicsObject.prototype.BlockCollision = function(item, offset)
                     that.Rectangle.y += offset.y;
                     that.Body.y.velocity = 0;
                 }
-                else
+                else if ( Math.abs(offset.sharedXPlane) < 59 )
                 {
                     //colDir = "b";
                     that.Rectangle.y -= offset.y;
                     that.Body.y.acceleration = 0;
                     that.Body.y.velocity = 0;
                     that.onGround = true;
+                    if (Game.Keys.N.down)
+                    {
+                        Torch.Message("f");
+                    }
                 }
             }
         }
@@ -80,6 +84,7 @@ PhysicsObject.prototype.PhysicsObject = function()
                 {
                     //we're gonna want to clean this up
                     Spawner.UnSpawn();
+                    Game.UnSpawn();
                     Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
                     Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
                     Game.Player.Rectangle.x = item.Sprite.addData.y || 0;

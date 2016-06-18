@@ -194,7 +194,6 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     that.Rectangle.y += velY * that.game.deltaTime;
 };
-
 Torch.Sprite.prototype.ToggleFixed = function()
 {
     var that = this;

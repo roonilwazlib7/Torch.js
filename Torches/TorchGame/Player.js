@@ -40,8 +40,8 @@ Player.prototype.Move = function()
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
-            that.Bind.TextureSheet("player_right");
-            that.Scale();
+            //that.Bind.TextureSheet("player_right");
+            //that.Scale();
         }
     }
     if (Game.Keys.A.down && !that.onLeft)
@@ -53,7 +53,7 @@ Player.prototype.Move = function()
             //that.Bind.TextureSheet("player_left");
         }
     }
-    if (Game.Keys.W.down)
+    if (Game.Keys.W.down && that.onGround)
     {
         that.Body.y.velocity = -0.6;
     }

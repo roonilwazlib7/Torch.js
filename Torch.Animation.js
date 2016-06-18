@@ -8,7 +8,6 @@ Torch.Animation.prototype.Run = function()
 	if (that.animating)
 	{
 		that.Update();
-		//that.boundObject.DrawTexture = that.GetCurrentFrame();
 	}
 	if (that.Kill && that.hasRun)
 	{

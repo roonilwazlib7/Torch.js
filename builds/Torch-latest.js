@@ -429,76 +429,69 @@ var Torch =
             $("#torch_message").append(message);
         }
     },
-    //classes
-    Rectangle: (function(){
-        var Rectangle = function(x, y, width, height){
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        };
-        var proto = Rectangle.prototype;
-        proto.GetOffset = function(rectangle)
-        {
-            var that = this;
-            var vx = ( that.x + ( that.width / 2 ) ) - ( rectangle.x + ( rectangle.width / 2 ) );
-            var vy = ( that.y + (that.height / 2 ) ) - ( rectangle.y + ( rectangle.height / 2 ) );
-            var halfWidths = (that.width / 2) + (rectangle.width / 2);
-            var halfHeights = (that.height / 2) + (rectangle.height / 2);
-
-            return {
-                x: halfWidths - Math.abs(vx),
-                y: halfHeights - Math.abs(vy),
-                vx: vx,
-                vy: vy,
-                halfWidths: halfWidths,
-                halfHeights: halfHeights
-            };
-        }
-        proto.Intersects = function(rectangle)
-        {
-            var a = this;
-            var b = rectangle;
-            if (a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y)
-            {
-                return a.GetOffset(b);
-            }
-            else
-            {
-                return false;
-            }
-        };
-
-        return Rectangle;
-
-    })(),
-
-    Vector: (function(){
-        var Vector = function(x,y){
-            this.x = x;
-            this.y = y;
-        }
-        var proto = Vector.prototype;
-        proto.Normalize = function(){
-            var that = this;
-            var r = (that.x * that.x) + (that.y * that.y);
-            r = Math.sqrt(r);
-
-            var x = that.x;
-            var y = that.y;
-
-            that.x = x / r;
-            that.y = y / r;
-        };
-        proto.GetDistance = function(otherVector){
-            var that = this;
-            var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
-            return Math.sqrt(raw);
-        }
-
-        return Vector;
-    })()
 };
+
+Torch.Rectangle = function(x, y, width, height){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+};
+Torch.Rectangle.prototype.GetOffset = function(rectangle)
+{
+    var that = this;
+    var vx = ( that.x + ( that.width / 2 ) ) - ( rectangle.x + ( rectangle.width / 2 ) );
+    var vy = ( that.y + (that.height / 2 ) ) - ( rectangle.y + ( rectangle.height / 2 ) );
+    var halfWidths = (that.width / 2) + (rectangle.width / 2);
+    var halfHeights = (that.height / 2) + (rectangle.height / 2);
+    var sharedXPlane = (that.x + that.width) - (rectangle.x + rectangle.width);
+
+    return {
+        x: halfWidths - Math.abs(vx),
+        y: halfHeights - Math.abs(vy),
+        vx: vx,
+        vy: vy,
+        halfWidths: halfWidths,
+        halfHeights: halfHeights,
+        sharedXPlane: sharedXPlane
+    };
+}
+Torch.Rectangle.prototype.Intersects = function(rectangle)
+{
+    var a = this;
+    var b = rectangle;
+    if (a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y)
+    {
+        return a.GetOffset(b);
+    }
+    else
+    {
+        return false;
+    }
+};
+
+Torch.Vector = function(x,y){
+    this.x = x;
+    this.y = y;
+}
+Torch.Vector.prototype.Normalize = function()
+{
+    var that = this;
+    var r = (that.x * that.x) + (that.y * that.y);
+    r = Math.sqrt(r);
+
+    var x = that.x;
+    var y = that.y;
+
+    that.x = x / r;
+    that.y = y / r;
+};
+Torch.Vector.prototype.GetDistance = function(otherVector)
+{
+    var that = this;
+    var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
+    return Math.sqrt(raw);
+}
 Torch.Game = function(canvasId, width, height, name){
     console.log("%c   Torch-v-0.0.1   ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
@@ -1229,7 +1222,6 @@ Torch.Animation.prototype.Run = function()
 	if (that.animating)
 	{
 		that.Update();
-		//that.boundObject.DrawTexture = that.GetCurrentFrame();
 	}
 	if (that.Kill && that.hasRun)
 	{
@@ -1557,7 +1549,6 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     that.Rectangle.y += velY * that.game.deltaTime;
 };
-
 Torch.Sprite.prototype.ToggleFixed = function()
 {
     var that = this;
