@@ -6,10 +6,9 @@ var StoneBlock = function(position, scaffoldObject)
     Game.Add(this);
     this.Bind.Texture("StoneBlock");
     this.Scale();
-    this.BLOCK = true;
     this.drawIndex = 10;
 }
-StoneBlock.is(SpawnItem);
+StoneBlock.is(SpawnItem).is(Torch.Platformer.Block);
 
 var GrassBlock = function(position, scaffoldObject)
 {
@@ -19,10 +18,10 @@ var GrassBlock = function(position, scaffoldObject)
     Game.Add(this);
     this.Bind.Texture("GrassBlock");
     this.Scale();
-    this.BLOCK = true;
     this.drawIndex = 10;
+    this.friction = 0.2;
 }
-GrassBlock.is(SpawnItem);
+GrassBlock.is(SpawnItem).is(Torch.Platformer.Block);
 
 var Mountain = function(position, scaffoldObject)
 {
@@ -48,3 +47,25 @@ var Tree = function(position, scaffoldObject)
     this.BLOCK = false;
 }
 Tree.is(SpawnItem);
+
+var WaterTop = function(position, scaffoldObject)
+{
+    this.InitSprite(position.x, position.y);
+    this.position = position;
+    this.scaffoldObject = scaffoldObject;
+    Game.Add(this);
+    this.Bind.Texture("WaterTop");
+    this.Scale();
+}
+WaterTop.is(SpawnItem).is(Torch.Platformer.Fluid);
+
+var WaterMain = function(position, scaffoldObject)
+{
+    this.InitSprite(position.x, position.y);
+    this.position = position;
+    this.scaffoldObject = scaffoldObject;
+    Game.Add(this);
+    this.Bind.Texture("WaterMain");
+    this.Scale();
+}
+WaterMain.is(SpawnItem).is(Torch.Platformer.Fluid);

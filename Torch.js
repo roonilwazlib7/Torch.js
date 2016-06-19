@@ -35,7 +35,7 @@ var Torch =
             that.activeGame.time = timestamp
         }
 
-        that.activeGame.deltaTime = timestamp - that.activeGame.time;
+        that.activeGame.deltaTime = Math.round(timestamp - that.activeGame.time);
 
         that.activeGame.time = timestamp;
 

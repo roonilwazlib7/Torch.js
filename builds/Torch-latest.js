@@ -401,7 +401,7 @@ var Torch =
             that.activeGame.time = timestamp
         }
 
-        that.activeGame.deltaTime = timestamp - that.activeGame.time;
+        that.activeGame.deltaTime = Math.round(timestamp - that.activeGame.time);
 
         that.activeGame.time = timestamp;
 
@@ -1937,22 +1937,31 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 else if ( Math.abs(offset.sharedXPlane) < 59 )
                 {
                     //colDir = "b";
-                    that.Rectangle.y -= offset.y;
+                    that.Rectangle.y -= (offset.y - item.Sprite.sink);
                     that.Body.y.acceleration = 0;
                     that.Body.y.velocity = 0;
                     that.onGround = true;
-                    if (Game.Keys.N.down)
-                    {
-                        Torch.Message("f");
-                    }
+                    if (!that.inFluid) that.currentFriction = item.Sprite.friction;
                 }
             }
         }
     }
 }
+Torch.Platformer.Actor.prototype.FluidCollision = function(item, offset)
+{
+    var that = this;
+    if (offset)
+    {
+        that.currentFriction = item.Sprite.friction;
+        that.Body.y.acceleration = item.Sprite.gravity;
+        that.inFluid = true;
+    }
+
+}
 Torch.Platformer.Actor.prototype.UpdateActor = function()
 {
     var that = this;
+    that.inFluid = false;
     that.onGround = false;
     that.onTop = false;
     that.onRight = false;
@@ -1961,10 +1970,15 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
     {
         var item = Spawner.SpawnScaffold[i];
         var rect = that.Rectangle;
-        if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && (that.PLAYER || that.ENEMY) )
+        if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && (that.ACTOR) )
         {
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
             that.BlockCollision(item, offset);
+        }
+        if (item.spawned && item.Sprite && item.Sprite.FLUID && that.NotSelf(item.Sprite) && (that.ACTOR) )
+        {
+            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
+            that.FluidCollision(item, offset);
         }
         if (item.spawned && item.Sprite && item.Sprite.ENEMY && that.NotSelf(item.Sprite))
         {
@@ -1993,13 +2007,20 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
             }
         }
     }
-    if (!that.onGround) that.Body.y.acceleration = Game.Gravity;
+    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Game.Gravity;
 }
 
 
 Torch.Platformer.Block = function(){};
 Torch.Platformer.Block.prototype.BLOCK = true;
 Torch.Platformer.Block.prototype.friction = 1;
+Torch.Platformer.Block.prototype.sink = 0;
+
+Torch.Platformer.Fluid = function(){};
+Torch.Platformer.Fluid.prototype.FLUID = true;
+Torch.Platformer.Fluid.prototype.friction = 0.3;
+Torch.Platformer.Fluid.prototype.gravity = 0.0001;
+Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
 
 Torch.version='Torch-2016-6-18'

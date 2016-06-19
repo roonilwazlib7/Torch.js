@@ -25,7 +25,15 @@ var Spawner = {
         NightDoor: function(position, scaffoldObject)
         {
             return new NightDoor(position, scaffoldObject);
-        }
+        },
+        WaterMain: function(position, scaffoldObject)
+        {
+            return new WaterMain(position, scaffoldObject);
+        },
+        WaterTop: function(position, scaffoldObject)
+        {
+            return new WaterTop(position, scaffoldObject);
+        },
     },
     /*
         Spawn will go through spawn items and add them to 'SpawnScaffold'.

@@ -11,12 +11,12 @@ var Player = function()
     this.fallTime = 0;
 
     this.jumping = false;
-    this.movementAcceleration = 0.001;
+    this.movementAcceleration = 0.5;
     this.Body.x.maxVelocity = 0.3;
     this.idleStep = 300;
     this.Bind.TextureSheet("player_idle", {step:this.idleStep});
     this.Scale();
-    this.drawIndex = 20;
+    this.drawIndex = 5;
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor).is(SpawnItem);
 
@@ -36,7 +36,7 @@ Player.prototype.Move = function()
     var speed = Game.deltaTime * 0.3;
     if ( Game.Keys.D.down && !that.onRight)
     {
-        that.Body.x.acceleration = that.movementAcceleration;;
+        that.Body.x.velocity = that.movementAcceleration * that.currentFriction;
         if (that.MoveState != "Right")
         {
             that.MoveState = "Right";
@@ -46,16 +46,24 @@ Player.prototype.Move = function()
     }
     if (Game.Keys.A.down && !that.onLeft)
     {
-        that.Body.x.acceleration = -that.movementAcceleration;;
+        that.Body.x.velocity = -that.movementAcceleration * that.currentFriction;
         if (that.MoveState != "Left")
         {
             that.MoveState = "Left";
             //that.Bind.TextureSheet("player_left");
         }
     }
-    if (Game.Keys.W.down && that.onGround)
+    if (Game.Keys.W.down && that.onGround && !that.inFluid )
     {
         that.Body.y.velocity = -0.6;
+    }
+    if (Game.Keys.W.down && that.inFluid)
+    {
+        that.Body.y.velocity = -0.3;
+    }
+    else if (!Game.Keys.W.down && that.inFluid)
+    {
+        that.Body.y.velocity = 0;
     }
     if ( !Game.Keys.A.down  && !Game.Keys.D.down )
     {

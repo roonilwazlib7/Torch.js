@@ -179,6 +179,18 @@ Items = {
         width: 16,
         height: 16
     },
+    "WaterMain": {
+        spawn: "WaterMain",
+        image: "Images/WaterMain.png",
+        width: 16,
+        height: 16
+    },
+    "WaterTop": {
+        spawn: "WaterTop",
+        image: "Images/WaterTop.png",
+        width: 16,
+        height: 16
+    }
 }
 MapData = [];
 Stack = [];
