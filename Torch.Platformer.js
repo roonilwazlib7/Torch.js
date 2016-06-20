@@ -3,11 +3,10 @@
 
 
 Torch.Platformer = {};
-Torch.Platformer.Actor = function() //anything that has any interaction
-{
-}
+Torch.Platformer.Actor = function(){} //anything that has any interaction
 Torch.Platformer.Actor.prototype.ACTOR = true;
 Torch.Platformer.Actor.prototype.currentFriction = 1;
+Torch.Platformer.Actor.prototype.inFluid = false;
 Torch.Platformer.Actor.prototype.onGround = false;
 Torch.Platformer.Actor.prototype.onLeft = false;
 Torch.Platformer.Actor.prototype.onTop = false;
@@ -121,7 +120,6 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
     }
     if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Game.Gravity;
 }
-
 
 Torch.Platformer.Block = function(){};
 Torch.Platformer.Block.prototype.BLOCK = true;

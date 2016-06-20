@@ -27,6 +27,7 @@ Torch.Game = function(canvasId, width, height, name){
     this.animations = new Array();
     this.DrawStack = new Array();
     this.AddStack = new Array();
+    this.GamePads = new Array();
     this.Text = new Object();
     this.Lags = 0;
     this.NoLags = 0;
@@ -106,17 +107,7 @@ Torch.Game.prototype.RunGame = function(timestamp)
         var anim = that.animations[i];
         anim.Run();
     }
-    that.GamePads = [];
-    var pads = navigator.getGamepads();
-    for (var i = 0; i < pads.length; i++)
-    {
-        var pd = pads[i];
-        if (pd)
-        {
-            that.GamePads.push(new Torch.GamePad(pd));
-        }
-    }
-
+    that.UpdateGamePads();
     Torch.Loop(timestamp);
 };
 Torch.Game.prototype.Run = function(timestamp)
@@ -196,6 +187,7 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
         }
         else
         {
+            sprite.trashed = true;
             if (sprite.OnTrash) sprite.OnTrash();
         }
     }
@@ -210,6 +202,23 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
 
     that.AddStack = new Array();
 };
+Torch.Game.prototype.UpdateGamePads = function()
+{
+    var that = this;
+    if ( navigator.getGamepads && typeof(navigator.getGamepads) )
+    {
+        that.GamePads = [];
+        var pads = navigator.getGamepads();
+        for (var i = 0; i < pads.length; i++)
+        {
+            var pd = pads[i];
+            if (pd)
+            {
+                that.GamePads.push(new Torch.GamePad(pd));
+            }
+        }
+    }
+}
 Torch.Game.prototype.Zoom = function(speed)
 {
     var that = this;
