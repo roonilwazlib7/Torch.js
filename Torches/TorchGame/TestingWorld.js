@@ -115,406 +115,10 @@ var TestingWorld = {
         startPoint: {x:-16,y:400},
         Items: [{"SpawnType":"StoneBlock","Position":{"x":-500,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-436,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-372,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-308,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-244,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-180,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-116,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-52,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-52,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-116,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-180,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-244,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-308,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-372,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-436,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-436,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-372,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-308,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-244,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-180,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-116,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-52,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-52,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-116,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-180,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-244,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-308,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-372,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":-436,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":12,"y":128},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":12,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":12,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":12,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":76,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":140,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":204,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":268,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":332,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":396,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":460,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":588,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":524,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":652,"y":448},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":652,"y":384},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":652,"y":320},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":652,"y":256},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":652,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":588,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":524,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":460,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":396,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":332,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":268,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":204,"y":192},"width":64,"height":64},{"SpawnType":"StoneBlock","Position":{"x":140,"y":192},"width":64,"height":64},{"SpawnType":"DayDoor","Position":{"x":524,"y":384},"width":64,"height":64,"addData":{"Room":"Room2"}},{"SpawnType":"GrassBlock","Position":{"x":652,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":588,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":524,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":460,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":396,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":332,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":268,"y":128},"width":64,"height":64},{"SpawnType":"GrassBlock","Position":{"x":204,"y":128},"width":64,"height":64},{"SpawnType":"Tree","Position":{"x":588,"y":0},"width":128,"height":128},{"SpawnType":"Tree","Position":{"x":460,"y":0},"width":128,"height":128},{"SpawnType":"Tree","Position":{"x":332,"y":0},"width":128,"height":128},{"SpawnType":"Tree","Position":{"x":204,"y":0},"width":128,"height":128}]
     },
-    Room1:{
+    Room1: {
         startPoint: {x:-16,y:400},
         Items:[
     {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -500,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -436,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -372,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -308,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -244,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -180,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -116,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": -52,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": 12,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": 76,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterTop",
-        "Position": {
-            "x": 140,
-            "y": 192
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 140,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 76,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 12,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -52,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -116,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -180,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -244,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -308,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -372,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -436,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -500,
-            "y": 256
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -500,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -436,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -372,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -308,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -244,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -180,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -116,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -52,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 12,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 76,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 140,
-            "y": 320
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 140,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 76,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": 12,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -52,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -116,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -180,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -244,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -308,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -372,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -436,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "WaterMain",
-        "Position": {
-            "x": -500,
-            "y": 384
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
         "SpawnType": "StoneBlock",
         "Position": {
             "x": -500,
@@ -545,42 +149,6 @@ var TestingWorld = {
         "SpawnType": "StoneBlock",
         "Position": {
             "x": -308,
-            "y": 448
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "StoneBlock",
-        "Position": {
-            "x": -244,
-            "y": 448
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "StoneBlock",
-        "Position": {
-            "x": -180,
-            "y": 448
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "StoneBlock",
-        "Position": {
-            "x": -116,
-            "y": 448
-        },
-        "width": 64,
-        "height": 64
-    },
-    {
-        "SpawnType": "StoneBlock",
-        "Position": {
-            "x": -52,
             "y": 448
         },
         "width": 64,
@@ -625,7 +193,7 @@ var TestingWorld = {
     {
         "SpawnType": "StoneBlock",
         "Position": {
-            "x": 204,
+            "x": 268,
             "y": 384
         },
         "width": 64,
@@ -634,8 +202,8 @@ var TestingWorld = {
     {
         "SpawnType": "StoneBlock",
         "Position": {
-            "x": 204,
-            "y": 192
+            "x": 332,
+            "y": 320
         },
         "width": 64,
         "height": 64
@@ -643,7 +211,7 @@ var TestingWorld = {
     {
         "SpawnType": "StoneBlock",
         "Position": {
-            "x": 204,
+            "x": 396,
             "y": 256
         },
         "width": 64,
@@ -652,8 +220,305 @@ var TestingWorld = {
     {
         "SpawnType": "StoneBlock",
         "Position": {
-            "x": 204,
+            "x": 396,
             "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 396,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 396,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 332,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 332,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 268,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "GrassBlock",
+        "Position": {
+            "x": -52,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "GrassBlock",
+        "Position": {
+            "x": -116,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "GrassBlock",
+        "Position": {
+            "x": -180,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "GrassBlock",
+        "Position": {
+            "x": -244,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 460,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 524,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 588,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 652,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 716,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 780,
+            "y": 448
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 780,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 780,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "StoneBlock",
+        "Position": {
+            "x": 780,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterTop",
+        "Position": {
+            "x": 460,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterTop",
+        "Position": {
+            "x": 524,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterTop",
+        "Position": {
+            "x": 588,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterTop",
+        "Position": {
+            "x": 652,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterTop",
+        "Position": {
+            "x": 716,
+            "y": 256
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 716,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 652,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 588,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 524,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 460,
+            "y": 320
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 460,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 524,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 588,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 652,
+            "y": 384
+        },
+        "width": 64,
+        "height": 64
+    },
+    {
+        "SpawnType": "WaterMain",
+        "Position": {
+            "x": 716,
+            "y": 384
         },
         "width": 64,
         "height": 64

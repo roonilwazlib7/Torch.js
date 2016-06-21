@@ -352,6 +352,20 @@ Torch.Sprite.prototype.NotSelf = function(otherSprite)
 {
     var that = this;
     return (otherSprite._torch_uid != that._torch_uid);
+};
+Torch.Sprite.prototype.GetDirectionVector = function(otherSprite)
+{
+    var that = this;
+    var vec = new Torch.Vector( (otherSprite.Rectangle.x - that.Rectangle.x), (otherSprite.Rectangle.y - that.Rectangle.y) );
+    vec.Normalize();
+    return vec;
+};
+Torch.Sprite.prototype.GetDistance = function(otherSprite)
+{
+    var that = this;
+    var thisVec = new Torch.Vector(that.Rectangle.x, that.Rectangle.y);
+    var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
+    return thisVec.GetDistance(otherVec);
 }
 /*
         Torch.Text

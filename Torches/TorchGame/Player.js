@@ -17,6 +17,7 @@ var Player = function()
     this.Bind.TextureSheet("player_idle", {step:this.idleStep});
     this.Scale();
     this.drawIndex = 5;
+    this.DrawParams = {};
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor).is(SpawnItem);
 

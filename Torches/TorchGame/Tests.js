@@ -7,7 +7,7 @@ function Tests()
     }
     function TestBouncyEye()
     {
-        var bouncyEye = new BouncyEye({x:50, y:50}); }
+        var bouncyEye = new BouncyEye({x:150, y:50}); }
 
     TestBouncyEye();
 }

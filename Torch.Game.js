@@ -107,6 +107,7 @@ Torch.Game.prototype.RunGame = function(timestamp)
         var anim = that.animations[i];
         anim.Run();
     }
+    Torch.Timer.Update();
     that.UpdateGamePads();
     Torch.Loop(timestamp);
 };
@@ -299,7 +300,7 @@ Torch.Game.prototype.DrawTint = function(texture, x, y, width, height, spriteTin
 
         that.canvas.drawImage(texture,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
         that.canvas.globalAlpha = tintLevel;
-        that.canvas.drawImage(buffer, x, y);
+        that.canvas.drawImage(buffer,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
     }
     else
     {

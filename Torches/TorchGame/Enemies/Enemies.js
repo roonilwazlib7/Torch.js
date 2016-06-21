@@ -38,7 +38,44 @@ var GeneralDieState = new Torch.StateMachine.State(
     //enter
     function(en)
     {
-
+        en.draw = false;
+        var blood = [];
+        for (var i = 0; i < 50; i++)
+        {
+            var b = new Torch.Sprite(en.Rectangle.x, en.Rectangle.y);
+            Game.Add(b);
+            b.Bind.Texture("Blood");
+            blood.push(b);
+            var xDir = Math.random() > 0.5 ? 1 : -1;
+            b.Body.x.velocity = xDir * ( Math.random() * 0.3 - 0.3);
+            b.Body.y.velocity = 0.2 + Math.random() * 0.3;
+            b.drawIndex = 100;
+            b.Rectangle.width *= 4;
+            b.Rectangle.height *= 4;
+            b.PARTICLE = true;
+            b.Update = function()
+            {
+                var that = this;
+                that.BaseUpdate();
+                for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
+                {
+                    var item = Spawner.SpawnScaffold[i];
+                    if (item.spawned && item.Sprite && item.Sprite.BLOCK)
+                    {
+                        var offset = that.Rectangle.Intersects( item.Sprite.Rectangle );
+                        if (offset)
+                        {
+                            that.Body.x.velocity = 0;
+                            that.Body.y.velocity = 0;
+                        }
+                    }
+                }
+            }
+        }
+        var sg = new Torch.SpriteGroup(blood);
+        Torch.Timer.SetFutureEvent(5000, function(){
+            sg.Trash();
+        });
     },
     //end
     function(en)
@@ -49,22 +86,46 @@ var GeneralDieState = new Torch.StateMachine.State(
 function EnemyAssets(game)
 {
     game.Load.Texture("Art/eye.png", "BouncyEye");
+    game.Load.Texture("Art/blood.png", "Blood");
 }
 var BouncyEyeIdleState = new Torch.StateMachine.State(
     function(be)
     {
-        if (be.onGround) be.Body.y.velocity = be.jumpSpeed;
+
     }, null, null
 );
+var BouncyEyeChaseState = new Torch.StateMachine.State(
+    function(be)
+    {
+        var directionToPlayer = be.GetDirectionVector(Game.Player);
+        be.Body.x.velocity = directionToPlayer.x * 0.1;
+        if (Game.Keys.K.down) {
+            be.StateMachine.Switch(GeneralDieState);
+        }
+    }, null, null
+)
 
 var BouncyEye = function(position)
 {
     var that = this;
     that.InitEnemy(position, "BouncyEye");
-    that.StateMachine.Switch(BouncyEyeIdleState);
+    that.StateMachine.Switch(BouncyEyeChaseState);
     that.jumpSpeed = -0.55;
+
 };
 BouncyEye.is(Enemy);
+BouncyEye.prototype.Update = function()
+{
+    var that = this;
+    that.UpdateEnemy();
+    if (that.onGround) that.Body.y.velocity = that.jumpSpeed;
+    var offset = that.Rectangle.Intersects( Game.Player.Rectangle )
+    if (offset)
+    {
+        //Game.Player.DrawParams.tint = "red";
+    }
+    //else Game.Player.tint = null;
+}
 
 var Troll = function(position)
 {
