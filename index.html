@@ -1,7 +1,25 @@
 <html>
     <head>
+
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <style type="text/css">
+            .btn-default
+            {
+                color: #201e1e;
+                background-color: white;
+                border-radius: 0;
+                font-weight: bold;
+            }
+            .btn-default:hover
+            {
+                background-color: #201e1e;
+                color: white;
+                border-radius: 0;
+                font-weight: bold;
+            }
+        </style>
 
 <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -15,18 +33,35 @@
     Just redirect it
     -->
     <div class="row">
+        <div class="col-sm-2"></div>
         <div class="col-sm-8">
-            <img src = "logo.png" class="img img-responsive img-circle"/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <img src = "images/fire/flame_1/flame_a_4.png" class="img img-responsive img-circle" style="margin: 0px auto"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 style="color:white;text-align:center">Torch.js</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button class="btn btn-default btn-a" style="width:100%" href = "Torches/TorchGame/index.html">Play The Game</button>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-default btn-a" style="width:100%" href = "builds/Torch-latest.js">Get The Code</button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <button class="btn btn-default">Play The Game</button>
-        </div>
-        <div class="col-sm-6">
-            <button class="btn btn-default">Get The Code</button>
-        </div>
-    </div>
+    <script>
+
+        $(".btn-a").click(function(){
+            window.location = $(this).attr("href");
+        });
+
+    </script>
 
 </body>
 </html>
