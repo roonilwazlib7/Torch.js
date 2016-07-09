@@ -173,7 +173,7 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
     for (var j = 0; j < drawList.length; j++)
     {
         var sprite = drawList[j];
-        if (sprite.draw && !sprite.trash)
+        if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE)
         {
             sprite.Draw();
         }

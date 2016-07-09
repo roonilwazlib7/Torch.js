@@ -166,11 +166,13 @@ Torch.Load.prototype.Load = function(finishFunction)
     _l = setInterval(function()
     {
         TIME_TO_LOAD++
-        if (that.finish_stack <= 0)
+        if (that.finish_stack <= 0 && TIME_TO_LOAD > 10)
         {
             finishFunction();
             clearInterval(_l);
             Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
+            that.game.canvasNode.style.display = "block";
+            document.getElementById("torch-load").style.display = "none";
         }
     }, 1000/60);
 }

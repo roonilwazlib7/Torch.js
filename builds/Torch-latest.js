@@ -669,7 +669,7 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
     for (var j = 0; j < drawList.length; j++)
     {
         var sprite = drawList[j];
-        if (sprite.draw && !sprite.trash)
+        if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE)
         {
             sprite.Draw();
         }
@@ -1216,11 +1216,13 @@ Torch.Load.prototype.Load = function(finishFunction)
     _l = setInterval(function()
     {
         TIME_TO_LOAD++
-        if (that.finish_stack <= 0)
+        if (that.finish_stack <= 0 && TIME_TO_LOAD > 10)
         {
             finishFunction();
             clearInterval(_l);
             Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
+            that.game.canvasNode.style.display = "block";
+            document.getElementById("torch-load").style.display = "none";
         }
     }, 1000/60);
 }
@@ -1532,6 +1534,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
+    Game.Add(this);
 }
 Torch.Sprite.prototype.GetBoundingBox = function()
 {
@@ -1806,6 +1809,10 @@ Torch.Text.prototype.GetBitmap = function()
     image.src = cv.toDataURL();
     return {image: image};
 }
+
+Torch.GhostSprite = function(){};
+Torch.GhostSprite.is(Torch.Sprite);
+Torch.GhostSprite.prototype.GHOST_SPRITE = true;
 Torch.StateMachine = function(obj)
 {
     this.currentState = null;
@@ -1829,6 +1836,78 @@ Torch.StateMachine.State = function(execute, start, end)
     this.Execute = execute;
     this.Start = start;
     this.End = end;
+}
+Torch.ParticleEmitter = function(x, y, particleDecayTime, step)
+{
+    this.InitSprite(x,y);
+    this.PARTICLE_DECAY_TIME = particleDecayTime;
+    this.STEP = step;
+    this.elapsedTime = 0;
+
+    this.OnEmit = null;
+}
+Torch.ParticleEmitter.is(Torch.GhostSprite)
+Torch.ParticleEmitter.prototype.Update = function()
+{
+    var that = this;
+    that.BaseUpdate();
+    that.elapsedTime += Game.deltaTime;
+    if (that.elapsedTime >= that.STEP)
+    {
+        that.Emit();
+        that.elapsedTime = 0;
+    }
+}
+Torch.ParticleEmitter.prototype.Emit = function()
+{
+    var that = this;
+    that.OnEmit(that);
+}
+Torch.ParticleEmitter.prototype.CreateBurstEmitter = function(Particle, density, cx, cy, minX, minY)
+{
+    var that = this;
+    var onEmit = function(emitter)
+    {
+        var spriteGroup,
+            particle;
+        var particles = [];
+        for (var i = 0; i < density; i++)
+        {
+            particle = new Particle(that.Rectangle.x, that.Rectangle.y);
+            particles.push(particle);
+            var xNeg = Math.random() > 0.5 ? 1 : -1;
+            var yNeg = Math.random() > 0.5 ? 1 : -1;
+            particle.Body.x.velocity = (minX * xNeg) + ( Math.random() * ( xNeg ) * cx );
+            particle.Body.y.velocity = (minY * yNeg) + ( Math.random() * ( yNeg ) * cy );
+        }
+        spriteGroup = new Torch.SpriteGroup(particles);
+        Torch.Timer.SetFutureEvent(that.PARTICLE_DECAY_TIME, function()
+        {
+            spriteGroup.Trash();
+        });
+    };
+    that.OnEmit = onEmit;
+}
+Torch.ParticleEmitter.prototype.CreateSlashEmitter = function(Particle, density, minY, vy, point1, point2)
+{
+    var that = this;
+    var onEmit = function(emitter)
+    {
+        var spriteGroup,
+            particle;
+        var particles = [];
+        for (var i = 0; i < density; i++)
+        {
+            particle = new Particle(that.Rectangle.x, that.Rectangle.y);
+            particle.Body.y.velocity = minY + (Math.random() * vy)
+        }
+        spriteGroup = new Torch.SpriteGroup(particles);
+        Torch.Timer.SetFutureEvent(that.PARTICLE_DECAY_TIME, function()
+        {
+            spriteGroup.Trash();
+        });
+    };
+    that.OnEmit = onEmit;
 }
 Torch.Debug = function(game)
 {
@@ -2118,4 +2197,4 @@ Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
 
-Torch.version='Torch-2016-6-25'
+Torch.version='Torch-2016-7-8'

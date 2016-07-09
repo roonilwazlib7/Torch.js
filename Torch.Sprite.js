@@ -150,6 +150,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
+    Game.Add(this);
 }
 Torch.Sprite.prototype.GetBoundingBox = function()
 {
@@ -424,3 +425,7 @@ Torch.Text.prototype.GetBitmap = function()
     image.src = cv.toDataURL();
     return {image: image};
 }
+
+Torch.GhostSprite = function(){};
+Torch.GhostSprite.is(Torch.Sprite);
+Torch.GhostSprite.prototype.GHOST_SPRITE = true;
