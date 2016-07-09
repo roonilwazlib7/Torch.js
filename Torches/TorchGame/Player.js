@@ -1,9 +1,16 @@
-var Player = function()
+var Player = function(game)
 {
     this.PLAYER = true;
     this.InitSprite(0, 55);
-    Game.Add(this);
-    this.Body.y.acceleration = Game.Gravity;
+    this.idleStep = 300;
+    if (game)
+    {
+        Game.Add(this);
+        this.Bind.TextureSheet("player_idle", {step:this.idleStep});
+        this.Scale();
+        this.Body.y.acceleration = game.Gravity;
+        this.ManualSpawn();
+    }
     this.MoveState = "Idle"; //Idle, Right, Left
     this.JumpWasPressed = false;
     this.moveLocked = false;
@@ -13,9 +20,7 @@ var Player = function()
     this.jumping = false;
     this.movementAcceleration = 0.5;
     this.Body.x.maxVelocity = 0.3;
-    this.idleStep = 300;
-    this.Bind.TextureSheet("player_idle", {step:this.idleStep});
-    this.Scale();
+
     this.drawIndex = 5;
     this.DrawParams = {};
 }
@@ -29,6 +34,7 @@ Player.prototype.Update = function()
     that.UpdateActor();
 
     if (that.Rectangle.x > -50) Game.Viewport.x = -that.Rectangle.x + 450;
+    Game.HealthBar.Rectangle.width = (that.Health / 100) * Game.HealthBar.maxWidth;
 }
 Player.prototype.Move = function()
 {
@@ -116,37 +122,7 @@ Player.prototype.MoveWithPad = function()
         }
     }
 }
-Player.prototype.EnemyCollision = function(item, offset)
+Player.prototype.EnemyCollision = function(en, offset)
 {
-    var that = this;
-    if (offset)
-    {
-        if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
-        {
-            if (offset.x < offset.y && Math.abs(offset.x) >= 0.2)
-            {
-
-            }
-            else
-            {
-                if (offset.vy > 0)
-                {
-                    //colDir = "t";
-                    that.Rectangle.y += offset.y;
-                    that.Body.y.velocity = 0;
-                }
-                else
-                {
-                    //colDir = "b";
-                    that.Rectangle.y -= offset.y;
-                    //that.Body.y.acceleration = 0;
-                    that.Body.y.velocity = -0.1;
-                    item.Sprite.Trash();
-                    //that.onGround = true;
-                }
-            }
-        }
-
-    }
-
+    en.PlayerCollision(this, offset);
 };

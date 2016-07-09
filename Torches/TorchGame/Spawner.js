@@ -185,6 +185,7 @@ var Spawner = {
             {
                 var item = that.SpawnScaffold[i];
                 var viewRect = Game.Viewport.GetViewRectangle();
+                if (item.Manual) continue;
                 if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
                 {
                     var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);

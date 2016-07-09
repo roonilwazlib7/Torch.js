@@ -2079,7 +2079,7 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
         if (item.spawned && item.Sprite && item.Sprite.ENEMY && that.NotSelf(item.Sprite))
         {
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (that.EnemyCollision && offset) that.EnemyCollision(item.Sprite, offset);
+            if (that.EnemyCollision) that.EnemyCollision(item.Sprite, offset);
         }
         if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
         {
@@ -2118,4 +2118,4 @@ Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
 
-Torch.version='Torch-2016-6-25'
+Torch.version='Torch-2016-6-24'

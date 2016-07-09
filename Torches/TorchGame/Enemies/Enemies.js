@@ -1,14 +1,25 @@
 var Enemy = function(){};
 Enemy.is(Torch.Sprite).is(Torch.Platformer.Actor).is(SpawnItem);
 Enemy.prototype.ENEMY = true;
-Enemy.prototype.InitEnemy = function(position, startTexture)
+Enemy.prototype.TouchDamage = 10;
+Enemy.prototype.PlayerCollision = function(player){
+    var that = this;
+    player.Hit(that.TouchDamage);
+    //that.Body.x.velocity *= -1;
+    //that.Body.y.velocity *= -1;
+}
+Enemy.prototype.InitEnemy = function(position, startTexture, game)
 {
     var that = this;
     that.InitSprite(position.x, position.y);
-    Game.Add(that);
-    that.Bind.Texture(startTexture);
+    if (game)
+    {
+        Game.Add(that);
+        that.Bind.Texture(startTexture);
+        that.Scale();
+        //this.Body.y.acceleration = game.Gravity;
+    }
     that.StateMachine = new Torch.StateMachine(that);
-    that.Scale();
 };
 Enemy.prototype.Die = function()
 {
@@ -39,6 +50,7 @@ var GeneralDieState = new Torch.StateMachine.State(
     function(en)
     {
         en.draw = false;
+        en.Trash();
         var blood = [];
         for (var i = 0; i < 50; i++)
         {
@@ -97,8 +109,20 @@ var BouncyEyeIdleState = new Torch.StateMachine.State(
 var BouncyEyeChaseState = new Torch.StateMachine.State(
     function(be)
     {
-        var directionToPlayer = be.GetDirectionVector(Game.Player);
-        be.Body.x.velocity = directionToPlayer.x * 0.1;
+        var distaceToPlayer = be.GetDistance(Game.Player);
+        if (distaceToPlayer < 400)
+        {
+            var directionToPlayer = be.GetDirectionVector(Game.Player);
+            be.Body.x.velocity = directionToPlayer.x * 0.1;
+        }
+        else
+        {
+            be.Body.x.velocity = 0;
+        }
+        if (be.onRight)
+        {
+            be.Body.x.velocity *= -1;
+        }
         if (Game.Keys.K.down) {
             be.StateMachine.Switch(GeneralDieState);
         }
@@ -108,9 +132,9 @@ var BouncyEyeChaseState = new Torch.StateMachine.State(
 var BouncyEye = function(position)
 {
     var that = this;
-    that.InitEnemy(position, "BouncyEye");
+    that.InitEnemy(position, "BouncyEye", Game);
     that.StateMachine.Switch(BouncyEyeChaseState);
-    that.jumpSpeed = -0.55;
+    that.jumpSpeed = -0.45;
 
 };
 BouncyEye.is(Enemy);

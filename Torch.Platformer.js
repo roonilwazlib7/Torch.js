@@ -5,12 +5,29 @@
 Torch.Platformer = {};
 Torch.Platformer.Actor = function(){} //anything that has any interaction
 Torch.Platformer.Actor.prototype.ACTOR = true;
+Torch.Platformer.Actor.prototype.Health = 100;
 Torch.Platformer.Actor.prototype.currentFriction = 1;
 Torch.Platformer.Actor.prototype.inFluid = false;
 Torch.Platformer.Actor.prototype.onGround = false;
 Torch.Platformer.Actor.prototype.onLeft = false;
 Torch.Platformer.Actor.prototype.onTop = false;
 Torch.Platformer.Actor.prototype.onRight = false;
+Torch.Platformer.Actor.prototype.Hit = function(amount)
+{
+    var that = this;
+    if (amount) that.Health -= amount;
+    else that.Health -= 1;
+
+    if (that.Health <= 0)
+    {
+        that.Die();
+    }
+}
+Torch.Platformer.Actor.prototype.Die = function()
+{
+    var that = this;
+    that.isDead = true;
+}
 Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
 {
     var that = this;
@@ -94,7 +111,7 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
         if (item.spawned && item.Sprite && item.Sprite.ENEMY && that.NotSelf(item.Sprite))
         {
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (that.EnemyCollision) that.EnemyCollision(item, offset);
+            if (that.EnemyCollision && offset) that.EnemyCollision(item.Sprite, offset);
         }
         if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
         {
