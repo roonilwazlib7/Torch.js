@@ -1,0 +1,62 @@
+-----------------------------------------------
+    Info for Torch.Sprite
+----------------------------------------------
+
+Quick Definition:
+    Anything that has visual and behavioral
+    characteristics within Torch, i.e. anything
+    that really does something
+
+Basic Usage:
+    var mySprite = new Torch.Sprite(x,y); //create a sprite with an inital
+                                          //x and y position
+    mySprite.Bind.Texture("texture_id");  //bind the sprite to a texture
+    mySprite.Bind.TextureSheet("texture_sheet_id") //or a texture sheet
+    mySprite.Bind.TexturePack("texture_pack_id") //or a texture pack
+
+    //or make your own class that inherits from Torch.sprite
+
+    var mySpriteClass = function(x,y)
+    {
+        this.InitSprite(x,y) //when inherting from Torch.Sprite, you
+                             //must call InitSprite with a valid x and
+                             //y argument before you use any Torch.Sprite
+                             //functionality, i.e Torch.Bind, etc.
+                             //once this function is called, the Object
+                             //will be added to the game that Torch is
+                             //running
+        this.Bind.Texture("texture_id") //now we can bind a texture
+    }
+    mySpiritClass.is(Torch.Sprite) //inherit Torch.Sprite
+                                   //see the Inheritance.info file for info on 'is'
+
+Usable Members:
+
+    Bind: OBJECT,
+        An object that has three methods for binding visual
+        elements to sprites.
+
+        Usable Methods:
+            Texture():
+                Binds a static texture to the sprite
+
+                Args:
+                    textureId: STRING, the id of the texture
+            TextureSheet():
+                Binds a texture sheet to the sprite that will animate
+
+                Args:
+                    textureSheetId: STRING, the id of the textureSheet
+                    optionalParameters: OPTIONAL, OBJECT, see Torch.Animation.info
+            TexturePack():
+                Binds a texture pack to the sprite that will animate
+
+                Args:
+                    texturePackId: STRING, the id of the texturePack
+                    optionalParameters: OPTIONAL, OBJECT, see Torch.Animation.info
+    Rectangle: OBJECT,
+        An object that holds the position and dimentions of
+        a sprite for drawing
+
+        See Torch
+Usable Methods:
