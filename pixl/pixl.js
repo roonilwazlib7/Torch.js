@@ -116,8 +116,8 @@ var pixl = function(data, optionalColorPallette, optionalExportType)
 
     //export it
     exportObject = {
-        src : exportImage,
         image: new Image(exportImage),
+        src : exportImage,
         time: exportTime,
     };
 

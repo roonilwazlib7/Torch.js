@@ -7,6 +7,11 @@ Torch.SpriteGroup = function(sprites)
         that.sprites[i].anchorX = that.sprites[i].Rectangle.x;
     }
 };
+Torch.SpriteGroup.prototype.Add = function(sprites)
+{
+    var that = this;
+    that.sprites = that.sprites.concat(sprites);
+}
 Torch.SpriteGroup.prototype.Trash = function()
 {
     var that = this;
@@ -41,5 +46,14 @@ Torch.SpriteGroup.prototype.Show = function()
     {
         var sprite = that.sprites[i];
         sprite.draw = true;
+    }
+}
+Torch.SpriteGroup.prototype.All = function(handle)
+{
+    var that = this
+    for (var i = 0; i < that.sprites.length; i++)
+    {
+        var sprite = that.sprites[i];
+        handle(sprite);
     }
 }

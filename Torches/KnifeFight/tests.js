@@ -20,18 +20,18 @@ function RunParticleTests()
     function Burst()
     {
         var burst = new Torch.ParticleEmitter(300,300, 3000, 500);
-        burst.CreateBurstEmitter(Particles.Blood, 25, 0.5, 0.5, 0.1, 0.1);
+        burst.CreateBurstEmitter(Particles.Blood, 100, 0.5, 0.5, 0.1, 0.1);
         burst.Body.x.velocity = 0.05;
     }
     function Slash()
     {
         var slash = new Torch.ParticleEmitter(300, 400, 3000, 500);
-        slash.CreateSlashEmitter(Particles.Blood, 25, 2, 1.5, {x: 0, y: 0}, {x:15,y:15} );
+        slash.CreateSlashEmitter(Particles.Blood, 5, 2, 1.5, {x: 0, y: 0}, {x:100,y:15} );
     }
     try
     {
-        Burst();
-        Slash();
+        //Burst();
+        //Slash();
     }
     catch (e)
     {
