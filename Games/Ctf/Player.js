@@ -20,43 +20,6 @@ function PlayerPath(x,y, alpha)
 }
 PlayerPath.is(Torch.Sprite);
 
-function PlayerSlave(x,y)
-{
-    this.InitSprite(x,y);
-    this.Bind.Texture("Player");
-    this.timeAlive = 0;
-    this.DrawParams = {alpha: 0.8}
-    this.MOVE_SPEED = 0.2;
-}
-PlayerSlave.is(Torch.Sprite);
-PlayerSlave.prototype.Update = function()
-{
-    var that = this;
-    that.BaseUpdate();
-    var keys = Game.Keys;
-    if (keys.A.down || keys.D.down || keys.W.down || keys.S.down)
-    {
-        var p = new PlayerPath(that.Rectangle.x, that.Rectangle.y, that.DrawParams.alpha);
-    }
-    if (keys.D.down)
-    {
-        that.Rectangle.x += that.MOVE_SPEED * Game.deltaTime;
-    }
-    if (keys.A.down)
-    {
-        that.Rectangle.x -= that.MOVE_SPEED * Game.deltaTime;
-    }
-    if (keys.W.down)
-    {
-        that.Rectangle.y -= that.MOVE_SPEED * Game.deltaTime;
-    }
-    if (keys.S.down)
-    {
-        that.Rectangle.y += that.MOVE_SPEED * Game.deltaTime;
-    }
-}
-
-
 PlayerPath.prototype.Update = function()
 {
     var that = this;
@@ -73,6 +36,12 @@ function Player(x,y)
     this.InitSprite(x,y);
     this.Bind.Texture("Player");
     this.Slaves = new Torch.SpriteGroup([]);
+    this.Bounds = {
+        left: 0,
+        right: 1280,
+        top: 0,
+        bottom: 720
+    };
 
     var particle = function(x,y)
     {
@@ -109,15 +78,43 @@ Player.prototype.Update = function()
         that.Rectangle.y += 0.3 * Game.deltaTime;
     }
 
-    if (!keys.K.down && that.kWasUp)
+    if (!Game.Mouse.down && that.mouseWasDown)
     {
-        that.Multiply();
-        that.kWasUp = false;
-
+        var MoveVector = new Torch.Vector(Game.Mouse.x - that.Rectangle.x, Game.Mouse.y - that.Rectangle.y);
+        MoveVector.Normalize();
+        that.Body.x.velocity = MoveVector.x;
+        that.Body.y.velocity = MoveVector.y;
+        that.mouseWasDown = false;
+        Torch.Message("vec");
     }
-    else if (keys.K.down)
+    if (Game.Mouse.down)
     {
-        that.kWasUp = true;
+        that.mouseWasDown = true;
+    }
+    if (!Game.Mouse.down)
+    {
+        that.mouseWasDown = false;
+    }
+
+    if (that.Rectangle.x >= that.Bounds.right)
+    {
+        that.Rectangle.x -= 2 * (that.Rectangle.x - that.Bounds.right);
+        that.Body.x.velocity *= -1;
+    }
+    if (that.Rectangle.x <= that.Bounds.left)
+    {
+        that.Rectangle.x += 2 * Math.abs(that.Rectangle.x);
+        that.Body.x.velocity *= -1;
+    }
+    if (that.Rectangle.y >= that.Bounds.bottom)
+    {
+        that.Rectangle.y -= 2 * (that.Rectangle.y - that.Bounds.bottom);
+        that.Body.y.velocity *= -1;
+    }
+    if (that.Rectangle.y <= that.Bounds.top)
+    {
+        that.Rectangle.y += 2 * Math.abs(that.Rectangle.y);
+        that.Body.y.velocity *= -1;
     }
 }
 Player.prototype.Die = function()
