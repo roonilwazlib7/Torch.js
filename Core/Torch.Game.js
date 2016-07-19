@@ -1,5 +1,5 @@
 Torch.Game = function(canvasId, width, height, name){
-    console.log("%c   " + Torch.version + "  ", "background-color:#cc5200; color:white");
+    console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
     this.canvasNode = document.getElementById(canvasId);
     this.canvas = this.canvasNode.getContext("2d");

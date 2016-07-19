@@ -63,6 +63,11 @@ var Torch =
             $("#torch_message").append(message);
         }
     },
+    Reset: function()
+    {
+        var that = this;
+        //that.activeGame = null;
+    }
 };
 
 Torch.Rectangle = function(x, y, width, height){

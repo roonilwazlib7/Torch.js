@@ -171,8 +171,7 @@ Torch.Load.prototype.Load = function(finishFunction)
             finishFunction();
             clearInterval(_l);
             Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
-            that.game.canvasNode.style.display = "block";
-            document.getElementById("torch-load").style.display = "none";
+            
         }
     }, 1000/60);
 }

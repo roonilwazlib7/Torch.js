@@ -101,11 +101,11 @@ Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 /*
         Torch.Sprite
 */
-Torch.Sprite = function(x,y)
+Torch.Sprite = function(game,x,y)
 {
-    this.InitSprite(x,y)
+    this.InitSprite(game,x,y)
 };
-Torch.Sprite.prototype.InitSprite = function(x,y)
+Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (x == null || x == undefined) Torch.Error("argument 'x' is required");
     if (y == null || y == undefined) Torch.Error("argument 'y' is required");
@@ -129,7 +129,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
             maxVelocity: 100
         }
     }
-    this.game = null;
+    this.game = game;
     this.DrawTexture = null;
     this.TexturePack = null;
     this.TextureSheet = null;
@@ -149,7 +149,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
-    Game.Add(this);
+    game.Add(this);
 }
 Torch.Sprite.prototype.UpdateBody = function()
 {
