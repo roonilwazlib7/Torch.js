@@ -55,8 +55,16 @@ Usable Members:
                     texturePackId: STRING, the id of the texturePack
                     optionalParameters: OPTIONAL, OBJECT, see Torch.Animation.info
     Rectangle: OBJECT,
-        An object that holds the position and dimentions of
+        An object(Torch.Rectangle) that holds the position and dimentions of
         a sprite for drawing
 
-        See Torch
+        Usable Members:
+            x: INT,
+                holds x position of sprite
+            y: INT,
+                holds y position of sprite
+            width: INT,
+                holds width of sprite
+            height: INT,
+                holds height of sprite
 Usable Methods:

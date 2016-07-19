@@ -44,13 +44,11 @@ Torch.Game.prototype.PixelScale = function()
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;
+
     this.load = load;
     this.update = update;
     this.draw = draw;
     this.init = init;
-
-    that.canvasNode.width = that.width;
-    that.canvasNode.height = that.height;
 
     that.load();
 
@@ -66,6 +64,12 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
         }
 
     });
+
+    that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
+    that.canvasNode.height = typeof(that.height) == "string" ? document.body.clientHeight - 25 : that.height;
+
+    Torch.Message(document.body.clientWidth);
+
 };
 Torch.Game.prototype.Add = function(o)
 {

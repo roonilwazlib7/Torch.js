@@ -12,7 +12,7 @@ def WriteFile(path, content):
     f.close()
 
 PROJECT_NAME = raw_input("Enter the project name-->")
-PROJ_PATH = "Torches\\" + PROJECT_NAME
+PROJ_PATH = "Games\\" + PROJECT_NAME
 
 INDEX_FILE = GetFile("Templates/index.html")
 GAME_FILE = GetFile("Templates/Game.js")

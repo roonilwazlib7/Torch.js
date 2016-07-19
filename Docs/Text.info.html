@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <link href = "DocsCode/template.css" rel="stylesheet" />
+
+        <script src = "DocsCode/code-format.js"></script>
+        <script>
+        $(document).ready(function(){
+            FormatCode();
+        });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span><a href="TorchDocumentation.html">Home</a></span>
+                    <h2><span style="color:#ff8000">Torch.js Documentation - </span><span style="color:#e60000">Torch.Text</span> <span class="date">7/20/2016, 13:32</span></h2>
+                </div>
+                <div class="panel-body">
+                        <br><span class='main-header'>General Information:</span><br><span class='tab'></span>A special sprite that is used for displaying text. Displaying<br><span class='tab'></span>text with the HTML5 canvas is a finicky process. Repeatedly calling<br><span class='tab'></span>fillText or strokeText slows everything down to the point that it<br><span class='tab'></span>becomes more effecient to dynamically create a canvas, draw the text onto it,<br><span class='tab'></span>and convert it to an image to draw on the main canvas.<br><span class='main-header'>Basic Usage:</span><br><span class='tab'></span><div class='code'><br><span class='tab'></span>var text = new Torch.Text(50, 50, {<br><span class='tab'></span><span class='tab'></span>text: "Hello, World",<br><span class='tab'></span><span class='tab'></span>color: "green"<br><span class='tab'></span>});<br><span class='tab'></span></div><br><span class='main-header'>Constructor:</span><br><span class='tab'></span><span class='main-header'>Args:</span><br><span class='tab'></span><span class='tab'></span>x: <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>x position<br><span class='tab'></span><span class='tab'></span>y:  <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>y position<br><span class='tab'></span><span class='tab'></span>data: <span class='type'>OBJECT</span>,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>object that holds optional data for the text object<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>For example:<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><div class='code'><br><span class='tab'></span><span class='tab'></span><span class='tab'></span>{<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>text: "Hello, World!"<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>font: "Arial",<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>fontSize: 24,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>fontWeight: bold,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>color: new Torch.Color(15, 67, 84, 1) // or new Torch.Color("#ffe45c")<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>// if color is not an instance of Torch.Color, it will be converted<br><span class='tab'></span><span class='tab'></span><span class='tab'></span><span class='tab'></span>// to one internally<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>}<br><span class='tab'></span><span class='tab'></span><span class='tab'></span></div><br><br><span class='main-header'>Usable Members:</span><br><span class='tab'></span>NOTE:<br><span class='tab'></span><span class='tab'></span>Torch.Text inherits Torch.Sprite so it has everything that Torch.Sprite has and keep<br><span class='tab'></span><span class='tab'></span>in mind that Torch.Text.Rectangle (which is a member inherited from Torch.Sprite) controls how big the container for<br><span class='tab'></span><span class='tab'></span>the text is, so if the rectangle is too small, the text would be cut off<br><br><span class='tab'></span>font: <span class='type'>STRING</span>,<br><span class='tab'></span><span class='tab'></span>the name of the font to use<br><span class='tab'></span>fontSize: <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span>the size (in pixels) of the text<br><span class='tab'></span>fontWeight: <span class='type'>STRING</span>,<br><span class='tab'></span><span class='tab'></span>bold, etc<br><span class='tab'></span>color: <span class='type'>OBJECT</span> (Torch.Color),<br><span class='tab'></span><span class='tab'></span>color of the text<br><span class='tab'></span>text: <span class='type'>STRING</span>,<br><span class='tab'></span><span class='tab'></span>holds text<br><span class='main-header'>Usable Methods:</span><br><span class='tab'></span>Render():<br><span class='tab'></span><span class='tab'></span>creates the image of the text that is drawn<br><span class='tab'></span><span class='tab'></span>each frame<br><span class='tab'></span><span class='tab'></span>NOTE:<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>if you change the value of 'text', Render is automatically<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>called<br><span class='tab'></span><span class='tab'></span><span class='main-header'>Args:</span> <span class='type'>NONE</span><br><br><div class='todo'><h3>TODO</h3><br><span class='lister glyphicon glyphicon-menu-right'></span>  Allow option to have Torch.Text automatically<br><span class='tab'></span>fit the Rectangle to the Text<br><br><span class='lister glyphicon glyphicon-menu-right'></span>  Add ability to parse returns (\n) within text<br><span class='tab'></span>so that line breaks can be created<br><br><span class='lister glyphicon glyphicon-menu-right'></span>  Add support for padding<br><br><span class='lister glyphicon glyphicon-menu-right'></span>  Add support for background color<br></div><br>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

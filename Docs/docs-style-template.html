@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <link href = "DocsCode/template.css" rel="stylesheet" />
+
+        <script src = "DocsCode/code-format.js"></script>
+        <script>
+        $(document).ready(function(){
+            FormatCode();
+        });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span><a href="TorchDocumentation.html">Home</a></span>
+                    <h2><span style="color:#ff8000">Torch.js Documentation - </span><span style="color:#e60000">{{title}}</span> <span class="date">{{date}}</span></h2>
+                </div>
+                <div class="panel-body">
+                        {{body}}
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,7 +1,7 @@
 
 RunTests();
 
-var Game = new Torch.Game("canvas", 1280,720, "NewGame");
+var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
 function Load()
 {
     PlayerLoad();

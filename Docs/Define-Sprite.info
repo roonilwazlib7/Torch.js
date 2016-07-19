@@ -1,0 +1,71 @@
+:Defining your own sprite
+While it's easy to create sprites like this:
+:code
+var mySprite = new Sprite(myGame,0,0);
+mySprite.Bind.Texture("my-sprite-texture");
+:endcode
+You're going to want to define your own classes for sprites that inherit
+from Torch.Sprite. Here's an example:
+:code
+//our Sprite:
+function Warrior(game,x,y)
+{
+    //call this.InitSprite to handle base Sprite Initialization
+    //as well as adding it to the game
+    this.InitSprite(game,x,y);
+    //Bind it to the texture
+    this.Bind.Texture("warrior");
+}
+Warrior.is(Torch.Sprite) //inherit Torch.Sprite
+//lets define a custom Update method
+Warrior.prototype.Update = function()
+{
+    var that = this;
+    //we are going to want to call
+    //BaseUpdate. this is a method from
+    //Torch.Sprite. It handles all the base
+    //sprite logic
+    that.BaseUpdate();
+
+    //now, lets add some functionality
+    var keys = that.game.Keys;
+    if (keys.A.down)
+    {
+        that.Attack();
+    }
+}
+Warrior.prototype.Attack = function()
+{
+    console.log("attakc");
+    //yeah, pretty lame
+}
+//now lets create the game
+
+//the update function for the game
+function update()
+{
+
+}
+
+//draw function for the game
+function draw()
+{
+
+}
+
+//load function for the game
+function load()
+{
+    Game.Load.Texture("Assets/Warrior.png", "warrior");
+}
+
+//init function for the game
+function init()
+{
+    //lets create an instance of our sprite
+    var warrior = new Warrior(myGame,50,50);
+    //our warrior is now in the game
+}
+
+var myGame = new Torch.Game(update, draw, load, init, 1280, 720);
+myGame.Start();

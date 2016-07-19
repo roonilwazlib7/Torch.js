@@ -1,0 +1,57 @@
+:Creating textures with pixl
+Pixl is a tool for generating images from JavaScript arrays. It uses a paint by
+numbers scheme.
+
+Define some data
+:code
+var myImageData = [
+    "1 1 1 . . 1 1 1"
+    "2 2 2 . . 2 2 2"
+    "3 3 3 . . 3 3 3"
+    "1 1 1 . . 1 1 1"
+]
+:endcode
+The number represents a pixel as well as a color.
+Periods represent a blank space.
+
+These colors are defined in a color palette
+:code
+var myColorPalette = {
+    "1" : "red",
+    "2" : "green",
+    "3" : "blue"
+}
+:endcode
+
+now lets put it all together
+:code
+var pixlImage = pixl(myImageData, myColorPalette);
+:endcode
+
+pxilImage with have a value like this:
+:code
+{
+    src: "data-url-for-image", //a base-64 encoded data url
+    image: Image //an html5 Image object
+}
+:endcode
+
+We can also use this image in a sprite
+:code
+var pixlImage = pixl(myImageData, myColorPalette);
+var mySprite = new Torch.Sprite(game, 50, 50);
+mySprite.Bind.Texture(pixlImage);
+:endcode
+
+NOTE:
+    pixl has a default color palette for numbers 0-9, but supports using data
+    and palettes with single letter characters.
+
+You can define more complex pixl images like this:
+:code
+var myData = [
+    "1 2 4 5 K L n m O",
+    "x X 5 7 L I i W 0",
+    //...
+]
+:endcode

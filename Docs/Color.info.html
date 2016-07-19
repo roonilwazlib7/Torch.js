@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <link href = "DocsCode/template.css" rel="stylesheet" />
+
+        <script src = "DocsCode/code-format.js"></script>
+        <script>
+        $(document).ready(function(){
+            FormatCode();
+        });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span><a href="TorchDocumentation.html">Home</a></span>
+                    <h2><span style="color:#ff8000">Torch.js Documentation - </span><span style="color:#e60000">Torch.Color</span> <span class="date">7/20/2016, 13:32</span></h2>
+                </div>
+                <div class="panel-body">
+                        <br><span class='main-header'>General Information:</span><br><span class='tab'></span>an object for colors<br><span class='main-header'>Basic Usage:</span><br><span class='tab'></span><div class='code'><br><span class='tab'></span>//with red, green, blue, alpha values<br><span class='tab'></span>var color = new Torch.Color(12, 14, 45, 1);<br><span class='tab'></span>//NOTE:<br><span class='tab'></span>//the alpha value, at this point does not<br><span class='tab'></span>//really do anything<br><br><span class='tab'></span>//with html hex value<br><span class='tab'></span>var color = new Torch.Color("#ffffff");<br><span class='tab'></span></div><br><span class='main-header'>Constructor:</span><br><span class='tab'></span><span class='main-header'>Args:</span><br><span class='tab'></span><span class='tab'></span>redOrHex: <span class='type'>INT</span> or <span class='type'>STRING</span>,<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>either the red rgb value, or<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>the html color string<br><span class='tab'></span><span class='tab'></span>g: <span class='type'>INT</span>(OPTIONAL),<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>the green rgb value<br><span class='tab'></span><span class='tab'></span>b: <span class='type'>INT</span>(OPTIONAL),<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>the blue rgb value<br><span class='tab'></span><span class='tab'></span>a: <span class='type'>INT</span>(OPTIONAL),<br><span class='tab'></span><span class='tab'></span><span class='tab'></span>the alpha value<br><span class='main-header'>Usable Members:</span><br><span class='tab'></span>Red: <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span>red rgb value<br><span class='tab'></span>Green: <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span>green rgb value<br><span class='tab'></span>Blue:  <span class='type'>INT</span>,<br><span class='tab'></span><span class='tab'></span>blue rgb value<br><span class='main-header'>Usable Methods:</span><br><span class='tab'></span>GetRGBString():<br><span class='tab'></span><span class='tab'></span>gets css representation of rgb values<br><span class='tab'></span><span class='tab'></span><span class='main-header'>Args:</span> <span class='type'>NONE</span><br><span class='tab'></span>BlendHex():<br><span class='tab'></span><span class='tab'></span>syncs rgb values from the hex string<br><span class='tab'></span><span class='tab'></span>For Example:<br><span class='tab'></span><span class='tab'></span><div class='code'><br><span class='tab'></span><span class='tab'></span>//create a color<br><span class='tab'></span><span class='tab'></span>var color = new Torch.Color(15, 67, 89, 1);<br><span class='tab'></span><span class='tab'></span>//change the hex<br><span class='tab'></span><span class='tab'></span>color.hex = "#ffffff";<br><span class='tab'></span><span class='tab'></span>//now the hex and rbg values<br><span class='tab'></span><span class='tab'></span>//represent different colors<br><br><span class='tab'></span><span class='tab'></span>//sync them<br><span class='tab'></span><span class='tab'></span>color.BlendHex();<br><span class='tab'></span><span class='tab'></span></div><br><span class='tab'></span><span class='tab'></span>hex -> rgb<br><span class='tab'></span><span class='tab'></span><span class='main-header'>Args:</span> <span class='type'>NONE</span><br><span class='tab'></span>BlendRGB():<br><span class='tab'></span><span class='tab'></span>synce hex value from rgb values<br><span class='tab'></span><span class='tab'></span>For Example:<br><span class='tab'></span><span class='tab'></span><div class='code'><br><span class='tab'></span><span class='tab'></span>//create a color<br><span class='tab'></span><span class='tab'></span>var color = new Torch.Color("#ff00ff");<br><span class='tab'></span><span class='tab'></span>//change the rbg values<br><span class='tab'></span><span class='tab'></span>color.Red = 0;<br><span class='tab'></span><span class='tab'></span>//now the hex and rbg values<br><span class='tab'></span><span class='tab'></span>//represent different colors<br><br><span class='tab'></span><span class='tab'></span>//sync them<br><span class='tab'></span><span class='tab'></span>color.BlendRGB();<br><span class='tab'></span><span class='tab'></span></div><br><span class='tab'></span><span class='tab'></span>rgb -> hex<br><div class='todo'><h3>TODO</h3><br><span class='tab'></span><span class='lister glyphicon glyphicon-menu-right'></span>  Maybe add support for mixing colors<br></div><br>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
