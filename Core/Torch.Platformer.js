@@ -3,6 +3,11 @@
 
 
 Torch.Platformer = {};
+Torch.Platformer.Gravity = 0.001;
+Torch.Platformer.SetWorld = function(spawnItems)
+{
+    Torch.Platformer.spawnItems = spawnItems;
+}
 Torch.Platformer.Actor = function(){} //anything that has any interaction
 Torch.Platformer.Actor.prototype.ACTOR = true;
 Torch.Platformer.Actor.prototype.Health = 100;
@@ -94,9 +99,9 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
     that.onTop = false;
     that.onRight = false;
     that.onLeft = false;
-    for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
+    for (var i = 0; i < Torch.Platformer.spawnItems.length; i++)
     {
-        var item = Spawner.SpawnScaffold[i];
+        var item = Torch.Platformer.spawnItems[i];
         var rect = that.Rectangle;
         if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && (that.ACTOR) )
         {
@@ -135,7 +140,7 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
             }
         }
     }
-    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Game.Gravity;
+    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
 }
 
 Torch.Platformer.Block = function(){};
