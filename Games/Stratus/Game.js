@@ -1,9 +1,12 @@
 
 var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
-var TitleText, TitleText2;
+var TitleText, TitleText2, Spawner;
 function Load()
 {
-    Game.Load.Texture("Art/player.png", "player");
+    Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 48, 16, 16, 16);
+    Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
+    Game.Load.Texture("Art/player.png", "player_right");
+    Game.Load.Texture("Art/player_left.png", "player_left");
     Game.Load.Texture("Art/brick.png", "basic-block");
 }
 function Update()
@@ -16,7 +19,7 @@ function Draw()
 }
 function Init()
 {
-    Game.Clear("black");
+    Game.Clear("#ccffff");
     Torch.Scale = 4;
     Game.PixelScale();
 
@@ -37,7 +40,7 @@ function Init()
     TitleText.Center();
     TitleText2.Center();
     var player = new Player(Game, 10, 170);
-    SpawnWorld();
+    Spawner = new Torch.Platformer.Spawner(SpawnWorld());
 }
 
 Game.Start(Load, Update, Draw, Init);

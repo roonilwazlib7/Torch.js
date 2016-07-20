@@ -76,8 +76,8 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     anim.Start();
     that.sprite.TextureSheetAnimation = anim;
 
-    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth;
-    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight;
+    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
+    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
 }
 Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 {

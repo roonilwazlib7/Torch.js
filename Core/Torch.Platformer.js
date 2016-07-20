@@ -154,10 +154,56 @@ Torch.Platformer.Fluid.prototype.friction = 0.3;
 Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
-Torch.Platformer.SpawnItem = function(spawnType, spawned, obj)
+Torch.Platformer.Spawner = function(spawnItems)
+{
+    this.spawnItems = spawnItems;
+    Torch.Platformer.SetWorld(spawnItems);
+}
+Torch.Platformer.Spawner.is(Torch.GhostSprite);
+Torch.Platformer.Spawner.prototype.Update = function()
+{
+    var that = this;
+    if(that.spawnItems.length > 0)
+    {
+        for (var i = 0; i < that.spawnItems.length; i++)
+        {
+            var item = that.spawnItems[i];
+            var viewRect = Game.Viewport.GetViewRectangle();
+            if (item.Manual) continue;
+            if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
+            {
+                var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                item.Sprite = spr;
+                item.spawned = true;
+                spr.spawnItem = item;
+                spr.DrawParams = {tint: "green"};
+            }
+            else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
+            {
+                if (item.SpawnType)
+                {
+                    var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                    item.Sprite = spr;
+                    item.spawned = true;
+                    spr.spawnItem = item;
+                }
+            }
+            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+            {
+                item.Sprite.Trash();
+                item.Sprite = null;
+                item.spawned = false;
+            }
+
+        }
+    }
+}
+
+Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
 {
     this.spawnType = spawnType;
     this.spawned = spawned;
+    this.position = position;
     if (obj)
     {
         this.Sprite = obj;

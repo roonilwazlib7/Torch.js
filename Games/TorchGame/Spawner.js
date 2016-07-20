@@ -178,40 +178,6 @@ var Spawner = {
     },
     Update: function()
     {
-        var that = this;
-        if(that.SpawnScaffold.length > 0)
-        {
-            for (var i = 0; i < that.SpawnScaffold.length; i++)
-            {
-                var item = that.SpawnScaffold[i];
-                var viewRect = Game.Viewport.GetViewRectangle();
-                if (item.Manual) continue;
-                if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
-                {
-                    var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
-                    item.Sprite = spr;
-                    item.spawned = true;
-                    spr.spawnItem = item;
-                    spr.DrawParams = {tint: "green"};
-                }
-                else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
-                {
-                    if (item.SpawnType)
-                    {
-                        var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
-                        item.Sprite = spr;
-                        item.spawned = true;
-                        spr.spawnItem = item;
-                    }
-                }
-                else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
-                {
-                    item.Sprite.Trash();
-                    item.Sprite = null;
-                    item.spawned = false;
-                }
 
-            }
-        }
     }
 }

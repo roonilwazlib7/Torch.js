@@ -1,4 +1,4 @@
-var World1 = [];
+
 
 var BasicBlock = function(game, x, y)
 {
@@ -11,11 +11,12 @@ function SpawnWorld()
 {
     var x = 0;
     var y = 350;
+    var World1 = [];
 
     for (var i = 0; i < 20; i++)
     {
         var spawnItem = new Torch.Platformer.SpawnItem(BasicBlock, true, new BasicBlock(Game, i * 64, y));
         World1.push(spawnItem);
     }
-    Torch.Platformer.SetWorld(World1);
+    return World1;
 }
