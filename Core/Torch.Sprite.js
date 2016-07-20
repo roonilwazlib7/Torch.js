@@ -27,7 +27,7 @@ Torch.Bind.prototype.Reset = function()
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
-    var tex = that.sprite.game.Assets.Textures[textureId];
+    var tex = typeof(textureId) == "string" ? that.sprite.game.Assets.Textures[textureId] : textureId;
     var scale = 1;
 
     that.Reset();
@@ -36,7 +36,7 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
     {
         scale = Torch.Scale;
     }
-    that.sprite.DrawTexture = tex;
+    that.sprite.DrawTexture = typeof(textureId) == "string" ? tex : {image:textureId};
 
     that.sprite.Rectangle.width = tex.width * scale;
     that.sprite.Rectangle.height = tex.height * scale;
@@ -228,7 +228,7 @@ Torch.Sprite.prototype.Draw = function()
         Params.IsTextureSheet = true;
         that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
-    else
+    else if (that.DrawTexture)
     {
         that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
     }

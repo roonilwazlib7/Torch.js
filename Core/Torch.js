@@ -66,6 +66,7 @@ var Torch =
     Reset: function()
     {
         var that = this;
+        if (that.activeGame) that.activeGame.time = 0;
         //that.activeGame = null;
     }
 };

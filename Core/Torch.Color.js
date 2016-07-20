@@ -1,4 +1,3 @@
-var Torch = {};
 Torch.Color = function(rOrHex, g, b, a)
 {
     this.hex = "";

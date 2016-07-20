@@ -1,7 +1,7 @@
 :Defining your own sprite
 While it's easy to create sprites like this:
 :code
-var mySprite = new Sprite(myGame,0,0);
+var mySprite = new Torch.Sprite(myGame,0,0);
 mySprite.Bind.Texture("my-sprite-texture");
 :endcode
 You're going to want to define your own classes for sprites that inherit
@@ -67,5 +67,5 @@ function init()
     //our warrior is now in the game
 }
 
-var myGame = new Torch.Game(update, draw, load, init, 1280, 720);
-myGame.Start();
+var myGame = new Torch.Game("canvas", 700,500, "TestGame");
+myGame.Start(load, update, draw, init);
