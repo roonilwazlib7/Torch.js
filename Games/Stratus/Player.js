@@ -18,6 +18,7 @@ Player.prototype.Update = function()
     var that = this;
     that.BaseUpdate();
     that.UpdateActor();
+    that.HandleItemOffset();
     that.Move();
 }
 Player.prototype.Move = function()
@@ -69,10 +70,18 @@ Player.prototype.SwitchItem = function(item)
 Player.prototype.HandleItemOffset = function()
 {
     var that = this;
+    var offSetSoFar = that.ItemOffset;
+    var walking_right_offset = {x: 50, y:12};
+    var walking_left_offset = {x: 0, y: 12};
     if (that.walkingRight)
     {
-
+        offSetSoFar = walking_right_offset;
     }
+    if (that.walkingLeft)
+    {
+        offSetSoFar = walking_left_offset;
+    }
+    that.ItemOffset = offSetSoFar;
 }
 
 
@@ -82,7 +91,7 @@ Player.prototype.HandleItemOffset = function()
 
 
 
-//just a sample player item
+//items
 var ShortSword = function(game,x,y,player)
 {
     this.InitSprite(game,x,y)
