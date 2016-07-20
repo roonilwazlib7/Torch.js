@@ -1362,7 +1362,6 @@ Torch.Animation.TextureSheet.prototype.Update = function()
 {
 	var that = this;
 	that.elapsedTime += that.game.deltaTime;
-	console.log("Running...");
 
 	if (that.elapsedTime >= that.step && ! (that.hasRun && that.Kill) )
 	{
