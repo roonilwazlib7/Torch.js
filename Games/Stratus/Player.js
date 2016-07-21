@@ -10,16 +10,26 @@ var Player = function(game, x, y)
         y: 12
     };
     this.drawIndex = 5;
+    this.opacity = 0;
+    this.ready = false;
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 
 Player.prototype.Update = function()
 {
     var that = this;
+
+    if (!that.ready)
+    {
+        that.Enter();
+    }
+    else
+    {
+        that.UpdateActor();
+        that.HandleItemOffset();
+        that.Move();
+    }
     that.BaseUpdate();
-    that.UpdateActor();
-    that.HandleItemOffset();
-    that.Move();
 }
 Player.prototype.Move = function()
 {
@@ -60,6 +70,7 @@ Player.prototype.Move = function()
         that.walkingLeft = false;
     }
     if (keys.W.down && that.onGround) that.Body.y.velocity = -0.4;
+    if (keys.R.down) that.rotation += 0.01;
 }
 Player.prototype.SwitchItem = function(item)
 {
@@ -84,6 +95,17 @@ Player.prototype.HandleItemOffset = function()
         that.Item.Left();
     }
     that.ItemOffset = offSetSoFar;
+}
+Player.prototype.Enter = function()
+{
+    var that = this;
+    that.opacity += 0.0007 * that.game.deltaTime;
+    if (that.opacity >= 1)
+    {
+        that.opacity = 1;
+        that.ready = true;
+        player.SwitchItem(ShortSword);
+    }
 }
 
 

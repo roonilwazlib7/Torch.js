@@ -149,6 +149,8 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
+    this.rotation = 0;
+    this.opacity = 1;
     game.Add(this);
 }
 Torch.Sprite.prototype.UpdateBody = function()
@@ -227,16 +229,27 @@ Torch.Sprite.prototype.Draw = function()
         Params.clipWidth = frame.clipWidth;
         Params.clipHeight = frame.clipHeight;
         Params.IsTextureSheet = true;
+        Params.rotation = that.rotation;
+        Params.alpha = that.opacity;
         that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
     else if (that.DrawTexture)
     {
-        that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
+        var DrawParams = {
+            alpha: that.opacity,
+            rotation: that.rotation
+        };
+        that.game.Draw(that.DrawTexture, DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.UpdateEvents = function()
 {
     var that = this;
+    if (!this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle) && that.mouseOver)
+    {
+        that.mouseOver = false;
+        if (that.onMouseLeave)that.onMouseLeave(that);
+    }
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);

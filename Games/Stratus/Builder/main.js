@@ -1,7 +1,7 @@
 var Cursor = {
     x: 0,
     y: 0,
-    slideX: -500,
+    slideX: 0,
     dim: function(){
         return this.scale * 16;
     },

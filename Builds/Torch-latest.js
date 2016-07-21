@@ -1542,6 +1542,8 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
+    this.rotation = 0;
+    this.opacity = 1;
     game.Add(this);
 }
 Torch.Sprite.prototype.UpdateBody = function()
@@ -1620,16 +1622,27 @@ Torch.Sprite.prototype.Draw = function()
         Params.clipWidth = frame.clipWidth;
         Params.clipHeight = frame.clipHeight;
         Params.IsTextureSheet = true;
+        Params.rotation = that.rotation;
+        Params.alpha = that.opacity;
         that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
     else if (that.DrawTexture)
     {
-        that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
+        var DrawParams = {
+            alpha: that.opacity,
+            rotation: that.rotation
+        };
+        that.game.Draw(that.DrawTexture, DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.UpdateEvents = function()
 {
     var that = this;
+    if (!this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle) && that.mouseOver)
+    {
+        that.mouseOver = false;
+        if (that.onMouseLeave)that.onMouseLeave(that);
+    }
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);
@@ -1835,6 +1848,51 @@ Torch.Text.prototype.Update = function()
         that.Render();
         that.lastText = that.text;
     }
+}
+Torch.Sound = {};
+
+Torch.Sound.PlayList = function(game, playList)
+{
+    this.songList = playList;
+    this.game = game;
+    this.currentSong = playList[0];
+    this.index = 0;
+}
+Torch.Sound.PlayList.prototype.Play = function()
+{
+    var that = this;
+    that.game.Assets.GetSound(that.currentSong).play();
+    console.log(that.game.Assets.GetSound(that.currentSong).duration);
+}
+Torch.Sound.PlayList.prototype.ShuffleArray = function(array)
+{
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+Torch.Sound.PlayList.prototype.Randomize = function()
+{
+    var that = this;
+    that.songList = that.ShuffleArray(that.songList);
+    that.currentSong = that.songList[0];
+}
+Torch.Sound.PlayList.prototype.Update = function()
+{
+    var that = this;
+    that.game.Assets.GetSound(that.currentSong).currentTime;
 }
 Torch.Color = function(rOrHex, g, b, a)
 {
