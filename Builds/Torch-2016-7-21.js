@@ -116,8 +116,8 @@ var pixl = function(data, optionalColorPallette, optionalExportType)
 
     //export it
     exportObject = {
-        src : exportImage,
         image: new Image(exportImage),
+        src : exportImage,
         time: exportTime,
     };
 
@@ -323,6 +323,47 @@ pixl.util.Mix = function(pal1, pal2)
 //TODO
 //Add some default pallettes
 pixl.pal = {};
+
+//TODO
+//Add text stuff
+//canvas.fillText is incredibly slow, faster to convert it to an image
+pixl.Text = function(text)
+{
+    this.text = text;
+    this.font = "arcade";
+    this.fontSize = 30;
+    this.color = "red";
+    this.DrawText = null;
+    this.ChangeText(text);
+};
+pixl.Text.prototype.Font = function (font)
+{
+    var that = this;
+    that.font = font;
+    that.ChangeText(that.text);
+};
+pixl.Text.prototype.ChangeText = function(text)
+{
+    var that = this;
+    var canvas,
+        renderingCanvas,
+        exportImage;
+    that.text = text;
+    canvas = document.createElement("CANVAS");
+    canvas.width = text.length * (that.fontSize / 2);
+    canvas.height = 100;
+    renderingCanvas = canvas.getContext("2d");
+    renderingCanvas.fillStyle = that.color;
+    renderingCanvas.font = that.fontSize + "px " + that.font//"30px Arial";
+    renderingCanvas.fillText(text,0,that.fontSize);
+    exportImage = new Image();
+    exportImage.src = canvas.toDataURL();
+
+
+    that.DrawText = exportImage;
+
+
+}
 Function.prototype.is = function(otherFunction)
 {
     var proto = this.prototype;
@@ -1428,8 +1469,8 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     anim.Start();
     that.sprite.TextureSheetAnimation = anim;
 
-    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth;
-    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight;
+    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
+    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
 }
 Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 {
@@ -1713,62 +1754,13 @@ Torch.Sprite.prototype.GetDistance = function(otherSprite)
     var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
     return thisVec.GetDistance(otherVec);
 }
-/*
-        Torch.Text
-*/
-
-Torch.Text = function(textLayers, x, y, maxFontSize)
+Torch.Sprite.prototype.Center = function()
 {
     var that = this;
-    that._torch_add = "Sprite";
-    that.maxFontSize = maxFontSize;
-    that.textLayers = textLayers;
-    that.InitSprite(x,y);
-    that.DrawTexture = that.GetBitmap();
-    that.Rectangle.width = that.DrawTexture.image.width;
-    that.Rectangle.height = that.DrawTexture.image.height;
-    that.drawIndex = 100;
-};
-
-Torch.Text.is(Torch.Sprite);
-
-Torch.Text.prototype.ApplyLayer = function(layer, cnv)
-{
-    var that = this;
-    if (layer.font) cnv.font = layer.font;
-    if (layer.fillStyle) {
-        cnv.fillStyle = layer.fillStyle;
-        cnv.fillText(layer.text, 10, that.maxFontSize / 1.3);
-    }
-    if (layer.strokeStyle) {
-        cnv.strokeStyle = layer.strokeStyle;
-        cnv.strokeText(layer.text, 10, 10);
-    }
-}
-
-Torch.Text.prototype.GetBitmap = function()
-{
-    var that = this;
-    var cv = document.createElement("canvas");
-
-    cv.width = that.textLayers[0].text.length * that.maxFontSize * 0.8;
-    cv.height = that.maxFontSize;
-    cnv = cv.getContext("2d");
-
-    for (var i = 0; i < that.textLayers.length; i++)
-    {
-        if (that.textLayers[i].background)
-        {
-            cnv.fillStyle = that.textLayers[i].background;
-            cnv.fillRect(0,0,cv.width,cv.height)
-        }
-        that.ApplyLayer(that.textLayers[i], cnv);
-    }
-
-
-    var image = new Image();
-    image.src = cv.toDataURL();
-    return {image: image};
+    var width = that.game.canvasNode.width;
+    var height = that.game.canvasNode.height;
+    var x = (width / 2) - (that.Rectangle.width/2);
+    that.Rectangle.x = x;
 }
 
 Torch.GhostSprite = function(){};
@@ -1818,7 +1810,6 @@ Torch.Text.prototype.Render = function()
     Torch.measureCanvas.font = that.fontSize + "px " + that.font;
     cnv.width = Torch.measureCanvas.measureText(that.text).width;
     cnv.height = that.fontSize + 5;
-    console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
     canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;
@@ -1844,15 +1835,6 @@ Torch.Text.prototype.Update = function()
         that.Render();
         that.lastText = that.text;
     }
-}
-
-Torch.Text.prototype.Center = function()
-{
-    var that = this;
-    var width = that.game.canvasNode.width;
-    var height = that.game.canvasNode.height;
-    var x = (width / 2) - (that.Rectangle.width/2);
-    that.Rectangle.x = x;
 }
 Torch.Color = function(rOrHex, g, b, a)
 {
@@ -2375,6 +2357,62 @@ Torch.Platformer.Fluid.prototype.FLUID = true;
 Torch.Platformer.Fluid.prototype.friction = 0.3;
 Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
+
+Torch.Platformer.Spawner = function(spawnItems)
+{
+    this.spawnItems = spawnItems;
+    Torch.Platformer.SetWorld(spawnItems);
+}
+Torch.Platformer.Spawner.is(Torch.GhostSprite);
+Torch.Platformer.Spawner.prototype.Update = function()
+{
+    var that = this;
+    if(that.spawnItems.length > 0)
+    {
+        for (var i = 0; i < that.spawnItems.length; i++)
+        {
+            var item = that.spawnItems[i];
+            var viewRect = Game.Viewport.GetViewRectangle();
+            if (item.Manual) continue;
+            if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
+            {
+                var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                item.Sprite = spr;
+                item.spawned = true;
+                spr.spawnItem = item;
+                spr.DrawParams = {tint: "green"};
+            }
+            else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
+            {
+                if (item.SpawnType)
+                {
+                    var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                    item.Sprite = spr;
+                    item.spawned = true;
+                    spr.spawnItem = item;
+                }
+            }
+            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+            {
+                item.Sprite.Trash();
+                item.Sprite = null;
+                item.spawned = false;
+            }
+
+        }
+    }
+}
+
+Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
+{
+    this.spawnType = spawnType;
+    this.spawned = spawned;
+    this.position = position;
+    if (obj)
+    {
+        this.Sprite = obj;
+    }
+}
 
 
 Torch.version='Torch-2016-7-21'

@@ -361,62 +361,13 @@ Torch.Sprite.prototype.GetDistance = function(otherSprite)
     var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
     return thisVec.GetDistance(otherVec);
 }
-/*
-        Torch.Text
-*/
-
-Torch.Text = function(textLayers, x, y, maxFontSize)
+Torch.Sprite.prototype.Center = function()
 {
     var that = this;
-    that._torch_add = "Sprite";
-    that.maxFontSize = maxFontSize;
-    that.textLayers = textLayers;
-    that.InitSprite(x,y);
-    that.DrawTexture = that.GetBitmap();
-    that.Rectangle.width = that.DrawTexture.image.width;
-    that.Rectangle.height = that.DrawTexture.image.height;
-    that.drawIndex = 100;
-};
-
-Torch.Text.is(Torch.Sprite);
-
-Torch.Text.prototype.ApplyLayer = function(layer, cnv)
-{
-    var that = this;
-    if (layer.font) cnv.font = layer.font;
-    if (layer.fillStyle) {
-        cnv.fillStyle = layer.fillStyle;
-        cnv.fillText(layer.text, 10, that.maxFontSize / 1.3);
-    }
-    if (layer.strokeStyle) {
-        cnv.strokeStyle = layer.strokeStyle;
-        cnv.strokeText(layer.text, 10, 10);
-    }
-}
-
-Torch.Text.prototype.GetBitmap = function()
-{
-    var that = this;
-    var cv = document.createElement("canvas");
-
-    cv.width = that.textLayers[0].text.length * that.maxFontSize * 0.8;
-    cv.height = that.maxFontSize;
-    cnv = cv.getContext("2d");
-
-    for (var i = 0; i < that.textLayers.length; i++)
-    {
-        if (that.textLayers[i].background)
-        {
-            cnv.fillStyle = that.textLayers[i].background;
-            cnv.fillRect(0,0,cv.width,cv.height)
-        }
-        that.ApplyLayer(that.textLayers[i], cnv);
-    }
-
-
-    var image = new Image();
-    image.src = cv.toDataURL();
-    return {image: image};
+    var width = that.game.canvasNode.width;
+    var height = that.game.canvasNode.height;
+    var x = (width / 2) - (that.Rectangle.width/2);
+    that.Rectangle.x = x;
 }
 
 Torch.GhostSprite = function(){};

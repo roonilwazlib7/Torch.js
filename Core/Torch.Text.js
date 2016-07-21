@@ -68,12 +68,3 @@ Torch.Text.prototype.Update = function()
         that.lastText = that.text;
     }
 }
-
-Torch.Text.prototype.Center = function()
-{
-    var that = this;
-    var width = that.game.canvasNode.width;
-    var height = that.game.canvasNode.height;
-    var x = (width / 2) - (that.Rectangle.width/2);
-    that.Rectangle.x = x;
-}

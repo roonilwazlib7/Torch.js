@@ -72,20 +72,19 @@ Player.prototype.HandleItemOffset = function()
     var that = this;
     var offSetSoFar = that.ItemOffset;
     var walking_right_offset = {x: 50, y:12};
-    var walking_left_offset = {x: 0, y: 12};
+    var walking_left_offset = {x: -23, y: 12};
     if (that.walkingRight)
     {
         offSetSoFar = walking_right_offset;
+        that.Item.Right();
     }
     if (that.walkingLeft)
     {
         offSetSoFar = walking_left_offset;
+        that.Item.Left();
     }
     that.ItemOffset = offSetSoFar;
 }
-
-
-
 
 
 
@@ -98,6 +97,8 @@ var ShortSword = function(game,x,y,player)
     this.Bind.Texture("short-sword");
     this.player = player;
     this.drawIndex = player.drawIndex - 1;
+    this.rightTexture = "short-sword";
+    this.leftTexture = "short-sword-left";
 }
 ShortSword.is(Torch.Sprite);
 ShortSword.prototype.Update = function()
@@ -106,4 +107,14 @@ ShortSword.prototype.Update = function()
     that.BaseUpdate();
     that.Rectangle.x = that.player.Rectangle.x + that.player.ItemOffset.x;
     that.Rectangle.y = that.player.Rectangle.y + that.player.ItemOffset.y;
+}
+ShortSword.prototype.Right = function()
+{
+    var that = this;
+    that.Bind.Texture(that.rightTexture);
+}
+ShortSword.prototype.Left = function()
+{
+    var that = this;
+    that.Bind.Texture(that.leftTexture);
 }

@@ -9,6 +9,8 @@ function Load()
     Game.Load.Texture("Art/player_left.png", "player_left");
     Game.Load.Texture("Art/brick.png", "basic-block");
     Game.Load.Texture("Art/short-sword.png", "short-sword");
+    Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
+    Game.Load.Texture("Art/shield.png", "shield");
 }
 function Update()
 {
@@ -42,7 +44,11 @@ function Init()
     TitleText2.Center();
     player = new Player(Game, 10, 170);
     player.SwitchItem(ShortSword);
-    Spawner = new Torch.Platformer.Spawner(SpawnWorld());
+    Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
+
+    var logoSprite = new Torch.Sprite(Game, 0, 50);
+    logoSprite.Bind.Texture("shield");
+    logoSprite.Center();
 }
 
 Game.Start(Load, Update, Draw, Init);
