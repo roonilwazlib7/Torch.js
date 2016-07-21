@@ -42,9 +42,12 @@ Torch.Sound.PlayList.prototype.Update = function()
     var that = this;
     if (that.game.Assets.GetSound(that.currentSong).currentTime >= that.game.Assets.GetSound(that.currentSong).duration)
     {
-        alert("switching");
         that.index++;
         that.currentSong = that.songList[that.index];
         that.Play();
+        if (that.index == that.songList.length - 1)
+        {
+            that.index = 0;
+        }
     }
 }

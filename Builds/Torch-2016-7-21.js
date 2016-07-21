@@ -1862,7 +1862,6 @@ Torch.Sound.PlayList.prototype.Play = function()
 {
     var that = this;
     that.game.Assets.GetSound(that.currentSong).play();
-    console.log(that.game.Assets.GetSound(that.currentSong).duration);
 }
 Torch.Sound.PlayList.prototype.ShuffleArray = function(array)
 {
@@ -1892,7 +1891,16 @@ Torch.Sound.PlayList.prototype.Randomize = function()
 Torch.Sound.PlayList.prototype.Update = function()
 {
     var that = this;
-    that.game.Assets.GetSound(that.currentSong).currentTime;
+    if (that.game.Assets.GetSound(that.currentSong).currentTime >= that.game.Assets.GetSound(that.currentSong).duration)
+    {
+        that.index++;
+        that.currentSong = that.songList[that.index];
+        that.Play();
+        if (that.index == that.songList.length - 1)
+        {
+            that.index = 0;
+        }
+    }
 }
 Torch.Color = function(rOrHex, g, b, a)
 {
