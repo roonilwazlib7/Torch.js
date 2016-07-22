@@ -1816,7 +1816,7 @@ Torch.Text.prototype.Render = function()
     cnv = document.createElement("CANVAS");
     Torch.measureCanvas.font = that.fontSize + "px " + that.font;
     cnv.width = Torch.measureCanvas.measureText(that.text).width;
-    cnv.height = that.fontSize;
+    cnv.height = that.fontSize + 5;
     console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
@@ -1829,6 +1829,8 @@ Torch.Text.prototype.Render = function()
     {
         that.Bind.Texture(image);
     }
+    that.Rectangle.width = cnv.width;
+    that.Rectangle.height = that.fontSize + 5;
 
 }
 
@@ -1848,7 +1850,7 @@ Torch.Text.prototype.Center = function()
     var that = this;
     var width = that.game.canvasNode.width;
     var height = that.game.canvasNode.height;
-    var x = width / 2 - that.Rectangle.width/2;
+    var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
 }
 Torch.Color = function(rOrHex, g, b, a)
