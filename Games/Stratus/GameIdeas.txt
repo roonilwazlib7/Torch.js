@@ -21,4 +21,5 @@
     Human, Dwarf, Elf, Wizard
 
 **  Random Ideas:
-    ** different classes of races
+    **  different classes of races
+    **  doors can be opened by anything, or be accessible only to certain abilities

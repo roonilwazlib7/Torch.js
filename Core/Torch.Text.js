@@ -42,7 +42,6 @@ Torch.Text.prototype.Render = function()
     Torch.measureCanvas.font = that.fontSize + "px " + that.font;
     cnv.width = Torch.measureCanvas.measureText(that.text).width;
     cnv.height = that.fontSize + 5;
-    console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
     canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;

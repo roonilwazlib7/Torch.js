@@ -153,3 +153,13 @@ Torch.Platformer.Fluid.prototype.FLUID = true;
 Torch.Platformer.Fluid.prototype.friction = 0.3;
 Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
+
+Torch.Platformer.SpawnItem = function(spawnType, spawned, obj)
+{
+    this.spawnType = spawnType;
+    this.spawned = spawned;
+    if (obj)
+    {
+        this.Sprite = obj;
+    }
+}
