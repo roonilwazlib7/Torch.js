@@ -116,8 +116,8 @@ var pixl = function(data, optionalColorPallette, optionalExportType)
 
     //export it
     exportObject = {
-        image: new Image(exportImage),
         src : exportImage,
+        image: new Image(exportImage),
         time: exportTime,
     };
 
@@ -323,47 +323,6 @@ pixl.util.Mix = function(pal1, pal2)
 //TODO
 //Add some default pallettes
 pixl.pal = {};
-
-//TODO
-//Add text stuff
-//canvas.fillText is incredibly slow, faster to convert it to an image
-pixl.Text = function(text)
-{
-    this.text = text;
-    this.font = "arcade";
-    this.fontSize = 30;
-    this.color = "red";
-    this.DrawText = null;
-    this.ChangeText(text);
-};
-pixl.Text.prototype.Font = function (font)
-{
-    var that = this;
-    that.font = font;
-    that.ChangeText(that.text);
-};
-pixl.Text.prototype.ChangeText = function(text)
-{
-    var that = this;
-    var canvas,
-        renderingCanvas,
-        exportImage;
-    that.text = text;
-    canvas = document.createElement("CANVAS");
-    canvas.width = text.length * (that.fontSize / 2);
-    canvas.height = 100;
-    renderingCanvas = canvas.getContext("2d");
-    renderingCanvas.fillStyle = that.color;
-    renderingCanvas.font = that.fontSize + "px " + that.font//"30px Arial";
-    renderingCanvas.fillText(text,0,that.fontSize);
-    exportImage = new Image();
-    exportImage.src = canvas.toDataURL();
-
-
-    that.DrawText = exportImage;
-
-
-}
 Function.prototype.is = function(otherFunction)
 {
     var proto = this.prototype;
@@ -1814,6 +1773,10 @@ Torch.Text.prototype.GetBitmap = function()
 Torch.GhostSprite = function(){};
 Torch.GhostSprite.is(Torch.Sprite);
 Torch.GhostSprite.prototype.GHOST_SPRITE = true;
+var cnv = document.createElement("CANVAS");
+cnv.width = 500;
+cnv.height = 500;
+Torch.measureCanvas = cnv.getContext("2d");
 Torch.Text = function(game,x,y,data)
 {
     this.InitSprite(game,x,y);
@@ -1835,11 +1798,12 @@ Torch.Text.prototype.Init = function()
 {
     var that = this;
     if (that.data.font) that.font = that.data.font;
-    if (that.data.fontSize) that.fontSize = that.data.fontWeight;
+    if (that.data.fontSize) that.fontSize = that.data.fontSize;
     if (that.data.fontWeight) that.fontWeight = that.data.fontWeight;
     if (that.data.color) that.color = that.data.color;
     if (that.data.text) that.text = that.data.text;
     if (that.data.rectangle) that.Rectangle = that.data.rectangle;
+
     that.Render();
 }
 
@@ -1850,8 +1814,10 @@ Torch.Text.prototype.Render = function()
         cnv,
         image;
     cnv = document.createElement("CANVAS");
-    cnv.width = that.width;
-    cnv.height = that.height;
+    Torch.measureCanvas.font = that.fontSize + "px " + that.font;
+    cnv.width = Torch.measureCanvas.measureText(that.text).width;
+    cnv.height = that.fontSize;
+    console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
     canvas.font = that.fontSize + "px " + that.font;
@@ -1875,6 +1841,15 @@ Torch.Text.prototype.Update = function()
         that.Render();
         that.lastText = that.text;
     }
+}
+
+Torch.Text.prototype.Center = function()
+{
+    var that = this;
+    var width = that.game.canvasNode.width;
+    var height = that.game.canvasNode.height;
+    var x = width / 2 - that.Rectangle.width/2;
+    that.Rectangle.x = x;
 }
 Torch.Color = function(rOrHex, g, b, a)
 {
@@ -2399,4 +2374,4 @@ Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
 
-Torch.version='Torch-2016-7-19'
+Torch.version='Torch-2016-7-21'
