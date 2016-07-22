@@ -45,7 +45,7 @@ Torch.Text.prototype.Render = function()
     console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
-    canvas.font = that.fontSize + "px " + that.font;
+    canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;
     canvas.fillText(that.text,0,that.fontSize);
     //generate the image
     image = new Image();

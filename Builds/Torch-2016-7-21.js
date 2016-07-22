@@ -528,8 +528,8 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 
     that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
     that.canvasNode.height = typeof(that.height) == "string" ? document.body.clientHeight - 25 : that.height;
-
-    Torch.Message(document.body.clientWidth);
+    that.Viewport.width = that.canvasNode.width;
+    that.Viewport.height = that.canvasNode.height;
 
 };
 Torch.Game.prototype.Add = function(o)
@@ -1508,6 +1508,7 @@ Torch.Sprite.prototype.UpdateBody = function()
     var that = this;
     var velX = that.Body.x.velocity;
     var velY = that.Body.y.velocity;
+    var deltaTime = that.game.deltaTime;
     if (that.Body.x.acceleration != that.Body.x.la)
     {
         that.Body.x.la = that.Body.x.acceleration;
@@ -1515,7 +1516,7 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.x.acceleration != 0)
     {
-        that.Body.x.aTime += that.game.deltaTime;
+        that.Body.x.aTime += deltaTime;
         velX += that.Body.x.aTime * that.Body.x.acceleration;
     }
     if (that.Body.y.acceleration != that.Body.y.la)
@@ -1525,19 +1526,19 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.y.acceleration != 0)
     {
-        that.Body.y.aTime += that.game.deltaTime;
+        that.Body.y.aTime += deltaTime;
         velY += that.Body.y.aTime * that.Body.y.acceleration;
     }
     if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
     {
-        that.Rectangle.x += velX * that.game.deltaTime;
+        that.Rectangle.x += velX * deltaTime;
     }
     else
     {
         var dir = velX < 0 ? -1 : 1;
-        that.Rectangle.x += dir * that.Body.x.maxVelocity * that.game.deltaTime;
+        that.Rectangle.x += dir * that.Body.x.maxVelocity * deltaTime;
     }
-    that.Rectangle.y += velY * that.game.deltaTime;
+    that.Rectangle.y += velY * deltaTime;
 };
 Torch.Sprite.prototype.ToggleFixed = function()
 {
@@ -1820,7 +1821,7 @@ Torch.Text.prototype.Render = function()
     console.log(cnv.height, cnv.width);
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
-    canvas.font = that.fontSize + "px " + that.font;
+    canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;
     canvas.fillText(that.text,0,that.fontSize);
     //generate the image
     image = new Image();

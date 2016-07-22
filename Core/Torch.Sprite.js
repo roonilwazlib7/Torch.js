@@ -156,6 +156,7 @@ Torch.Sprite.prototype.UpdateBody = function()
     var that = this;
     var velX = that.Body.x.velocity;
     var velY = that.Body.y.velocity;
+    var deltaTime = that.game.deltaTime;
     if (that.Body.x.acceleration != that.Body.x.la)
     {
         that.Body.x.la = that.Body.x.acceleration;
@@ -163,7 +164,7 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.x.acceleration != 0)
     {
-        that.Body.x.aTime += that.game.deltaTime;
+        that.Body.x.aTime += deltaTime;
         velX += that.Body.x.aTime * that.Body.x.acceleration;
     }
     if (that.Body.y.acceleration != that.Body.y.la)
@@ -173,19 +174,19 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.y.acceleration != 0)
     {
-        that.Body.y.aTime += that.game.deltaTime;
+        that.Body.y.aTime += deltaTime;
         velY += that.Body.y.aTime * that.Body.y.acceleration;
     }
     if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
     {
-        that.Rectangle.x += velX * that.game.deltaTime;
+        that.Rectangle.x += velX * deltaTime;
     }
     else
     {
         var dir = velX < 0 ? -1 : 1;
-        that.Rectangle.x += dir * that.Body.x.maxVelocity * that.game.deltaTime;
+        that.Rectangle.x += dir * that.Body.x.maxVelocity * deltaTime;
     }
-    that.Rectangle.y += velY * that.game.deltaTime;
+    that.Rectangle.y += velY * deltaTime;
 };
 Torch.Sprite.prototype.ToggleFixed = function()
 {

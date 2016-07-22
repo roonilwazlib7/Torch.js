@@ -1,0 +1,24 @@
+-----------------------
+|   Ideas For Stratus |
+-----------------------
+**  The concept
+    Stratus will be in the vein of the classic Metroid games, which is
+    to say it will involve lots of unlockables for the character, puzzle
+    solving and different worlds (or areas).
+
+    Stratus will involve playing as a variety of fantasy races. (see below for list)
+    Each race will have a corresponding 'world' that will require the unique
+    abilities of that race. Once a race is unlocked, the player will be able to
+    switch between them at his/her leisure.
+
+    The ultimate goal of the game will be to unlock all the races, whose abilities
+    will all be required in some sort of final battle. This is the main object of
+    the game, but not the only one. The player will also have the chance to unlock
+    additional items that will increase his/her power, but that aren't technically
+    necessary.
+
+**  The races
+    Human, Dwarf, Elf, Wizard
+
+**  Random Ideas:
+    ** different classes of races

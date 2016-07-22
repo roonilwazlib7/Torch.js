@@ -67,8 +67,8 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 
     that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
     that.canvasNode.height = typeof(that.height) == "string" ? document.body.clientHeight - 25 : that.height;
-
-    Torch.Message(document.body.clientWidth);
+    that.Viewport.width = that.canvasNode.width;
+    that.Viewport.height = that.canvasNode.height;
 
 };
 Torch.Game.prototype.Add = function(o)

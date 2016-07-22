@@ -3,7 +3,7 @@ var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
 var TitleText, TitleText2;
 function Load()
 {
-    Game.Load.Texture("Art/player.png", "player");
+    Game.Load.Texture("Art/mountain.png", "player");
 }
 function Update()
 {
@@ -22,7 +22,8 @@ function Init()
         color: "green",
         text: "Stratus",
         fontSize: 24,
-        font: "monospace"
+        font: "monospace",
+        fontWeight: "italic bold"
     });
     TitleText2 = new Torch.Text(Game, 100, 130,{
         color: "green",
@@ -33,7 +34,7 @@ function Init()
 
     TitleText.Center();
     TitleText2.Center();
-    var player = new Player(Game, TitleText2.Rectangle.x + (TitleText2.Rectangle.width/2) - 32, 170);
+    var player = new Player(Game, TitleText2.Rectangle.x + (TitleText2.Rectangle.width/2) - 128, 170);
 }
 
 Game.Start(Load, Update, Draw, Init);
