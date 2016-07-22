@@ -32,7 +32,7 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 
     that.Reset();
 
-    if (Torch.Scale)
+    if (Torch.Scale && !that.sprite.TEXT)
     {
         scale = Torch.Scale;
     }

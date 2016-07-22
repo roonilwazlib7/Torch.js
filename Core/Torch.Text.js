@@ -18,7 +18,7 @@ Torch.Text = function(game,x,y,data)
     this.Init();
 }
 Torch.Text.is(Torch.Sprite);
-
+Torch.Text.prototype.TEXT = true;
 Torch.Text.prototype.Init = function()
 {
     var that = this;

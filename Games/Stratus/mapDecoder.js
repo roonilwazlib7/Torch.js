@@ -12,8 +12,15 @@ function parseMapString(map)
     var yPositions = positionsY.split(" ");
     var allDefs = defs.split(" ");
 
+    var converted = [];
+
     for (var i = 0; i < allDefs.length; i++)
     {
         var item = new DEFS[parseInt(allDefs[i],16)](parseInt(xPositions[i],16), parseInt(yPositions[i],16))
+        converted.push({
+            Sprite: item,
+            spawned: false
+        });
     }
+    return converted;
 }

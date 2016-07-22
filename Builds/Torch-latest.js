@@ -1384,7 +1384,7 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 
     that.Reset();
 
-    if (Torch.Scale)
+    if (Torch.Scale && !that.sprite.TEXT)
     {
         scale = Torch.Scale;
     }
@@ -1793,7 +1793,7 @@ Torch.Text = function(game,x,y,data)
     this.Init();
 }
 Torch.Text.is(Torch.Sprite);
-
+Torch.Text.prototype.TEXT = true;
 Torch.Text.prototype.Init = function()
 {
     var that = this;
