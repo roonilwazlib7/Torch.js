@@ -132,6 +132,7 @@ Torch.Animation.StepAnimation = function(game, totalTime, steps)
 	this.interval = totalTime / steps.length;
 	this.time = 0;
 	this.index = 0;
+	this.steps[0]();
 }
 Torch.Animation.StepAnimation.is(Torch.GhostSprite);
 
