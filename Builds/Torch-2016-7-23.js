@@ -2348,17 +2348,31 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 that.Body.y.velocity = 0;
                 if (offset.vx > 0)
                 {
-                    //colDir = "l";
-                    that.Rectangle.x += offset.x;
-                    that.Body.x.velocity = 0;
-                    that.onLeft = true;
+                    //colDir = "l"
+                    if (!item.Sprite.Slope)
+                    {
+                        that.Rectangle.x += offset.x;
+                        that.Body.x.velocity = 0;
+                        that.onLeft = true;
+                    }
+                    else
+                    {
+                        that.BlockSlope(item.Sprite, offset);
+                    }
                 }
                 else
                 {
                     //colDir = "r";
-                    that.Rectangle.x -= offset.x;
-                    that.Body.x.velocity = 0;
-                    that.onRight = true;
+                    if (!item.Sprite.Slope)
+                    {
+                        that.Rectangle.x -= offset.x;
+                        that.Body.x.velocity = 0;
+                        that.onRight = true;
+                    }
+                    else
+                    {
+                        that.BlockSlope(item.Sprite, offset);
+                    }
                 }
 
             }
@@ -2373,15 +2387,31 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 else if ( Math.abs(offset.sharedXPlane) < 59 )
                 {
                     //colDir = "b";
-                    that.Rectangle.y -= (offset.y - item.Sprite.sink);
-                    that.Body.y.acceleration = 0;
-                    that.Body.y.velocity = 0;
-                    that.onGround = true;
-                    if (!that.inFluid) that.currentFriction = item.Sprite.friction;
+                    if (!item.Sprite.Slope)
+                    {
+                        that.Rectangle.y -= (offset.y - item.Sprite.sink);
+                        that.Body.y.acceleration = 0;
+                        that.Body.y.velocity = 0;
+                        that.onGround = true;
+                        if (!that.inFluid) that.currentFriction = item.Sprite.friction;
+                    }
+                    else
+                    {
+                        that.BlockSlope(item.Sprite, offset);
+                    }
                 }
             }
         }
     }
+}
+Torch.Platformer.Actor.prototype.BlockSlope = function(block, offset)
+{
+    var that = this;
+    // //keep how far it's moved, but change y
+     var Yoffset = offset.x * block.Slope;
+    // that.Rectangle.y -= Yoffset;
+    that.Rectangle.y = block.Rectangle.y + (block.Rectangle.height - Yoffset) - that.Rectangle.height;
+    that.onGround = true;
 }
 Torch.Platformer.Actor.prototype.FluidCollision = function(item, offset)
 {

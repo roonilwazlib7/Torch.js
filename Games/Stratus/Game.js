@@ -9,6 +9,7 @@ function Load()
     Game.Load.Texture("Art/player_left.png", "player_left");
     Game.Load.Texture("Art/hand.png", "hand");
     Game.Load.Texture("Art/brick.png", "basic-block");
+    Game.Load.Texture("Art/slope.png", "slope-block");
     Game.Load.Texture("Art/short-sword.png", "short-sword");
     Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
     Game.Load.Texture("Art/play-button.png", "start-button");
