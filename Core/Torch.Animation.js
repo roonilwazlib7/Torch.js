@@ -122,3 +122,31 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 		return that.TextureSheet[that.textureIndex];
 	}
 };
+
+
+Torch.Animation.StepAnimation = function(game, totalTime, steps)
+{
+	this.InitSprite(game, 0, 0);
+	this.steps = steps;
+	this.totalTime = totalTime;
+	this.interval = totalTime / steps.length;
+	this.time = 0;
+	this.index = 0;
+}
+Torch.Animation.StepAnimation.is(Torch.GhostSprite);
+
+Torch.Animation.StepAnimation.prototype.Update = function()
+{
+	var that = this;
+	that.time += that.game.deltaTime;
+	if (that.time >= that.interval)
+	{
+		that.time = 0;
+		that.index++;
+		that.steps[that.index]();
+		if (that.index == that.steps.length - 1)
+		{
+			that.Trash();
+		}
+	}
+}

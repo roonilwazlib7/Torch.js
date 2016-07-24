@@ -5,20 +5,24 @@ var Player = function(game, x, y)
     this.walkingRight = false;
     this.walkingLeft = false;
     this.Item = null;
-    this.ItemOffset = {
-        x: 50,
-        y: 12
+    this.HandOffset = {
+        x: 52,
+        y: 33
     };
     this.drawIndex = 5;
     this.opacity = 0;
     this.ready = false;
+    this.Hand = new Torch.Sprite(game, this.Rectangle.x + this.HandOffset.x, this.Rectangle.y + this.HandOffset.y);
+    this.Hand.Bind.Texture("hand");
+    this.Hand.drawIndex = 5;
+    this.StrikeOffset = {x: 5, y: 7}
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 
 Player.prototype.Update = function()
 {
     var that = this;
-
+    var keys = that.game.Keys;
     if (!that.ready)
     {
         that.Enter();
@@ -29,6 +33,8 @@ Player.prototype.Update = function()
         that.HandleItemOffset();
         that.Move();
     }
+
+
     that.BaseUpdate();
 }
 Player.prototype.Move = function()
@@ -81,20 +87,37 @@ Player.prototype.SwitchItem = function(item)
 Player.prototype.HandleItemOffset = function()
 {
     var that = this;
-    var offSetSoFar = that.ItemOffset;
-    var walking_right_offset = {x: 50, y:12};
-    var walking_left_offset = {x: -23, y: 12};
+    var offSetSoFar = that.HandOffset;
+    var extraX = 0;
+    var extraY = 0
+    that.HandOffset = offSetSoFar;
+    if (!that.game.Keys.E.down && that.EWasDown)
+    {
+        var anim = new Torch.Animation.StepAnimation(that.game, 500, [function(){that.HandOffset.x += 2},function(){that.HandOffset.x += 2},function(){that.HandOffset.x += 2}]);
+        that.EWasDown = false;
+    }
+    if (that.game.Keys.E.down)
+    {
+        that.EWasDown = true;
+    }
+    else
+    {
+        that.EWasDown = false;
+    }
+
     if (that.walkingRight)
     {
-        offSetSoFar = walking_right_offset;
-        that.Item.Right();
+        if (that.TextureSheetAnimation.textureIndex == 0)
+        {
+            extraY += -3;
+        }
+        else
+        {
+            extraY += 3;
+        }
     }
-    if (that.walkingLeft)
-    {
-        offSetSoFar = walking_left_offset;
-        that.Item.Left();
-    }
-    that.ItemOffset = offSetSoFar;
+    that.Hand.Rectangle.x = this.Rectangle.x + this.HandOffset.x + extraX;
+    that.Hand.Rectangle.y = this.Rectangle.y + this.HandOffset.y + extraY;
 }
 Player.prototype.Enter = function()
 {
@@ -127,8 +150,8 @@ ShortSword.prototype.Update = function()
 {
     var that = this;
     that.BaseUpdate();
-    that.Rectangle.x = that.player.Rectangle.x + that.player.ItemOffset.x;
-    that.Rectangle.y = that.player.Rectangle.y + that.player.ItemOffset.y;
+    that.Rectangle.x = that.player.Hand.Rectangle.x;
+    that.Rectangle.y = that.player.Hand.Rectangle.y - (that.Rectangle.width / 2) - 5;
 }
 ShortSword.prototype.Right = function()
 {

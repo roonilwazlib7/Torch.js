@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link href = "map.css" rel = "stylesheet" />
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    </head>
+    <body>
+        <img id = "preview" />
+        <div id = "map-out">
+            <div style="width: 400px;margin:0px auto">
+                <h1> Stratus Map Editor </h1>
+            </div>
+        </div>
+        <div id = "menu" class="well">
+            <h3>Menu</h3>
+            <div class="row">
+                <h4>Operations</h4>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" class = "btn btn-primary full" onclick = "Map.Export();">Export</button></div>
+                        <div class="col-sm-6">
+                            <button type="button" class = "btn btn-primary full" onclick = "Map.Import();">Import</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <textarea id = "inout"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-3">Name</div>
+                        <div class="col-sm-3">Width</div>
+                        <div class="col-sm-3">Height</div>
+                        <div class="col-sm-3">Scale</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id = "map-name" value="MyMap"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id = "map-width" value = "16"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id = "map-height" value = "16"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id = "map-scale" value = "4"/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:1%">
+                        <div class="col-sm-12">
+                            <button class="btn btn-success full" id = "new-map"><span class="glyphicon glyphicon-plus" style="float:left"></span>New Map</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h4>Build</h4>
+
+                <div class="col-sm-8">
+                    <div class="dropdown full">
+                        <button class="btn btn-primary dropdown-toggle full" type="button" data-toggle="dropdown">Switch Item
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu full" id="item-select">
+                            </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <p id="current-item-display">Basic Block</p>
+                </div>
+                <div class="col-sm-6">
+                    <textarea id = "flags"></textarea>
+                </div>
+            </div>
+
+        </div>
+        <script src = "../../../Builds/Torch-latest.js"></script>
+        <script src = "../Blocks.js"></script>
+        <script src = "map.js"></script>
+    </body>
+</html>

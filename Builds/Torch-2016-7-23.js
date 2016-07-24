@@ -429,6 +429,12 @@ var Torch =
             $("#torch_message").append(message);
         }
     },
+    Reset: function()
+    {
+        var that = this;
+        if (that.activeGame) that.activeGame.time = 0;
+        //that.activeGame = null;
+    }
 };
 
 Torch.Rectangle = function(x, y, width, height){
@@ -495,7 +501,7 @@ Torch.Vector.prototype.GetDistance = function(otherVector)
     return Math.sqrt(raw);
 }
 Torch.Game = function(canvasId, width, height, name){
-    console.log("%c   " + Torch.version + "  ", "background-color:#cc5200; color:white");
+    console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
     this.canvasNode = document.getElementById(canvasId);
     this.canvas = this.canvasNode.getContext("2d");
@@ -540,13 +546,11 @@ Torch.Game.prototype.PixelScale = function()
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;
+
     this.load = load;
     this.update = update;
     this.draw = draw;
     this.init = init;
-
-    that.canvasNode.width = that.width;
-    that.canvasNode.height = that.height;
 
     that.load();
 
@@ -562,6 +566,12 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
         }
 
     });
+
+    that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
+    that.canvasNode.height = typeof(that.height) == "string" ? document.body.clientHeight - 25 : that.height;
+    that.Viewport.width = that.canvasNode.width;
+    that.Viewport.height = that.canvasNode.height;
+
 };
 Torch.Game.prototype.Add = function(o)
 {
@@ -1221,8 +1231,7 @@ Torch.Load.prototype.Load = function(finishFunction)
             finishFunction();
             clearInterval(_l);
             Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
-            that.game.canvasNode.style.display = "block";
-            document.getElementById("torch-load").style.display = "none";
+            
         }
     }, 1000/60);
 }
@@ -1258,130 +1267,6 @@ Torch.FutureEvent.prototype.Update = function()
         that.handle = null;
     }
 }
-Torch.Animation = function(game)
-{
-	this.game = game;
-};
-Torch.Animation.prototype.Run = function()
-{
-	var that = this;
-	if (that.animating)
-	{
-		that.Update();
-	}
-	if (that.Kill && that.hasRun)
-	{
-		that.Stop();
-	}
-};
-Torch.Animation.prototype.Start = function()
-{
-	var that = this;
-	that.animating = true;
-}
-Torch.Animation.prototype.Stop = function()
-{
-	var that = this;
-	that.animating = false;
-};
-Torch.Animation.prototype.Single = function()
-{
-	var that = this;
-	this.KillOnFirstRun = true;
-	this.animating = true;
-};
-Torch.Animation.prototype.Reset = function()
-{
-	var that = this;
-	that.elapsedTime = 0;
-	that.textureListIndex = 0;
-	this.hasRun = false;
-};
-/*
-		Torch.Animation.TexturePack
-*/
-Torch.Animation.TexturePack = function(texturePack, game)
-{
-	this.step = 50;
-	this.maxIndex = texturePack.length - 1;
-	this.textureIndex = 0;
-	this.texturePack = texturePack;
-	this.game = game;
-	this.elapsedTime = 0;
-	game.animations.push(this);
-}
-Torch.Animation.TexturePack.is(Torch.Animation);
-Torch.Animation.TexturePack.prototype.Update = function()
-{
-	var that = this;
-	that.elapsedTime += game.deltaTime;
-
-	if (that.elapsedTime >= that.step)
-	{
-		that.elapsedTime = 0;
-		that.textureIndex++;
-	}
-	if (that.textureIndex > that.maxIndex)
-	{
-		if (!that.Kill) that.textureIndex = 0;
-		if (that.Kill) that.textureIndex = -1;
-		that.hasRun = true;
-	}
-}
-Torch.Animation.TexturePack.prototype.GetCurrentFrame = function()
-{
-	var that = this;
-	return game.Assets.Textures[that.texturePack[that.textureIndex]];
-};
-/*
-	Torch.Animation.TextureSheet
-*/
-Torch.Animation.TextureSheet = function(TextureSheet, game)
-{
-	this.step = 50;
-	this.maxIndex = TextureSheet.length - 1;
-	this.textureIndex = 0;
-	this.TextureSheet = TextureSheet;
-	this.game = game;
-	this.elapsedTime = 0;
-	this.delay = 0;
-	this.delayCount = 0;
-	game.animations.push(this);
-};
-Torch.Animation.TextureSheet.is(Torch.Animation);
-Torch.Animation.TextureSheet.prototype.Update = function()
-{
-	var that = this;
-	that.elapsedTime += that.game.deltaTime;
-
-	if (that.elapsedTime >= that.step && ! (that.hasRun && that.Kill) )
-	{
-		that.elapsedTime = 0;
-		that.textureIndex++;
-	}
-	if (that.textureIndex >= that.maxIndex && that.delayCount <= 0)
-	{
-		if (!that.Kill) that.textureIndex = 0;
-		//if (that.Kill) that.textureIndex = that.TextureSheet.length - 1;
-		//that.TextureSheet = null;
-		that.hasRun = true;
-		if (that.finishCallBack) that.finishCallBack();
-		that.delayCount = that.delay;
-	}
-	else if (that.textureIndex >= that.maxIndex)
-	{
-		that.delayCount -= Game.deltaTime;
-		that.textureIndex--;
-	}
-};
-Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
-{
-	var that = this;
-	if (that.TextureSheet)
-	{
-		return that.TextureSheet[that.textureIndex];
-	}
-};
 /*
         Torch.Bind
 */
@@ -1411,16 +1296,16 @@ Torch.Bind.prototype.Reset = function()
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
-    var tex = that.sprite.game.Assets.Textures[textureId];
+    var tex = typeof(textureId) == "string" ? that.sprite.game.Assets.Textures[textureId] : textureId;
     var scale = 1;
 
     that.Reset();
 
-    if (Torch.Scale)
+    if (Torch.Scale && !that.sprite.TEXT)
     {
         scale = Torch.Scale;
     }
-    that.sprite.DrawTexture = tex;
+    that.sprite.DrawTexture = typeof(textureId) == "string" ? tex : {image:textureId};
 
     that.sprite.Rectangle.width = tex.width * scale;
     that.sprite.Rectangle.height = tex.height * scale;
@@ -1460,8 +1345,8 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     anim.Start();
     that.sprite.TextureSheetAnimation = anim;
 
-    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth;
-    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight;
+    that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
+    that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
 }
 Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 {
@@ -1485,17 +1370,16 @@ Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
 /*
         Torch.Sprite
 */
-Torch.Sprite = function(x,y)
+Torch.Sprite = function(game,x,y)
 {
-    this.InitSprite(x,y)
+    this.InitSprite(game,x,y)
 };
-Torch.Sprite.prototype.InitSprite = function(x,y)
+Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (x == null || x == undefined) Torch.Error("argument 'x' is required");
     if (y == null || y == undefined) Torch.Error("argument 'y' is required");
     this.Bind = new Torch.Bind(this);
     this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
-    this.BoundingBox = new Torch.Rectangle(x, y, 0, 0);
     this.Body = {
         x: {
             velocity: 0,
@@ -1514,7 +1398,7 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
             maxVelocity: 100
         }
     }
-    this.game = null;
+    this.game = game;
     this.DrawTexture = null;
     this.TexturePack = null;
     this.TextureSheet = null;
@@ -1534,20 +1418,16 @@ Torch.Sprite.prototype.InitSprite = function(x,y)
     this.fixed = false;
     this.draw = true;
     this.wasClicked = false;
-    Game.Add(this);
+    this.rotation = 0;
+    this.opacity = 1;
+    game.Add(this);
 }
-Torch.Sprite.prototype.GetBoundingBox = function()
-{
-    var that = this;
-    var bound = 1;
-    var boundingBox = new Torch.Rectangle(that.Rectangle.x + bound, that.Rectangle.y + bound, that.Rectangle.width - bound,that.Rectangle.height - bound);
-    return boundingBox;
-};
 Torch.Sprite.prototype.UpdateBody = function()
 {
     var that = this;
     var velX = that.Body.x.velocity;
     var velY = that.Body.y.velocity;
+    var deltaTime = that.game.deltaTime;
     if (that.Body.x.acceleration != that.Body.x.la)
     {
         that.Body.x.la = that.Body.x.acceleration;
@@ -1555,7 +1435,7 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.x.acceleration != 0)
     {
-        that.Body.x.aTime += that.game.deltaTime;
+        that.Body.x.aTime += deltaTime;
         velX += that.Body.x.aTime * that.Body.x.acceleration;
     }
     if (that.Body.y.acceleration != that.Body.y.la)
@@ -1565,19 +1445,19 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     if (that.Body.y.acceleration != 0)
     {
-        that.Body.y.aTime += that.game.deltaTime;
+        that.Body.y.aTime += deltaTime;
         velY += that.Body.y.aTime * that.Body.y.acceleration;
     }
     if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
     {
-        that.Rectangle.x += velX * that.game.deltaTime;
+        that.Rectangle.x += velX * deltaTime;
     }
     else
     {
         var dir = velX < 0 ? -1 : 1;
-        that.Rectangle.x += dir * that.Body.x.maxVelocity * that.game.deltaTime;
+        that.Rectangle.x += dir * that.Body.x.maxVelocity * deltaTime;
     }
-    that.Rectangle.y += velY * that.game.deltaTime;
+    that.Rectangle.y += velY * deltaTime;
 };
 Torch.Sprite.prototype.ToggleFixed = function()
 {
@@ -1618,16 +1498,27 @@ Torch.Sprite.prototype.Draw = function()
         Params.clipWidth = frame.clipWidth;
         Params.clipHeight = frame.clipHeight;
         Params.IsTextureSheet = true;
+        Params.rotation = that.rotation;
+        Params.alpha = that.opacity;
         that.game.Draw(that.DrawTexture, DrawRec, Params);
     }
-    else
+    else if (that.DrawTexture)
     {
-        that.game.Draw(that.DrawTexture, DrawRec, that.DrawParams);
+        var DrawParams = {
+            alpha: that.opacity,
+            rotation: that.rotation
+        };
+        that.game.Draw(that.DrawTexture, DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.UpdateEvents = function()
 {
     var that = this;
+    if (!this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle) && that.mouseOver)
+    {
+        that.mouseOver = false;
+        if (that.onMouseLeave)that.onMouseLeave(that);
+    }
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
         if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);
@@ -1752,67 +1643,378 @@ Torch.Sprite.prototype.GetDistance = function(otherSprite)
     var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
     return thisVec.GetDistance(otherVec);
 }
-/*
-        Torch.Text
-*/
-
-Torch.Text = function(textLayers, x, y, maxFontSize)
+Torch.Sprite.prototype.Center = function()
 {
     var that = this;
-    that._torch_add = "Sprite";
-    that.maxFontSize = maxFontSize;
-    that.textLayers = textLayers;
-    that.InitSprite(x,y);
-    that.DrawTexture = that.GetBitmap();
-    that.Rectangle.width = that.DrawTexture.image.width;
-    that.Rectangle.height = that.DrawTexture.image.height;
-    that.drawIndex = 100;
-};
-
-Torch.Text.is(Torch.Sprite);
-
-Torch.Text.prototype.ApplyLayer = function(layer, cnv)
-{
-    var that = this;
-    if (layer.font) cnv.font = layer.font;
-    if (layer.fillStyle) {
-        cnv.fillStyle = layer.fillStyle;
-        cnv.fillText(layer.text, 10, that.maxFontSize / 1.3);
-    }
-    if (layer.strokeStyle) {
-        cnv.strokeStyle = layer.strokeStyle;
-        cnv.strokeText(layer.text, 10, 10);
-    }
-}
-
-Torch.Text.prototype.GetBitmap = function()
-{
-    var that = this;
-    var cv = document.createElement("canvas");
-
-    cv.width = that.textLayers[0].text.length * that.maxFontSize * 0.8;
-    cv.height = that.maxFontSize;
-    cnv = cv.getContext("2d");
-
-    for (var i = 0; i < that.textLayers.length; i++)
-    {
-        if (that.textLayers[i].background)
-        {
-            cnv.fillStyle = that.textLayers[i].background;
-            cnv.fillRect(0,0,cv.width,cv.height)
-        }
-        that.ApplyLayer(that.textLayers[i], cnv);
-    }
-
-
-    var image = new Image();
-    image.src = cv.toDataURL();
-    return {image: image};
+    var width = that.game.canvasNode.width;
+    var height = that.game.canvasNode.height;
+    var x = (width / 2) - (that.Rectangle.width/2);
+    that.Rectangle.x = x;
 }
 
 Torch.GhostSprite = function(){};
 Torch.GhostSprite.is(Torch.Sprite);
 Torch.GhostSprite.prototype.GHOST_SPRITE = true;
+Torch.Animation = function(game)
+{
+	this.game = game;
+};
+Torch.Animation.prototype.Run = function()
+{
+	var that = this;
+	if (that.animating)
+	{
+		that.Update();
+	}
+	if (that.Kill && that.hasRun)
+	{
+		that.Stop();
+	}
+};
+Torch.Animation.prototype.Start = function()
+{
+	var that = this;
+	that.animating = true;
+}
+Torch.Animation.prototype.Stop = function()
+{
+	var that = this;
+	that.animating = false;
+};
+Torch.Animation.prototype.Single = function()
+{
+	var that = this;
+	this.KillOnFirstRun = true;
+	this.animating = true;
+};
+Torch.Animation.prototype.Reset = function()
+{
+	var that = this;
+	that.elapsedTime = 0;
+	that.textureListIndex = 0;
+	this.hasRun = false;
+};
+/*
+		Torch.Animation.TexturePack
+*/
+Torch.Animation.TexturePack = function(texturePack, game)
+{
+	this.step = 50;
+	this.maxIndex = texturePack.length - 1;
+	this.textureIndex = 0;
+	this.texturePack = texturePack;
+	this.game = game;
+	this.elapsedTime = 0;
+	game.animations.push(this);
+}
+Torch.Animation.TexturePack.is(Torch.Animation);
+Torch.Animation.TexturePack.prototype.Update = function()
+{
+	var that = this;
+	that.elapsedTime += game.deltaTime;
+
+	if (that.elapsedTime >= that.step)
+	{
+		that.elapsedTime = 0;
+		that.textureIndex++;
+	}
+	if (that.textureIndex > that.maxIndex)
+	{
+		if (!that.Kill) that.textureIndex = 0;
+		if (that.Kill) that.textureIndex = -1;
+		that.hasRun = true;
+	}
+}
+Torch.Animation.TexturePack.prototype.GetCurrentFrame = function()
+{
+	var that = this;
+	return game.Assets.Textures[that.texturePack[that.textureIndex]];
+};
+/*
+	Torch.Animation.TextureSheet
+*/
+Torch.Animation.TextureSheet = function(TextureSheet, game)
+{
+	this.step = 50;
+	this.maxIndex = TextureSheet.length - 1;
+	this.textureIndex = 0;
+	this.TextureSheet = TextureSheet;
+	this.game = game;
+	this.elapsedTime = 0;
+	this.delay = 0;
+	this.delayCount = 0;
+	game.animations.push(this);
+};
+Torch.Animation.TextureSheet.is(Torch.Animation);
+Torch.Animation.TextureSheet.prototype.Update = function()
+{
+	var that = this;
+	that.elapsedTime += that.game.deltaTime;
+
+	if (that.elapsedTime >= that.step && ! (that.hasRun && that.Kill) )
+	{
+		that.elapsedTime = 0;
+		that.textureIndex++;
+	}
+	if (that.textureIndex >= that.maxIndex && that.delayCount <= 0)
+	{
+		if (!that.Kill) that.textureIndex = 0;
+		//if (that.Kill) that.textureIndex = that.TextureSheet.length - 1;
+		//that.TextureSheet = null;
+		that.hasRun = true;
+		if (that.finishCallBack) that.finishCallBack();
+		that.delayCount = that.delay;
+	}
+	else if (that.textureIndex >= that.maxIndex)
+	{
+		that.delayCount -= Game.deltaTime;
+		that.textureIndex--;
+	}
+};
+Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
+{
+	var that = this;
+	if (that.TextureSheet)
+	{
+		return that.TextureSheet[that.textureIndex];
+	}
+};
+
+
+Torch.Animation.StepAnimation = function(game, totalTime, steps)
+{
+	this.InitSprite(game, 0, 0);
+	this.steps = steps;
+	this.totalTime = totalTime;
+	this.interval = totalTime / steps.length;
+	this.time = 0;
+	this.index = 0;
+}
+Torch.Animation.StepAnimation.is(Torch.GhostSprite);
+
+Torch.Animation.StepAnimation.prototype.Update = function()
+{
+	var that = this;
+	that.time += that.game.deltaTime;
+	if (that.time >= that.interval)
+	{
+		that.time = 0;
+		that.index++;
+		that.steps[that.index]();
+		if (that.index == that.steps.length - 1)
+		{
+			that.Trash();
+		}
+	}
+}
+var cnv = document.createElement("CANVAS");
+cnv.width = 500;
+cnv.height = 500;
+Torch.measureCanvas = cnv.getContext("2d");
+Torch.Text = function(game,x,y,data)
+{
+    this.InitSprite(game,x,y);
+    this.data = data;
+
+    this.font = "Arial";
+    this.fontSize = 16;
+    this.fontWeight = "";
+    this.color = "red";
+    this.text = "";
+    this.lastText = "";
+    this.width = 100;
+    this.height = 100;
+    this.Init();
+}
+Torch.Text.is(Torch.Sprite);
+Torch.Text.prototype.TEXT = true;
+Torch.Text.prototype.Init = function()
+{
+    var that = this;
+    if (that.data.font) that.font = that.data.font;
+    if (that.data.fontSize) that.fontSize = that.data.fontSize;
+    if (that.data.fontWeight) that.fontWeight = that.data.fontWeight;
+    if (that.data.color) that.color = that.data.color;
+    if (that.data.text) that.text = that.data.text;
+    if (that.data.rectangle) that.Rectangle = that.data.rectangle;
+
+    that.Render();
+}
+
+Torch.Text.prototype.Render = function()
+{
+    var that = this;
+    var canvas,
+        cnv,
+        image;
+    cnv = document.createElement("CANVAS");
+    Torch.measureCanvas.font = that.fontSize + "px " + that.font;
+    cnv.width = Torch.measureCanvas.measureText(that.text).width;
+    cnv.height = that.fontSize + 5;
+    canvas = cnv.getContext("2d");
+    canvas.fillStyle = that.color;
+    canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;
+    canvas.fillText(that.text,0,that.fontSize);
+    //generate the image
+    image = new Image();
+    image.src = cnv.toDataURL();
+    image.onload = function()
+    {
+        that.Bind.Texture(image);
+    }
+    that.Rectangle.width = cnv.width;
+    that.Rectangle.height = that.fontSize + 5;
+
+}
+
+Torch.Text.prototype.Update = function()
+{
+    var that = this;
+    that.BaseUpdate();
+    if (that.text != that.lastText)
+    {
+        that.Render();
+        that.lastText = that.text;
+    }
+}
+Torch.Sound = {};
+
+Torch.Sound.PlayList = function(game, playList)
+{
+    this.songList = playList;
+    this.game = game;
+    this.currentSong = playList[0];
+    this.index = 0;
+}
+Torch.Sound.PlayList.prototype.Play = function()
+{
+    var that = this;
+    that.game.Assets.GetSound(that.currentSong).play();
+}
+Torch.Sound.PlayList.prototype.ShuffleArray = function(array)
+{
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+Torch.Sound.PlayList.prototype.Randomize = function()
+{
+    var that = this;
+    that.songList = that.ShuffleArray(that.songList);
+    that.currentSong = that.songList[0];
+}
+Torch.Sound.PlayList.prototype.Update = function()
+{
+    var that = this;
+    if (that.game.Assets.GetSound(that.currentSong).currentTime >= that.game.Assets.GetSound(that.currentSong).duration)
+    {
+        that.index++;
+        that.currentSong = that.songList[that.index];
+        that.Play();
+        if (that.index == that.songList.length - 1)
+        {
+            that.index = 0;
+        }
+    }
+}
+Torch.Color = function(rOrHex, g, b, a)
+{
+    this.hex = "";
+    this.Red = 0;
+    this.Green = 0;
+    this.Blue = 0;
+    this.Alpha = 1;
+    this.Init(rOrHex, g, b, a);
+}
+
+Torch.Color.prototype.Init = function(rOrHex, g, b, a)
+{
+    var that = this;
+    if (g != undefined && g!= null)
+    {
+        //rgba values
+        that.GetHexFromRGB(rOrHex, g, b, a);
+    }
+    else
+    {
+        //html color hash
+        that.GetRGBFromHex(rOrHex);
+    }
+}
+
+Torch.Color.prototype.GetHexadecimal = function(dec, a)
+{
+    var hexa = Math.round(dec * a).toString(16);
+    if (hexa.length == 1)
+    {
+        hexa = "0" + hexa
+    }
+    return hexa;
+}
+
+Torch.Color.prototype.GetHexFromRGB = function(r, g, b, a)
+{
+    var that = this;
+    that.Red = r;
+    that.Green = g;
+    that.Blue = b;
+    that.Alpha = a;
+    that.hex = "#" + that.GetHexadecimal(r,a) + that.GetHexadecimal(g,a) + that.GetHexadecimal(b,a);
+}
+
+Torch.Color.prototype.GetRGBFromHex = function(hex)
+{
+    var that = this;
+    var hexRed,
+        hexBlue,
+        hexGreen;
+    that.hex = hex.split("#")[1];
+    hexRed = that.hex.slice(0,2);
+    hexGreen = that.hex.slice(2,4);
+    hexBlue = that.hex.slice(4,6);
+    that.Red = parseInt(hexRed, 16);
+    that.Blue = parseInt(hexBlue, 16);
+    that.Green = parseInt(hexGreen, 16);
+    that.hex = '#' + that.hex;
+}
+
+Torch.Color.prototype.BlendHex = function()
+{
+    var that = this;
+    that.GetRGBFromHex(that.hex);
+}
+
+Torch.Color.prototype.BlendRGB = function()
+{
+    var that = this;
+    that.GetHexFromRGB(that.Red, that.Green. that.Blue, that.Alpha);
+}
+
+Torch.Color.prototype.GetRGBString = function()
+{
+    var that = this;
+    return "rgba(" + that.Red + "," + that.Green + "," + that.Blue + "," + that.Alpha + ");";
+}
+
+//some default colors
+Torch.Color.Red = new Torch.Color(256, 0, 0, 1);
+Torch.Color.Green = new Torch.Color(0, 256, 0, 1);
+Torch.Color.Blue = new Torch.Color(0, 0, 256, 1);
+Torch.Color.Flame = new Torch.Color("#ff8000");
+Torch.Color.Ruby = new Torch.Color("#e60000");
 Torch.StateMachine = function(obj)
 {
     this.currentState = null;
@@ -2099,6 +2301,11 @@ Torch.SpriteGroup.prototype.All = function(handle)
 
 
 Torch.Platformer = {};
+Torch.Platformer.Gravity = 0.001;
+Torch.Platformer.SetWorld = function(spawnItems)
+{
+    Torch.Platformer.spawnItems = spawnItems;
+}
 Torch.Platformer.Actor = function(){} //anything that has any interaction
 Torch.Platformer.Actor.prototype.ACTOR = true;
 Torch.Platformer.Actor.prototype.Health = 100;
@@ -2190,9 +2397,9 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
     that.onTop = false;
     that.onRight = false;
     that.onLeft = false;
-    for (var i = 0; i < Spawner.SpawnScaffold.length; i++)
+    for (var i = 0; i < Torch.Platformer.spawnItems.length; i++)
     {
-        var item = Spawner.SpawnScaffold[i];
+        var item = Torch.Platformer.spawnItems[i];
         var rect = that.Rectangle;
         if (item.spawned && item.Sprite && item.Sprite.BLOCK && that.NotSelf(item.Sprite) && (that.ACTOR) )
         {
@@ -2231,7 +2438,7 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
             }
         }
     }
-    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Game.Gravity;
+    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
 }
 
 Torch.Platformer.Block = function(){};
@@ -2245,5 +2452,61 @@ Torch.Platformer.Fluid.prototype.friction = 0.3;
 Torch.Platformer.Fluid.prototype.gravity = 0.0001;
 Torch.Platformer.Fluid.prototype.drawIndex = 30;
 
+Torch.Platformer.Spawner = function(spawnItems)
+{
+    this.spawnItems = spawnItems;
+    Torch.Platformer.SetWorld(spawnItems);
+}
+Torch.Platformer.Spawner.is(Torch.GhostSprite);
+Torch.Platformer.Spawner.prototype.Update = function()
+{
+    var that = this;
+    if(that.spawnItems.length > 0)
+    {
+        for (var i = 0; i < that.spawnItems.length; i++)
+        {
+            var item = that.spawnItems[i];
+            var viewRect = Game.Viewport.GetViewRectangle();
+            if (item.Manual) continue;
+            if (!item.spawned && !item.dead && item.DisableDynamicSpawning)
+            {
+                var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                item.Sprite = spr;
+                item.spawned = true;
+                spr.spawnItem = item;
+                spr.DrawParams = {tint: "green"};
+            }
+            else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
+            {
+                if (item.SpawnType)
+                {
+                    var spr = that.SpawnTypes[item.SpawnType](item.Position, item, item.addData);
+                    item.Sprite = spr;
+                    item.spawned = true;
+                    spr.spawnItem = item;
+                }
+            }
+            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+            {
+                item.Sprite.Trash();
+                item.Sprite = null;
+                item.spawned = false;
+            }
 
-Torch.version='Torch-2016-7-14'
+        }
+    }
+}
+
+Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
+{
+    this.spawnType = spawnType;
+    this.spawned = spawned;
+    this.position = position;
+    if (obj)
+    {
+        this.Sprite = obj;
+    }
+}
+
+
+Torch.version='Torch-2016-7-23'

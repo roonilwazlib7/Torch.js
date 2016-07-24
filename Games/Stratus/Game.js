@@ -7,6 +7,7 @@ function Load()
     Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
     Game.Load.Texture("Art/player_left.png", "player_left");
+    Game.Load.Texture("Art/hand.png", "hand");
     Game.Load.Texture("Art/brick.png", "basic-block");
     Game.Load.Texture("Art/short-sword.png", "short-sword");
     Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
@@ -62,23 +63,8 @@ function Init()
         StartButton.Trash();
         StartLogo.Trash();
         Torch.Scale = 4;
-        TitleText = new Torch.Text(Game, 100, 100,{
-            color: "green",
-            text: "Stratus",
-            fontSize: 24,
-            font: "monospace",
-            fontWeight: "italic bold"
-        });
-        TitleText2 = new Torch.Text(Game, 100, 130,{
-            color: "green",
-            text: "A Kyle and Alex Production",
-            fontSize: 24,
-            font: "monospace"
-        });
 
-        TitleText.Center();
-        TitleText2.Center();
-        player = new Player(Game, 10, 170);
+        player = new Player(Game, 10, 325);
         Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "no-rest", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);

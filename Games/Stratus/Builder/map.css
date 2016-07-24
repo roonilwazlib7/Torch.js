@@ -1,0 +1,57 @@
+img {
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated; /* Chrome */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+    z-index: 4;
+}
+textarea{
+    font-family: monospace;
+}
+.full{
+    width: 100%;
+}
+.cell
+{
+    position: absolute;
+    border: 1px solid black;
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 5;
+}
+.cell:hover{
+    background-color: green;
+}
+#map-out{
+    width: 100%;
+    height: 600px;
+}
+#menu{
+    margin-left: 5%;
+    margin-top: 3%;
+    width: 50%;
+    padding: 1%;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+}
+#menu img
+{
+    float:right;
+    width: 5%;
+}
+#menu a{
+    font-size: 1.5em;
+}
+#inout
+{
+    margin-top: 2%;
+    width: 100%;
+}
+#preview
+{
+    position: absolute;
+}
