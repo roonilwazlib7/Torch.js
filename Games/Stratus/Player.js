@@ -96,11 +96,27 @@ Player.prototype.HandleStrikes = function()
         var anim;
         if (that.facing == "right")
         {
-            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeRightFrameList(that));
+            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeRightFrameList(that),
+            function(){
+                console.log("starting");
+                that.Item.striking = true;
+            },
+            function(){
+                console.log("ending");
+                that.Item.striking = false;
+            });
         }
         else
         {
-            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeLeftFrameList(that));
+            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeLeftFrameList(that),
+            function(){
+                console.log("starting");
+                that.Item.striking = true;
+            },
+            function(){
+                console.log("ending");
+                that.Item.striking = false;
+            });
         }
         that.EWasDown = false;
     }
@@ -119,14 +135,14 @@ Player.prototype.HandleItemOffset = function()
     if (that.facing == "right")
     {
         that.HandOffset = {
-                x: 52,
+                x: that.Rectangle.width - 5,
                 y: 33
         };
     }
     else
     {
         that.HandOffset = {
-            x: 0,
+            x: -5,
             y: 33
         }
     }
@@ -167,7 +183,7 @@ var GetPlayerStrikeRightFrameList = function(player){
 var GetPlayerStrikeLeftFrameList = function(player){
     var that = player;
     return [
-        function(){that.StrikeOffset = {x: -15, y: -20}},
+        function(){that.StrikeOffset = {x: 15, y: -20}},
         function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
         function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
         function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},

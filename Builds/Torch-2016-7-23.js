@@ -1781,7 +1781,7 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 };
 
 
-Torch.Animation.StepAnimation = function(game, totalTime, steps)
+Torch.Animation.StepAnimation = function(game, totalTime, steps, start, end)
 {
 	this.InitSprite(game, 0, 0);
 	this.steps = steps;
@@ -1790,6 +1790,9 @@ Torch.Animation.StepAnimation = function(game, totalTime, steps)
 	this.time = 0;
 	this.index = 0;
 	this.steps[0]();
+	this.start = start;
+	this.end = end;
+	if (start) this.start();
 }
 Torch.Animation.StepAnimation.is(Torch.GhostSprite);
 
@@ -1804,6 +1807,7 @@ Torch.Animation.StepAnimation.prototype.Update = function()
 		that.steps[that.index]();
 		if (that.index == that.steps.length - 1)
 		{
+			if (that.end) that.end();
 			that.Trash();
 		}
 	}
