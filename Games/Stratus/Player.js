@@ -79,7 +79,12 @@ Player.prototype.Move = function()
         that.walkingRight = false;
         that.walkingLeft = false;
     }
-    if (keys.W.down && that.onGround) that.Body.y.velocity = -0.4;
+    if (keys.W.down && that.onGround)
+    {
+        console.log("jumping...");
+        that.Rectangle.y -= 5;
+        that.Body.y.velocity = -0.4;
+    }
     if (keys.R.down) that.rotation += 0.01;
 }
 Player.prototype.SwitchItem = function(item)
