@@ -6,3 +6,6 @@
     [] 45 degrees
     [] 22 degrees
     [] 10 degrees
+[]  Add an object (Scaler) to change Torch.Scale relative to the screen width
+    and height. Ideally, we want a scale of 4 when the dimensions of my screen
+    are fed in

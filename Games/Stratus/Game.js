@@ -41,7 +41,7 @@ function Draw()
 }
 function Init()
 {
-    Game.Clear("black");
+    Game.Clear("#ccccb3");
     Torch.Scale = 2;
     Game.PixelScale();
 
