@@ -1,0 +1,8 @@
+------------------------
+|  Things To Get Done  |
+------------------------
+[]  Experiment with spoofing lighting around the player.
+[]  Finish implementing slopes into the Platformer engine
+    [] 45 degrees
+    [] 22 degrees
+    [] 10 degrees
