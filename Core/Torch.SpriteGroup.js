@@ -48,6 +48,13 @@ Torch.SpriteGroup.prototype.Show = function()
         sprite.draw = true;
     }
 }
+Torch.SpriteGroup.prototype.Center = function()
+{
+    var that = this;
+    that.All(function(sprite){
+        sprite.Center();
+    });
+}
 Torch.SpriteGroup.prototype.All = function(handle)
 {
     var that = this

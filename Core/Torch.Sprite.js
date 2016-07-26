@@ -109,25 +109,7 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
 }
-Torch.Bind.prototype.PixlTexture = function(pixlData, colorPallette)
-{
-    var that = this;
-    var tex = pixl(pixlData, colorPallette);
-    var im = new Image();
 
-    that.Reset();
-    im.src = tex.src;
-    im.onload = function()
-    {
-        var scale = 1;
-        if (Torch.Scale) scale = Torch.Scale;
-        that.sprite.Rectangle.width = im.width * scale;
-        that.sprite.Rectangle.height = im.height * scale;
-        that.sprite.DrawTexture = tex;
-    }
-
-
-}
 /*
         Torch.Sprite
 */
@@ -171,14 +153,13 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
     this.mouseOver = false;
     this.clickTrigger = false;
     this.clickAwayTrigger = false;
+    this.draw = true;
+    this.wasClicked = false;
     this.trash = false;
-    this.DrawParams = {};
     this.drawIndex = 0;
     this._torch_add = "Sprite";
     this._torch_uid = "";
     this.fixed = false;
-    this.draw = true;
-    this.wasClicked = false;
     this.rotation = 0;
     this.opacity = 1;
     game.Add(this);

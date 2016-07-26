@@ -49,11 +49,9 @@ function Init()
 
     var StartButton = new Torch.Sprite(Game, 0, 450);
     StartButton.Bind.Texture("start-button");
-    StartButton.Center();
 
     var StartLogo = new Torch.Sprite(Game, 0, 50);
     StartLogo.Bind.Texture("main-logo");
-    StartLogo.Center();
 
     StartButton.MouseOver(function(){
         StartButton.opacity = 0.6;
@@ -62,9 +60,11 @@ function Init()
         StartButton.opacity = 1;
     });
 
+    var StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
+    StartMenu.Center();
+
     StartButton.Click(function(){
-        StartButton.Trash();
-        StartLogo.Trash();
+        StartMenu.Trash();
         Torch.Scale = 4;
 
         player = new Player(Game, 10, 325);
