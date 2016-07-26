@@ -27,7 +27,19 @@ Torch.Bind.prototype.Reset = function()
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
-    var tex = typeof(textureId) == "string" ? that.sprite.game.Assets.Textures[textureId] : textureId;
+    var tex;
+    if (typeof(textureId) == "string")
+    {
+        tex = that.sprite.game.Assets.Textures[textureId];
+        if (!tex)
+        {
+            that.sprite.game.FatalError(new Error("Sprite.Bind.Texture given textureId '{0}' was not found".format(textureId)));
+        }
+    }
+    else
+    {
+        tex = textureId;
+    }
     var scale = 1;
 
     that.Reset();
@@ -47,7 +59,15 @@ Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
 
     if (!optionalParameters) optionalParameters = {};
 
-    that.sprite.TexturePack = that.sprite.game.Assets.TexturePacks[texturePackId];
+    var texturePack = that.sprite.game.Assets.TexturePacks[texturePackId];
+    if (!texturePack)
+    {
+        that.sprite.game.FatalError(new Error("Sprite.Bind.TexturePack given texturePackId '{0}' was not found".format(texturePackId)));
+    }
+    else
+    {
+        that.sprite.TexturePack = texturePack;
+    }
     var anim = new Torch.Animation.TexturePack(that.sprite.TexturePack, that.sprite.game);
 
     if (optionalParameters.step) anim.step = optionalParameters.step;
@@ -61,8 +81,18 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 {
     var that = this;
     if (!optionalParameters) optionalParameters = {};
-    that.sprite.TextureSheet = that.sprite.game.Assets.TextureSheets[textureSheetId];
-    that.sprite.DrawTexture = that.sprite.game.Assets.Textures[textureSheetId];
+    var textureSheet = that.sprite.game.Assets.TextureSheets[textureSheetId];
+    var drawTexture = that.sprite.game.Assets.Textures[textureSheetId];
+
+    if (!textureSheet || !drawTexture)
+    {
+        that.sprite.game.FatalError(new Error("Sprite.Bind.TextureSheet given textureSheetId '{0}' was not found".format(textureSheetId)));
+    }
+    else
+    {
+        that.sprite.DrawTexture = drawTexture;
+        that.sprite.TextureSheet = textureSheet;
+    }
 
     var anim = new Torch.Animation.TextureSheet(that.sprite.TextureSheet, that.sprite.game);
     anim.sprite = that.sprite;
@@ -381,6 +411,16 @@ Torch.Sprite.prototype.Center = function()
     var height = that.game.canvasNode.height;
     var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
+}
+Torch.Sprite.prototype.ToErrorString = function()
+{
+    var that = this;
+    var str = "";
+    var br = "<br/>";
+    str += "{" + br;
+    str += "_torch_uid:" + that._torch_uid + br;
+    str += "}" + br;
+    return str;
 }
 
 Torch.GhostSprite = function(){};

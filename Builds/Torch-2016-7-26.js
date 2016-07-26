@@ -374,6 +374,17 @@ Function.prototype.is = function(otherFunction)
     }
     return this; //allow chaining
 }
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
 
 var Torch =
 {
@@ -646,24 +657,12 @@ Torch.Game.prototype.Run = function(timestamp)
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
-    that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
-    that.canvasNode.style.backgroundColor = "black";
-    that.canvas.fillStyle = "red";
-    that.canvas.font = "bold 16px Consolas";
-    that.canvas.fillText("Fatal Error!", 40, 40);
-
-    that.canvas.font = "16px Consolas";
-    var split = error.stack.split("\n");
-    for (var i = 0; i < split.length; i++)
-    {
-        that.canvas.fillText(error.stack.split("\n")[i], 40, 100 + (20 * i));
-    }
-    if (typeof(Torch) == "string")
-    {
-        that.canvas.clearRect(0,0,1000,1000);
-        that.canvas.fillText(Torch, 40, 100);
-    }
-    console.trace();
+    var stack = error.stack.replace(/\n/g, "<br><br>");
+    $("canvas").remove();
+    $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
+    $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
+    $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
+    throw error;
 
 };
 Torch.Game.prototype.UpdateAndDrawSprites = function()
@@ -1296,7 +1295,19 @@ Torch.Bind.prototype.Reset = function()
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;
-    var tex = typeof(textureId) == "string" ? that.sprite.game.Assets.Textures[textureId] : textureId;
+    var tex;
+    if (typeof(textureId) == "string")
+    {
+        tex = that.sprite.game.Assets.Textures[textureId];
+        if (!tex)
+        {
+            that.sprite.game.FatalError(new Error("Sprite.Bind.Texture given textureId '{0}' was not found".format(textureId)));
+        }
+    }
+    else
+    {
+        tex = textureId;
+    }
     var scale = 1;
 
     that.Reset();
@@ -1316,7 +1327,15 @@ Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
 
     if (!optionalParameters) optionalParameters = {};
 
-    that.sprite.TexturePack = that.sprite.game.Assets.TexturePacks[texturePackId];
+    var texturePack = that.sprite.game.Assets.TexturePacks[texturePackId];
+    if (!texturePack)
+    {
+        that.sprite.game.FatalError(new Error("Sprite.Bind.TexturePack given texturePackId '{0}' was not found".format(texturePackId)));
+    }
+    else
+    {
+        that.sprite.TexturePack = texturePack;
+    }
     var anim = new Torch.Animation.TexturePack(that.sprite.TexturePack, that.sprite.game);
 
     if (optionalParameters.step) anim.step = optionalParameters.step;
@@ -1330,8 +1349,18 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 {
     var that = this;
     if (!optionalParameters) optionalParameters = {};
-    that.sprite.TextureSheet = that.sprite.game.Assets.TextureSheets[textureSheetId];
-    that.sprite.DrawTexture = that.sprite.game.Assets.Textures[textureSheetId];
+    var textureSheet = that.sprite.game.Assets.TextureSheets[textureSheetId];
+    var drawTexture = that.sprite.game.Assets.Textures[textureSheetId];
+
+    if (!textureSheet || !drawTexture)
+    {
+        that.sprite.game.FatalError(new Error("Sprite.Bind.TextureSheet given textureSheetId '{0}' was not found".format(textureSheetId)));
+    }
+    else
+    {
+        that.sprite.DrawTexture = drawTexture;
+        that.sprite.TextureSheet = textureSheet;
+    }
 
     var anim = new Torch.Animation.TextureSheet(that.sprite.TextureSheet, that.sprite.game);
     anim.sprite = that.sprite;
@@ -1650,6 +1679,16 @@ Torch.Sprite.prototype.Center = function()
     var height = that.game.canvasNode.height;
     var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
+}
+Torch.Sprite.prototype.ToErrorString = function()
+{
+    var that = this;
+    var str = "";
+    var br = "<br/>";
+    str += "{" + br;
+    str += "_torch_uid:" + that._torch_uid + br;
+    str += "}" + br;
+    return str;
 }
 
 Torch.GhostSprite = function(){};

@@ -144,24 +144,12 @@ Torch.Game.prototype.Run = function(timestamp)
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
-    that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
-    that.canvasNode.style.backgroundColor = "black";
-    that.canvas.fillStyle = "red";
-    that.canvas.font = "bold 16px Consolas";
-    that.canvas.fillText("Fatal Error!", 40, 40);
-
-    that.canvas.font = "16px Consolas";
-    var split = error.stack.split("\n");
-    for (var i = 0; i < split.length; i++)
-    {
-        that.canvas.fillText(error.stack.split("\n")[i], 40, 100 + (20 * i));
-    }
-    if (typeof(Torch) == "string")
-    {
-        that.canvas.clearRect(0,0,1000,1000);
-        that.canvas.fillText(Torch, 40, 100);
-    }
-    console.trace();
+    var stack = error.stack.replace(/\n/g, "<br><br>");
+    $("canvas").remove();
+    $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
+    $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
+    $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
+    throw error;
 
 };
 Torch.Game.prototype.UpdateAndDrawSprites = function()

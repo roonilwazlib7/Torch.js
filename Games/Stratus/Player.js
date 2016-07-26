@@ -1,7 +1,7 @@
 var Player = function(game, x, y)
 {
     this.InitSprite(game, x, y);
-    this.Bind.Texture("player_right");
+    this.Bind.TextureSheet("player_right_l");
     this.walkingRight = false;
     this.walkingLeft = false;
     this.Item = null;
