@@ -9,6 +9,8 @@ function Load()
     Game.Load.Texture("Art/player_left.png", "player_left");
     Game.Load.Texture("Art/hand.png", "hand");
     Game.Load.Texture("Art/brick.png", "basic-block");
+    Game.Load.Texture("Art/stone-slope-right-45.png", "stone-slope-right-45");
+    Game.Load.Texture("Art/stone-slope-right-22.png", "stone-slope-right-22");
     Game.Load.Texture("Art/slope.png", "slope-block");
     Game.Load.Texture("Art/short-sword.png", "short-sword");
     Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
@@ -33,6 +35,7 @@ function Update()
         Game.spriteList = [];
         Init();
     }
+    Scaler.Update(Game);
     window.PlayList.Update();
 }
 function Draw()
@@ -42,8 +45,9 @@ function Draw()
 function Init()
 {
     Game.Clear("#ccccb3");
-    Torch.Scale = 2;
     Game.PixelScale();
+    Scaler.enabled = true;
+    Torch.Scale = 2;
 
     var StartButton = new Torch.Sprite(Game, 0, 450);
     StartButton.Bind.Texture("start-button");

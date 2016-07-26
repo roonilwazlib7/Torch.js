@@ -35,8 +35,6 @@ Player.prototype.Update = function()
         that.Move();
         that.HandleStrikes();
     }
-
-
     that.BaseUpdate();
 }
 Player.prototype.Move = function()
