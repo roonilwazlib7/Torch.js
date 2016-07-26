@@ -35,7 +35,6 @@ function Update()
         Game.spriteList = [];
         Init();
     }
-    Scaler.Update(Game);
     window.PlayList.Update();
 }
 function Draw()
@@ -46,7 +45,6 @@ function Init()
 {
     Game.Clear("#ccccb3");
     Game.PixelScale();
-    Scaler.enabled = true;
     Torch.Scale = 2;
 
     var StartButton = new Torch.Sprite(Game, 0, 450);

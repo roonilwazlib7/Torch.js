@@ -105,10 +105,10 @@ Torch.Platformer.Actor.prototype.BlockSlope = function(block, offset)
 {
     var that = this;
     // //keep how far it's moved, but change y
-     var Yoffset = offset.x * block.Slope;
+     var Yoffset = offset.x * Math.tan(block.Slope);
     // that.Rectangle.y -= Yoffset;
-    that.Rectangle.y = block.Rectangle.y + (block.Rectangle.height - Yoffset) - that.Rectangle.height;
-    that.onGround = true;
+    that.Rectangle.y = ( block.Rectangle.y + (block.Rectangle.height - Yoffset) - that.Rectangle.height );
+    that.onSlope = true;
 }
 Torch.Platformer.Actor.prototype.FluidCollision = function(item, offset)
 {
