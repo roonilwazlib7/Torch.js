@@ -488,7 +488,15 @@ Torch.Rectangle.prototype.Intersects = function(rectangle)
         return false;
     }
 };
-
+Torch.Rectangle.prototype.IntersectsTriangle = function(triangle)
+{
+    var that = this;
+    var p1;
+}
+Torch.Rectangle.prototype.GetLines = function()
+{
+    var that = this;
+}
 Torch.Vector = function(x,y){
     this.x = x;
     this.y = y;
