@@ -144,6 +144,7 @@ Torch.Game.prototype.Run = function(timestamp)
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
+    that.Clear("#000");
     var stack = error.stack.replace(/\n/g, "<br><br>");
     $("canvas").remove();
     $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
@@ -311,6 +312,7 @@ Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
     that.canvasNode.style.backgroundColor = color;
+    document.body.style.backgroundColor = color;
 }
 Torch.Game.prototype.getCanvasEvents = function()
 {

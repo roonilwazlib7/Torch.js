@@ -1,8 +1,16 @@
-
+Torch.Electron.Import();
 var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
-var TitleText, TitleText2, Spawner, player;
+var TitleText, TitleText2, Spawner, player, debug;
+
+var TestingEnemies = function()
+{
+    var villager = new Villager(Game, 500, 100);
+    villager.MovementStateMachine.Switch(VillagerIdleState);
+}
+
 function Load()
 {
+    Game.Load.File("GameIdeas.txt", "game-ideas");
     Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 48, 16, 16, 16);
     Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
@@ -16,6 +24,8 @@ function Load()
     Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
     Game.Load.Texture("Art/play-button.png", "start-button");
     Game.Load.Texture("Art/main-logo.png", "main-logo");
+
+    Factory.Enemy.Load();
 
     Game.Load.Sound("Sound/someday.mp3", "someday");
     Game.Load.Sound("Sound/twelve-fifty-one.mp3", "twelve-fifty-one");
@@ -36,6 +46,10 @@ function Update()
         Init();
     }
     window.PlayList.Update();
+
+    var fps = Math.round(1000 / Game.deltaTime);
+    debug.text = "fps: {0}".format(fps);
+
 }
 function Draw()
 {
@@ -59,6 +73,11 @@ function Init()
     StartButton.MouseLeave(function(){
         StartButton.opacity = 1;
     });
+    debug = new Torch.Text(Game, 10, 10, {
+        color: "green",
+        font: "pixel",
+        text: "0"
+    });
 
     var StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
     StartMenu.Center();
@@ -69,6 +88,7 @@ function Init()
 
         player = new Player(Game, 10, 325);
         Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
+        TestingEnemies();
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "no-rest", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     window.PlayList.Randomize();

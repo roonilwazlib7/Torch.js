@@ -20,6 +20,7 @@ Torch.Load = function(game)
             return this.game.Assets.Sounds[id].audio;
         }
     };
+    this.game.Files = [];
     this.textures = this.game.Assets.Textures = [];
     this.texturePacks = this.game.Assets.TexturePacks = [];
     this.textureSheets = this.game.Assets.TextureSheets = [];
@@ -120,6 +121,24 @@ Torch.Load.prototype.TextureSheet = function(path, id, totalWidth, totalHeight, 
     }
     that.textureSheets[id] = sheet;
 };
+Torch.Load.prototype.File = function(path, id)
+{
+    var that = this;
+    if (!Torch.fs) that.game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)));
+    that.finish_stack++;
+    Torch.fs.readFile(path, 'utf8', function(er, data)
+    {
+        that.finish_stack--;
+        if (er)
+        {
+            that.game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded due to: ".format(path) + er));
+        }
+        else
+        {
+            that.game.Files[id] = data;
+        }
+    });
+}
 //sound, sound pack ?
 Torch.Load.prototype.Load = function(finishFunction)
 {
@@ -171,7 +190,7 @@ Torch.Load.prototype.Load = function(finishFunction)
             finishFunction();
             clearInterval(_l);
             Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
-            
+
         }
     }, 1000/60);
 }

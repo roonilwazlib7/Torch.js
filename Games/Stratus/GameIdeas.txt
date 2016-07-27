@@ -7,9 +7,9 @@
     solving and different worlds (or areas).
 
     Stratus will involve playing as a variety of fantasy races. (see below for list)
-    Each race will have a corresponding 'world' that will require the unique
-    abilities of that race. Once a race is unlocked, the player will be able to
-    switch between them at his/her leisure.
+    Several different 'worlds' will be explored (forest, mountain, hell, swamp, etc)
+    wherein certain areas will only be accessed by certain races. Also, lots of
+    'hidden action' that is not necessarily required to complete the game.
 
     The ultimate goal of the game will be to unlock all the races, whose abilities
     will all be required in some sort of final battle. This is the main object of

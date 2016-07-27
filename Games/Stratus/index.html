@@ -1,6 +1,8 @@
 <html>
     <head>
+        <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
         <script src = "../../jQuery.js" ></script>
+        <script>if (window.module) module = window.module;</script>
         <script src = "../../Builds/Torch-latest.js"></script>
         <link href = "../../Torch.css" rel = "stylesheet" />
 
@@ -9,11 +11,11 @@
         <script src = "Factory.js"></script>
         <script src = "Player.js"></script>
         <script src = "Blocks.js"></script>
+        <script src = "Enemies.js"></script>
         <script src = "mapDecoder.js"></script>
 
     </head>
     <body>
-
         <div class="container">
             <div class="row">
                 <div class="col-sm-2">
@@ -26,17 +28,6 @@
                 </div>
             </div>
         </div>
-        <div id="torch_message" style="color:white;float:right">
-        </div>
-        <div>
-            <h1 style="color:white">
-            </h1>
-        </div>
-        <p id="sprites" style="color:white"></p>
-        <div style="overflow:auto;max-height:150px">
-            <h2 style="color:white">Notes:</h2>
-        </div>
-
 
         <script src = "Game.js" ></script>
     </body>
