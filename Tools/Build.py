@@ -22,5 +22,7 @@ f.close()
 
 print("Built: " + NAME)
 
-
-os.system("current-electron-game-build.bat")
+if os.name == 'nt':
+    os.system("current-electron-game-build.bat")
+else:
+    os.system("current-electron-game-build.sh")
