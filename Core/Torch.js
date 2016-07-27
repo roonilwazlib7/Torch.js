@@ -125,6 +125,7 @@ Torch.Rectangle.prototype.Intersects = function(rectangle)
 Torch.Rectangle.prototype.IntersectsTriangle = function(triangle)
 {
     var that = this;
+    var p1;
 }
 Torch.Rectangle.prototype.GetLines = function()
 {
