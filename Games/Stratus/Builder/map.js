@@ -1,3 +1,4 @@
+var fs = require('fs');
 var Map = {};
 
 Map.X = 0;
@@ -84,9 +85,10 @@ Map.Export = function()
     var buffer = that.Buffer.substring(0, that.Buffer.length - 1);
     var flags = that.Flags.substring(0, that.Flags.length - 1);
     var ex = that.Name + ";" + that.Scale + ";" + buffer + ";" + flags;
-    $("#inout").val(ex);
-    $("#inout").select();
-    document.execCommand('copy');
+    fs.writeFile($("#inout").val(), ex, 'utf8', function(er, data)
+    {
+
+    });
 }
 
 Map.Init = function()
