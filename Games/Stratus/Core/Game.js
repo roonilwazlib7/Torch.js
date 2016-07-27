@@ -48,7 +48,7 @@ function Update()
     window.PlayList.Update();
 
     var fps = Math.round(1000 / Game.deltaTime);
-    debug.text = "fps: {0}".format(fps);
+    debug.text = "fps: {0} : {1}".format(fps, Math.round(Game.time / 1000));
 
 }
 function Draw()
@@ -90,7 +90,7 @@ function Init()
         Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
         TestingEnemies();
     });
-    window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "no-rest", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
+    window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     window.PlayList.Randomize();
     window.PlayList.Play();
 }

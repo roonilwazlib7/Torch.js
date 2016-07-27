@@ -18,8 +18,14 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000, height: 625});
-  mainWindow.setMenu(null);
+  mainWindow = new BrowserWindow({width: 1000, height: 625, title: "Stratus", icon: "icon.png"});
+
+  //for development
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.setAutoHideMenuBar(true);
+  //for release
+  //mainWindow.setMenu(null);
+
   mainWindow.maximize();
   //mainWindow.setFullScreen(true); //fullScreen
 

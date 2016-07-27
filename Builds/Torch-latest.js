@@ -2003,6 +2003,7 @@ Torch.Sound.PlayList = function(game, playList)
 Torch.Sound.PlayList.prototype.Play = function()
 {
     var that = this;
+    that.game.Assets.GetSound(that.currentSong).volume = 0.7;
     that.game.Assets.GetSound(that.currentSong).play();
 }
 Torch.Sound.PlayList.prototype.ShuffleArray = function(array)
