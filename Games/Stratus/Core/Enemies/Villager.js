@@ -9,9 +9,14 @@ Villager.prototype.Update = function()
     {
         //player.Rectangle.x -= offset.x;
         player.Body.y.velocity = -0.3;
-        player.Health -= 5;
         player.HitLock();
         //that.game.Assets.GetSound("player-hurt").play();
+
+        if (player.Health > 0)
+        {
+            healthBar.Rectangle.width -= (5 * healthBar.inc);
+            player.Health -= 5;
+        }
     }
 }
 Villager.prototype.Right = function()
@@ -33,7 +38,7 @@ var VillagerIdleState = new Torch.StateMachine.State(
     {
         //enter
         villager.Body.x.velocity = 0;
-        villager.walking = "none"
+        villager.walking = "none";
         if (villager.facing == "right")
         {
             villager.Bind.TextureSheet(villager.Assets.Right_Idle, {step:350});
@@ -56,7 +61,7 @@ var VillagerChaseState = new Torch.StateMachine.State(
         var velocity = 0.1;
         if (directionToPlayer.x > 0)
         {
-            villager.Body.x.velocity = velocity;
+            if (villager.onGround)villager.Body.x.velocity = velocity;
             if (villager.walking != "right")
             {
                 villager.walking = "right";
@@ -66,7 +71,7 @@ var VillagerChaseState = new Torch.StateMachine.State(
         }
         else if (directionToPlayer.x < 0)
         {
-            villager.Body.x.velocity = -velocity;
+            if (villager.onGround) villager.Body.x.velocity = -velocity;
             if (villager.walking != "left")
             {
                 villager.walking = "left";
@@ -74,6 +79,7 @@ var VillagerChaseState = new Torch.StateMachine.State(
                 villager.Bind.TextureSheet(villager.Assets.Walk_Left, {step:250});
             }
         }
+
 
         if (villager.GetDistance(player) < villager.Rectangle.width)
         {

@@ -1,6 +1,6 @@
 Torch.Electron.Import();
 var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
-var TitleText, TitleText2, Spawner, player, debug, healthText;
+var TitleText, TitleText2, Spawner, player, debug, healthText, healthBar;
 
 var TestingEnemies = function()
 {
@@ -21,6 +21,8 @@ function Load()
     Game.Load.Texture("Art/play-button.png", "start-button");
     Game.Load.Texture("Art/main-logo.png", "main-logo");
     Game.Load.Texture("Art/status-bar.png", "status-bar");
+    Game.Load.Texture("Art/health-bar.png", "health-bar");
+    Game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
 
     Factory.Block.Load();
     Factory.Enemy.Load();
@@ -58,7 +60,7 @@ function Draw()
 }
 function Init()
 {
-    Game.Clear("#ccccb3");
+    Game.Clear("#000");
     Game.PixelScale();
     Torch.Scale = 2;
 
@@ -77,7 +79,7 @@ function Init()
     debug = new Torch.Text(Game, 10, 10, {
         color: "green",
         font: "monospace",
-        fontSize: 28,
+        fontSize: 12,
         fontWeight: "bold",
         text: "0"
     });
@@ -93,6 +95,21 @@ function Init()
         statusBar.Bind.Texture("status-bar");
         statusBar.Rectangle.y -= statusBar.Rectangle.height;
         statusBar.Center();
+        statusBar.ToggleFixed();
+
+        healthBar = new Torch.Sprite(Game, 0, Game.Viewport.height);
+        healthBar.Bind.Texture("health-bar");
+        healthBar.Rectangle.y -= healthBar.Rectangle.height;
+        healthBar.Rectangle.x = statusBar.Rectangle.x;
+        healthBar.ToggleFixed();
+        healthBar.inc = (healthBar.Rectangle.width / 100);
+        healthBar.drawIndex = 10;
+
+        var healthBarBackground = new Torch.Sprite(Game, 0, Game.Viewport.height);
+        healthBarBackground.Bind.Texture("health-bar-background");
+        healthBarBackground.Rectangle.y -= healthBarBackground.Rectangle.height;
+        healthBarBackground.Rectangle.x = statusBar.Rectangle.x;
+        healthBarBackground.ToggleFixed();
 
         healthText = new Torch.Text(Game, 10, 10, {
             color: "white",
@@ -103,12 +120,16 @@ function Init()
         });
         healthText.text = "100%";
         healthText.Rectangle.y = statusBar.Rectangle.y + healthText.Rectangle.height / 3;
-        healthText.Rectangle.x = statusBar.Rectangle.x + 5;
+        healthText.Rectangle.x = statusBar.Rectangle.x + healthText.Rectangle.width;
         healthText.drawIndex = 100;
+        healthText.ToggleFixed();
 
         player = new Player(Game, 10, 325);
         Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
         TestingEnemies();
+
+        Torch.Camera.Track(player);
+        debug.ToggleFixed();
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     //window.PlayList.Randomize();

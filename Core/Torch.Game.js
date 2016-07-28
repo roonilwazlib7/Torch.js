@@ -101,6 +101,7 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.update();
     that.Viewport.Update();
     that.UpdateAndDrawSprites();
+    Torch.Camera.Update();
 
     if (that.debug) that.debug();
 

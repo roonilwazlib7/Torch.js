@@ -218,6 +218,22 @@ Torch.Sprite.prototype.Update = function()
     var that = this
     that.BaseUpdate();
 }
+Torch.Sprite.prototype.GetCurrentDraw = function()
+{
+    var that = this;
+    if (that.TexturePack)
+    {
+        return that.TexturePackAnimation.GetCurrentFrame();
+    }
+    else if (that.TextureSheet)
+    {
+        return that.TextureSheetAnimation.GetCurrentFrame();
+    }
+    else if (that.DrawTexture)
+    {
+        return that.DrawTexture;
+    }
+}
 Torch.Sprite.prototype.Draw = function()
 {
     var that = this;
@@ -229,12 +245,12 @@ Torch.Sprite.prototype.Draw = function()
     }
     if (that.TexturePack)
     {
-        that.game.Draw(that.TexturePackAnimation.GetCurrentFrame(), DrawRec, that.DrawParams);
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, that.DrawParams);
     }
     else if (that.TextureSheet)
     {
         var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
-        var frame = that.TextureSheetAnimation.GetCurrentFrame();
+        var frame = that.GetCurrentDraw();
         Params.clipX = frame.clipX;
         Params.clipY = frame.clipY;
         Params.clipWidth = frame.clipWidth;
@@ -250,7 +266,7 @@ Torch.Sprite.prototype.Draw = function()
             alpha: that.opacity,
             rotation: that.rotation
         };
-        that.game.Draw(that.DrawTexture, DrawRec, DrawParams);
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.UpdateEvents = function()

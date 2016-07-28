@@ -622,6 +622,7 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.update();
     that.Viewport.Update();
     that.UpdateAndDrawSprites();
+    Torch.Camera.Update();
 
     if (that.debug) that.debug();
 
@@ -1269,6 +1270,40 @@ Torch.Electron.Import = function()
 {
     Torch.fs = require("fs");
 }
+Torch.Camera = {};
+
+Torch.Camera.Update = function()
+{
+    var that = this;
+    that.update_Track();
+}
+
+Torch.Camera.Track = function(sprite)
+{
+    var that = this;
+    that.track = true;
+    that.trackSprite = sprite;
+    that.lastTrackX = sprite.Rectangle.x;
+    var game = that.trackSprite.game;
+    var x = that.trackSprite.Rectangle.x + (game.Viewport.width / 2) + (that.trackSprite.Rectangle.width / 2);
+    game.Viewport.x = x;
+    if (!sprite._torch_add)
+    {
+    }
+}
+Torch.Camera.update_Track = function()
+{
+    var that = this;
+    if (that.track)
+    {
+        if (that.trackSprite.Rectangle.x != that.lastTrackX)
+        {
+            //do something
+            that.trackSprite.game.Viewport.x -= (that.trackSprite.Rectangle.x - that.lastTrackX);
+            that.lastTrackX = that.trackSprite.Rectangle.x;
+        }
+    }
+}
 /**
  * math.js
  * https://github.com/josdejong/mathjs
@@ -1575,6 +1610,22 @@ Torch.Sprite.prototype.Update = function()
     var that = this
     that.BaseUpdate();
 }
+Torch.Sprite.prototype.GetCurrentDraw = function()
+{
+    var that = this;
+    if (that.TexturePack)
+    {
+        return that.TexturePackAnimation.GetCurrentFrame();
+    }
+    else if (that.TextureSheet)
+    {
+        return that.TextureSheetAnimation.GetCurrentFrame();
+    }
+    else if (that.DrawTexture)
+    {
+        return that.DrawTexture;
+    }
+}
 Torch.Sprite.prototype.Draw = function()
 {
     var that = this;
@@ -1586,12 +1637,12 @@ Torch.Sprite.prototype.Draw = function()
     }
     if (that.TexturePack)
     {
-        that.game.Draw(that.TexturePackAnimation.GetCurrentFrame(), DrawRec, that.DrawParams);
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, that.DrawParams);
     }
     else if (that.TextureSheet)
     {
         var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
-        var frame = that.TextureSheetAnimation.GetCurrentFrame();
+        var frame = that.GetCurrentDraw();
         Params.clipX = frame.clipX;
         Params.clipY = frame.clipY;
         Params.clipWidth = frame.clipWidth;
@@ -1607,7 +1658,7 @@ Torch.Sprite.prototype.Draw = function()
             alpha: that.opacity,
             rotation: that.rotation
         };
-        that.game.Draw(that.DrawTexture, DrawRec, DrawParams);
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.UpdateEvents = function()

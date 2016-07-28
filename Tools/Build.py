@@ -2,7 +2,7 @@ import datetime
 import os
 COMBINED = ""
 BUILD = str(datetime.date.today().year) + "-" + str(datetime.date.today().month) + "-" + str(datetime.date.today().day);
-items = ["pixl/pixl.js", "Torch.js", "Torch.Game.js","Torch.Load.js", "Torch.Electron.js", "math.js", "Torch.Timer.js","Torch.Sprite.js","Torch.Animation.js", "Torch.Text.js", "Torch.Sound.js","Torch.Color.js", "Torch.StateMachine.js", "Torch.Particles.js", "Torch.Debug.js", "Torch.GamePad.js", "Torch.SpriteGroup.js", "Torch.Platformer.js"]
+items = ["pixl/pixl.js", "Torch.js", "Torch.Game.js","Torch.Load.js", "Torch.Electron.js", "Torch.Camera.js", "math.js", "Torch.Timer.js","Torch.Sprite.js","Torch.Animation.js", "Torch.Text.js", "Torch.Sound.js","Torch.Color.js", "Torch.StateMachine.js", "Torch.Particles.js", "Torch.Debug.js", "Torch.GamePad.js", "Torch.SpriteGroup.js", "Torch.Platformer.js"]
 NAME = "Torch-" + BUILD
 for path in items:
     f = open("Core/" + path)
