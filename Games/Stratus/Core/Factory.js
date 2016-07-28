@@ -1,27 +1,48 @@
 var Factory = {};
 
-Factory.Block = function(baseWidth, baseHeight, texture, mapImage, name, slope)
+Factory.Block = function(baseWidth, baseHeight, asset, dir, mapImage, slope, allSheets)
 {
     var blockClass = function(game, x, y)
     {
         this.InitSprite(game, x, y);
-        this.Bind.Texture(texture);
+        this.Bind.Texture(asset);
     }
     blockClass.is(Torch.Sprite).is(Torch.Platformer.Block);
 
     blockClass.prototype.map = mapImage;
     blockClass.prototype.baseWidth = baseWidth;
     blockClass.prototype.baseHeight = baseHeight;
-    blockClass.prototype.name = name;
+    blockClass.prototype.name = asset;
     if (slope)
     {
         blockClass.prototype.Slope = slope;
     }
     Factory.Block.objects.push(blockClass);
 
+    Factory.Block.loads.push(function(){
+        if (allSheets)
+        {
+            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 48, 16, 16, 16);
+        }
+        else
+        {
+            Game.Load.Texture(dir + "/" + asset + ".png", asset);
+        }
+    });
+
     return blockClass;
 }
 Factory.Block.objects = [];
+Factory.Block.loads = [];
+Factory.Block.Load = function()
+{
+    var loads = Factory.Block.loads;
+    for (var i = 0; i < loads.length; i++)
+    {
+        loads[i]();
+    }
+}
+
 
 Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
 {

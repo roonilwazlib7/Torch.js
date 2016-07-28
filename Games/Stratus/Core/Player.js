@@ -34,6 +34,7 @@ Player.prototype.Update = function()
         that.HandleItemOffset();
         that.Move();
         that.HandleStrikes();
+        healthText.text = player.Health + "%";
     }
     that.BaseUpdate();
 }
@@ -81,7 +82,7 @@ Player.prototype.Move = function()
     {
         console.log("jumping...");
         that.Rectangle.y -= 5;
-        that.Body.y.velocity = -0.4;
+        that.Body.y.velocity = -0.5;
     }
     if (keys.R.down) that.rotation += 0.01;
 }

@@ -9,7 +9,9 @@ Villager.prototype.Update = function()
     {
         //player.Rectangle.x -= offset.x;
         player.Body.y.velocity = -0.3;
+        player.Health -= 5;
         player.HitLock();
+        //that.game.Assets.GetSound("player-hurt").play();
     }
 }
 Villager.prototype.Right = function()
@@ -88,6 +90,7 @@ var VillagerChaseState = new Torch.StateMachine.State(
     {
         //enter
         villager.Body.y.velocity = -0.3;
+        //villager.game.Assets.GetSound("villager-alert").play();
     },
     function(villager)
     {
