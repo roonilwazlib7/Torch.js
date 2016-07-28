@@ -5,7 +5,16 @@
     font-family: pixel;
     src: url(Minecraft.ttf);
 }
-
+@font-face
+{
+    font-family: arcade;
+    src: url(Fonts/arcade.ttf);
+}
+@font-face
+{
+    font-family: forward;
+    src: url(Fonts/forward.ttf);
+}
 
 #canvas-container
 {
@@ -17,6 +26,7 @@
 body
 {
     background-color: black;
+    overflow: hidden;
 }
 
 canvas

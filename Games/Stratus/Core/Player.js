@@ -28,13 +28,30 @@ Player.prototype.Update = function()
     {
         that.Enter();
     }
-    else
+    else if (!that.dead)
     {
         that.UpdateActor();
         that.HandleItemOffset();
         that.Move();
         that.HandleStrikes();
-        healthText.text = player.Health + "%";
+        healthText.text = player.Health;
+    }
+    if (that.Health <= 0 && !that.dead)
+    {
+        that.dead = true;
+        that.rotation = Math.PI;
+        that.Hand.Trash();
+        that.Item.Trash();
+        that.Body.y.acceleration = 0.001;
+        that.Body.y.velocity = -0.5;
+    }
+    if(that.dead)
+    {
+        that.opacity -= 0.001 * that.game.deltaTime;
+        if (that.opacity <= 0)
+        {
+            that.Trash();
+        }
     }
     that.BaseUpdate();
 }

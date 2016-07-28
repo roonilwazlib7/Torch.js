@@ -28,6 +28,7 @@ Torch.Text.prototype.Init = function()
     if (that.data.color) that.color = that.data.color;
     if (that.data.text) that.text = that.data.text;
     if (that.data.rectangle) that.Rectangle = that.data.rectangle;
+    if (that.data.buffHeight) that.buffHeight = that.data.buffHeight;
 
     that.Render();
 }
@@ -42,10 +43,14 @@ Torch.Text.prototype.Render = function()
     Torch.measureCanvas.font = that.fontSize + "px " + that.font;
     cnv.width = Torch.measureCanvas.measureText(that.text).width;
     cnv.height = that.fontSize + 5;
+    if (that.buffHeight)
+    {
+        cnv.height += that.buffHeight;
+    }
     canvas = cnv.getContext("2d");
     canvas.fillStyle = that.color;
     canvas.font = that.fontWeight + " " + that.fontSize + "px " + that.font;
-    canvas.fillText(that.text,0,that.fontSize);
+    canvas.fillText(that.text,0,cnv.height);
     //generate the image
     image = new Image();
     image.src = cnv.toDataURL();

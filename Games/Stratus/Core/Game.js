@@ -113,13 +113,13 @@ function Init()
 
         healthText = new Torch.Text(Game, 10, 10, {
             color: "white",
-            font: "monospace",
-            fontSize: 28,
+            font: "forward",
+            fontSize: 24,
             fontWeight: "bold",
-            text: "0"
+            text: "100",
+            buffHeight: 5
         });
-        healthText.text = "100%";
-        healthText.Rectangle.y = statusBar.Rectangle.y + healthText.Rectangle.height / 3;
+        healthText.Rectangle.y = statusBar.Rectangle.y + healthText.Rectangle.height / 1.5;
         healthText.Rectangle.x = statusBar.Rectangle.x + healthText.Rectangle.width;
         healthText.drawIndex = 100;
         healthText.ToggleFixed();
