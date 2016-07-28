@@ -7,9 +7,8 @@ Villager.prototype.Update = function()
     var offset = that.Rectangle.Intersects(player.Rectangle);
     if (offset && !player.hitLock)
     {
-        player.Rectangle.x -= offset.x;
-        player.Rectangle.y -= offset.y;
-        player.Body.y.velocity = -0.2;
+        //player.Rectangle.x -= offset.x;
+        player.Body.y.velocity = -0.3;
         player.HitLock();
     }
 }

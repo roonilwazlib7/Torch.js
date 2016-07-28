@@ -28,6 +28,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     var EnemyClass = function(game, x, y)
     {
         this.InitSprite(game, x, y);
+        if (this.InitEnemy) this.InitEnemy();
         this.asset = asset;
         this.GetAssets();
         this.MovementStateMachine = new Torch.StateMachine(this);

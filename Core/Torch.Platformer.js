@@ -21,7 +21,7 @@ Torch.Platformer.Actor.prototype.onRight = false;
 Torch.Platformer.Actor.prototype.hitLockCounter = 0;
 Torch.Platformer.Actor.prototype.hitLockBlinkCounter = 0;
 Torch.Platformer.Actor.prototype.hitLock = false;
-Torch.Platformer.Actor.prototype.hitLockMax = 5000;
+Torch.Platformer.Actor.prototype.hitLockMax = 1000;
 
 Torch.Platformer.Actor.prototype.HitLock = function()
 {
