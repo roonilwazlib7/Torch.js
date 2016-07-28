@@ -10,7 +10,7 @@ var TestingEnemies = function()
 
 function Load()
 {
-    Game.Load.File("GameIdeas.txt", "game-ideas");
+    Game.Load.File(__dirname + "/Ideas/GameIdeas.txt", "game-ideas");
     Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 48, 16, 16, 16);
     Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
@@ -92,7 +92,7 @@ function Init()
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     window.PlayList.Randomize();
-    window.PlayList.Play();
+    //window.PlayList.Play();
 }
 
 Game.Start(Load, Update, Draw, Init);

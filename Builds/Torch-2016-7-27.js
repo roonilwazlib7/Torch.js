@@ -2437,6 +2437,19 @@ Torch.Platformer.Actor.prototype.onGround = false;
 Torch.Platformer.Actor.prototype.onLeft = false;
 Torch.Platformer.Actor.prototype.onTop = false;
 Torch.Platformer.Actor.prototype.onRight = false;
+
+Torch.Platformer.Actor.prototype.hitLockCounter = 0;
+Torch.Platformer.Actor.prototype.hitLockBlinkCounter = 0;
+Torch.Platformer.Actor.prototype.hitLock = false;
+Torch.Platformer.Actor.prototype.hitLockMax = 5000;
+
+Torch.Platformer.Actor.prototype.HitLock = function()
+{
+    var that = this;
+    that.hitLock = true;
+}
+
+
 Torch.Platformer.Actor.prototype.Hit = function(amount)
 {
     var that = this;
@@ -2591,6 +2604,31 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
         }
     }
     if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
+
+    if (that.hitLock)
+    {
+        that.hitLockCounter += Game.deltaTime;
+        that.hitLockBlinkCounter += Game.deltaTime;
+        if (that.hitLockBlinkCounter >= 200)
+        {
+            if (that.opacity == 0.1)
+            {
+                that.opacity = 0.8;
+            }
+            else
+            {
+                that.opacity = 0.1;
+            }
+            that.hitLockBlinkCounter = 0;
+        }
+        if (that.hitLockCounter >= that.hitLockMax)
+        {
+            that.hitLock = false;
+            that.opacity = 1;
+            that.hitLockCounter = 0;
+            that.hitLockBlinkCounter = 0;
+        }
+    }
 }
 
 Torch.Platformer.Block = function(){};

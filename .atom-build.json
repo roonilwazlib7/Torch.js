@@ -1,4 +1,3 @@
-
 {
     "cmd": "python Tools/Build.py"
 }

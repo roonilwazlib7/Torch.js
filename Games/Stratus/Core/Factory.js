@@ -23,15 +23,16 @@ Factory.Block = function(baseWidth, baseHeight, texture, mapImage, name, slope)
 }
 Factory.Block.objects = [];
 
-Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage)
+Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
 {
     var EnemyClass = function(game, x, y)
     {
         this.InitSprite(game, x, y);
         this.asset = asset;
         this.GetAssets();
-        this.Bind.Texture(this.Assets.Right_Idle);
         this.MovementStateMachine = new Torch.StateMachine(this);
+        this.facing = "right";
+        this.walking = "none";
     }
     EnemyClass.is(Torch.Sprite).is(Torch.Platformer.Actor);
     EnemyClass.prototype.map = mapImage;
@@ -58,8 +59,16 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage)
 
     Factory.Enemy.objects.push(EnemyClass);
     Factory.Enemy.loads.push(function(){
-        Game.Load.Texture(dir + "/" + asset + "-right-idle.png", asset + "-right-idle");
-        Game.Load.Texture(dir + "/" + asset + "-left-idle.png", asset + "-left-idle");
+        if (allSheets)
+        {
+            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 48, 16, 16, 16);
+            Game.Load.TextureSheet(dir + "/" + asset + "-left-idle.png", asset + "-left-idle", 48, 16, 16, 16);
+        }
+        else
+        {
+            Game.Load.Texture(dir + "/" + asset + "-right-idle.png", asset + "-right-idle");
+            Game.Load.Texture(dir + "/" + asset + "-left-idle.png", asset + "-left-idle");
+        }
         Game.Load.TextureSheet(dir + "/" + asset + "-right-walk.png", asset + "-right-walk", 48, 16, 16, 16);
         Game.Load.TextureSheet(dir + "/" + asset + "-left-walk.png", asset + "-left-walk", 48, 16, 16, 16);
     });
