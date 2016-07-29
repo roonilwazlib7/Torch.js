@@ -1,5 +1,6 @@
 var Player = function(game, x, y)
 {
+    var that = this;
     this.InitSprite(game, x, y);
     this.Bind.Texture("player_right");
     this.walkingRight = false;
@@ -12,8 +13,7 @@ var Player = function(game, x, y)
     this.drawIndex = 5;
     this.opacity = 0;
     this.ready = false;
-    this.Hand = new Torch.Sprite(game, this.Rectangle.x + this.HandOffset.x, this.Rectangle.y + this.HandOffset.y);
-    this.Hand.Bind.Texture("hand");
+    this.Hand = new Hand(that, "#fe4056");
     this.Hand.drawIndex = 5;
     this.StrikeOffset = {x: 0, y: 0}
     this.facing = "right";
@@ -31,7 +31,6 @@ Player.prototype.Update = function()
     else if (!that.dead)
     {
         that.UpdateActor();
-        that.HandleItemOffset();
         that.Move();
         that.HandleStrikes();
         healthText.text = player.Health;
@@ -184,26 +183,6 @@ Player.prototype.HandleStrikes = function()
         that.EWasDown = false;
     }
 }
-Player.prototype.HandleItemOffset = function()
-{
-    var that = this;
-    if (that.facing == "right")
-    {
-        that.HandOffset = {
-                x: that.Rectangle.width - 5,
-                y: 33
-        };
-    }
-    else
-    {
-        that.HandOffset = {
-            x: -5,
-            y: 33
-        }
-    }
-    that.Hand.Rectangle.x = this.Rectangle.x + this.HandOffset.x + that.StrikeOffset.x;
-    that.Hand.Rectangle.y = this.Rectangle.y + this.HandOffset.y + that.StrikeOffset.y;
-}
 Player.prototype.Enter = function()
 {
     var that = this;
@@ -212,7 +191,7 @@ Player.prototype.Enter = function()
     {
         that.opacity = 1;
         that.ready = true;
-        player.SwitchItem(ShortSword);
+        //player.SwitchItem(ShortSword);
     }
 }
 

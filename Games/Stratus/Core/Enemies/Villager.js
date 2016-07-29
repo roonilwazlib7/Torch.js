@@ -16,6 +16,11 @@ Villager.prototype.Right = function()
     that.Body.x.velocity = 0.2;
     that.Bind.TextureSheet(that.Assets.Walk_Right, {step: 250});
 }
+Villager.prototype.InitEnemy = function()
+{
+    var that = this;
+    that.Hand = new Hand(that, "#808080");
+}
 
 var VillagerIdleState = new Torch.StateMachine.State(
     function(villager)

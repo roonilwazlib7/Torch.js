@@ -80,12 +80,14 @@ var StartGame = function()
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
 
+        var h = new Hand(Game, 50, 50);
+
         Torch.Camera.Track(player);
         debug.ToggleFixed();
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     //window.PlayList.Randomize();
-    window.PlayList.Play();
+    //window.PlayList.Play();
 }
 
 function Load()
