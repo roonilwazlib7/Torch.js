@@ -142,6 +142,14 @@ Torch.Game.prototype.Run = function(timestamp)
     }
 
 };
+Torch.Game.prototype.FlushSprites = function()
+{
+    var that = this;
+    for (var i = 0; i < that.spriteList.length; i++)
+    {
+        that.spriteList[i].Trash();
+    }
+}
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;

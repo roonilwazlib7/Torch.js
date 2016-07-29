@@ -59,6 +59,16 @@ Player.prototype.Update = function()
             gameOver.Center();
             gameOver.CenterVertical();
             gameOver.ToggleFixed();
+
+            var continueButton = new Torch.Sprite(that.game, 0, 0);
+            continueButton.Bind.Texture("continue");
+            continueButton.ToggleFixed();
+            continueButton.Center();
+            continueButton.Rectangle.y = gameOver.Rectangle.y + gameOver.Rectangle.height + continueButton.Rectangle.height + 10;
+            continueButton.Click(function(){
+                StartGame();
+            });
+
         }
     }
     that.BaseUpdate();

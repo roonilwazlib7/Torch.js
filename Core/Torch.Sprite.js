@@ -201,11 +201,18 @@ Torch.Sprite.prototype.UpdateBody = function()
     }
     that.Rectangle.y += velY * deltaTime;
 };
-Torch.Sprite.prototype.ToggleFixed = function()
+Torch.Sprite.prototype.ToggleFixed = function(tog)
 {
     var that = this;
-    if (that.fixed) that.fixed = false;
-    else that.fixed = true;
+    if (tog === undefined)
+    {
+        if (that.fixed) that.fixed = false;
+        else that.fixed = true;
+    }
+    else
+    {
+        that.fixed = tog;
+    }
 }
 Torch.Sprite.prototype.BaseUpdate = function()
 {
@@ -420,9 +427,7 @@ Torch.Sprite.prototype.ToErrorString = function()
     var that = this;
     var str = "";
     var br = "<br/>";
-    str += "{" + br;
-    str += "_torch_uid:" + that._torch_uid + br;
-    str += "}" + br;
+    str += JSON.stringify(that, null, 4);
     return str;
 }
 

@@ -55,6 +55,13 @@ Torch.SpriteGroup.prototype.Center = function()
         sprite.Center();
     });
 }
+Torch.SpriteGroup.prototype.ToggleFixed = function()
+{
+    var that = this;
+    that.All(function(sprite){
+        sprite.ToggleFixed();
+    });
+}
 Torch.SpriteGroup.prototype.All = function(handle)
 {
     var that = this

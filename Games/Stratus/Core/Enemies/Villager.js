@@ -15,7 +15,7 @@ Villager.prototype.Update = function()
         if (player.Health > 0)
         {
             healthBar.Rectangle.width -= (5 * healthBar.inc);
-            player.Health -= 5;
+            player.Health -= 20;
         }
     }
 }
