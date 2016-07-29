@@ -73,6 +73,22 @@ Player.prototype.Update = function()
     }
     that.BaseUpdate();
 }
+Player.prototype.Hit = function(amount)
+{
+    var that = this;
+    if (!that.hitLock)
+    {
+        //player.Rectangle.x -= offset.x;
+        player.Body.y.velocity = -0.3;
+        player.HitLock();
+        //that.game.Assets.GetSound("player-hurt").play();
+        if (player.Health > 0)
+        {
+            healthBar.Rectangle.width -= (amount * healthBar.inc);
+            player.Health -= amount;
+        }
+    }
+}
 Player.prototype.Move = function()
 {
     var that = this;

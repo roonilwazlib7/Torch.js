@@ -14,11 +14,12 @@ var StartGame = function()
     Game.FlushSprites();
     Torch.Scale = 2;
 
-    var StartButton = new Torch.Sprite(Game, 0, 450);
-    StartButton.Bind.Texture("start-button");
-
-    var StartLogo = new Torch.Sprite(Game, 0, 50);
+    var StartLogo = new Torch.Sprite(Game, 0, 150);
     StartLogo.Bind.Texture("main-logo");
+
+    var StartButton = new Torch.Sprite(Game, 0, 600);
+    StartButton.Bind.Texture("start-button");
+    StartButton.CenterVertical();
 
     StartButton.MouseOver(function(){
         StartButton.opacity = 0.6;
@@ -82,7 +83,7 @@ var StartGame = function()
         Torch.Camera.Track(player);
         debug.ToggleFixed();
     });
-    window.PlayList = new Torch.Sound.PlayList(Game, ["someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
+    window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     //window.PlayList.Randomize();
     window.PlayList.Play();
 }
@@ -111,6 +112,7 @@ function Load()
     Game.Load.Sound("Sound/hurt.wav", "player-hurt");
     Game.Load.Sound("Sound/villager-alert.wav", "villager-alert")
 
+    Game.Load.Sound("Sound/ResistorAnthems2012/Resistor Anthems/09 Come and Find Me - B mix.mp3", "ascending");
     Game.Load.Sound("Sound/someday.mp3", "someday");
     Game.Load.Sound("Sound/twelve-fifty-one.mp3", "twelve-fifty-one");
     Game.Load.Sound("Sound/under-darkness.mp3", "under-darkness");
@@ -132,7 +134,7 @@ function Update()
     window.PlayList.Update();
 
     var fps = Math.round(1000 / Game.deltaTime);
-    debug.text = "fps: {0} : {1}".format(fps, Math.round(Game.time / 1000));
+    debug.text = "fps: {0} : {1}".format(fps, Math.ceil(Game.time / 1000));
 
 }
 function Draw()

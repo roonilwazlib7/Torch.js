@@ -5,18 +5,9 @@ Villager.prototype.Update = function()
     that.UpdateActor();
     that.MovementStateMachine.Update();
     var offset = that.Rectangle.Intersects(player.Rectangle);
-    if (offset && !player.hitLock)
+    if (offset)
     {
-        //player.Rectangle.x -= offset.x;
-        player.Body.y.velocity = -0.3;
-        player.HitLock();
-        //that.game.Assets.GetSound("player-hurt").play();
-
-        if (player.Health > 0)
-        {
-            healthBar.Rectangle.width -= (5 * healthBar.inc);
-            player.Health -= 20;
-        }
+        player.Hit(10);
     }
 }
 Villager.prototype.Right = function()
