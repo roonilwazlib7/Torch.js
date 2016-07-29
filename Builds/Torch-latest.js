@@ -1797,9 +1797,15 @@ Torch.Sprite.prototype.Center = function()
 {
     var that = this;
     var width = that.game.canvasNode.width;
-    var height = that.game.canvasNode.height;
     var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
+}
+Torch.Sprite.prototype.CenterVertical = function()
+{
+    var that = this;
+    var height = that.game.canvasNode.height;
+    var y = (height / 2) - (that.Rectangle.height/2);
+    that.Rectangle.y = y;
 }
 Torch.Sprite.prototype.ToErrorString = function()
 {

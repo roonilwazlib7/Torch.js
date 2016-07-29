@@ -70,10 +70,10 @@ Map.SetUpMenu = function()
     var that = this;
     for (var i = 0; i < DEFS.length; i++)
     {
-        var item = $('<li><a href="#" i = "' + i + '">' + DEFS[i].prototype.name + '<img src="' + DEFS[i].prototype.map + '" /></a></li>');
+        var item = $('<li><a href="#" i = "' + i + '">' + DEFS[i].prototype.asset + '<img src="' + __dirname.replace(/\\/g, "/") + "/../" + DEFS[i].prototype.asset + '.png" /></a></li>');
         item.find("a").click(function(){
             that.CurrentItem = parseInt( $(this).attr("i") );
-            $("#current-item-display").html(DEFS[that.CurrentItem].prototype.name);
+            $("#current-item-display").html(DEFS[that.CurrentItem].prototype.asset);
         });
         $("#item-select").append(item);
     }

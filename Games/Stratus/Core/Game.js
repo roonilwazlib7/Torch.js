@@ -10,7 +10,7 @@ var TestingEnemies = function()
 
 function Load()
 {
-    Game.Load.File(__dirname + "/Ideas/GameIdeas.txt", "game-ideas");
+    Game.Load.File(__dirname + "/test-map.map", "test-map");
     Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 48, 16, 16, 16);
     Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
@@ -23,6 +23,7 @@ function Load()
     Game.Load.Texture("Art/status-bar.png", "status-bar");
     Game.Load.Texture("Art/health-bar.png", "health-bar");
     Game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
+    Game.Load.Texture("Art/game-over.png", "game-over");
 
     Factory.Block.Load();
     Factory.Enemy.Load();
@@ -125,7 +126,7 @@ function Init()
         healthText.ToggleFixed();
 
         player = new Player(Game, 10, 325);
-        Spawner = new Torch.Platformer.Spawner(parseMapString(testMap));
+        Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
 
         Torch.Camera.Track(player);

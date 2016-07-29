@@ -50,7 +50,15 @@ Player.prototype.Update = function()
         that.opacity -= 0.001 * that.game.deltaTime;
         if (that.opacity <= 0)
         {
-            that.Trash();
+            for (var i = 0; i < that.game.spriteList.length; i++)
+            {
+                that.game.spriteList[i].Trash();
+            }
+            var gameOver = new Torch.Sprite(that.game, 0, 0);
+            gameOver.Bind.Texture("game-over");
+            gameOver.Center();
+            gameOver.CenterVertical();
+            gameOver.ToggleFixed();
         }
     }
     that.BaseUpdate();
