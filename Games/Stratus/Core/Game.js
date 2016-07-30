@@ -10,7 +10,7 @@ var TestingEnemies = function()
 var StartGame = function()
 {
     Game.PixelScale();
-    Game.Clear("blue");
+    Game.Clear("#000");
     Game.FlushSprites();
     Torch.Scale = 2;
 
@@ -83,6 +83,7 @@ var StartGame = function()
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
         Lighter.Init();
+        Lighter.SetLevel(0.9);
 
         Torch.Camera.Track(player);
         debug.ToggleFixed();

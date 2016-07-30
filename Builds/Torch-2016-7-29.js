@@ -766,7 +766,7 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     var rotation = params.rotation ? params.rotation + that.Viewport.rotation: that.Viewport.rotation;
 
-    that.canvas.globalAlpha = params.alpha ? params.alpha : that.canvas.globalAlpha;
+    that.canvas.globalAlpha = params.alpha != undefined ? params.alpha : that.canvas.globalAlpha;
 
     that.canvas.translate(x + width / 2, y + height / 2);
 

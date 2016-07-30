@@ -19,7 +19,6 @@ Lighter.Init = function()
     that.leftBlocker.ToggleFixed();
     that.leftBlocker.Rectangle.width = that.glower.Rectangle.x;
     that.leftBlocker.Rectangle.height = Game.Viewport.height;
-    that.leftBlocker.opacity = 0.9;
     that.leftBlocker.drawIndex = 7;
 
     that.leftBlocker.iX = that.leftBlocker.Rectangle.x;
@@ -33,7 +32,6 @@ Lighter.Init = function()
     that.rightBlocker.iX = that.rightBlocker.Rectangle.x;
     that.rightBlocker.iY = that.rightBlocker.Rectangle.y;
 
-    that.rightBlocker.opacity = 0.9;
     that.rightBlocker.drawIndex = 7;
 
     that.topBlocker.ToggleFixed();
@@ -45,7 +43,6 @@ Lighter.Init = function()
 
     that.topBlocker.Rectangle.width = 2.5 * ( Game.Viewport.width - (that.rightBlocker.Rectangle.width + that.leftBlocker.Rectangle.width) );
     that.topBlocker.Rectangle.height = Game.Viewport.height;
-    that.topBlocker.opacity = 0.9;
     that.topBlocker.drawIndex = 7;
 
     that.bottomBlocker.ToggleFixed();
@@ -57,13 +54,12 @@ Lighter.Init = function()
 
     that.bottomBlocker.Rectangle.width = 2.5 * ( Game.Viewport.width - (that.rightBlocker.Rectangle.width + that.leftBlocker.Rectangle.width) );
     that.bottomBlocker.Rectangle.height = Game.Viewport.height;
-    that.bottomBlocker.opacity = 0.9;
     that.bottomBlocker.drawIndex = 7;
 
     that.glower.Rectangle.width = (Game.Viewport.width - that.leftBlocker.Rectangle.width) / 3;
     that.glower.Rectangle.height = that.glower.Rectangle.width;
     that.glower.drawIndex = 6;
-    that.glower.opacity = 0.9;
+    console.log("--{}--");
 }
 Lighter.Update = function()
 {
@@ -76,4 +72,13 @@ Lighter.Update = function()
 
     that.glower.Rectangle.x = 4 + player.Rectangle.x + player.Rectangle.width - ( 0.575 * that.glower.Rectangle.width);
     that.glower.Rectangle.y = 1 + player.Rectangle.y - ( 0.4 * that.glower.Rectangle.height);
+}
+Lighter.SetLevel = function(level)
+{
+    var that = this;
+    that.topBlocker.opacity = level;
+    that.bottomBlocker.opacity = level;
+    that.leftBlocker.opacity = level;
+    that.rightBlocker.opacity = level;
+    that.glower.opacity = level;
 }
