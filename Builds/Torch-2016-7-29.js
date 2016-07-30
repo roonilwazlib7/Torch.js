@@ -1173,6 +1173,7 @@ Torch.Load.prototype.TexturePack = function(path, id, range, fileType)
 Torch.Load.prototype.TextureSheet = function(path, id, totalWidth, totalHeight, clipWidth, clipHeight)
 {
     var that = this;
+    totalWidth += clipWidth;
     var rows = totalHeight / clipHeight;
     var columns = totalWidth / clipWidth;
     var sheet = [];

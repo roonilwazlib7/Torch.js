@@ -96,8 +96,8 @@ var StartGame = function()
 function Load()
 {
     Game.Load.File(__dirname + "/test-map.map", "test-map");
-    Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 48, 16, 16, 16);
-    Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 48, 16, 16, 16);
+    Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
+    Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
     Game.Load.Texture("Art/player_left.png", "player_left");
     Game.Load.Texture("Art/hand.png", "hand");

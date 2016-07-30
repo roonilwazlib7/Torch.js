@@ -22,7 +22,7 @@ Factory.Block = function(baseWidth, baseHeight, asset, dir, mapImage, slope, all
     Factory.Block.loads.push(function(){
         if (allSheets)
         {
-            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 48, 16, 16, 16);
+            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 32, 16, 16, 16);
         }
         else
         {
@@ -83,16 +83,16 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     Factory.Enemy.loads.push(function(){
         if (allSheets)
         {
-            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 48, 16, 16, 16);
-            Game.Load.TextureSheet(dir + "/" + asset + "-left-idle.png", asset + "-left-idle", 48, 16, 16, 16);
+            Game.Load.TextureSheet(dir + "/" + asset + "-right-idle.png", asset + "-right-idle", 32, 16, 16, 16);
+            Game.Load.TextureSheet(dir + "/" + asset + "-left-idle.png", asset + "-left-idle", 32, 16, 16, 16);
         }
         else
         {
             Game.Load.Texture(dir + "/" + asset + "-right-idle.png", asset + "-right-idle");
             Game.Load.Texture(dir + "/" + asset + "-left-idle.png", asset + "-left-idle");
         }
-        Game.Load.TextureSheet(dir + "/" + asset + "-right-walk.png", asset + "-right-walk", 48, 16, 16, 16);
-        Game.Load.TextureSheet(dir + "/" + asset + "-left-walk.png", asset + "-left-walk", 48, 16, 16, 16);
+        Game.Load.TextureSheet(dir + "/" + asset + "-right-walk.png", asset + "-right-walk", 32, 16, 16, 16);
+        Game.Load.TextureSheet(dir + "/" + asset + "-left-walk.png", asset + "-left-walk", 32, 16, 16, 16);
     });
 
     return EnemyClass;
