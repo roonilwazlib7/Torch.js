@@ -83,7 +83,7 @@ var StartGame = function()
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
         Lighter.Init();
-        Lighter.SetLevel(0.9);
+        Lighter.SetLevel(0.99);
 
         Torch.Camera.Track(player);
         debug.ToggleFixed();
