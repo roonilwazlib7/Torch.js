@@ -48,6 +48,7 @@ var StartGame = function()
         statusBar.Rectangle.y -= statusBar.Rectangle.height;
         statusBar.Center();
         statusBar.ToggleFixed();
+        statusBar.drawIndex = 8;
 
         healthBar = new Torch.Sprite(Game, 0, Game.Viewport.height);
         healthBar.Bind.Texture("health-bar");
@@ -62,6 +63,7 @@ var StartGame = function()
         healthBarBackground.Rectangle.y -= healthBarBackground.Rectangle.height;
         healthBarBackground.Rectangle.x = statusBar.Rectangle.x;
         healthBarBackground.ToggleFixed();
+        healthBarBackground.drawIndex = 9;
 
         healthText = new Torch.Text(Game, 10, 10, {
             color: "white",
@@ -76,11 +78,11 @@ var StartGame = function()
         healthText.drawIndex = 100;
         healthText.ToggleFixed();
 
+
         player = new Player(Game, 10, 325);
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
-
-        var h = new Hand(Game, 50, 50);
+        Lighter.Init();
 
         Torch.Camera.Track(player);
         debug.ToggleFixed();
@@ -107,6 +109,9 @@ function Load()
     Game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
     Game.Load.Texture("Art/game-over.png", "game-over");
     Game.Load.Texture("Art/continue.png", "continue");
+
+    Game.Load.Texture("Art/faker-black.png", "faker-black");
+    Game.Load.Texture("Art/faker-red.png", "faker-red");
 
     Factory.Block.Load();
     Factory.Enemy.Load();
@@ -137,6 +142,11 @@ function Update()
 
     var fps = Math.round(1000 / Game.deltaTime);
     debug.text = "fps: {0} : {1}".format(fps, Math.ceil(Game.time / 1000));
+
+    if (player)
+    {
+        Lighter.Update();
+    }
 
 }
 function Draw()

@@ -1,7 +1,7 @@
 var Hand = function(actor, color)
 {
     this.actor = actor;
-    this.InitSprite(actor.game, actor.Rectangle.x, actor.Rectangle.y);
+    this.InitSprite(actor.game, 0, 0);
     this.pixlColor = color;
     this.CreateHand();
 }
