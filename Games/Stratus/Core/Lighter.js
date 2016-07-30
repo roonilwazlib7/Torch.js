@@ -12,7 +12,7 @@ Lighter.Init = function()
     that.rightBlocker.Bind.Texture("faker-black");
     that.topBlocker.Bind.Texture("faker-black");
     that.bottomBlocker.Bind.Texture("faker-black");
-    that.glower.Bind.Texture("faker-black");
+    that.glower.Bind.Texture("glower");
 
     that.glower.Rectangle.x = (Game.Viewport.width / 2) - player.Rectangle.width;
 
@@ -59,10 +59,21 @@ Lighter.Init = function()
     that.bottomBlocker.Rectangle.height = Game.Viewport.height;
     that.bottomBlocker.opacity = 0.9;
     that.bottomBlocker.drawIndex = 7;
+
+    that.glower.Rectangle.width = (Game.Viewport.width - that.leftBlocker.Rectangle.width) / 3;
+    that.glower.Rectangle.height = that.glower.Rectangle.width;
+    that.glower.drawIndex = 6;
+    that.glower.opacity = 0.9;
 }
 Lighter.Update = function()
 {
     var that = this;
     that.topBlocker.Rectangle.y = player.Rectangle.y - that.topBlocker.Rectangle.height - ( (1/9) * Game.Viewport.height );
-    that.bottomBlocker.Rectangle.y = player.Rectangle.y + ( (1/3) * Game.Viewport.height ) - ( (1/6) * Game.Viewport.height);
+    that.bottomBlocker.Rectangle.y = 1 + player.Rectangle.y + ( (1/3) * Game.Viewport.height ) - ( (1/6) * Game.Viewport.height);
+
+    that.glower.Rectangle.width = that.rightBlocker.Rectangle.x - that.leftBlocker.Rectangle.width;
+    that.glower.Rectangle.height = (0.9 * that.glower.Rectangle.width);
+
+    that.glower.Rectangle.x = 4 + player.Rectangle.x + player.Rectangle.width - ( 0.575 * that.glower.Rectangle.width);
+    that.glower.Rectangle.y = 1 + player.Rectangle.y - ( 0.4 * that.glower.Rectangle.height);
 }

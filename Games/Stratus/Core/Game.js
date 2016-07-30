@@ -10,7 +10,7 @@ var TestingEnemies = function()
 var StartGame = function()
 {
     Game.PixelScale();
-    Game.Clear("#000");
+    Game.Clear("blue");
     Game.FlushSprites();
     Torch.Scale = 2;
 
@@ -112,6 +112,7 @@ function Load()
 
     Game.Load.Texture("Art/faker-black.png", "faker-black");
     Game.Load.Texture("Art/faker-red.png", "faker-red");
+    Game.Load.Texture("Art/glower.png", "glower");
 
     Factory.Block.Load();
     Factory.Enemy.Load();
