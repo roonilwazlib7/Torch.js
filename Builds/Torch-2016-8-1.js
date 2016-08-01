@@ -996,66 +996,6 @@ Torch.Game.prototype.Keys = (function(){
     _keys["Space"] = {down:false};
     return _keys;
 })();
-
-/*Torch.Game.prototype.MakeViewport = function(){
-    var that = this;
-    var Viewport = {
-        x: 0,
-        y: 0,
-        width: 1280,
-        height: 720,
-        maxWidth: $("body").width(),
-        maxHeight: $("body").height(),
-        rotation: 0,
-
-        Update: function()
-        {
-            var that = this;
-            if (that.followSprite)
-            {
-                that.x = that.followSprite.origX - that.followSprite.Rectangle.x;
-                that.y = that.followSprite.origY - that.followSprite.Rectangle.y;
-            }
-        },
-
-        Maximize: function(){
-            var that = this;
-            var canvasElement = that.game.canvasNode;
-            $(canvasElement).attr("width",that.game.Viewport.maxWidth);
-
-            $(canvasElement).attr("height", that.game.Viewport.maxWidth * 0.5);
-
-            that.width = that.game.Viewport.maxWidth;
-            that.height = that.game.Viewport.maxWidth * 0.5;
-        },
-
-        GetViewRectangle: function(game)
-        {
-            var that = this.game//game;
-             return new Torch.Rectangle(-that.Viewport.x, -that.Viewport.y, that.Viewport.width, that.Viewport.height);
-        },
-
-        Follow: function(sprite)
-        {
-            this.followSprite = sprite;
-            sprite.origX = sprite.Rectangle.x;
-            sprite.origY = sprite.Rectangle.y;
-        },
-
-        Center: function(sprite)
-        {
-        //    this.x = sprite.Rectangle.x + (this.width / 8);
-        },
-
-        Latch: function(sprite)
-        {
-            this.x = (1280 / 2) + ( 0 - sprite.Rectangle.x );
-        }
-    };
-    Viewport.game = that;
-    return Viewport;
-};*/
-
 Torch.Game.prototype.Mouse = {
     x: 0,
     y: 0,
@@ -1266,7 +1206,7 @@ Torch.Load.prototype.Load = function(finishFunction)
     _l = setInterval(function()
     {
         TIME_TO_LOAD++
-        if (that.finish_stack <= 0 && TIME_TO_LOAD > 10)
+        if (that.finish_stack <= 0)
         {
             finishFunction();
             clearInterval(_l);

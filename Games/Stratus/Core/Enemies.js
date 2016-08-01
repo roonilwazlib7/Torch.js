@@ -1,1 +1,1 @@
-var Villager = Factory.Enemy(16, 16, "villager", "Art/Enemies/Villager", "Villager", true);
+var Villager = Factory.Enemy(16, 16, "villager", "Art/Enemies/Villager", "Images/Villager", true);

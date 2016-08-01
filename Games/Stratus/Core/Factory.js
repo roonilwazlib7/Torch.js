@@ -13,6 +13,8 @@ Factory.Block = function(baseWidth, baseHeight, asset, dir, mapImage, slope, all
     blockClass.prototype.baseWidth = baseWidth;
     blockClass.prototype.baseHeight = baseHeight;
     blockClass.prototype.name = asset;
+    blockClass.prototype.mapAsset = mapImage;
+    blockClass.prototype.asset = asset;
     if (slope)
     {
         blockClass.prototype.Slope = slope;
@@ -60,6 +62,8 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     EnemyClass.prototype.map = mapImage;
     EnemyClass.prototype.baseWidth = baseWidth;
     EnemyClass.prototype.baseHeight = baseHeight;
+    EnemyClass.prototype.mapAsset = mapImage;
+    EnemyClass.prototype.asset = asset;
 
     EnemyClass.prototype.Update = function()
     {

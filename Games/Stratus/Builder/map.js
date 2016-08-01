@@ -54,7 +54,7 @@ Map.AddItem = function(x,y)
     $("#flags").val("");
     that.Buffer += x.toString(16) + " " + y.toString(16) + " " + that.CurrentItem.toString(16) + " ";
     that.Flags += flags + " ";
-    var im = $("<img src='" + DEFS[that.CurrentItem].prototype.map + "' />");
+    var im = $("<img src='" + DEFS[that.CurrentItem].prototype.mapAsset + ".png' />");
     im.css({
         position: "absolute",
         left: x,
@@ -70,7 +70,7 @@ Map.SetUpMenu = function()
     var that = this;
     for (var i = 0; i < DEFS.length; i++)
     {
-        var item = $('<li><a href="#" i = "' + i + '">' + DEFS[i].prototype.asset + '<img src="' + __dirname.replace(/\\/g, "/") + "/../" + DEFS[i].prototype.asset + '.png" /></a></li>');
+        var item = $('<li><a href="#" i = "' + i + '">' + DEFS[i].prototype.asset + '<img src="' + DEFS[i].prototype.mapAsset + '.png" /></a></li>');
         item.find("a").click(function(){
             that.CurrentItem = parseInt( $(this).attr("i") );
             $("#current-item-display").html(DEFS[that.CurrentItem].prototype.asset);

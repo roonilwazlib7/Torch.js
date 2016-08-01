@@ -186,7 +186,7 @@ Torch.Load.prototype.Load = function(finishFunction)
     _l = setInterval(function()
     {
         TIME_TO_LOAD++
-        if (that.finish_stack <= 0 && TIME_TO_LOAD > 10)
+        if (that.finish_stack <= 0)
         {
             finishFunction();
             clearInterval(_l);
