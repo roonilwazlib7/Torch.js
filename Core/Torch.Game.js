@@ -12,10 +12,13 @@ Torch.Game = function(canvasId, width, height, name){
 
     this.Clear("#cc5200");
 
-    this.Viewport = this.MakeViewport();
+    this.Viewport = new Torch.Viewport(this);
 
     this.deltaTime = 0;
     this.fps = 0;
+    this.averageFps = 0;
+    this.allFPS = 0;
+    this.ticks = 0;
     this.zoom = 1;
     this.gameHasRunSuccessfully = false;
     this.gameFailedToRun = false;
@@ -114,7 +117,10 @@ Torch.Game.prototype.RunGame = function(timestamp)
 
     if (that.debug) that.debug();
 
-    that.fps = (1000 / that.deltaTime);
+    that.fps = Math.round(1000 / that.deltaTime);
+    that.allFPS += that.fps == Infinity ? 0 : Math.round(1000 / that.deltaTime);
+    that.ticks++;
+    that.averageFps = Math.round(that.allFPS / that.ticks);
 
     for (var i = 0; i < that.animations.length; i++)
     {
@@ -466,65 +472,6 @@ Torch.Game.prototype.Keys = (function(){
     _keys["Space"] = {down:false};
     return _keys;
 })();
-Torch.Game.prototype.MakeViewport = function(){
-    var that = this;
-    var Viewport = {
-        x: 0,
-        y: 0,
-        width: 1280,
-        height: 720,
-        maxWidth: $("body").width(),
-        maxHeight: $("body").height(),
-        rotation: 0,
-
-        Update: function()
-        {
-            var that = this;
-            if (that.followSprite)
-            {
-                that.x = that.followSprite.origX - that.followSprite.Rectangle.x;
-                that.y = that.followSprite.origY - that.followSprite.Rectangle.y;
-            }
-        },
-
-        Maximize: function(){
-            var that = this;
-            var canvasElement = that.game.canvasNode;
-            $(canvasElement).attr("width",that.game.Viewport.maxWidth);
-
-            $(canvasElement).attr("height", that.game.Viewport.maxWidth * 0.5);
-
-            that.width = that.game.Viewport.maxWidth;
-            that.height = that.game.Viewport.maxWidth * 0.5;
-        },
-
-        GetViewRectangle: function(game)
-        {
-            var that = this.game//game;
-             return new Torch.Rectangle(-that.Viewport.x, -that.Viewport.y, that.Viewport.width, that.Viewport.height);
-        },
-
-        Follow: function(sprite)
-        {
-            this.followSprite = sprite;
-            sprite.origX = sprite.Rectangle.x;
-            sprite.origY = sprite.Rectangle.y;
-        },
-
-        Center: function(sprite)
-        {
-        //    this.x = sprite.Rectangle.x + (this.width / 8);
-        },
-
-        Latch: function(sprite)
-        {
-            this.x = (1280 / 2) + ( 0 - sprite.Rectangle.x );
-        }
-    };
-    Viewport.game = that;
-    return Viewport;
-};
-
 Torch.Game.prototype.Mouse = {
     x: 0,
     y: 0,

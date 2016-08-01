@@ -34,6 +34,7 @@ var StartGame = function()
         fontWeight: "bold",
         text: "0"
     });
+    debug.drawIndex = 9000;
 
     var StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
     StartMenu.Center();
@@ -83,7 +84,7 @@ var StartGame = function()
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
         Lighter.Init();
-        Lighter.SetLevel(0.99);
+        Lighter.SetLevel(0);
 
         Torch.Camera.Track(player);
         debug.ToggleFixed();
@@ -142,8 +143,9 @@ function Update()
     }
     window.PlayList.Update();
 
-    var fps = Math.round(1000 / Game.deltaTime);
-    debug.text = "fps: {0} : {1}".format(fps, Math.ceil(Game.time / 1000));
+    var fps = Game.fps;
+    var avgFps = Game.averageFps;
+    debug.text = "FPS:{0}  T:{1} avgFPS:{2}".format(fps, Math.ceil(Game.time / 1000), avgFps);
 
     if (player)
     {

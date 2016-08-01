@@ -504,6 +504,9 @@ Torch.Game = function(canvasId, width, height, name){
 
     this.deltaTime = 0;
     this.fps = 0;
+    this.averageFps = 0;
+    this.allFPS = 0;
+    this.ticks = 0;
     this.zoom = 1;
     this.gameHasRunSuccessfully = false;
     this.gameFailedToRun = false;
@@ -602,7 +605,10 @@ Torch.Game.prototype.RunGame = function(timestamp)
 
     if (that.debug) that.debug();
 
-    that.fps = (1000 / that.deltaTime);
+    that.fps = Math.round(1000 / that.deltaTime);
+    that.allFPS += that.fps == Infinity ? 0 : Math.round(1000 / that.deltaTime);
+    that.ticks++;
+    that.averageFps = Math.round(that.allFPS / that.ticks);
 
     for (var i = 0; i < that.animations.length; i++)
     {

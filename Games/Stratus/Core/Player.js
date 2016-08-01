@@ -40,7 +40,7 @@ Player.prototype.Update = function()
         that.dead = true;
         that.rotation = Math.PI;
         that.Hand.Trash();
-        that.Item.Trash();
+        //that.Item.Trash();
         that.Body.y.acceleration = 0.001;
         that.Body.y.velocity = -0.5;
     }
