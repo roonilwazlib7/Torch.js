@@ -81,10 +81,11 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     EnemyClass.prototype.UpdateEnemy = function()
     {
         var that = this;
-        if (!that.wasJustHit && player.Hand.Rectangle.Intersects(that.Rectangle))
+        if (!that.wasJustHit && player.Hand.striking && player.Hand.Rectangle.Intersects(that.Rectangle))
         {
             that.Hit(1);
             that.wasJustHit = true;
+            if (that.OnHit) that.OnHit();
         }
         if (!player.Hand.Rectangle.Intersects(that.Rectangle))
         {

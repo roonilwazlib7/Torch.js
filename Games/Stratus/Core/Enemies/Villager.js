@@ -11,6 +11,10 @@ Villager.prototype.Update = function()
     {
         player.Hit(10);
     }
+    that.OnHit = function()
+    {
+        that.MovementStateMachine.Switch(VillagerHurtState);
+    }
 }
 Villager.prototype.Right = function()
 {
@@ -95,6 +99,26 @@ var VillagerChaseState = new Torch.StateMachine.State(
         //enter
         villager.Body.y.velocity = -0.3;
         //villager.game.Assets.GetSound("villager-alert").play();
+    },
+    function(villager)
+    {
+
+    }
+);
+var VillagerHurtState = new Torch.StateMachine.State(
+    function(villager)
+    {
+        //just wait a bit, then swing it back to normal
+        villager.hurtCounter += villager.game.deltaTime;
+        if (villager.hurtCounter >= 1000)
+        {
+            villager.MovementStateMachine.Switch(VillagerIdleState);
+        }
+    },
+    function(villager)
+    {
+        villager.Body.x.velocity = 0;
+        villager.hurtCounter = 0;
     },
     function(villager)
     {

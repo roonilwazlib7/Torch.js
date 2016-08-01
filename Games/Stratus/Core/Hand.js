@@ -9,6 +9,7 @@ var Hand = function(actor, color)
     this.punchingLeft = false;
     this.finishingPunchRight = false;
     this.finishingPunchLeft = false;
+    this.striking = false;
 }
 Hand.is(Torch.Sprite);
 Hand.prototype.Update = function()
@@ -56,6 +57,7 @@ Hand.prototype.UpdateOffset = function()
     var that = this;
     that.update_PunchRight();
     that.update_PunchLeft();
+    that.striking = that.punchingLeft || that.punchingRight;
 }
 Hand.prototype.PunchLeft = function()
 {
@@ -74,7 +76,6 @@ Hand.prototype.update_PunchRight = function()
     {
         if (!that.finishingPunchRight)
         {
-            console.log("punching...");
             that.offset.x += 0.6 * that.game.deltaTime;
             if (that.offset.x >= 35)
             {
@@ -100,7 +101,6 @@ Hand.prototype.update_PunchLeft = function()
     {
         if (!that.finishingPunchLeft)
         {
-            console.log("punching...");
             that.offset.x -= 0.6 * that.game.deltaTime;
             if (that.offset.x <= -35)
             {

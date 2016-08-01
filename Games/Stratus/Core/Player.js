@@ -145,7 +145,7 @@ Player.prototype.SwitchItem = function(item)
 Player.prototype.HandleStrikes = function()
 {
     var that = this;
-    if (!that.game.Keys.E.down && that.EWasDown)
+    if (!that.game.Keys.Space.down && that.SpaceWasDown)
     {
         var anim;
         if (that.facing == "right")
@@ -156,15 +156,15 @@ Player.prototype.HandleStrikes = function()
         {
             that.Hand.PunchLeft();
         }
-        that.EWasDown = false;
+        that.SpaceWasDown = false;
     }
-    if (that.game.Keys.E.down)
+    if (that.game.Keys.Space.down)
     {
-        that.EWasDown = true;
+        that.SpaceWasDown = true;
     }
     else
     {
-        that.EWasDown = false;
+        that.SpaceWasDown = false;
     }
 }
 Player.prototype.Enter = function()

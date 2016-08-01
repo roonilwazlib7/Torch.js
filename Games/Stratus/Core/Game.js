@@ -6,6 +6,7 @@ var TestingEnemies = function()
 {
     var villager = new Villager(Game, 500, 500);
     villager.MovementStateMachine.Switch(VillagerIdleState);
+    window.villager = villager;
 }
 var StartGame = function()
 {
@@ -91,7 +92,7 @@ var StartGame = function()
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     //window.PlayList.Randomize();
-    //window.PlayList.Play();
+    window.PlayList.Play();
 }
 
 function Load()
