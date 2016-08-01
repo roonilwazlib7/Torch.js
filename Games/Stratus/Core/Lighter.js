@@ -59,7 +59,6 @@ Lighter.Init = function()
     that.glower.Rectangle.width = (Game.Viewport.width - that.leftBlocker.Rectangle.width) / 3;
     that.glower.Rectangle.height = that.glower.Rectangle.width;
     that.glower.drawIndex = 6;
-    console.log("--{}--");
 }
 Lighter.Update = function()
 {
@@ -68,10 +67,10 @@ Lighter.Update = function()
     that.bottomBlocker.Rectangle.y = 1 + player.Rectangle.y + ( (1/3) * Game.Viewport.height ) - ( (1/6) * Game.Viewport.height);
 
     that.glower.Rectangle.width = that.rightBlocker.Rectangle.x - that.leftBlocker.Rectangle.width;
-    that.glower.Rectangle.height = (0.9 * that.glower.Rectangle.width);
+    that.glower.Rectangle.height = 1 + (0.9 * that.glower.Rectangle.width);
 
     that.glower.Rectangle.x = 4 + player.Rectangle.x + player.Rectangle.width - ( 0.575 * that.glower.Rectangle.width);
-    that.glower.Rectangle.y = 1 + player.Rectangle.y - ( 0.4 * that.glower.Rectangle.height);
+    that.glower.Rectangle.y = 0 + player.Rectangle.y - ( 0.4 * that.glower.Rectangle.height);
 }
 Lighter.SetLevel = function(level)
 {

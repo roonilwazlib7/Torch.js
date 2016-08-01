@@ -1,8 +1,10 @@
+Villager.prototype.Health = 2;
 Villager.prototype.Update = function()
 {
     var that = this;
     that.BaseUpdate();
     that.UpdateActor();
+    that.UpdateEnemy();
     that.MovementStateMachine.Update();
     var offset = that.Rectangle.Intersects(player.Rectangle);
     if (offset)

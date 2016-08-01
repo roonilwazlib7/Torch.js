@@ -50,6 +50,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
 {
     var EnemyClass = function(game, x, y)
     {
+        var that = this;
         this.InitSprite(game, x, y);
         if (this.InitEnemy) this.InitEnemy();
         this.asset = asset;
@@ -57,6 +58,11 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         this.MovementStateMachine = new Torch.StateMachine(this);
         this.facing = "right";
         this.walking = "none";
+        this.wasJustHit = true;
+        this.OnTrash = function()
+        {
+            that.Hand.Trash();
+        }
     }
     EnemyClass.is(Torch.Sprite).is(Torch.Platformer.Actor);
     EnemyClass.prototype.map = mapImage;
@@ -70,6 +76,30 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         var that = this;
         that.BaseUpdate();
         that.UpdateActor();
+    }
+
+    EnemyClass.prototype.UpdateEnemy = function()
+    {
+        var that = this;
+        if (!that.wasJustHit && player.Hand.Rectangle.Intersects(that.Rectangle))
+        {
+            that.Hit(1);
+            that.wasJustHit = true;
+        }
+        if (!player.Hand.Rectangle.Intersects(that.Rectangle))
+        {
+            that.wasJustHit = false;
+        }
+        if (that.Health <= 0)
+        {
+            that.Trash();
+        }
+    }
+
+    EnemyClass.prototype.Hit = function(amount)
+    {
+        var that = this;
+        that.Health -= amount;
     }
 
     EnemyClass.prototype.GetAssets = function()

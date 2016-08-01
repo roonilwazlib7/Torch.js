@@ -150,27 +150,11 @@ Player.prototype.HandleStrikes = function()
         var anim;
         if (that.facing == "right")
         {
-            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeRightFrameList(that),
-            function(){
-                console.log("starting");
-                that.Item.striking = true;
-            },
-            function(){
-                console.log("ending");
-                that.Item.striking = false;
-            });
+            that.Hand.PunchRight();
         }
         else
         {
-            anim = new Torch.Animation.StepAnimation(that.game, 100, GetPlayerStrikeLeftFrameList(that),
-            function(){
-                console.log("starting");
-                that.Item.striking = true;
-            },
-            function(){
-                console.log("ending");
-                that.Item.striking = false;
-            });
+            that.Hand.PunchLeft();
         }
         that.EWasDown = false;
     }
