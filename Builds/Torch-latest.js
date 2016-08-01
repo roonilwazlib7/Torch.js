@@ -594,6 +594,12 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.time = timestamp;
     that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
 
+    Torch.DrawWorker.send(JSON.stringify({
+        torch_draw_canvas: true,
+        time: that.time,
+        canvas: that.canvas
+    }));
+
     that.draw();
     that.update();
     that.Viewport.Update();
@@ -1237,6 +1243,9 @@ Torch.Electron = {};
 Torch.Electron.Import = function()
 {
     Torch.fs = require("fs");
+    Torch.cluster = require('cluster');
+
+    Torch.DrawWorker = require('electron').remote.getGlobal('DrawWorker');
 }
 Torch.Camera = {};
 

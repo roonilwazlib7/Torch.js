@@ -1,4 +1,6 @@
 Torch.Electron.Import();
+
+
 var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
 var TitleText, TitleText2, Spawner, player, debug, healthText, healthBar;
 

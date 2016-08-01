@@ -4,6 +4,7 @@ var cluster = require('cluster');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
+var drawWorker = null;
 
 function StartWindow()
 {
@@ -62,6 +63,8 @@ function StartWindow()
                   mainWindow = null;
                 });
 
+                global.DrawWorker = drawWorker;
+
             }
         });
 
@@ -72,7 +75,7 @@ function StartWindow()
 
 if (cluster.isMaster)
 {
-    cluster.fork();
+    drawWorker = cluster.fork();
 
     var app = require('app');  // Module to control application life.
     var BrowserWindow = require('browser-window');  // Module to create native browser window.
@@ -80,9 +83,20 @@ if (cluster.isMaster)
 }
 else
 {
-    console.log("here");
-    fs.writeFile("worker.txt", "I'm a worker", 'utf8', function(er, data)
-    {
-
+    process.on("message", function(message){
+        message = JSON.parse(message);
+        if (message.torch_draw_canvas)
+        {
+            try
+            {
+                var dataUrl = message.canvas.toDataURL();
+            }
+            catch(e)
+            {
+                console.log("[!]Error converting canvas to dataURL");
+                console.log(e);
+            }
+        }
     });
+
 }
