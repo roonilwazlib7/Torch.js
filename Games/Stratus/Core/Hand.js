@@ -49,10 +49,6 @@ Hand.prototype.UpdatePosition = function()
     {
         that.Rectangle.x = that.offset.x + that.actor.Rectangle.x;
     }
-    if (that.actor.walkingLeft || that.actor.walkingRight)
-    {
-        that.offset = {x: 0, y: 0};
-    }
     that.Rectangle.y = that.offset.y + that.actor.Rectangle.y + (that.actor.Rectangle.height / 2);
 }
 Hand.prototype.UpdateOffset = function()
