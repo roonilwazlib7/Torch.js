@@ -54,12 +54,14 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 
     that.Load.Load(function()
     {
-        try {
+        try
+        {
             that.init();
             that.WireUpEvents();
-            Torch.activeGame = that;
-            Torch.Run(that);
-        } catch (e) {
+            that.Run();
+        }
+        catch (e)
+        {
             that.FatalError(e);
         }
 
@@ -95,6 +97,13 @@ Torch.Game.prototype.Add = function(o)
 Torch.Game.prototype.RunGame = function(timestamp)
 {
     var that = this;
+    if (!that.time)
+    {
+        that.time = timestamp;
+    }
+
+    that.deltaTime = Math.round(timestamp - that.time);
+    that.time = timestamp;
     that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
 
     that.draw();
@@ -114,32 +123,15 @@ Torch.Game.prototype.RunGame = function(timestamp)
     }
     Torch.Timer.Update();
     that.UpdateGamePads();
-    Torch.Loop(timestamp);
+
+    window.requestAnimationFrame(function(timestamp){
+        that.RunGame(timestamp);
+    });
 };
 Torch.Game.prototype.Run = function(timestamp)
 {
     var that = this;
-    if (!that.gameHasRunSuccessfully && !that.gameFailedToRun)
-    {
-        try
-        {
-            that.RunGame(timestamp);
-            that.gameHasRunSuccessfully = true;
-
-        }
-        catch (e)
-        {
-            console.trace();
-            Torch.Error("Game Has Failed To Run!");
-            Torch.Error(e);
-            that.gameFailedToRun = true;
-            that.FatalError(e);
-        }
-    }
-    if (that.gameHasRunSuccessfully)
-    {
-        that.RunGame(timestamp);
-    }
+    that.RunGame(0);
 
 };
 Torch.Game.prototype.FlushSprites = function()

@@ -32,38 +32,6 @@ var Torch =
         InverseSquare: 4,
         SquareRoot: 5
     },
-    Run: function(Game){
-        var that = this;
-        window.requestAnimationFrame(function(timestamp)
-        {
-            that.activeGame.Run(timestamp, that.activeGame);
-        });
-    },
-    Loop: function(timestamp){
-        var that = this;
-        if (!that.activeGame.time)
-        {
-            that.activeGame.time = timestamp
-        }
-
-        that.activeGame.deltaTime = Math.round(timestamp - that.activeGame.time);
-
-        that.activeGame.time = timestamp;
-
-
-        window.requestAnimationFrame(function(timestamp)
-        {
-            that.activeGame.Run(timestamp, that.activeGame);
-        });
-    },
-    Error: function(message)
-    {
-        console.log("%c   " + "Torch Error! -->" + message, "background-color:#black; color:red");
-        Torch.Message("Torch Error! -->" + message, "red");
-        Torch.activeGame = null;
-        Torch = message;
-        throw message;
-    },
     Message: function(message, color)
     {
         if ( $("#torch_message").length > 0 )
