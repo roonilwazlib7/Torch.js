@@ -17,6 +17,7 @@ var Player = function(game, x, y)
     this.Hand.drawIndex = 5;
     this.StrikeOffset = {x: 0, y: 0}
     this.facing = "right";
+    this.tint = "green";
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 

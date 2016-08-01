@@ -15,6 +15,8 @@ var StartGame = function()
     Game.FlushSprites();
     Torch.Scale = 2;
 
+    window.Mouse = new Mouse(Game);
+
     var StartLogo = new Torch.Sprite(Game, 0, 150);
     StartLogo.Bind.Texture("main-logo");
 
@@ -92,7 +94,7 @@ var StartGame = function()
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
     //window.PlayList.Randomize();
-    window.PlayList.Play();
+    //window.PlayList.Play();
 }
 
 function Load()
@@ -112,6 +114,7 @@ function Load()
     Game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
     Game.Load.Texture("Art/game-over.png", "game-over");
     Game.Load.Texture("Art/continue.png", "continue");
+    Game.Load.Texture("Art/mouse.png", "mouse");
 
     Game.Load.Texture("Art/faker-black.png", "faker-black");
     Game.Load.Texture("Art/faker-red.png", "faker-red");

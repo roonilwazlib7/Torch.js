@@ -38,6 +38,7 @@ Hand.prototype.CreateHand = function()
     {
         that.Bind.Texture(im);
     }
+    that.pixlImage = im;
 }
 Hand.prototype.UpdatePosition = function()
 {
@@ -58,6 +59,21 @@ Hand.prototype.UpdateOffset = function()
     that.update_PunchRight();
     that.update_PunchLeft();
     that.striking = that.punchingLeft || that.punchingRight;
+    if (that.striking)
+    {
+        var sp = new Torch.Sprite(that.game, that.Rectangle.x, that.Rectangle.y);
+        sp.Bind.Texture(that.pixlImage);
+        sp.drawIndex = that.drawIndex;
+        sp.Update = function()
+        {
+            sp.BaseUpdate();
+            sp.opacity -= 0.009 * that.game.deltaTime;
+            if (sp.opacity <= 0)
+            {
+                sp.Trash();
+            }
+        }
+    }
 }
 Hand.prototype.PunchLeft = function()
 {

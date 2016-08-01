@@ -427,8 +427,9 @@ Torch.Sprite.prototype.ToErrorString = function()
     var that = this;
     var str = "";
     var br = "<br/>";
-    str += JSON.stringify(that, null, 4);
-    return str;
+    var obj = {_torch_uid: that._torch_uid, Rectangle: that.Rectangle};
+    str += JSON.stringify(obj, null, 4);
+    return str + "<br/>";
 }
 
 Torch.GhostSprite = function(){};

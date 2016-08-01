@@ -486,6 +486,58 @@ Torch.Vector.prototype.GetDistance = function(otherVector)
     var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
     return Math.sqrt(raw);
 }
+Torch.Keys = function()
+{
+    var _keys = this;
+    for (i = 0; i < 230; i++)
+    {
+        var _char = String.fromCharCode(i).toUpperCase();
+        switch (i)
+        {
+            case 37:
+            _keys["LeftArrow"] = {down:false};
+            break;
+
+            case 38:
+            _keys["UpArrow"] = {down:false};
+            break;
+
+            case 39:
+            _keys["RightArrow"] = {down:false};
+            break;
+
+            case 40:
+            _keys["DownArrow"] = {down:false};
+
+            default:
+            _keys[_char] = {down:false};
+            break;
+        }
+
+
+    }
+    _keys["Space"] = {down:false};
+}
+Torch.Mouse = function(game)
+{
+    this.x = 0;
+    this.y = 0;
+    this.down = false;
+    this.game = game;
+}
+Torch.Mouse.prototype.SetMousePos = function(c, evt)
+{
+    var that = this;
+    var rect = c.getBoundingClientRect();
+
+    that.x = evt.clientX - rect.left;
+    that.y = evt.clientY - rect.top;
+}
+Torch.Mouse.prototype.GetRectangle = function()
+{
+    var that = this;
+    return new Torch.Rectangle(that.game.Mouse.x - that.game.Viewport.x, that.game.Mouse.y - that.game.Viewport.y, 5, 5);
+}
 Torch.Viewport = function(game)
 {
     this.x = 0;
@@ -531,12 +583,12 @@ Torch.Game = function(canvasId, width, height, name){
     this.width = width;
     this.height = height;
     this.name = name;
-
-    this.Load = new Torch.Load(this);
-
     this.Clear("#cc5200");
 
+    this.Load = new Torch.Load(this);
     this.Viewport = new Torch.Viewport(this);
+    this.Mouse = new Torch.Mouse(this);
+    this.Keys = new Torch.Keys();
 
     this.deltaTime = 0;
     this.fps = 0;
@@ -544,22 +596,20 @@ Torch.Game = function(canvasId, width, height, name){
     this.allFPS = 0;
     this.ticks = 0;
     this.zoom = 1;
+    this.uidCounter = 0;
     this.gameHasRunSuccessfully = false;
     this.gameFailedToRun = false;
     this.paused = false;
+
     this.time = null;
     this.LastTimeStamp = null;
-    this.spriteList = new Array();
-    this.textList = new Array();
-    this.animations = new Array();
-    this.DrawStack = new Array();
-    this.AddStack = new Array();
-    this.GamePads = new Array();
-    this.Text = new Object();
-    this.Lags = 0;
-    this.NoLags = 0;
-    this.LagTime = 0;
-    this.uidCounter = 0;
+
+    this.spriteList = [];
+    this.textList = [];
+    this.animations = [];
+    this.DrawStack = [];
+    this.AddStack = [];
+    this.GamePads = [];
 };
 Torch.Game.prototype.PixelScale = function()
 {
@@ -598,7 +648,6 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
     that.canvasNode.height = typeof(that.height) == "string" ? document.body.clientHeight - 25 : that.height;
     that.Viewport.width = that.canvasNode.width;
     that.Viewport.height = that.canvasNode.height;
-
 };
 Torch.Game.prototype.Add = function(o)
 {
@@ -637,20 +686,9 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.update();
     that.Viewport.Update();
     that.UpdateAndDrawSprites();
+    that.UpdateAnimations();
+    that.UpdateTimeInfo();
     Torch.Camera.Update();
-
-    if (that.debug) that.debug();
-
-    that.fps = Math.round(1000 / that.deltaTime);
-    that.allFPS += that.fps == Infinity ? 0 : Math.round(1000 / that.deltaTime);
-    that.ticks++;
-    that.averageFps = Math.round(that.allFPS / that.ticks);
-
-    for (var i = 0; i < that.animations.length; i++)
-    {
-        var anim = that.animations[i];
-        anim.Run();
-    }
     Torch.Timer.Update();
     that.UpdateGamePads();
 
@@ -662,7 +700,6 @@ Torch.Game.prototype.Run = function(timestamp)
 {
     var that = this;
     that.RunGame(0);
-
 };
 Torch.Game.prototype.FlushSprites = function()
 {
@@ -675,40 +712,33 @@ Torch.Game.prototype.FlushSprites = function()
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
+    if (that.fatal) return;
+    that.fatal = true;
     that.Clear("#000");
     var stack = error.stack.replace(/\n/g, "<br><br>");
     $("canvas").remove();
     $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
     $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
     $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
+    that.RunGame = function(){};
+    that.Run = function(){};
     throw error;
 
 };
-Torch.Game.prototype.UpdateAndDrawSprites = function()
+Torch.Game.prototype.UpdateSprites = function()
 {
     var that = this;
-    if (that.loading) return;
-    var drawList = [];
-    drawList = drawList.concat(that.spriteList);
-    var cleanedDrawList = [];
-    drawList.sort(function(a, b){
-        return a.drawIndex - b.drawIndex;
-    });
-    for (var j = 0; j < drawList.length; j++)
+
+    var updateList = that.spriteList;
+    var cleanedUpdateList = [];
+
+    for (var i = 0; i < updateList.length; i++)
     {
-        var sprite = drawList[j];
-        if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE)
-        {
-            sprite.Draw();
-        }
-    }
-    for (var i = 0; i < drawList.length; i++)
-    {
-        var sprite = drawList[i];
+        var sprite = updateList[i];
         if (!sprite.trash)
         {
             if (!sprite.game.paused)sprite.Update();
-            cleanedDrawList.push(sprite);
+            cleanedUpdateList.push(sprite);
         }
         else
         {
@@ -717,7 +747,32 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
         }
     }
 
-    that.spriteList = cleanedDrawList;
+    that.spriteList = cleanedUpdateList;
+}
+Torch.Game.prototype.DrawSprites = function()
+{
+    var that = this;
+    var drawList = that.spriteList;
+    drawList.sort(function(a, b){
+        return a.drawIndex - b.drawIndex;
+    });
+
+    for (var j = 0; j < drawList.length; j++)
+    {
+        var sprite = drawList[j];
+        if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE)
+        {
+            sprite.Draw();
+        }
+    }
+}
+Torch.Game.prototype.UpdateAndDrawSprites = function()
+{
+    var that = this;
+    if (that.loading) return;
+
+    that.DrawSprites();
+    that.UpdateSprites();
 
     for (var i = 0; i < that.AddStack.length; i++)
     {
@@ -725,8 +780,25 @@ Torch.Game.prototype.UpdateAndDrawSprites = function()
         that.spriteList.push(o);
     }
 
-    that.AddStack = new Array();
+    that.AddStack = [];
 };
+Torch.Game.prototype.UpdateAnimations = function()
+{
+    var that = this;
+    for (var i = 0; i < that.animations.length; i++)
+    {
+        var anim = that.animations[i];
+        anim.Run();
+    }
+}
+Torch.Game.prototype.UpdateTimeInfo = function()
+{
+    var that = this;
+    that.fps = Math.round(1000 / that.deltaTime);
+    that.allFPS += that.fps == Infinity ? 0 : Math.round(1000 / that.deltaTime);
+    that.ticks++;
+    that.averageFps = Math.round(that.allFPS / that.ticks);
+}
 Torch.Game.prototype.UpdateGamePads = function()
 {
     var that = this;
@@ -743,12 +815,6 @@ Torch.Game.prototype.UpdateGamePads = function()
             }
         }
     }
-}
-Torch.Game.prototype.Zoom = function(speed)
-{
-    var that = this;
-    that.zoom += that.deltaTime * speed;
-    that.canvasNode.style.zoom = that.zoom;
 }
 Torch.Game.prototype.Draw = function(texture, rectangle, params)
 {
@@ -776,25 +842,11 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     if (params.IsTextureSheet)
     {
-        if (params.tint)
-        {
-            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel, params.clipX, params.clipY, params.clipWidth, params.clipHeight);
-        }
-        else
-        {
-            that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
-        }
+        that.canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height);
     }
     else
     {
-        if (params.tint)
-        {
-            that.DrawTint(texture.image, -width/2, -height/2, rectangle.width, rectangle.height, params.tint, params.tintLevel)
-        }
-        else
-        {
-            that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
-        }
+        that.canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height);
     }
 
     that.canvas.rotate(0);
@@ -802,43 +854,6 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 
     that.canvas.restore();
 };
-Torch.Game.prototype.DrawTint = function(texture, x, y, width, height, spriteTint, spriteTintLevel, clipX, clipY, clipWidth, clipHeight)
-{
-    //do all transformations (rotate, translate, etc) before Drawing
-    var that = this;
-    var buffer = document.createElement("canvas");
-    var renderBuffer;
-    var tintLevel = spriteTintLevel ? spriteTintLevel : 0.5;
-
-    buffer.width = width;
-    buffer.height = height;
-
-    renderBuffer = buffer.getContext("2d");
-    renderBuffer.fillStyle = spriteTint;
-
-    if (clipX)
-    {
-        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
-        renderBuffer.globalCompositeOperation = "destination-atop";
-        renderBuffer.drawImage(texture,clipX,clipY,clipWidth,clipHeight,0,0,width,height);
-
-        that.canvas.drawImage(texture,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
-        that.canvas.globalAlpha = tintLevel;
-        that.canvas.drawImage(buffer,clipX,clipY,clipWidth,clipHeight,x,y,width,height);
-    }
-    else
-    {
-        renderBuffer.fillRect(0,0,buffer.width,buffer.height);
-        renderBuffer.globalCompositeOperation = "destination-atop";
-        renderBuffer.drawImage(texture,0,0);
-
-        that.canvas.drawImage(texture,x,y);
-        that.canvas.globalAlpha = tintLevel;
-        that.canvas.drawImage(buffer, x, y);
-    }
-
-
-}
 Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
@@ -851,7 +866,7 @@ Torch.Game.prototype.getCanvasEvents = function()
     var evts = [
         [
             "mousemove", function(e){
-                that.Mouse.SetMousePos(that.canvasNode, e, that);
+                that.Mouse.SetMousePos(that.canvasNode, e);
             }
         ],
         [
@@ -964,55 +979,6 @@ Torch.Game.prototype.WireUpEvents = function()
         //that.GamePads.push(new Torch.GamePad(pads[i]));
     }
 };
-Torch.Game.prototype.Keys = (function(){
-    var _keys = [];
-    for (i = 0; i < 230; i++)
-    {
-        var _char = String.fromCharCode(i).toUpperCase();
-        switch (i)
-        {
-            case 37:
-            _keys["LeftArrow"] = {down:false};
-            break;
-
-            case 38:
-            _keys["UpArrow"] = {down:false};
-            break;
-
-            case 39:
-            _keys["RightArrow"] = {down:false};
-            break;
-
-            case 40:
-            _keys["DownArrow"] = {down:false};
-
-            default:
-            _keys[_char] = {down:false};
-            break;
-        }
-
-
-    }
-    _keys["Space"] = {down:false};
-    return _keys;
-})();
-Torch.Game.prototype.Mouse = {
-    x: 0,
-    y: 0,
-    down: false,
-    SetMousePos: function(c, evt, game)
-    {
-        var rect = c.getBoundingClientRect();
-
-        game.Mouse.x = evt.clientX - rect.left;
-        game.Mouse.y = evt.clientY - rect.top;
-    },
-    GetRectangle: function(game)
-    {
-        return new Torch.Rectangle(game.Mouse.x - game.Viewport.x, game.Mouse.y - game.Viewport.y, 5, 5);
-    }
-};
-
 Torch.Game.prototype.TogglePause = function()
 {
     if (!this.paused) this.paused = true;
@@ -1770,8 +1736,9 @@ Torch.Sprite.prototype.ToErrorString = function()
     var that = this;
     var str = "";
     var br = "<br/>";
-    str += JSON.stringify(that, null, 4);
-    return str;
+    var obj = {_torch_uid: that._torch_uid, Rectangle: that.Rectangle};
+    str += JSON.stringify(obj, null, 4);
+    return str + "<br/>";
 }
 
 Torch.GhostSprite = function(){};
