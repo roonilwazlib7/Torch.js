@@ -94,7 +94,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     that.Rectangle.y += offset.y;
                     that.Body.y.velocity = 0;
                 }
-                else if ( Math.abs(offset.sharedXPlane) < 59 )
+                else if ( true/*Math.abs(offset.sharedXPlane) < 59*/ )
                 {
                     //colDir = "b";
                     if (!item.Sprite.Slope)

@@ -92,7 +92,7 @@ var StartGame = function()
         Lighter.Init();
         Lighter.SetLevel(0);
 
-        Torch.Camera.Track(player);
+        //Torch.Camera.Track(player);
         debug.ToggleFixed();
     });
     window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
