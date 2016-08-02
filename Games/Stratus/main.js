@@ -20,19 +20,22 @@ function StartWindow()
     // initialization and is ready to create browser windows.
     app.on('ready', function() {
 
-        fs.readFile('build.config', 'utf8', function (err, data) {
+        fs.readFile('config.json', 'utf8', function (err, data) {
             var path = "";
             if (err) return console.log(err);
             else
             {
-                var state = data.split("|")[0];
-                switch (state)
+                var config = JSON.parse(data);
+                switch (config.BUILD_TYPE)
                 {
                     case "GAME":
                     path = "index.html";
                     break;
                     case "MAP":
                     path = "Builder/index.html";
+                    break;
+                    case "TEST":
+                    path = "../Test/test.html";
                     break;
                     default:
                     path = "build-error.html#" + "config type '" + state + "' is not valid";

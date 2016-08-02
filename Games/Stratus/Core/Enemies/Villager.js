@@ -6,7 +6,7 @@ Villager.prototype.Update = function()
     that.UpdateActor();
     that.UpdateEnemy();
     that.MovementStateMachine.Update();
-    var offset = that.Rectangle.Intersects(player.Rectangle);
+    var offset = that.Rectangle.Intersects(player.HitBox);
     if (offset)
     {
         player.Hit(10);
@@ -83,7 +83,7 @@ var VillagerChaseState = new Torch.StateMachine.State(
         }
 
 
-        if (villager.GetDistance(player) < villager.Rectangle.width)
+        if (villager.GetDistance(player) < 10)
         {
             villager.Body.x.velocity = 0;
             villager.walking = "none";

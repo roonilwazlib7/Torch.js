@@ -143,13 +143,13 @@ pixl.util = {};
 pixl.util.DecomposeImage = function(image)
 {
     var canvas = document.createElement("CANVAS");
-    canvas.crossOrigin = "anonymous";
-    var cnv;
+    var imageData;
     canvas.width = image.width;
     canvas.height = image.height;
     cnv = canvas.getContext("2d");
     cnv.drawImage(image, 0, 0);
-    return canvas.toDataURL();
+    imageData = cnv.getImageData(0,0,canvas.width,canvas.height);
+    return imageData;
 }
 pixl.util.FillPixels = function(data, lineStart, lineEnd, pixel)
 {
@@ -1450,6 +1450,7 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
             maxVelocity: 100
         }
     }
+    this.HitBox = {x: 0, y: 0, width: 0, height: 0};
     this.game = game;
     this.DrawTexture = null;
     this.TexturePack = null;
@@ -1528,6 +1529,14 @@ Torch.Sprite.prototype.BaseUpdate = function()
     var that = this;
     that.UpdateBody();
     that.UpdateEvents();
+    var shiftX = that.Rectangle.width / 8;
+    var shiftY = that.Rectangle.height / 8;
+    that.HitBox = {
+        x: that.Rectangle.x + shiftX,
+        y: that.Rectangle.y + shiftY,
+        width: that.Rectangle.width - (2 * shiftX),
+        height: that.Rectangle.height - (2 * shiftY)
+    };
 }
 Torch.Sprite.prototype.Update = function()
 {

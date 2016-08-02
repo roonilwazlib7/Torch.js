@@ -93,6 +93,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         }
         if (that.Health <= 0)
         {
+            Explode(that);
             that.Trash();
         }
     }

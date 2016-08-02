@@ -141,6 +141,7 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
             maxVelocity: 100
         }
     }
+    this.HitBox = {x: 0, y: 0, width: 0, height: 0};
     this.game = game;
     this.DrawTexture = null;
     this.TexturePack = null;
@@ -219,6 +220,14 @@ Torch.Sprite.prototype.BaseUpdate = function()
     var that = this;
     that.UpdateBody();
     that.UpdateEvents();
+    var shiftX = that.Rectangle.width / 8;
+    var shiftY = that.Rectangle.height / 8;
+    that.HitBox = {
+        x: that.Rectangle.x + shiftX,
+        y: that.Rectangle.y + shiftY,
+        width: that.Rectangle.width - (2 * shiftX),
+        height: that.Rectangle.height - (2 * shiftY)
+    };
 }
 Torch.Sprite.prototype.Update = function()
 {

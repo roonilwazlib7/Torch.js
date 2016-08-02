@@ -39,16 +39,16 @@ Player.prototype.Update = function()
     if (that.Health <= 0 && !that.dead)
     {
         that.dead = true;
-        that.rotation = Math.PI;
+        that.deadCounter = 0;
+        that.opacity = 0;
         that.Hand.Trash();
+        Explode(that);
         //that.Item.Trash();
-        that.Body.y.acceleration = 0.001;
-        that.Body.y.velocity = -0.5;
     }
     if(that.dead)
     {
-        that.opacity -= 0.001 * that.game.deltaTime;
-        if (that.opacity <= 0)
+        that.deadCounter += that.game.deltaTime;
+        if (that.deadCounter >= 6000)
         {
             for (var i = 0; i < that.game.spriteList.length; i++)
             {

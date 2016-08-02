@@ -7,6 +7,9 @@ var TestingEnemies = function()
     var villager = new Villager(Game, 500, 500);
     villager.MovementStateMachine.Switch(VillagerIdleState);
     window.villager = villager;
+
+    var villager2 = new Villager(Game, 1000, 500);
+    villager2.MovementStateMachine.Switch(VillagerIdleState);
 }
 var StartGame = function()
 {
@@ -83,11 +86,11 @@ var StartGame = function()
         healthText.ToggleFixed();
 
 
-        player = new Player(Game, 10, 500);
+        player = new Player(Game, 100, 600);
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
         Lighter.Init();
-        Lighter.SetLevel(0.99);
+        Lighter.SetLevel(0);
 
         Torch.Camera.Track(player);
         debug.ToggleFixed();
@@ -147,22 +150,7 @@ function Update()
     }
     if (!Game.Keys.O.down && Game.oWasDown)
     {
-        var im = new Image();
-        im.src = Game.canvasNode.toDataURL();
-        im.onload = function()
-        {
-            Torch.fs.writeFile("screenshot.png", im.src, 'utf8', function(er, data)
-            {
-                if (er)
-                {
-                    alert("error");
-                }
-                else
-                {
-                    alert("saved screenshot");
-                }
-            });
-        }
+        Explode(player);
         Game.oWasDown = false;
     }
     if (Game.Keys.O.down)
