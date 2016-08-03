@@ -282,7 +282,7 @@ Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
     that.canvasNode.style.backgroundColor = color;
-    document.body.style.backgroundColor = color;
+    //document.body.style.backgroundColor = color;
 }
 Torch.Game.prototype.getCanvasEvents = function()
 {

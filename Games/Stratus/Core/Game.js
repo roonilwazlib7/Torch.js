@@ -10,6 +10,8 @@ var TestingEnemies = function()
 
     var villager2 = new Villager(Game, 1000, 500);
     villager2.MovementStateMachine.Switch(VillagerIdleState);
+
+    Torch.Timer.SetFutureEvent(15000, TestingEnemies);
 }
 var StartGame = function()
 {
@@ -47,6 +49,7 @@ var StartGame = function()
     StartMenu.ToggleFixed();
 
     StartButton.Click(function(){
+        Game.Clear("#0099e6");
         StartMenu.Trash();
         Torch.Scale = 4;
 
