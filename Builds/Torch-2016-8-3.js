@@ -103,7 +103,6 @@ var pixl = function(data, optionalColorPallette, optionalExportType)
 
         var end = new Date().getTime();
         exportTime = end - start;
-        console.log("pixl generation took: " + (exportTime / 1000).toString() + " seconds");
     }
 
     //get to it...
@@ -136,8 +135,8 @@ pixl.LowerBits = function()
 
 
 
-    //TODO
-    //Add some operations that modify data (i.e explode, cut, fill, etc)
+//TODO
+//Add some operations that modify data (i.e explode, cut, fill, etc)
 
 pixl.util = {};
 pixl.util.DecomposeImage = function(image)
@@ -1120,7 +1119,6 @@ Torch.Load.prototype.Texture = function(path, id)
 Torch.Load.prototype.PixlTexture = function(pattern, pallette, id)
 {
     var that = this;
-    console.log(pattern);
     var imSrc = pixl(pattern, pallette).src;
     that.Stack.push({
         _torch_asset: "texture",
@@ -1195,6 +1193,46 @@ Torch.Load.prototype.File = function(path, id)
             that.game.Files[id] = data;
         }
     });
+};
+Torch.Load.prototype.AssetFile = function(path)
+{
+    var that = this;
+    //should probably check for electron here
+    that.finish_stack++;
+    Torch.fs.readFile(path, 'utf8', function(er, data)
+    {
+        if (er)
+        {
+            that.game.FatalError(new Error("Torch.Load.AssetFile file '{0}' could not be loaded due to: ".format(path) + er));
+        }
+        else
+        {
+            var lines = data.split("\n");
+            for (var i = 0; i < lines.length; i++)
+            {
+                var line = lines[i];
+                var info = line.split(" ");
+                var assetType = info[0];
+                var assetPath = info[1]
+                var assetId = info[2];
+                var totalWidth = info[3];
+                var totalHeight = info[4];
+                var clipWidth = info[5];
+                var clipHeight = info[6];
+                switch (assetType)
+                {
+                    case "texture":
+                    that.Texture(assetPath, assetId);
+                    break;
+                    case "texture_sheet":
+                    that.Texture(assetPath, assetId, parseInt(totalWidth), parseInt(totalHeight), parseInt(clipWidth), parseInt(clipHeight));
+                    break;
+                }
+            }
+        }
+        that.finish_stack--;
+    });
+
 }
 //sound, sound pack ?
 Torch.Load.prototype.Load = function(finishFunction)
@@ -1219,7 +1257,6 @@ Torch.Load.prototype.Load = function(finishFunction)
                     that.textures[this.refId].width = this.width;
                     that.textures[this.refId].height = this.height;
                     that.finish_stack--;
-                    //Torch.Message("Loaded Image:" + this.src, "yellow");
                 }
             break;
             case "sound":
@@ -1233,7 +1270,6 @@ Torch.Load.prototype.Load = function(finishFunction)
                     that.currentTime = 0;
                     that.play();
                 }
-                //Torch.Message("Loaded Sound:" + aud.src, "yellow");
             break;
         }
 
@@ -1246,7 +1282,6 @@ Torch.Load.prototype.Load = function(finishFunction)
         {
             finishFunction();
             clearInterval(_l);
-            Torch.Message("Finished Loading in: " + ( TIME_TO_LOAD * (1000/60) / 1000) + " seconds", "green" );
 
         }
     }, 1000/60);

@@ -35,7 +35,7 @@ function StartWindow()
                     path = "Builder/index.html";
                     break;
                     case "TEST":
-                    path = "../Test/test.html";
+                    path = "Tests/index.html";
                     break;
                     default:
                     path = "build-error.html#" + "config type '" + state + "' is not valid";

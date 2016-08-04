@@ -29,7 +29,6 @@ var Explode = function(sprite)
         {
             var that = this;
             that.UpdateSprite();
-            that.Fail();
             that.opacity -= that.game.deltaTime * 0.001;
             if (that.opacity <= 0)
             {
