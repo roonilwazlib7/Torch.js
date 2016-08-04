@@ -66,7 +66,7 @@ Torch.Text.prototype.Render = function()
 Torch.Text.prototype.Update = function()
 {
     var that = this;
-    that.BaseUpdate();
+    that.UpdateSprite();
     if (that.text != that.lastText)
     {
         that.Render();

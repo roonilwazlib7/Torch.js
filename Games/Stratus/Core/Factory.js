@@ -74,7 +74,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     EnemyClass.prototype.Update = function()
     {
         var that = this;
-        that.BaseUpdate();
+        that.UpdateSprite();
         that.UpdateActor();
     }
 

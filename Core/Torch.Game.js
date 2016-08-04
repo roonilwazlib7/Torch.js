@@ -1,4 +1,5 @@
-Torch.Game = function(canvasId, width, height, name){
+Torch.Game = function(canvasId, width, height, name)
+{
     console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
     this.canvasNode = document.getElementById(canvasId);
@@ -7,6 +8,7 @@ Torch.Game = function(canvasId, width, height, name){
     this.width = width;
     this.height = height;
     this.name = name;
+
     this.Clear("#cc5200");
 
     this.Load = new Torch.Load(this);
@@ -21,6 +23,7 @@ Torch.Game = function(canvasId, width, height, name){
     this.ticks = 0;
     this.zoom = 1;
     this.uidCounter = 0;
+
     this.gameHasRunSuccessfully = false;
     this.gameFailedToRun = false;
     this.paused = false;
@@ -29,7 +32,6 @@ Torch.Game = function(canvasId, width, height, name){
     this.LastTimeStamp = null;
 
     this.spriteList = [];
-    this.textList = [];
     this.animations = [];
     this.DrawStack = [];
     this.AddStack = [];
@@ -40,11 +42,27 @@ Torch.Game.prototype.PixelScale = function()
     var that = this;
     that.canvas.webkitImageSmoothingEnabled = false;
     that.canvas.mozImageSmoothingEnabled = false;
-    that.canvas.imageSmoothingEnabled = false; /// future
+    that.canvas.imageSmoothingEnabled = false;
 };
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;
+    if (!load)
+    {
+        that.FatalError("Unable to start game '{0}' without load function".format(that.name));
+    }
+    if (!update)
+    {
+        that.FatalError("Unable to start game '{0}' without update function".format(that.name));
+    }
+    if (!draw)
+    {
+        that.FatalError("Unable to start game '{0}' without draw function".format(that.name));
+    }
+    if (!init)
+    {
+        that.FatalError("Unable to start game '{0}' without update function".format(that.name));
+    }
 
     this.load = load;
     this.update = update;
@@ -76,23 +94,15 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 Torch.Game.prototype.Add = function(o)
 {
     var that = this;
-    if (!o._torch_add){
-        Torch.Error("Invalid object added to game. object:");
-        console.log(o);
+    if (!o || !o._torch_add)
+    {
+        that.FatalError("Cannot add object: {0} to game".format(o.constructor.name));
     }
 
-    switch (o._torch_add)
-    {
-        case "Sprite":
-            o.game = that;
-            that.AddStack.push(o);
-            o._torch_uid = "TORCHSPRITE" + that.uidCounter.toString();
-            that.uidCounter++;
-        break;
-        default:
-            alert("error");
-            break;
-    }
+    o._torch_uid = "TORCHSPRITE" + that.uidCounter.toString();
+    that.AddStack.push(o);
+    that.uidCounter++;
+
 };
 Torch.Game.prototype.RunGame = function(timestamp)
 {
@@ -116,7 +126,8 @@ Torch.Game.prototype.RunGame = function(timestamp)
     Torch.Timer.Update();
     that.UpdateGamePads();
 
-    window.requestAnimationFrame(function(timestamp){
+    window.requestAnimationFrame(function(timestamp)
+    {
         that.RunGame(timestamp);
     });
 };
@@ -136,11 +147,18 @@ Torch.Game.prototype.FlushSprites = function()
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
+
     if (that.fatal) return;
     that.fatal = true;
+
+    if (typeof error == "string")
+    {
+        error = new Error(error);
+    }
+
     that.Clear("#000");
     var stack = error.stack.replace(/\n/g, "<br><br>");
-    $("canvas").remove();
+    $("body").empty();
     $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
     $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
     $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
@@ -281,8 +299,17 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
+
+    if (color == undefined)
+    {
+        that.FatalError("Cannot clear undefined color");
+    }
+    if (typeof color == "object")
+    {
+        color = color.hex;
+    }
+
     that.canvasNode.style.backgroundColor = color;
-    //document.body.style.backgroundColor = color;
 }
 Torch.Game.prototype.getCanvasEvents = function()
 {

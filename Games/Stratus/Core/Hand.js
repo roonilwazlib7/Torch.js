@@ -15,7 +15,7 @@ Hand.is(Torch.Sprite);
 Hand.prototype.Update = function()
 {
     var that = this;
-    that.BaseUpdate();
+    that.UpdateSprite();
     that.UpdatePosition();
     that.UpdateOffset();
 }
@@ -66,7 +66,7 @@ Hand.prototype.UpdateOffset = function()
         sp.drawIndex = that.drawIndex;
         sp.Update = function()
         {
-            sp.BaseUpdate();
+            sp.UpdateSprite();
             sp.opacity -= 0.009 * that.game.deltaTime;
             if (sp.opacity <= 0)
             {

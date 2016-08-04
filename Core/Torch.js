@@ -8,30 +8,34 @@ Function.prototype.is = function(otherFunction)
     }
     return this; //allow chaining
 }
-if (!String.prototype.format) {
-  String.prototype.format = function() {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) {
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
-      ;
-    });
-  };
+if (!String.prototype.format)
+{
+    String.prototype.format = function()
+    {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number)
+        {
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        });
+    };
+}
+
+window.onerror = function()
+{
+    if (!Torch.STRICT_ERRORS) return;
+    var errorObj = arguments[4];
+    if (errorObj != undefined)
+    {
+        Torch.FatalError(errorObj);
+    }
+    else
+    {
+        Torch.FatalError("An error has occured");
+    }
 }
 
 var Torch =
 {
-    activeGame: null,
-    animations: [],
-    Tween: {
-        Linear: 0,
-        Quadratic: 1,
-        Cubic: 2,
-        Inverse: 3,
-        InverseSquare: 4,
-        SquareRoot: 5
-    },
     Message: function(message, color)
     {
         if ( $("#torch_message").length > 0 )
@@ -42,11 +46,28 @@ var Torch =
             $("#torch_message").append(message);
         }
     },
-    Reset: function()
+    FatalError: function(error)
     {
         var that = this;
-        if (that.activeGame) that.activeGame.time = 0;
-        //that.activeGame = null;
+
+        if (that.fatal) return;
+        that.fatal = true;
+
+        if (typeof error == "string")
+        {
+            error = new Error(error);
+        }
+
+        document.body.backgroundColor = "black";
+        var stack = error.stack.replace(/\n/g, "<br><br>");
+        $("body").empty();
+        $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
+        $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
+        throw error;
+    },
+    StrictErrors: function()
+    {
+        this.STRICT_ERRORS = true;
     }
 };
 
@@ -120,4 +141,26 @@ Torch.Vector.prototype.GetDistance = function(otherVector)
     var that = this;
     var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
     return Math.sqrt(raw);
+}
+
+Torch.Body = function()
+{
+    var Plane = function()
+    {
+        this.velocity = 0;
+        this.acceleration = 0;
+        this.lv = 0;
+        this.la = 0;
+        this.aTime = 0;
+        this.maxVelocity = 100;
+    }
+    this.x = new Plane();
+    this.y = new Plane();
+}
+Torch.HitBox = function()
+{
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
 }

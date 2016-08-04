@@ -24,6 +24,7 @@ Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 Player.prototype.Update = function()
 {
     var that = this;
+    that.UpdateSprite();
     var keys = that.game.Keys;
     if (!that.ready)
     {
@@ -71,7 +72,6 @@ Player.prototype.Update = function()
 
         }
     }
-    that.BaseUpdate();
 }
 Player.prototype.Hit = function(amount)
 {

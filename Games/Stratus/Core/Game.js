@@ -1,5 +1,8 @@
 Torch.Electron.Import();
+Torch.StrictErrors();
+
 var Game = new Torch.Game("canvas", "fill","fill", "NewGame");
+
 var TitleText, TitleText2, Spawner, player, debug, healthText, healthBar;
 
 var TestingEnemies = function()
@@ -49,7 +52,7 @@ var StartGame = function()
     StartMenu.ToggleFixed();
 
     StartButton.Click(function(){
-        Game.Clear("#0099e6");
+        Game.Clear("#000");
         StartMenu.Trash();
         Torch.Scale = 4;
 
@@ -89,7 +92,7 @@ var StartGame = function()
         healthText.ToggleFixed();
 
 
-        player = new Player(Game, 100, 600);
+        player = new Player(Game, 120, 600);
         Spawner = new Torch.Platformer.Spawner(parseMapString(Game.Files["test-map"]));
         TestingEnemies();
         Lighter.Init();

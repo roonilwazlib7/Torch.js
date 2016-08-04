@@ -373,30 +373,34 @@ Function.prototype.is = function(otherFunction)
     }
     return this; //allow chaining
 }
-if (!String.prototype.format) {
-  String.prototype.format = function() {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) {
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
-      ;
-    });
-  };
+if (!String.prototype.format)
+{
+    String.prototype.format = function()
+    {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number)
+        {
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        });
+    };
+}
+
+window.onerror = function()
+{
+    if (!Torch.STRICT_ERRORS) return;
+    var errorObj = arguments[4];
+    if (errorObj != undefined)
+    {
+        Torch.FatalError(errorObj);
+    }
+    else
+    {
+        Torch.FatalError("An error has occured");
+    }
 }
 
 var Torch =
 {
-    activeGame: null,
-    animations: [],
-    Tween: {
-        Linear: 0,
-        Quadratic: 1,
-        Cubic: 2,
-        Inverse: 3,
-        InverseSquare: 4,
-        SquareRoot: 5
-    },
     Message: function(message, color)
     {
         if ( $("#torch_message").length > 0 )
@@ -407,11 +411,28 @@ var Torch =
             $("#torch_message").append(message);
         }
     },
-    Reset: function()
+    FatalError: function(error)
     {
         var that = this;
-        if (that.activeGame) that.activeGame.time = 0;
-        //that.activeGame = null;
+
+        if (that.fatal) return;
+        that.fatal = true;
+
+        if (typeof error == "string")
+        {
+            error = new Error(error);
+        }
+
+        document.body.backgroundColor = "black";
+        var stack = error.stack.replace(/\n/g, "<br><br>");
+        $("body").empty();
+        $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
+        $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
+        throw error;
+    },
+    StrictErrors: function()
+    {
+        this.STRICT_ERRORS = true;
     }
 };
 
@@ -485,6 +506,28 @@ Torch.Vector.prototype.GetDistance = function(otherVector)
     var that = this;
     var raw = Math.pow(otherVector.x - that.x, 2) + Math.pow(otherVector.y - that.y, 2);
     return Math.sqrt(raw);
+}
+
+Torch.Body = function()
+{
+    var Plane = function()
+    {
+        this.velocity = 0;
+        this.acceleration = 0;
+        this.lv = 0;
+        this.la = 0;
+        this.aTime = 0;
+        this.maxVelocity = 100;
+    }
+    this.x = new Plane();
+    this.y = new Plane();
+}
+Torch.HitBox = function()
+{
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
 }
 Torch.Keys = function()
 {
@@ -574,7 +617,8 @@ Torch.Viewport.prototype.GetViewRectangle = function()
     var that = this.game//game;
     return new Torch.Rectangle(-that.Viewport.x, -that.Viewport.y, that.Viewport.width, that.Viewport.height);
 }
-Torch.Game = function(canvasId, width, height, name){
+Torch.Game = function(canvasId, width, height, name)
+{
     console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200; color:white");
     this.canvasId = canvasId;
     this.canvasNode = document.getElementById(canvasId);
@@ -583,6 +627,7 @@ Torch.Game = function(canvasId, width, height, name){
     this.width = width;
     this.height = height;
     this.name = name;
+
     this.Clear("#cc5200");
 
     this.Load = new Torch.Load(this);
@@ -597,6 +642,7 @@ Torch.Game = function(canvasId, width, height, name){
     this.ticks = 0;
     this.zoom = 1;
     this.uidCounter = 0;
+
     this.gameHasRunSuccessfully = false;
     this.gameFailedToRun = false;
     this.paused = false;
@@ -605,7 +651,6 @@ Torch.Game = function(canvasId, width, height, name){
     this.LastTimeStamp = null;
 
     this.spriteList = [];
-    this.textList = [];
     this.animations = [];
     this.DrawStack = [];
     this.AddStack = [];
@@ -616,11 +661,27 @@ Torch.Game.prototype.PixelScale = function()
     var that = this;
     that.canvas.webkitImageSmoothingEnabled = false;
     that.canvas.mozImageSmoothingEnabled = false;
-    that.canvas.imageSmoothingEnabled = false; /// future
+    that.canvas.imageSmoothingEnabled = false;
 };
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;
+    if (!load)
+    {
+        that.FatalError("Unable to start game '{0}' without load function".format(that.name));
+    }
+    if (!update)
+    {
+        that.FatalError("Unable to start game '{0}' without update function".format(that.name));
+    }
+    if (!draw)
+    {
+        that.FatalError("Unable to start game '{0}' without draw function".format(that.name));
+    }
+    if (!init)
+    {
+        that.FatalError("Unable to start game '{0}' without update function".format(that.name));
+    }
 
     this.load = load;
     this.update = update;
@@ -652,23 +713,15 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 Torch.Game.prototype.Add = function(o)
 {
     var that = this;
-    if (!o._torch_add){
-        Torch.Error("Invalid object added to game. object:");
-        console.log(o);
+    if (!o || !o._torch_add)
+    {
+        that.FatalError("Cannot add object: {0} to game".format(o.constructor.name));
     }
 
-    switch (o._torch_add)
-    {
-        case "Sprite":
-            o.game = that;
-            that.AddStack.push(o);
-            o._torch_uid = "TORCHSPRITE" + that.uidCounter.toString();
-            that.uidCounter++;
-        break;
-        default:
-            alert("error");
-            break;
-    }
+    o._torch_uid = "TORCHSPRITE" + that.uidCounter.toString();
+    that.AddStack.push(o);
+    that.uidCounter++;
+
 };
 Torch.Game.prototype.RunGame = function(timestamp)
 {
@@ -692,7 +745,8 @@ Torch.Game.prototype.RunGame = function(timestamp)
     Torch.Timer.Update();
     that.UpdateGamePads();
 
-    window.requestAnimationFrame(function(timestamp){
+    window.requestAnimationFrame(function(timestamp)
+    {
         that.RunGame(timestamp);
     });
 };
@@ -712,11 +766,18 @@ Torch.Game.prototype.FlushSprites = function()
 Torch.Game.prototype.FatalError = function(error)
 {
     var that = this;
+
     if (that.fatal) return;
     that.fatal = true;
+
+    if (typeof error == "string")
+    {
+        error = new Error(error);
+    }
+
     that.Clear("#000");
     var stack = error.stack.replace(/\n/g, "<br><br>");
-    $("canvas").remove();
+    $("body").empty();
     $("body").prepend("<code style='color:#C9302C;font-size:18px'>Time: " + that.time + "</code>");
     $("body").prepend("<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>");
     $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
@@ -857,8 +918,17 @@ Torch.Game.prototype.Draw = function(texture, rectangle, params)
 Torch.Game.prototype.Clear = function(color)
 {
     var that = this;
+
+    if (color == undefined)
+    {
+        that.FatalError("Cannot clear undefined color");
+    }
+    if (typeof color == "object")
+    {
+        color = color.hex;
+    }
+
     that.canvasNode.style.backgroundColor = color;
-    //document.body.style.backgroundColor = color;
 }
 Torch.Game.prototype.getCanvasEvents = function()
 {
@@ -1307,9 +1377,6 @@ Torch.FutureEvent.prototype.Update = function()
         that.handle = null;
     }
 }
-/*
-        Torch.Bind
-*/
 Torch.Bind = function(sprite)
 {
     this.sprite = sprite;
@@ -1418,40 +1485,33 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
     that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
 }
-
-/*
-        Torch.Sprite
-*/
 Torch.Sprite = function(game,x,y)
 {
     this.InitSprite(game,x,y)
 };
 Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
-    if (x == null || x == undefined) Torch.Error("argument 'x' is required");
-    if (y == null || y == undefined) Torch.Error("argument 'y' is required");
+    if (game == undefined || game == null || typeof game != "object")
+    {
+        throw "Unable to Initialize";
+        return;
+    }
+    if (x == null || x == undefined)
+    {
+        game.FatalError("Unable to Initialize sprite, argument x must be a number");
+    }
+    if (y == null || y == undefined)
+    {
+        game.FatalError("Unable to Initialize sprite, argument y must be a number");
+    }
+
     this.Bind = new Torch.Bind(this);
     this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
-    this.Body = {
-        x: {
-            velocity: 0,
-            acceleration: 0,
-            lv: 0,
-            la: 0,
-            aTime: 0,
-            maxVelocity: 100
-        },
-        y: {
-            velocity: 0,
-            acceleration: 0,
-            lv: 0,
-            la: 0,
-            aTime: 0,
-            maxVelocity: 100
-        }
-    }
-    this.HitBox = {x: 0, y: 0, width: 0, height: 0};
+    this.Body = new Torch.Body();
+    this.HitBox = new Torch.HitBox();
+
     this.game = game;
+
     this.DrawTexture = null;
     this.TexturePack = null;
     this.TextureSheet = null;
@@ -1460,57 +1520,24 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
     this.onMouseOver = null;
     this.onMouseLeave = null;
     this.onMoveFinish = null;
+
     this.mouseOver = false;
     this.clickTrigger = false;
     this.clickAwayTrigger = false;
     this.draw = true;
     this.wasClicked = false;
     this.trash = false;
-    this.drawIndex = 0;
-    this._torch_add = "Sprite";
-    this._torch_uid = "";
     this.fixed = false;
+
+    this.drawIndex = 0;
     this.rotation = 0;
     this.opacity = 1;
+
+    this._torch_add = "Sprite";
+    this._torch_uid = "";
+
     game.Add(this);
 }
-Torch.Sprite.prototype.UpdateBody = function()
-{
-    var that = this;
-    var velX = that.Body.x.velocity;
-    var velY = that.Body.y.velocity;
-    var deltaTime = that.game.deltaTime;
-    if (that.Body.x.acceleration != that.Body.x.la)
-    {
-        that.Body.x.la = that.Body.x.acceleration;
-        that.Body.x.aTime = 0;
-    }
-    if (that.Body.x.acceleration != 0)
-    {
-        that.Body.x.aTime += deltaTime;
-        velX += that.Body.x.aTime * that.Body.x.acceleration;
-    }
-    if (that.Body.y.acceleration != that.Body.y.la)
-    {
-        that.Body.y.la = that.Body.y.acceleration;
-        that.Body.y.aTime = 0;
-    }
-    if (that.Body.y.acceleration != 0)
-    {
-        that.Body.y.aTime += deltaTime;
-        velY += that.Body.y.aTime * that.Body.y.acceleration;
-    }
-    if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
-    {
-        that.Rectangle.x += velX * deltaTime;
-    }
-    else
-    {
-        var dir = velX < 0 ? -1 : 1;
-        that.Rectangle.x += dir * that.Body.x.maxVelocity * deltaTime;
-    }
-    that.Rectangle.y += velY * deltaTime;
-};
 Torch.Sprite.prototype.ToggleFixed = function(tog)
 {
     var that = this;
@@ -1524,7 +1551,7 @@ Torch.Sprite.prototype.ToggleFixed = function(tog)
         that.fixed = tog;
     }
 }
-Torch.Sprite.prototype.BaseUpdate = function()
+Torch.Sprite.prototype.UpdateSprite = function()
 {
     var that = this;
     that.UpdateBody();
@@ -1537,62 +1564,6 @@ Torch.Sprite.prototype.BaseUpdate = function()
         width: that.Rectangle.width - (2 * shiftX),
         height: that.Rectangle.height - (2 * shiftY)
     };
-}
-Torch.Sprite.prototype.Update = function()
-{
-    var that = this
-    that.BaseUpdate();
-}
-Torch.Sprite.prototype.GetCurrentDraw = function()
-{
-    var that = this;
-    if (that.TexturePack)
-    {
-        return that.TexturePackAnimation.GetCurrentFrame();
-    }
-    else if (that.TextureSheet)
-    {
-        return that.TextureSheetAnimation.GetCurrentFrame();
-    }
-    else if (that.DrawTexture)
-    {
-        return that.DrawTexture;
-    }
-}
-Torch.Sprite.prototype.Draw = function()
-{
-    var that = this;
-    var DrawRec = new Torch.Rectangle(that.Rectangle.x, that.Rectangle.y, that.Rectangle.width, that.Rectangle.height);
-    if (that.fixed)
-    {
-        DrawRec.x -= that.game.Viewport.x;
-        DrawRec.y -= that.game.Viewport.y;
-    }
-    if (that.TexturePack)
-    {
-        that.game.Draw(that.GetCurrentDraw(), DrawRec, that.DrawParams);
-    }
-    else if (that.TextureSheet)
-    {
-        var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
-        var frame = that.GetCurrentDraw();
-        Params.clipX = frame.clipX;
-        Params.clipY = frame.clipY;
-        Params.clipWidth = frame.clipWidth;
-        Params.clipHeight = frame.clipHeight;
-        Params.IsTextureSheet = true;
-        Params.rotation = that.rotation;
-        Params.alpha = that.opacity;
-        that.game.Draw(that.DrawTexture, DrawRec, Params);
-    }
-    else if (that.DrawTexture)
-    {
-        var DrawParams = {
-            alpha: that.opacity,
-            rotation: that.rotation
-        };
-        that.game.Draw(that.GetCurrentDraw(), DrawRec, DrawParams);
-    }
 }
 Torch.Sprite.prototype.UpdateEvents = function()
 {
@@ -1663,6 +1634,99 @@ Torch.Sprite.prototype.UpdateEvents = function()
     else if (that.game.Mouse.down && !that.mouseOver)
     {
         that.clickAwayTrigger = true;
+    }
+}
+Torch.Sprite.prototype.UpdateBody = function()
+{
+    var that = this;
+    var velX = that.Body.x.velocity;
+    var velY = that.Body.y.velocity;
+    var deltaTime = that.game.deltaTime;
+    if (that.Body.x.acceleration != that.Body.x.la)
+    {
+        that.Body.x.la = that.Body.x.acceleration;
+        that.Body.x.aTime = 0;
+    }
+    if (that.Body.x.acceleration != 0)
+    {
+        that.Body.x.aTime += deltaTime;
+        velX += that.Body.x.aTime * that.Body.x.acceleration;
+    }
+    if (that.Body.y.acceleration != that.Body.y.la)
+    {
+        that.Body.y.la = that.Body.y.acceleration;
+        that.Body.y.aTime = 0;
+    }
+    if (that.Body.y.acceleration != 0)
+    {
+        that.Body.y.aTime += deltaTime;
+        velY += that.Body.y.aTime * that.Body.y.acceleration;
+    }
+    if (Math.abs(velX) < Math.abs(that.Body.x.maxVelocity))
+    {
+        that.Rectangle.x += velX * deltaTime;
+    }
+    else
+    {
+        var dir = velX < 0 ? -1 : 1;
+        that.Rectangle.x += dir * that.Body.x.maxVelocity * deltaTime;
+    }
+    that.Rectangle.y += velY * deltaTime;
+};
+Torch.Sprite.prototype.Update = function()
+{
+    var that = this
+    that.UpdateSprite();
+}
+Torch.Sprite.prototype.GetCurrentDraw = function()
+{
+    var that = this;
+    if (that.TexturePack)
+    {
+        return that.TexturePackAnimation.GetCurrentFrame();
+    }
+    else if (that.TextureSheet)
+    {
+        return that.TextureSheetAnimation.GetCurrentFrame();
+    }
+    else if (that.DrawTexture)
+    {
+        return that.DrawTexture;
+    }
+}
+Torch.Sprite.prototype.Draw = function()
+{
+    var that = this;
+    var DrawRec = new Torch.Rectangle(that.Rectangle.x, that.Rectangle.y, that.Rectangle.width, that.Rectangle.height);
+    if (that.fixed)
+    {
+        DrawRec.x -= that.game.Viewport.x;
+        DrawRec.y -= that.game.Viewport.y;
+    }
+    if (that.TexturePack)
+    {
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, that.DrawParams);
+    }
+    else if (that.TextureSheet)
+    {
+        var Params = that.DrawParams ? Object.create(that.DrawParams) : {};
+        var frame = that.GetCurrentDraw();
+        Params.clipX = frame.clipX;
+        Params.clipY = frame.clipY;
+        Params.clipWidth = frame.clipWidth;
+        Params.clipHeight = frame.clipHeight;
+        Params.IsTextureSheet = true;
+        Params.rotation = that.rotation;
+        Params.alpha = that.opacity;
+        that.game.Draw(that.DrawTexture, DrawRec, Params);
+    }
+    else if (that.DrawTexture)
+    {
+        var DrawParams = {
+            alpha: that.opacity,
+            rotation: that.rotation
+        };
+        that.game.Draw(that.GetCurrentDraw(), DrawRec, DrawParams);
     }
 }
 Torch.Sprite.prototype.Click = function(eventFunction)
@@ -1978,7 +2042,7 @@ Torch.Text.prototype.Render = function()
 Torch.Text.prototype.Update = function()
 {
     var that = this;
-    that.BaseUpdate();
+    that.UpdateSprite();
     if (that.text != that.lastText)
     {
         that.Render();
