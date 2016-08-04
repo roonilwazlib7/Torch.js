@@ -15,7 +15,7 @@ for path in items:
     COMBINED += f.read()
     f.close()
 
-COMBINED += "\n\nTorch.version='" + NAME + "'"
+COMBINED += "\n\nTorch.version='" + NAME + "';"
 
 f = open("Builds/" + NAME + ".js", "w+")
 f.write(COMBINED)

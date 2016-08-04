@@ -14,7 +14,7 @@ var TestingEnemies = function()
     var villager2 = new Villager(Game, 1000, 500);
     villager2.MovementStateMachine.Switch(VillagerIdleState);
 
-    Torch.Timer.SetFutureEvent(15000, TestingEnemies);
+    //Torch.Timer.SetFutureEvent(15000, TestingEnemies);
 }
 var StartGame = function()
 {
@@ -108,7 +108,7 @@ var StartGame = function()
 
 function Load()
 {
-    Game.Load.File(__dirname + "/test-map.map", "test-map");
+    Game.Load.File(__dirname + "/Maps/test-map.txt", "test-map");
     Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
     Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
     Game.Load.Texture("Art/player.png", "player_right");
@@ -131,6 +131,7 @@ function Load()
 
     Factory.Block.Load();
     Factory.Enemy.Load();
+    Factory.Background.Load();
 
     Game.Load.Sound("Sound/hurt.wav", "player-hurt");
     Game.Load.Sound("Sound/villager-alert.wav", "villager-alert")
@@ -156,7 +157,8 @@ function Update()
     }
     if (!Game.Keys.O.down && Game.oWasDown)
     {
-        Explode(player);
+        //Explode(player);
+        ExplodeMap();
         Game.oWasDown = false;
     }
     if (Game.Keys.O.down)

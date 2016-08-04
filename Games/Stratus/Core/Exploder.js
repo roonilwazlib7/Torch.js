@@ -38,3 +38,8 @@ var Explode = function(sprite)
     }
     pixl.pixelSize = 1;
 }
+
+var ExplodeMap = function()
+{
+    
+}

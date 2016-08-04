@@ -6,6 +6,7 @@ Factory.Block = function(baseWidth, baseHeight, asset, dir, mapImage, slope, all
     {
         this.InitSprite(game, x, y);
         this.Bind.Texture(asset);
+        this.drawIndex = 3;
     }
     blockClass.is(Torch.Sprite).is(Torch.Platformer.Block);
 
@@ -59,6 +60,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         this.facing = "right";
         this.walking = "none";
         this.wasJustHit = true;
+        this.drawIndex = 3;
         this.OnTrash = function()
         {
             that.Hand.Trash();
@@ -138,6 +140,69 @@ Factory.Enemy.loads = [];
 Factory.Enemy.Load = function()
 {
     var loads = Factory.Enemy.loads;
+    for (var i = 0; i < loads.length; i++)
+    {
+        loads[i]();
+    }
+}
+
+Factory.Background = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
+{
+    var BackgroundClass = function(game, x, y, args)
+    {
+        var that = this;
+        this.InitSprite(game, x, y);
+        this.asset = asset;
+        that.Bind.Texture(asset);
+        that.drawIndex = 2;
+        this.args = args;
+        this.parseArguments();
+    }
+    BackgroundClass.is(Torch.Sprite);
+    BackgroundClass.prototype.map = mapImage;
+    BackgroundClass.prototype.baseWidth = baseWidth;
+    BackgroundClass.prototype.baseHeight = baseHeight;
+    BackgroundClass.prototype.mapAsset = mapImage;
+    BackgroundClass.prototype.asset = asset;
+
+    BackgroundClass.prototype.parseArguments = function()
+    {
+        var that = this;
+        var args = that.args;
+        var args = args.split(";");
+        for (var i = 0; i < args.length; i++)
+        {
+            var type = args[i].split(":")[0];
+            var arg = args[i].split(":")[1];
+
+            switch(type)
+            {
+                case "shiftY":
+                    that.Rectangle.y += parseInt(arg);
+                    break;
+            }
+        }
+    }
+
+    Factory.Background.objects.push(BackgroundClass);
+    Factory.Background.loads.push(function(){
+        if (allSheets)
+        {
+            Game.Load.TextureSheet(dir + "/" + asset + ".png", asset, 32, 16, 16, 16);
+        }
+        else
+        {
+            Game.Load.Texture(dir + "/" + asset + ".png", asset);
+        }
+    });
+
+    return BackgroundClass;
+}
+Factory.Background.objects = [];
+Factory.Background.loads = [];
+Factory.Background.Load = function()
+{
+    var loads = Factory.Background.loads;
     for (var i = 0; i < loads.length; i++)
     {
         loads[i]();

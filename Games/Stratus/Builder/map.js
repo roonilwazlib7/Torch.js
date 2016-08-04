@@ -91,6 +91,43 @@ Map.Export = function()
     });
 }
 
+Map.Import = function()
+{
+    var that = this;
+    var path = $("#inout").val();
+    fs.readFile(path, 'utf8', function(er, data)
+    {
+        if (er)
+        {
+            //that.game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded due to: ".format(path) + er));
+        }
+        else
+        {
+            var sp = data.split(";");
+            that.Name = sp[0];
+            that.Scale = parseInt(sp[1]);
+
+            var buffer = sp[2];
+            var splits = buffer.split(" ");
+
+            var X;
+            var Y;
+            var currentDef;
+
+            for (var i = 0; i < splits.length; i+=3)
+            {
+                console.log(X, Y, currentDef);
+                X = parseInt(splits[i], 16);
+                Y = parseInt(splits[i + 1], 16);
+                currentDef = parseInt(splits[i + 2], 16);
+                that.CurrentItem = currentDef;
+                that.AddItem(X, Y);
+            }
+
+        }
+    });
+}
+
 Map.Init = function()
 {
     var that = this;

@@ -131,7 +131,7 @@ Torch.Load.prototype.File = function(path, id)
         that.finish_stack--;
         if (er)
         {
-            that.game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded due to: ".format(path) + er));
+            that.game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded".format(path)));
         }
         else
         {

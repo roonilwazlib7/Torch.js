@@ -2799,4 +2799,4 @@ Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
 }
 
 
-Torch.version='Torch-2016-8-3'
+Torch.version='Torch-2016-8-3';

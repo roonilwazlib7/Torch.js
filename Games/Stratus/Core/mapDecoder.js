@@ -1,5 +1,5 @@
 var testMap = "MyMap;4;0 200 0 40 200 0 80 200 0 c0 200 0 100 200 0 140 200 0 0 1c0 0 0 180 0 180 200 0 200 200 0 1c0 200 0 240 200 0 280 200 0 2c0 200 0 300 200 0 340 200 0 380 200 0 3c0 200 0 3c0 1c0 0 3c0 180 0;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-var DEFS = Factory.Block.objects.concat(Factory.Enemy.objects);
+var DEFS = Factory.Block.objects.concat(Factory.Enemy.objects).concat(Factory.Background.objects);
 
 function parseMapString(map)
 {
@@ -7,8 +7,8 @@ function parseMapString(map)
     var Y = [];
     var Sprites = [];
     var exportedMap = [];
+    var args = map.split(";")[3].split(" ");
     map = map.split(";")[2].split(" ");
-
 
     for (var i = 0; i < map.length; i+=3)
     {
@@ -33,7 +33,7 @@ function parseMapString(map)
     }
     for (var i = 0; i < map.length/3; i++)
     {
-        var spawnItem = new Torch.Platformer.SpawnItem(Sprites[i], true, new Sprites[i](Game, X[i], Y[i]));
+        var spawnItem = new Torch.Platformer.SpawnItem(Sprites[i], true, new Sprites[i](Game, X[i], Y[i], args[i]));
         exportedMap.push(spawnItem);
     }
     return exportedMap;
