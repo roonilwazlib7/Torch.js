@@ -87,7 +87,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         {
             that.Hit(1);
             that.wasJustHit = true;
-            if (that.OnHit) that.OnHit();
+            if (that.OnHit) that.OnHit(player.Hand);
         }
         if (!player.Hand.Rectangle.Intersects(that.Rectangle))
         {

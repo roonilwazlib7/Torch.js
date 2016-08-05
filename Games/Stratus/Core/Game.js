@@ -23,7 +23,7 @@ var StartGame = function()
     Game.FlushSprites();
     Torch.Scale = 2;
 
-    window.Mouse = new Mouse(Game);
+    //window.Mouse = new Mouse(Game);
 
     var StartLogo = new Torch.Sprite(Game, 0, 150);
     StartLogo.Bind.Texture("main-logo");

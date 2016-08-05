@@ -11,8 +11,11 @@ Villager.prototype.Update = function()
     {
         player.Hit(10);
     }
-    that.OnHit = function()
+    that.OnHit = function(hitter)
     {
+        var dir = hitter.actor.facing == "right" ? 1 : -1;
+        that.Body.x.velocity = 0.2 *  dir;
+        that.Body.y.velocity = -0.2;
         that.MovementStateMachine.Switch(VillagerHurtState);
     }
 }
@@ -110,14 +113,15 @@ var VillagerHurtState = new Torch.StateMachine.State(
     {
         //just wait a bit, then swing it back to normal
         villager.hurtCounter += villager.game.deltaTime;
-        if (villager.hurtCounter >= 1000)
+        if (villager.hurtCounter >= 200)
         {
+            villager.Body.x.velocity = 0;
             villager.MovementStateMachine.Switch(VillagerIdleState);
         }
     },
     function(villager)
     {
-        villager.Body.x.velocity = 0;
+        //villager.Body.x.velocity = 0;
         villager.hurtCounter = 0;
     },
     function(villager)
