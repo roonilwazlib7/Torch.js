@@ -1,8 +1,8 @@
-var testMap = "MyMap;4;0 200 0 40 200 0 80 200 0 c0 200 0 100 200 0 140 200 0 0 1c0 0 0 180 0 180 200 0 200 200 0 1c0 200 0 240 200 0 280 200 0 2c0 200 0 300 200 0 340 200 0 380 200 0 3c0 200 0 3c0 1c0 0 3c0 180 0;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 var DEFS = Factory.Block.objects.concat(Factory.Enemy.objects).concat(Factory.Background.objects);
 
 function parseMapString(map)
 {
+    console.log(map);
     var X = [];
     var Y = [];
     var Sprites = [];

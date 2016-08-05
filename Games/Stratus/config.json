@@ -1,3 +1,18 @@
 {
-    "BUILD_TYPE": "GAME"
+    "//": "Usable values for BUILD_TYPE are GAME, MAP, and TEST",
+    "//": "GAME will launch stratus",
+    "//": "MAP will launch the stratus map builder",
+    "//": "TEST will launch unit tests",
+    "BUILD_TYPE": "GAME",
+
+    "//": "decide wether or not to show the menu on start up",
+    "SHOW_MENU": false,
+
+    "//": "decide what map we want to start at",
+    "//": "this is a dev hack for now, we will want to switch to",
+    "//": "save files in the future",
+    "STARTING_MAP": "test-map",
+
+    "//": "should we show the debug text?",
+    "SHOW_DEBUG": false
 }

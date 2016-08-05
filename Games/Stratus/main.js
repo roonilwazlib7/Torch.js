@@ -73,19 +73,7 @@ function StartWindow()
 
 }
 
-if (cluster.isMaster)
-{
-    cluster.fork();
 
-    var app = require('app');  // Module to control application life.
-    var BrowserWindow = require('browser-window');  // Module to create native browser window.
-    StartWindow();
-}
-else
-{
-    console.log("here");
-    fs.writeFile("worker.txt", "I'm a worker", 'utf8', function(er, data)
-    {
-
-    });
-}
+var app = require('app');  // Module to control application life.
+var BrowserWindow = require('browser-window');  // Module to create native browser window.
+StartWindow();
