@@ -105,9 +105,9 @@ Player.prototype.Move = function()
             that.facing = "right";
         }
     }
-    else if (keys.A.down)
+    if (keys.A.down)
     {
-        that.Body.x.velocity = -velocity;
+        if (!that.onLeft) that.Body.x.velocity = -velocity;
         if (!that.walkingLeft)
         {
             that.Bind.TextureSheet("player_walk_left", {step: 200});
@@ -115,7 +115,7 @@ Player.prototype.Move = function()
             that.facing = "left";
         }
     }
-    else
+    if (!keys.D.down && !keys.A.down)
     {
         that.Body.x.velocity = 0;
         if (that.walkingRight)

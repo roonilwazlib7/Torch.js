@@ -174,6 +174,10 @@ function Update()
     var fps = Game.fps;
     var avgFps = Game.averageFps;
     debug.text = "FPS:{0}  T:{1} avgFPS:{2}".format(fps, Math.ceil(Game.time / 1000), avgFps);
+    if (player != undefined)
+    {
+        debug.text += " L:{0} R:{1} B:{2}".format(player.onLeft, player.onRight, player.onGround);
+    }
 
     if (player)
     {

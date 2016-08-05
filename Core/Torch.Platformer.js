@@ -4,6 +4,9 @@
 
 Torch.Platformer = {};
 Torch.Platformer.Gravity = 0.001;
+//this is for preventing the player from sticking
+Torch.Platformer.SHIFT_COLLIDE_LEFT = 5;
+
 Torch.Platformer.SetWorld = function(spawnItems)
 {
     Torch.Platformer.spawnItems = spawnItems;
@@ -53,7 +56,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
     {
         if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights)
         {
-            if (offset.x < offset.y && Math.abs(offset.x) >= 0.2)
+            if (offset.x < offset.y)
             {
                 that.Body.y.velocity = 0;
                 if (offset.vx > 0)
@@ -61,7 +64,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     //colDir = "l"
                     if (!item.Sprite.Slope)
                     {
-                        that.Rectangle.x += offset.x;
+                        that.Rectangle.x += offset.x + Torch.Platformer.SHIFT_COLLIDE_LEFT;
                         that.Body.x.velocity = 0;
                         that.onLeft = true;
                     }
@@ -70,7 +73,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                         that.BlockSlope(item.Sprite, offset);
                     }
                 }
-                else
+                else if (offset.vx < 0)
                 {
                     //colDir = "r";
                     if (!item.Sprite.Slope)
@@ -86,7 +89,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 }
 
             }
-            else
+            else if (offset.x > offset.y)
             {
                 if (offset.vy > 0)
                 {
@@ -94,7 +97,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     that.Rectangle.y += offset.y;
                     that.Body.y.velocity = 0;
                 }
-                else if ( true/*Math.abs(offset.sharedXPlane) < 59*/ )
+                else if ( offset.vy < 0)
                 {
                     //colDir = "b";
                     if (!item.Sprite.Slope)
