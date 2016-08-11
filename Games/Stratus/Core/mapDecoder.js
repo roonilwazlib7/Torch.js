@@ -2,7 +2,6 @@ var DEFS = Factory.Block.objects.concat(Factory.Enemy.objects).concat(Factory.Ba
 
 function parseMapString(map)
 {
-    console.log(map);
     var X = [];
     var Y = [];
     var Sprites = [];

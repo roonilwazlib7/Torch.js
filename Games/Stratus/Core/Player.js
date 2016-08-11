@@ -16,7 +16,7 @@ var Player = function(game, x, y)
     this.Hand = new Hand(that, "#FFE97F");
     this.Hand.drawIndex = 5;
     this.StrikeOffset = {x: 0, y: 0}
-    this.facing = "right";
+    this.facing = Facing.Right;
     this.tint = "green";
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
@@ -102,7 +102,7 @@ Player.prototype.Move = function()
         {
             that.Bind.TextureSheet("player_walk_right", {step: 200});
             that.walkingRight = true;
-            that.facing = "right";
+            that.facing = Facing.Right;
         }
     }
     if (keys.A.down)
@@ -112,7 +112,7 @@ Player.prototype.Move = function()
         {
             that.Bind.TextureSheet("player_walk_left", {step: 200});
             that.walkingLeft = true;
-            that.facing = "left";
+            that.facing = Facing.Left
         }
     }
     if (!keys.D.down && !keys.A.down)
@@ -149,7 +149,7 @@ Player.prototype.HandleStrikes = function()
     if (!that.game.Keys.Space.down && that.SpaceWasDown)
     {
         var anim;
-        if (that.facing == "right")
+        if (that.facing == Facing.Right)
         {
             that.Hand.PunchRight();
         }
@@ -176,89 +176,5 @@ Player.prototype.Enter = function()
     {
         that.opacity = 1;
         that.ready = true;
-        //player.SwitchItem(ShortSword);
     }
-}
-
-//lets define some big objects
-
-var GetPlayerStrikeRightFrameList = function(player){
-    var that = player;
-    return [
-        function(){that.StrikeOffset = {x: -15, y: -20}},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x += 2; that.StrikeOffset.y += 2}
-    ];
-}
-
-var GetPlayerStrikeLeftFrameList = function(player){
-    var that = player;
-    return [
-        function(){that.StrikeOffset = {x: 15, y: -20}},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2},
-        function(){that.StrikeOffset.x -= 2; that.StrikeOffset.y += 2}
-    ];
-}
-
-
-
-//items
-var ShortSword = function(game,x,y,player)
-{
-    this.InitSprite(game,x,y)
-    this.Bind.Texture("short-sword");
-    this.player = player;
-    this.drawIndex = player.drawIndex - 1;
-    this.rightTexture = "short-sword";
-    this.leftTexture = "short-sword-left";
-    this.lastDirection = "right";
-    this.Offset = {x: 0, y: 0}
-}
-ShortSword.is(Torch.Sprite);
-ShortSword.prototype.Update = function()
-{
-    var that = this;
-    that.BaseUpdate();
-    that.Rectangle.x = that.player.Hand.Rectangle.x + that.Offset.x;
-    that.Rectangle.y = that.player.Hand.Rectangle.y - (that.Rectangle.width / 2) - 5 + that.Offset.y;
-    if (that.lastDirection != that.player.facing)
-    {
-        that.lastDirection = that.player.facing;
-        if (that.player.facing == "right")
-        {
-            that.Right();
-        }
-        else
-        {
-            that.Left();
-        }
-    }
-}
-ShortSword.prototype.Right = function()
-{
-    var that = this;
-    that.Bind.Texture(that.rightTexture);
-    this.Offset = {x: 0, y: 0}
-}
-ShortSword.prototype.Left = function()
-{
-    var that = this;
-    that.Bind.Texture(that.leftTexture);
-    this.Offset = {x: -that.Rectangle.width, y: 0}
 }

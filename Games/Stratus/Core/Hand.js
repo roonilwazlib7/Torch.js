@@ -1,7 +1,7 @@
 var Hand = function(actor, color)
 {
-    this.actor = actor;
     this.InitSprite(actor.game, 0, 0);
+    this.actor = actor;
     this.pixlColor = color;
     this.CreateHand();
     this.offset = {x: 0, y: 0};
@@ -43,12 +43,13 @@ Hand.prototype.CreateHand = function()
 Hand.prototype.UpdatePosition = function()
 {
     var that = this;
-    if (that.actor.facing == "right")
+    if (that.actor.facing == Facing.Right)
     {
         that.Rectangle.x = that.offset.x + that.actor.Rectangle.x + (that.actor.Rectangle.width / 1.15);
     }
-    else
+    else if (that.actor.facing == Facing.Left)
     {
+        console.log("-->");
         that.Rectangle.x = that.offset.x + that.actor.Rectangle.x;
     }
     that.Rectangle.y = that.offset.y + that.actor.Rectangle.y + (that.actor.Rectangle.height / 2);

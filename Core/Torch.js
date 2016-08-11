@@ -163,3 +163,11 @@ Torch.HitBox = function()
     this.width = 0;
     this.height = 0;
 }
+
+//some enums
+Torch.GamePads = {
+    Pad1: 0,
+    Pad2: 1,
+    Pad3: 2,
+    Pad4: 3
+}

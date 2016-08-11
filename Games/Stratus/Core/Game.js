@@ -6,11 +6,11 @@ var Config, Game, TitleText, TitleText2, Spawner, player, debug, healthText, hea
 var TestingEnemies = function()
 {
     var villager = new Villager(Game, 500, 700);
-    villager.MovementStateMachine.Switch(VillagerIdleState);
+    villager.StateMachine("movement").Switch(VillagerIdleState);
     window.villager = villager;
 
     var villager2 = new Villager(Game, 1000, 500);
-    villager2.MovementStateMachine.Switch(VillagerIdleState);
+    villager2.StateMachine("movement").Switch(VillagerIdleState);
 
     //Torch.Timer.SetFutureEvent(15000, TestingEnemies);
 }
@@ -207,7 +207,7 @@ var StartStratus = function()
         "reptilla", "mr-brightside", "buddy-holly",
         "today", "more-than-a-feeling"]);
         //window.PlayList.Randomize();
-        window.PlayList.Play();
+        //window.PlayList.Play();
 
         if (Config.SHOW_MENU)
         {

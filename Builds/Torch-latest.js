@@ -527,6 +527,14 @@ Torch.HitBox = function()
     this.width = 0;
     this.height = 0;
 }
+
+//some enums
+Torch.GamePads = {
+    Pad1: 0,
+    Pad2: 1,
+    Pad3: 2,
+    Pad4: 3
+}
 Torch.Keys = function()
 {
     var _keys = this;
@@ -2799,6 +2807,12 @@ Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
         this.Sprite = obj;
     }
 }
+
+//enum for direction that an actor is facing
+var Facing = {
+    Right: 0,
+    Left: 1
+};
 
 
 Torch.version='Torch-2016-8-11';

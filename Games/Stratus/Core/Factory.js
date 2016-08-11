@@ -53,10 +53,11 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
     {
         var that = this;
         this.InitSprite(game, x, y);
+        this.StateMachines = [];
+        this.StateMachineIndex = {};
         if (this.InitEnemy) this.InitEnemy();
         this.asset = asset;
         this.GetAssets();
-        this.MovementStateMachine = new Torch.StateMachine(this);
         this.facing = "right";
         this.walking = "none";
         this.wasJustHit = true;
@@ -66,39 +67,12 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
             that.Hand.Trash();
         }
     }
-    EnemyClass.is(Torch.Sprite).is(Torch.Platformer.Actor);
+    EnemyClass.is(Torch.Sprite).is(Torch.Platformer.Actor).is(Enemy);
     EnemyClass.prototype.map = mapImage;
     EnemyClass.prototype.baseWidth = baseWidth;
     EnemyClass.prototype.baseHeight = baseHeight;
     EnemyClass.prototype.mapAsset = mapImage;
     EnemyClass.prototype.asset = asset;
-
-    EnemyClass.prototype.Update = function()
-    {
-        var that = this;
-        that.UpdateSprite();
-        that.UpdateActor();
-    }
-
-    EnemyClass.prototype.UpdateEnemy = function()
-    {
-        var that = this;
-        if (!that.wasJustHit && player.Hand.striking && player.Hand.Rectangle.Intersects(that.Rectangle))
-        {
-            that.Hit(1);
-            that.wasJustHit = true;
-            if (that.OnHit) that.OnHit(player.Hand);
-        }
-        if (!player.Hand.Rectangle.Intersects(that.Rectangle))
-        {
-            that.wasJustHit = false;
-        }
-        if (that.Health <= 0)
-        {
-            Explode(that);
-            that.Trash();
-        }
-    }
 
     EnemyClass.prototype.Hit = function(amount)
     {

@@ -280,3 +280,9 @@ Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
         this.Sprite = obj;
     }
 }
+
+//enum for direction that an actor is facing
+var Facing = {
+    Right: 0,
+    Left: 1
+};
