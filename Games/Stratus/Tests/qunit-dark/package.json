@@ -1,0 +1,75 @@
+{
+  "name": "qunit-dark",
+  "title": "Qunit Dark Theme",
+  "description": "A kind of dark theme for qunit",
+  "version": "0.1.5",
+  "author": {
+    "name": "Roy Riojas"
+  },
+  "homepage": "https://github.com/royriojas/qunit-dark",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/royriojas/qunit-dark.git"
+  },
+  "license": {
+    "name": "MIT",
+    "url": "http://www.opensource.org/licenses/mit-license.php"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "grunt"
+  },
+  "keywords": [
+    "qunit",
+    "qunit-plugin",
+    "qunit-theme",
+    "qunit theme dark"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-exec": "~0.4.5",
+    "grunt-csso": "~0.5.3",
+    "grunt-autoprefixer": "~0.6.5",
+    "time-grunt": "~0.2.9",
+    "grunt-ez-frontend": "~0.2.16",
+    "matchdep": "~0.3.0",
+    "grunt-jsonlint": "~1.0.4",
+    "grunt-jscs-checker": "~0.2.3",
+    "grunt-jsvalidate": "~0.2.2",
+    "grunt-newer": "~0.6.1",
+    "qunitjs": "~1.14.0",
+    "grunt-jsbeautifier": "git://github.com/royriojas/grunt-jsbeautifier.git#62b8e39",
+    "docco-husky": "git://github.com/royriojas/docco-husky.git#1f8d118",
+    "grunt-contrib-qunit": "~0.4.0",
+    "grunt-bump": "0.0.13"
+  },
+  "bugs": {
+    "url": "https://github.com/royriojas/qunit-dark/issues"
+  },
+  "_id": "qunit-dark@0.1.5",
+  "dist": {
+    "shasum": "52b6f6548df99c10a05ebd211972a6aeb888f392",
+    "tarball": "https://registry.npmjs.org/qunit-dark/-/qunit-dark-0.1.5.tgz"
+  },
+  "_from": "qunit-dark@latest",
+  "_npmVersion": "1.3.24",
+  "_npmUser": {
+    "name": "royriojas",
+    "email": "royriojas@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "royriojas",
+      "email": "royriojas@gmail.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "52b6f6548df99c10a05ebd211972a6aeb888f392",
+  "_resolved": "https://registry.npmjs.org/qunit-dark/-/qunit-dark-0.1.5.tgz",
+  "readme": "ERROR: No README data found!"
+}

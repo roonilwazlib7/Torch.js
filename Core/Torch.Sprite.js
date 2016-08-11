@@ -6,7 +6,7 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (game == undefined || game == null || typeof game != "object")
     {
-        throw "Unable to Initialize";
+        throw new Error("Unable to Initialize");
         return;
     }
     if (x == null || x == undefined)

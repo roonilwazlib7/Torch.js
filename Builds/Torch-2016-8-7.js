@@ -1527,7 +1527,7 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (game == undefined || game == null || typeof game != "object")
     {
-        throw new Error("Unable to Initialize");
+        throw "Unable to Initialize";
         return;
     }
     if (x == null || x == undefined)
@@ -2801,4 +2801,4 @@ Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
 }
 
 
-Torch.version='Torch-2016-8-11';
+Torch.version='Torch-2016-8-7';

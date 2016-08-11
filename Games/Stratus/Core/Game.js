@@ -55,7 +55,6 @@ var StartGamePlay = function()
 
 
     player = new Player(Game, 120, 600);
-    //console.log(Game.Files["test-map"]);
     Spawner = new Torch.Platformer.Spawner(
         parseMapString( Game.Files[Config.STARTING_MAP] )
     );
@@ -203,9 +202,12 @@ var StartStratus = function()
             });
             debug.drawIndex = 9000;
         }
-        window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday", "twelve-fifty-one", "under-darkness", "hard-to-explain", "reptilla", "mr-brightside", "buddy-holly", "today", "more-than-a-feeling"]);
+        window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday",
+        "twelve-fifty-one", "under-darkness", "hard-to-explain",
+        "reptilla", "mr-brightside", "buddy-holly",
+        "today", "more-than-a-feeling"]);
         //window.PlayList.Randomize();
-        //window.PlayList.Play();
+        window.PlayList.Play();
 
         if (Config.SHOW_MENU)
         {

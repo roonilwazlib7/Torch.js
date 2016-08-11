@@ -1,0 +1,30 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "boss": true,
+  "eqnull": true,
+  "browser": true,
+  "expr": true,
+  "laxcomma": true,
+  "multistr": true,
+  "globals": {
+    "jQuery": true,
+    "kno": true,
+    "doT": true,
+    "$LAB": true,
+    "Element": true,
+    "require": true,
+    "equal": true,
+    "ok": true,
+    "test": true,
+    "module": true,
+    "__shim": true,
+    "require": true
+  }
+}

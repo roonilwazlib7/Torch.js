@@ -372,16 +372,17 @@ Function.prototype.is = function(otherFunction)
     }
     return this; //allow chaining
 }
-
-String.prototype.format = function()
+if (!String.prototype.format)
 {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number)
+    String.prototype.format = function()
     {
-        return typeof args[number] != 'undefined' ? args[number] : match;
-    });
-};
-
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number)
+        {
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        });
+    };
+}
 
 window.onerror = function()
 {
@@ -1527,7 +1528,7 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (game == undefined || game == null || typeof game != "object")
     {
-        throw new Error("Unable to Initialize");
+        throw "Unable to Initialize";
         return;
     }
     if (x == null || x == undefined)
@@ -2801,4 +2802,4 @@ Torch.Platformer.SpawnItem = function(spawnType, spawned, obj, position)
 }
 
 
-Torch.version='Torch-2016-8-11';
+Torch.version='Torch-2016-8-5';
