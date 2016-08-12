@@ -245,22 +245,42 @@ Torch.Sprite.prototype.Draw = function()
 Torch.Sprite.prototype.Click = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onClick = eventFunction;
+    return that;
 };
 Torch.Sprite.prototype.ClickAway = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onClickAway = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.MouseOver = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onMouseOver = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.MouseLeave = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onMouseLeave = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.OnceEffect = function()
 {
@@ -275,20 +295,74 @@ Torch.Sprite.prototype.Once = function()
 Torch.Sprite.prototype.Hide = function()
 {
     this.draw = false;
+    return this;
 }
 Torch.Sprite.prototype.Show = function()
 {
     this.draw = true;
+    return this;
 }
 Torch.Sprite.prototype.Trash = function()
 {
     this.trash = true;
+    return this;
 }
 Torch.Sprite.prototype.NotSelf = function(otherSprite)
 {
     var that = this;
     return (otherSprite._torch_uid != that._torch_uid);
 };
+Torch.Sprite.prototype.Rotation = function(rotation)
+{
+    var that = this;
+    if (rotation == undefined)
+    {
+        return that.rotation;
+    }
+    else
+    {
+        if (typeof(rotation) != "number")
+        {
+            that.game.FatalError("Rotation values must be a number. Provided was '{0}'".format(typeof(rotation)))
+        }
+        that.rotation = rotation;
+        return that;
+    }
+}
+Torch.Sprite.prototype.Opacity = function(opacity)
+{
+    var that = this;
+    if (opacity == undefined)
+    {
+        return that.opacity;
+    }
+    else
+    {
+        if (typeof(opacity) != "number")
+        {
+            that.game.FatalError("Opacity values must be a number. Provided was '{0}'".format(typeof(opacity)));
+        }
+        that.opacity = opacity;
+        return that;
+    }
+}
+Torch.Sprite.prototype.DrawIndex = function(drawIndex)
+{
+    var that = this;
+    if (drawIndex == undefined)
+    {
+        return that.drawIndex;
+    }
+    else
+    {
+        if (typeof(drawIndex) != "number")
+        {
+            that.game.FatalError("DrawIndex values must be a number. Provided was '{0}'".format(typeof(drawIndex)));
+        }
+        that.drawIndex = drawIndex;
+        return that;
+    }
+}
 Torch.Sprite.prototype.GetDirectionVector = function(otherSprite)
 {
     var that = this;
@@ -309,6 +383,7 @@ Torch.Sprite.prototype.Center = function()
     var width = that.game.canvasNode.width;
     var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
+    return that;
 }
 Torch.Sprite.prototype.CenterVertical = function()
 {
@@ -316,6 +391,7 @@ Torch.Sprite.prototype.CenterVertical = function()
     var height = that.game.canvasNode.height;
     var y = (height / 2) - (that.Rectangle.height/2);
     that.Rectangle.y = y;
+    return that;
 }
 Torch.Sprite.prototype.ToErrorString = function()
 {

@@ -49,6 +49,8 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 
     that.sprite.Rectangle.width = tex.width * scale;
     that.sprite.Rectangle.height = tex.height * scale;
+
+    return that.DrawTexture;
 };
 Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
 {
@@ -73,6 +75,7 @@ Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
     that.sprite.TexturePackAnimation = anim;
     that.sprite.Rectangle.width = anim.GetCurrentFrame().width;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().height;
+    return anim;
 };
 Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 {
@@ -105,4 +108,5 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 
     that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
+    return anim;
 }

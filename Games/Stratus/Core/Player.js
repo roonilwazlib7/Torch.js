@@ -3,21 +3,24 @@ var Player = function(game, x, y)
     var that = this;
     this.InitSprite(game, x, y);
     this.Bind.Texture("player_right");
+    this.DrawIndex(5).Opacity(0);
+
     this.walkingRight = false;
     this.walkingLeft = false;
-    this.Item = null;
-    this.HandOffset = {
-        x: 52,
-        y: 33
-    };
-    this.drawIndex = 5;
-    this.opacity = 0;
     this.ready = false;
-    this.Hand = new Hand(that, "#FFE97F");
-    this.Hand.drawIndex = 5;
-    this.StrikeOffset = {x: 0, y: 0}
+
+    this.Item = null;
+    this.HandOffset = new Torch.Point(52, 33);
+    this.StrikeOffset = new Torch.Point(0,0);
+    this.Hand = new Hand(that, "#FFE97F").DrawIndex(5);
+
+    this.enterCounter = 0;
+    this.MOVE_VELOCITY = 0.3;
+    this.JUMP_VELOCITY = -0.5;
+    this.WALK_ANIMATION_STEP = 200;
+
     this.facing = Facing.Right;
-    this.tint = "green";
+
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 
@@ -88,36 +91,41 @@ Player.prototype.Hit = function(amount)
             player.Health -= amount;
         }
     }
+    return that;
 }
 Player.prototype.Move = function()
 {
-    var that = this;
-    //movement
-    var velocity = 0.3;
-    var keys = that.game.Keys;
+    var that = this,
+        keys = that.game.Keys;
     if (keys.D.down)
     {
-        that.Body.x.velocity = velocity;
+        if (!that.onRight)
+        {
+            that.Body.Velocity("x", that.MOVE_VELOCITY);
+        }
         if (!that.walkingRight)
         {
-            that.Bind.TextureSheet("player_walk_right", {step: 200});
+            that.Bind.TextureSheet("player_walk_right").Step(that.WALK_ANIMATION_STEP);
             that.walkingRight = true;
             that.facing = Facing.Right;
         }
     }
     if (keys.A.down)
     {
-        if (!that.onLeft) that.Body.x.velocity = -velocity;
+        if (!that.onLeft)
+        {
+            that.Body.Velocity("x", -that.MOVE_VELOCITY);
+        }
         if (!that.walkingLeft)
         {
-            that.Bind.TextureSheet("player_walk_left", {step: 200});
+            that.Bind.TextureSheet("player_walk_left").Step(that.WALK_ANIMATION_STEP);
             that.walkingLeft = true;
             that.facing = Facing.Left
         }
     }
     if (!keys.D.down && !keys.A.down)
     {
-        that.Body.x.velocity = 0;
+        that.Body.Velocity("x", 0);
         if (that.walkingRight)
         {
             that.Bind.Texture("player_right");
@@ -131,16 +139,17 @@ Player.prototype.Move = function()
     }
     if (keys.W.down && that.onGround)
     {
-        console.log("jumping...");
         that.Rectangle.y -= 5;
-        that.Body.y.velocity = -0.5;
+        that.Body.Velocity("y", that.JUMP_VELOCITY);
     }
-    if (keys.R.down) that.rotation += 0.01;
 }
 Player.prototype.SwitchItem = function(item)
 {
     var that = this;
-    if (that.Item) that.Item.Trash();
+    if (that.Item != undefined)
+    {
+        that.Item.Trash();
+    }
     that.Item = new item(that.game, that.Rectangle.x, that.Rectangle.y, that);
 }
 Player.prototype.HandleStrikes = function()
@@ -171,8 +180,10 @@ Player.prototype.HandleStrikes = function()
 Player.prototype.Enter = function()
 {
     var that = this;
-    that.opacity += 0.0007 * that.game.deltaTime;
-    if (that.opacity >= 1)
+    that.enterCounter += Game.deltaTime;
+    that.Opacity(0.0007 * that.enterCounter);
+
+    if (that.Opacity() >= 1)
     {
         that.opacity = 1;
         that.ready = true;

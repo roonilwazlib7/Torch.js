@@ -1,9 +1,15 @@
 Villager.prototype.Health = 2;
+Villager.prototype.HURT_VELOCITY = 0.2;
+Villager.prototype.CHASE_VELOCITY = 0.1;
+Villager.prototype.START_CHASE_JUMP_VELOCITY = -0.3;
+Villager.prototype.IDLE_STEP = 450;
+
 Villager.prototype.Update = function()
 {
-    var that = this;
+    var that = this,
+        offset;
     that.UpdateEnemy();
-    var offset = that.Rectangle.Intersects(player.HitBox);
+    offset = that.Rectangle.Intersects(player.HitBox);
     if (offset)
     {
         player.Hit(10);
@@ -11,110 +17,108 @@ Villager.prototype.Update = function()
     that.OnHit = function(hitter)
     {
         var dir = hitter.actor.facing == Facing.Right ? 1 : -1;
-        that.Body.x.velocity = 0.2 *  dir;
-        that.Body.y.velocity = -0.2;
-        that.StateMachine("movement").Switch(VillagerHurtState);
+        that.Body.Velocity("x", that.HURT_VELOCITY *  dir);
+        that.Body.Velocity("y", -that.HURT_VELOCITY);
+        that.StateMachine("movement").Switch("hurt");
     }
-}
-Villager.prototype.Right = function()
-{
-    var that = this;
-    that.Body.x.velocity = 0.2;
-    that.Bind.TextureSheet(that.Assets.Walk_Right, {step: 250});
 }
 Villager.prototype.InitEnemy = function()
 {
     var that = this;
     that.StateMachine("movement");
+    that.StateMachine("movement").State("idle", VillagerIdleState);
+    that.StateMachine("movement").State("chase", VillagerChaseState);
+    that.StateMachine("movement").State("hurt", VillagerHurtState);
     that.Hand = new Hand(that, "#808080");
 }
 
+//states
 var VillagerIdleState = new Torch.StateMachine.State(
     function(villager)
     {
         if (villager.GetDistance(player) <= 250)
         {
-            villager.StateMachine("movement").Switch(VillagerChaseState);
+            villager.StateMachine("movement").Switch("chase");
         }
     },
     function(villager)
     {
         //enter
-        villager.Body.x.velocity = 0;
+        villager.Body.Velocity("x", 0);
         villager.walking = "none";
         if (villager.facing == Facing.Right)
         {
-            villager.Bind.TextureSheet(villager.Assets.Right_Idle, {step:350});
+            villager.Bind.TextureSheet(villager.Assets.Right_Idle).Step(villager.IDLE_STEP)
         }
         else if (villager.facing == Facing.Left)
         {
-            villager.Bind.TextureSheet(villager.Assets.Left_Idle, {step:350});
+            villager.Bind.TextureSheet(villager.Assets.Left_Idle).Step(villager.IDLE_STEP);
         }
     },
     function(villager)
     {
         //exit
     }
-);
-
-var VillagerChaseState = new Torch.StateMachine.State(
+),
+VillagerChaseState = new Torch.StateMachine.State(
     function(villager)
     {
         var directionToPlayer = villager.GetDirectionVector(player);
-        var velocity = 0.1;
         if (directionToPlayer.x > 0)
         {
-            if (villager.onGround)villager.Body.x.velocity = velocity;
+            if (villager.onGround)
+            {
+                villager.Body.Velocity("x", villager.CHASE_VELOCITY);
+            }
             if (villager.walking != "right")
             {
                 villager.walking = "right";
                 villager.facing = Facing.Right;
-                villager.Bind.TextureSheet(villager.Assets.Walk_Right, {step:250});
+                villager.Bind.TextureSheet(villager.Assets.Walk_Right).Step(250);
             }
         }
         else if (directionToPlayer.x < 0)
         {
-            if (villager.onGround) villager.Body.x.velocity = -velocity;
+            if (villager.onGround) villager.Body.Velocity("x", -villager.CHASE_VELOCITY);
             if (villager.walking != "left")
             {
                 villager.walking = "left";
                 villager.facing = Facing.Left;
-                villager.Bind.TextureSheet(villager.Assets.Walk_Left, {step:250});
+                villager.Bind.TextureSheet(villager.Assets.Walk_Left).Step(250);
             }
         }
 
-
         if (villager.GetDistance(player) < 10)
         {
-            villager.Body.x.velocity = 0;
+            villager.Body.Velocity("x", 0);
             villager.walking = "none";
         }
         else if (villager.GetDistance(player) > 250)
         {
-            villager.StateMachine("movement").Switch(VillagerIdleState)
+            villager.StateMachine("movement").Switch("idle")
         }
 
     },
     function(villager)
     {
         //enter
-        villager.Body.y.velocity = -0.3;
+        villager.Body.Velocity("y", that.START_CHASE_JUMP_VELOCITY);
         //villager.game.Assets.GetSound("villager-alert").play();
     },
     function(villager)
     {
 
     }
-);
-var VillagerHurtState = new Torch.StateMachine.State(
+),
+VillagerHurtState = new Torch.StateMachine.State(
     function(villager)
     {
         //just wait a bit, then swing it back to normal
         villager.hurtCounter += villager.game.deltaTime;
         if (villager.hurtCounter >= 200)
         {
-            villager.Body.x.velocity = 0;
-            villager.StateMachine("movement").Switch(VillagerIdleState);
+            villager.Body.Velocity("x", 0);
+            villager.StateMachine("movement").Switch("idle");
         }
     },
     function(villager)

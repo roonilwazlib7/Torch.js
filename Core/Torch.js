@@ -156,12 +156,29 @@ Torch.Body = function()
     this.x = new Plane();
     this.y = new Plane();
 }
+Torch.Body.prototype.Velocity = function(plane, velocity)
+{
+    var that = this;
+    that[plane].velocity = velocity;
+    return that;
+}
+Torch.Body.prototype.Acceleration = function(plane, acceleration)
+{
+    var that = this;
+    that[plane].acceleration = acceleration;
+    return that;
+}
 Torch.HitBox = function()
 {
     this.x = 0;
     this.y = 0;
     this.width = 0;
     this.height = 0;
+}
+Torch.Point = function(x,y)
+{
+    this.x = x;
+    this.y = y;
 }
 
 //some enums

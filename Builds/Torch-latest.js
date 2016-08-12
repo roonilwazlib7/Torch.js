@@ -520,12 +520,29 @@ Torch.Body = function()
     this.x = new Plane();
     this.y = new Plane();
 }
+Torch.Body.prototype.Velocity = function(plane, velocity)
+{
+    var that = this;
+    that[plane].velocity = velocity;
+    return that;
+}
+Torch.Body.prototype.Acceleration = function(plane, acceleration)
+{
+    var that = this;
+    that[plane].acceleration = acceleration;
+    return that;
+}
 Torch.HitBox = function()
 {
     this.x = 0;
     this.y = 0;
     this.width = 0;
     this.height = 0;
+}
+Torch.Point = function(x,y)
+{
+    this.x = x;
+    this.y = y;
 }
 
 //some enums
@@ -1470,6 +1487,8 @@ Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 
     that.sprite.Rectangle.width = tex.width * scale;
     that.sprite.Rectangle.height = tex.height * scale;
+
+    return that.DrawTexture;
 };
 Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
 {
@@ -1494,6 +1513,7 @@ Torch.Bind.prototype.TexturePack = function(texturePackId, optionalParameters)
     that.sprite.TexturePackAnimation = anim;
     that.sprite.Rectangle.width = anim.GetCurrentFrame().width;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().height;
+    return anim;
 };
 Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 {
@@ -1526,6 +1546,7 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 
     that.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
     that.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
+    return anim;
 }
 Torch.Sprite = function(game,x,y)
 {
@@ -1774,22 +1795,42 @@ Torch.Sprite.prototype.Draw = function()
 Torch.Sprite.prototype.Click = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onClick = eventFunction;
+    return that;
 };
 Torch.Sprite.prototype.ClickAway = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onClickAway = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.MouseOver = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onMouseOver = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.MouseLeave = function(eventFunction)
 {
     var that = this;
+    if (typeof(eventFunction) != "function")
+    {
+        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
+    }
     that.onMouseLeave = eventFunction;
+    return that;
 }
 Torch.Sprite.prototype.OnceEffect = function()
 {
@@ -1804,20 +1845,74 @@ Torch.Sprite.prototype.Once = function()
 Torch.Sprite.prototype.Hide = function()
 {
     this.draw = false;
+    return this;
 }
 Torch.Sprite.prototype.Show = function()
 {
     this.draw = true;
+    return this;
 }
 Torch.Sprite.prototype.Trash = function()
 {
     this.trash = true;
+    return this;
 }
 Torch.Sprite.prototype.NotSelf = function(otherSprite)
 {
     var that = this;
     return (otherSprite._torch_uid != that._torch_uid);
 };
+Torch.Sprite.prototype.Rotation = function(rotation)
+{
+    var that = this;
+    if (rotation == undefined)
+    {
+        return that.rotation;
+    }
+    else
+    {
+        if (typeof(rotation) != "number")
+        {
+            that.game.FatalError("Rotation values must be a number. Provided was '{0}'".format(typeof(rotation)))
+        }
+        that.rotation = rotation;
+        return that;
+    }
+}
+Torch.Sprite.prototype.Opacity = function(opacity)
+{
+    var that = this;
+    if (opacity == undefined)
+    {
+        return that.opacity;
+    }
+    else
+    {
+        if (typeof(opacity) != "number")
+        {
+            that.game.FatalError("Opacity values must be a number. Provided was '{0}'".format(typeof(opacity)));
+        }
+        that.opacity = opacity;
+        return that;
+    }
+}
+Torch.Sprite.prototype.DrawIndex = function(drawIndex)
+{
+    var that = this;
+    if (drawIndex == undefined)
+    {
+        return that.drawIndex;
+    }
+    else
+    {
+        if (typeof(drawIndex) != "number")
+        {
+            that.game.FatalError("DrawIndex values must be a number. Provided was '{0}'".format(typeof(drawIndex)));
+        }
+        that.drawIndex = drawIndex;
+        return that;
+    }
+}
 Torch.Sprite.prototype.GetDirectionVector = function(otherSprite)
 {
     var that = this;
@@ -1838,6 +1933,7 @@ Torch.Sprite.prototype.Center = function()
     var width = that.game.canvasNode.width;
     var x = (width / 2) - (that.Rectangle.width/2);
     that.Rectangle.x = x;
+    return that;
 }
 Torch.Sprite.prototype.CenterVertical = function()
 {
@@ -1845,6 +1941,7 @@ Torch.Sprite.prototype.CenterVertical = function()
     var height = that.game.canvasNode.height;
     var y = (height / 2) - (that.Rectangle.height/2);
     that.Rectangle.y = y;
+    return that;
 }
 Torch.Sprite.prototype.ToErrorString = function()
 {
@@ -1983,6 +2080,12 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 		return that.TextureSheet[that.textureIndex];
 	}
 };
+Torch.Animation.TextureSheet.prototype.Step = function(step)
+{
+	var that = this;
+	that.step = step;
+	return that;
+}
 
 
 Torch.Animation.StepAnimation = function(game, totalTime, steps, start, end)
@@ -2234,18 +2337,38 @@ Torch.StateMachine = function(obj)
 {
     this.currentState = null;
     this.obj = obj;
+    this.states = {};
+}
+Torch.StateMachine.prototype.State = function(stateName, stateObj)
+{
+    var that = this;
+    if (stateObj == undefined)
+    {
+        if (that.states[stateName] == undefined)
+        {
+            Torch.FatalError("Unable to get state. State '{0}' has not been added to the state machine".format(stateName));
+        }
+        return that.states[stateName];
+    }
+    else
+    {
+        that.states[stateName] = stateObj;
+    }
 }
 Torch.StateMachine.prototype.Switch = function(newState)
 {
     var that = this;
     if (that.currentState && that.currentState.End) that.currentState.End(that.obj);
-    if (newState.Start) newState.Start(that.obj);
-    that.currentState = newState;
+    if (that.State(newState).Start) that.State(newState).Start(that.obj);
+    that.currentState = that.State(newState);
 }
 Torch.StateMachine.prototype.Update = function()
 {
     var that = this;
-    that.currentState.Execute(that.obj);
+    if (that.currentState)
+    {
+        that.currentState.Execute(that.obj);
+    }
 }
 
 Torch.StateMachine.State = function(execute, start, end)

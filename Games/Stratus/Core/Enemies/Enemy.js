@@ -26,6 +26,20 @@ Enemy.prototype.UpdateEnemy = function()
     that.UpdateStateMachines();
     that.UpdateSprite();
     that.UpdateActor();
+    that.UpdateHitsFromPlayer();
+}
+Enemy.prototype.UpdateStateMachines = function()
+{
+    //run through all the state machines
+    var that = this;
+    for (var i = 0; i < that.StateMachines.length; i++)
+    {
+        that.StateMachines[i].Update();
+    }
+}
+Enemy.prototype.UpdateHitsFromPlayer = function ()
+{
+    var that = this;
     if (!that.wasJustHit && player.Hand.striking && player.Hand.Rectangle.Intersects(that.Rectangle))
     {
         that.Hit(1);
@@ -40,14 +54,5 @@ Enemy.prototype.UpdateEnemy = function()
     {
         Explode(that);
         that.Trash();
-    }
-}
-Enemy.prototype.UpdateStateMachines = function()
-{
-    //run through all the state machines
-    var that = this;
-    for (var i = 0; i < that.StateMachines.length; i++)
-    {
-        that.StateMachines[i].Update();
     }
 }

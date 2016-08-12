@@ -122,6 +122,12 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 		return that.TextureSheet[that.textureIndex];
 	}
 };
+Torch.Animation.TextureSheet.prototype.Step = function(step)
+{
+	var that = this;
+	that.step = step;
+	return that;
+}
 
 
 Torch.Animation.StepAnimation = function(game, totalTime, steps, start, end)

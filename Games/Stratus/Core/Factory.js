@@ -58,7 +58,7 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         if (this.InitEnemy) this.InitEnemy();
         this.asset = asset;
         this.GetAssets();
-        this.facing = "right";
+        this.facing = Facing.Right;
         this.walking = "none";
         this.wasJustHit = true;
         this.drawIndex = 3;

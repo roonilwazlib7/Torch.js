@@ -6,11 +6,11 @@ var Config, Game, TitleText, TitleText2, Spawner, player, debug, healthText, hea
 var TestingEnemies = function()
 {
     var villager = new Villager(Game, 500, 700);
-    villager.StateMachine("movement").Switch(VillagerIdleState);
+    villager.StateMachine("movement").Switch("idle");
     window.villager = villager;
 
     var villager2 = new Villager(Game, 1000, 500);
-    villager2.StateMachine("movement").Switch(VillagerIdleState);
+    villager2.StateMachine("movement").Switch("idle");
 
     //Torch.Timer.SetFutureEvent(15000, TestingEnemies);
 }
