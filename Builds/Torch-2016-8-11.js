@@ -2936,6 +2936,11 @@ var Facing = {
     Right: 0,
     Left: 1
 };
+var Walking = {
+    Right: 0,
+    Left: 1,
+    None: 2
+}
 
 
 Torch.version='Torch-2016-8-11';

@@ -20,6 +20,7 @@ var Player = function(game, x, y)
     this.WALK_ANIMATION_STEP = 200;
 
     this.facing = Facing.Right;
+    this.walking = Walking.None;
 
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
@@ -103,10 +104,10 @@ Player.prototype.Move = function()
         {
             that.Body.Velocity("x", that.MOVE_VELOCITY);
         }
-        if (!that.walkingRight)
+        if (that.walking != Walking.Right)
         {
             that.Bind.TextureSheet("player_walk_right").Step(that.WALK_ANIMATION_STEP);
-            that.walkingRight = true;
+            that.walking = Walking.Right;
             that.facing = Facing.Right;
         }
     }
@@ -116,26 +117,25 @@ Player.prototype.Move = function()
         {
             that.Body.Velocity("x", -that.MOVE_VELOCITY);
         }
-        if (!that.walkingLeft)
+        if (that.walking != Walking.Left)
         {
             that.Bind.TextureSheet("player_walk_left").Step(that.WALK_ANIMATION_STEP);
-            that.walkingLeft = true;
+            that.walking = Walking.Left;
             that.facing = Facing.Left
         }
     }
     if (!keys.D.down && !keys.A.down)
     {
         that.Body.Velocity("x", 0);
-        if (that.walkingRight)
+        if (that.walking == Walking.Right)
         {
             that.Bind.Texture("player_right");
         }
-        else if (that.walkingLeft)
+        else if (that.walking == Walking.Left)
         {
             that.Bind.Texture("player_left");
         }
-        that.walkingRight = false;
-        that.walkingLeft = false;
+        that.walking = Walking.None;
     }
     if (keys.W.down && that.onGround)
     {

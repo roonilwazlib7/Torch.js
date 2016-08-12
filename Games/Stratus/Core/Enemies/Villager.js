@@ -102,7 +102,7 @@ VillagerChaseState = new Torch.StateMachine.State(
     function(villager)
     {
         //enter
-        villager.Body.Velocity("y", that.START_CHASE_JUMP_VELOCITY);
+        villager.Body.Velocity("y", villager.START_CHASE_JUMP_VELOCITY);
         //villager.game.Assets.GetSound("villager-alert").play();
     },
     function(villager)

@@ -286,3 +286,8 @@ var Facing = {
     Right: 0,
     Left: 1
 };
+var Walking = {
+    Right: 0,
+    Left: 1,
+    None: 2
+}
