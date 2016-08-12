@@ -55,13 +55,13 @@ Factory.Enemy = function(baseWidth, baseHeight, asset, dir, mapImage, allSheets)
         this.InitSprite(game, x, y);
         this.StateMachines = [];
         this.StateMachineIndex = {};
-        if (this.InitEnemy) this.InitEnemy();
         this.asset = asset;
         this.GetAssets();
         this.facing = Facing.Right;
-        this.walking = "none";
+        this.walking = Walking.None;
         this.wasJustHit = true;
         this.drawIndex = 3;
+        if (this.InitEnemy) this.InitEnemy();
         this.OnTrash = function()
         {
             that.Hand.Trash();

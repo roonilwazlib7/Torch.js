@@ -7,11 +7,13 @@ Torch.Sound.PlayList = function(game, playList)
     this.currentSong = playList[0];
     this.index = 0;
 }
+Torch.Sound.PlayList.is(Torch.GhostSprite);
 Torch.Sound.PlayList.prototype.Play = function()
 {
     var that = this;
     that.game.Assets.GetSound(that.currentSong).volume = 0.7;
     that.game.Assets.GetSound(that.currentSong).play();
+    return that;
 }
 Torch.Sound.PlayList.prototype.ShuffleArray = function(array)
 {
@@ -37,10 +39,12 @@ Torch.Sound.PlayList.prototype.Randomize = function()
     var that = this;
     that.songList = that.ShuffleArray(that.songList);
     that.currentSong = that.songList[0];
+    return that;
 }
 Torch.Sound.PlayList.prototype.Update = function()
 {
     var that = this;
+    console.log(")");
     if (that.game.Assets.GetSound(that.currentSong).currentTime >= that.game.Assets.GetSound(that.currentSong).duration)
     {
         that.index++;

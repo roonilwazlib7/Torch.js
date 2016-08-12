@@ -45,7 +45,7 @@ var VillagerIdleState = new Torch.StateMachine.State(
     {
         //enter
         villager.Body.Velocity("x", 0);
-        villager.walking = "none";
+        villager.walking = Walking.None;
         if (villager.facing == Facing.Right)
         {
             villager.Bind.TextureSheet(villager.Assets.Right_Idle).Step(villager.IDLE_STEP)
@@ -70,9 +70,9 @@ VillagerChaseState = new Torch.StateMachine.State(
             {
                 villager.Body.Velocity("x", villager.CHASE_VELOCITY);
             }
-            if (villager.walking != "right")
+            if (villager.walking != Walking.Right)
             {
-                villager.walking = "right";
+                villager.walking = Walking.Right
                 villager.facing = Facing.Right;
                 villager.Bind.TextureSheet(villager.Assets.Walk_Right).Step(250);
             }
@@ -80,9 +80,9 @@ VillagerChaseState = new Torch.StateMachine.State(
         else if (directionToPlayer.x < 0)
         {
             if (villager.onGround) villager.Body.Velocity("x", -villager.CHASE_VELOCITY);
-            if (villager.walking != "left")
+            if (villager.walking != Walking.Left)
             {
-                villager.walking = "left";
+                villager.walking = Walking.Left;
                 villager.facing = Facing.Left;
                 villager.Bind.TextureSheet(villager.Assets.Walk_Left).Step(250);
             }
@@ -91,7 +91,7 @@ VillagerChaseState = new Torch.StateMachine.State(
         if (villager.GetDistance(player) < 10)
         {
             villager.Body.Velocity("x", 0);
-            villager.walking = "none";
+            villager.walking = Walking.None;
         }
         else if (villager.GetDistance(player) > 250)
         {

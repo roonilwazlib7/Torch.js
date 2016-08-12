@@ -1,7 +1,9 @@
-Torch.Electron.Import();
-Torch.StrictErrors();
+Torch.Electron.Import(); //bring in the functionality allowed with electron
+Torch.StrictErrors(); //catch all errors. If any error is thrown, the game is
+                      //terminated and the error is reported
 
-var Config, Game, TitleText, TitleText2, Spawner, player, debug, healthText, healthBar;
+//declare a bunch of global variables
+var Game, Config, TitleText, TitleText2, Spawner, SamplePlayList, player, debug, healthText, healthBar, healthBarBackground, statusBar;
 
 var TestingEnemies = function()
 {
@@ -16,43 +18,18 @@ var TestingEnemies = function()
 }
 var StartGamePlay = function()
 {
+    //this function starts actual game play
     Torch.Scale = 4;
-
-    var statusBar = new Torch.Sprite(Game, 0, Game.Viewport.height);
-    statusBar.Bind.Texture("status-bar");
-    statusBar.Rectangle.y -= statusBar.Rectangle.height;
-    statusBar.Center();
-    statusBar.ToggleFixed();
-    statusBar.drawIndex = 8;
-
-    healthBar = new Torch.Sprite(Game, 0, Game.Viewport.height);
-    healthBar.Bind.Texture("health-bar");
-    healthBar.Rectangle.y -= healthBar.Rectangle.height;
-    healthBar.Rectangle.x = statusBar.Rectangle.x;
-    healthBar.ToggleFixed();
-    healthBar.inc = (healthBar.Rectangle.width / 100);
-    healthBar.drawIndex = 10;
-
-    var healthBarBackground = new Torch.Sprite(Game, 0, Game.Viewport.height);
-    healthBarBackground.Bind.Texture("health-bar-background");
-    healthBarBackground.Rectangle.y -= healthBarBackground.Rectangle.height;
-    healthBarBackground.Rectangle.x = statusBar.Rectangle.x;
-    healthBarBackground.ToggleFixed();
-    healthBarBackground.drawIndex = 9;
+    statusBar = new StatusBar(Game);
+    healthBar = new HealthBar(Game, statusBar);
+    healthBarBackground = new HealthBarBackground(Game, statusBar);
 
     healthText = new Torch.Text(Game, 10, 10, {
-        color: "white",
-        font: "forward",
-        fontSize: 24,
-        fontWeight: "bold",
         text: "100",
         buffHeight: 5
-    });
-    healthText.Rectangle.y = statusBar.Rectangle.y + healthText.Rectangle.height / 1.5;
-    healthText.Rectangle.x = statusBar.Rectangle.x + healthText.Rectangle.width;
-    healthText.drawIndex = 100;
-    healthText.ToggleFixed();
-
+    }).Color("white").FontWeight("bold").FontSize(24).Font("forward");
+    healthText.Rectangle.ShiftFrom(statusBar.Rectangle,healthText.Rectangle.width,healthText.Rectangle.height / 1.5);
+    healthText.DrawIndex(100).ToggleFixed(true);
 
     player = new Player(Game, 120, 600);
     Spawner = new Torch.Platformer.Spawner(
@@ -67,10 +44,9 @@ var StartGamePlay = function()
 }
 var StartGame = function()
 {
+    //this function starts the game with that start menu
     Game.FlushSprites();
     Torch.Scale = 2;
-
-    //window.Mouse = new Mouse(Game);
 
     var StartLogo = new Torch.Sprite(Game, 0, 150);
     StartLogo.Bind.Texture("main-logo");
@@ -80,15 +56,14 @@ var StartGame = function()
     StartButton.CenterVertical();
 
     StartButton.MouseOver(function(){
-        StartButton.opacity = 0.6;
+        StartButton.Opacity(0.6);
     });
     StartButton.MouseLeave(function(){
-        StartButton.opacity = 1;
+        StartButton.Opacity(1);
     });
 
     var StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
-    StartMenu.Center();
-    StartMenu.ToggleFixed();
+    StartMenu.Center().ToggleFixed();
 
     StartButton.Click(function(){
         Game.Clear("#000");
@@ -144,11 +119,6 @@ var StartStratus = function()
     }
     function Update()
     {
-        if (Game.Keys.Q.down)
-        {
-            Game.spriteList = [];
-            Init();
-        }
         if (!Game.Keys.O.down && Game.oWasDown)
         {
             Explode(player);
@@ -162,7 +132,6 @@ var StartStratus = function()
         {
             Game.oWasDown = false;
         }
-        window.PlayList.Update();
 
         if (Config.SHOW_DEBUG)
         {
@@ -194,20 +163,18 @@ var StartStratus = function()
         if (Config.SHOW_DEBUG)
         {
             debug = new Torch.Text(Game, 10, 10, {
-                color: "green",
-                font: "monospace",
-                fontSize: 12,
-                fontWeight: "bold",
                 text: "0"
             });
-            debug.drawIndex = 9000;
+            debug.DrawIndex(9000).Color("green").Font("monospace")
+                                .FontSize(12).FontWeight("bold");
         }
-        window.PlayList = new Torch.Sound.PlayList(Game, ["ascending","someday",
-        "twelve-fifty-one", "under-darkness", "hard-to-explain",
-        "reptilla", "mr-brightside", "buddy-holly",
-        "today", "more-than-a-feeling"]);
-        //window.PlayList.Randomize();
-        //window.PlayList.Play();
+        if (Config.PLAY_SOUND)
+        {
+            SamplePlayList = new Torch.Sound.PlayList(Game, ["ascending","someday",
+            "twelve-fifty-one", "under-darkness", "hard-to-explain",
+            "reptilla", "mr-brightside", "buddy-holly",
+            "today", "more-than-a-feeling"]).Randomize().Play();
+        }
 
         if (Config.SHOW_MENU)
         {

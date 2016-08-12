@@ -73,3 +73,73 @@ Torch.Text.prototype.Update = function()
         that.lastText = that.text;
     }
 }
+
+Torch.Text.prototype.Text = function(text)
+{
+    var that = this;
+    if (text == undefined)
+    {
+        return that.text
+    }
+    else
+    {
+        that.text = text;
+        return that;
+    }
+}
+
+Torch.Text.prototype.Font = function(font)
+{
+    var that = this;
+    if (font == undefined)
+    {
+        return that.font
+    }
+    else
+    {
+        that.font = font;
+        return that;
+    }
+}
+
+Torch.Text.prototype.FontSize = function(fontSize)
+{
+    var that = this;
+    if (fontSize == undefined)
+    {
+        return that.fontSize
+    }
+    else
+    {
+        that.fontSize = fontSize;
+        return that;
+    }
+}
+
+Torch.Text.prototype.FontWeight = function(fontWeight)
+{
+    var that = this;
+    if (fontWeight == undefined)
+    {
+        return that.fontWeight;
+    }
+    else
+    {
+        that.fontWeight = fontWeight;
+        return that;
+    }
+}
+
+Torch.Text.prototype.Color = function(color)
+{
+    var that = this;
+    if (color == undefined)
+    {
+        return that.color;
+    }
+    else
+    {
+        that.color = color;
+        return that;
+    }
+}

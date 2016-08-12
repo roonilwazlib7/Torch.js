@@ -1304,6 +1304,7 @@ Torch.Load.prototype.Load = function(finishFunction)
         TIME_TO_LOAD++
         if (that.finish_stack <= 0)
         {
+            $(".font-loader").remove();
             finishFunction();
             clearInterval(_l);
 

@@ -6,16 +6,16 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
 {
     if (game == undefined || game == null || typeof game != "object")
     {
-        throw new Error("Unable to Initialize");
-        return;
+        Torch.FatalError("Could not initialize sprite. Expected game to be Torch.Game. Got {0}"
+        .format(typeof(game)));
     }
     if (x == null || x == undefined)
     {
-        game.FatalError("Unable to Initialize sprite, argument x must be a number");
+        game.FatalError("Could not initialize sprite., argument x must be a number");
     }
     if (y == null || y == undefined)
     {
-        game.FatalError("Unable to Initialize sprite, argument y must be a number");
+        game.FatalError("Could not initialize sprite., argument y must be a number");
     }
 
     this.Bind = new Torch.Bind(this);
@@ -63,6 +63,7 @@ Torch.Sprite.prototype.ToggleFixed = function(tog)
     {
         that.fixed = tog;
     }
+    return that;
 }
 Torch.Sprite.prototype.UpdateSprite = function()
 {

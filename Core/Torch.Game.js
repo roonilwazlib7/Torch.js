@@ -32,6 +32,7 @@ Torch.Game = function(canvasId, width, height, name)
     this.LastTimeStamp = null;
 
     this.spriteList = [];
+    this.taskList = [];
     this.animations = [];
     this.DrawStack = [];
     this.AddStack = [];
@@ -104,6 +105,11 @@ Torch.Game.prototype.Add = function(o)
     that.uidCounter++;
 
 };
+Torch.Game.prototype.Task = function(task)
+{
+    var that = this;
+    that.taskList.push(task);
+}
 Torch.Game.prototype.RunGame = function(timestamp)
 {
     var that = this;
@@ -122,6 +128,7 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.UpdateAndDrawSprites();
     that.UpdateAnimations();
     that.UpdateTimeInfo();
+    that.UpdateTasks();
     Torch.Camera.Update();
     Torch.Timer.Update();
     that.UpdateGamePads();
@@ -167,6 +174,14 @@ Torch.Game.prototype.FatalError = function(error)
     throw error;
 
 };
+Torch.Game.prototype.UpdateTasks = function()
+{
+    var that = this;
+    for (var i = 0; i < that.taskList.length; i++)
+    {
+        that.taskList[i]();
+    }
+}
 Torch.Game.prototype.UpdateSprites = function()
 {
     var that = this;

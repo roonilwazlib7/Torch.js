@@ -119,6 +119,15 @@ Torch.Rectangle.prototype.GetLines = function()
 {
     var that = this;
 }
+Torch.Rectangle.prototype.ShiftFrom = function(rectangle, transX, transY)
+{
+    var that = this,
+        x = (transX == undefined) ? rectangle.x : rectangle.x + transX,
+        y = (transY == undefined) ? rectangle.y : rectangle.y + transY;
+
+    that.x = x;
+    that.y = y;
+}
 Torch.Vector = function(x,y){
     this.x = x;
     this.y = y;

@@ -15,5 +15,9 @@
     "SHOW_MENU": false,
 
     "//": "should we show the debug text?",
-    "SHOW_DEBUG": false
+    "SHOW_DEBUG": true,
+
+    "//": "should we play music?",
+    "//": "this setting should be moved to user save configuration",
+    "PLAY_SOUND": false
 }
