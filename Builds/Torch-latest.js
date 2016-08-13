@@ -675,8 +675,6 @@ Torch.Game = function(canvasId, width, height, name)
     this.zoom = 1;
     this.uidCounter = 0;
 
-    this.gameHasRunSuccessfully = false;
-    this.gameFailedToRun = false;
     this.paused = false;
 
     this.time = null;
@@ -725,17 +723,9 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 
     that.Load.Load(function()
     {
-        try
-        {
-            that.init();
-            that.WireUpEvents();
-            that.Run();
-        }
-        catch (e)
-        {
-            that.FatalError(e);
-        }
-
+        that.init();
+        that.WireUpEvents();
+        that.Run();
     });
 
     that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
@@ -2070,6 +2060,7 @@ Torch.Animation.TextureSheet = function(TextureSheet, game)
 	this.elapsedTime = 0;
 	this.delay = 0;
 	this.delayCount = 0;
+	this.onStep = null;
 	game.animations.push(this);
 };
 Torch.Animation.TextureSheet.is(Torch.Animation);
@@ -2082,6 +2073,7 @@ Torch.Animation.TextureSheet.prototype.Update = function()
 	{
 		that.elapsedTime = 0;
 		that.textureIndex++;
+		if (that.onStep) that.onStep(that.textureIndex);
 	}
 	if (that.textureIndex >= that.maxIndex && that.delayCount <= 0)
 	{
@@ -2106,10 +2098,21 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 		return that.TextureSheet[that.textureIndex];
 	}
 };
-Torch.Animation.TextureSheet.prototype.Step = function(step)
+Torch.Animation.TextureSheet.prototype.Step = function(step, onStep)
 {
 	var that = this;
-	that.step = step;
+	if (step == undefined)
+	{
+		return that.step;
+	}
+	else
+	{
+		that.step = step;
+		if (onStep != undefined)
+		{
+			that.onStep = onStep;
+		}
+	}
 	return that;
 }
 
@@ -2149,7 +2152,15 @@ var cnv = document.createElement("CANVAS");
 cnv.width = 500;
 cnv.height = 500;
 Torch.measureCanvas = cnv.getContext("2d");
+
 Torch.Text = function(game,x,y,data)
+{
+    this.InitText(game, x, y, data);
+}
+Torch.Text.is(Torch.Sprite);
+
+Torch.Text.prototype.TEXT = true;
+Torch.Text.prototype.InitText = function(game, x, y, data)
 {
     this.InitSprite(game,x,y);
     this.data = data;
@@ -2157,15 +2168,13 @@ Torch.Text = function(game,x,y,data)
     this.font = "Arial";
     this.fontSize = 16;
     this.fontWeight = "";
-    this.color = "red";
+    this.color = "#2b4531";
     this.text = "";
     this.lastText = "";
     this.width = 100;
     this.height = 100;
     this.Init();
 }
-Torch.Text.is(Torch.Sprite);
-Torch.Text.prototype.TEXT = true;
 Torch.Text.prototype.Init = function()
 {
     var that = this;
@@ -2211,6 +2220,12 @@ Torch.Text.prototype.Render = function()
 }
 
 Torch.Text.prototype.Update = function()
+{
+    var that = this;
+    that.UpdateText();
+}
+
+Torch.Text.prototype.UpdateText = function()
 {
     var that = this;
     that.UpdateSprite();
@@ -2683,11 +2698,13 @@ Torch.SpriteGroup = function(sprites)
     {
         that.sprites[i].anchorX = that.sprites[i].Rectangle.x;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Add = function(sprites)
 {
     var that = this;
     that.sprites = that.sprites.concat(sprites);
+    return that;
 }
 Torch.SpriteGroup.prototype.Trash = function()
 {
@@ -2696,6 +2713,7 @@ Torch.SpriteGroup.prototype.Trash = function()
     {
         that.sprites[i].Trash();
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Shift = function(transition)
 {
@@ -2706,6 +2724,7 @@ Torch.SpriteGroup.prototype.Shift = function(transition)
         if (transition.x) sprite.Rectangle.x = sprite.anchorX + transition.x;
         //if (transition.y) sprite.Rectangle.y = sprite.Rectangle.y + transition.y;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Hide = function()
 {
@@ -2715,6 +2734,7 @@ Torch.SpriteGroup.prototype.Hide = function()
         var sprite = that.sprites[i];
         sprite.draw = false;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Show = function()
 {
@@ -2724,6 +2744,7 @@ Torch.SpriteGroup.prototype.Show = function()
         var sprite = that.sprites[i];
         sprite.draw = true;
     }
+    return that;
 }
 Torch.SpriteGroup.prototype.Center = function()
 {
@@ -2731,6 +2752,7 @@ Torch.SpriteGroup.prototype.Center = function()
     that.All(function(sprite){
         sprite.Center();
     });
+    return that;
 }
 Torch.SpriteGroup.prototype.ToggleFixed = function()
 {
@@ -2738,6 +2760,7 @@ Torch.SpriteGroup.prototype.ToggleFixed = function()
     that.All(function(sprite){
         sprite.ToggleFixed();
     });
+    return that;
 }
 Torch.SpriteGroup.prototype.All = function(handle)
 {
@@ -2747,6 +2770,7 @@ Torch.SpriteGroup.prototype.All = function(handle)
         var sprite = that.sprites[i];
         handle(sprite);
     }
+    return that;
 }
 //planning on integrating this into a platformer physics library
 //for torch
@@ -2808,14 +2832,14 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
         {
             if (offset.x < offset.y)
             {
-                that.Body.y.velocity = 0;
+                that.Body.Velocity("y", 0);
                 if (offset.vx > 0)
                 {
                     //colDir = "l"
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.x += offset.x + Torch.Platformer.SHIFT_COLLIDE_LEFT;
-                        that.Body.x.velocity = 0;
+                        that.Body.Velocity("x", 0);
                         that.onLeft = true;
                     }
                     else
@@ -2829,7 +2853,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.x -= offset.x;
-                        that.Body.x.velocity = 0;
+                        that.Body.Velocity("x", 0);
                         that.onRight = true;
                     }
                     else
@@ -2845,7 +2869,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 {
                     //colDir = "t";
                     that.Rectangle.y += offset.y;
-                    that.Body.y.velocity = 0;
+                    that.Body.Velocity("y", 0);
                 }
                 else if ( offset.vy < 0)
                 {
@@ -2853,8 +2877,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.y -= (offset.y - item.Sprite.sink);
-                        that.Body.y.acceleration = 0;
-                        that.Body.y.velocity = 0;
+                        that.Body.Acceleration("y", 0).Velocity("y", 0);
                         that.onGround = true;
                         if (!that.inFluid) that.currentFriction = item.Sprite.friction;
                     }
@@ -2909,35 +2932,8 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
             that.FluidCollision(item, offset);
         }
-        if (item.spawned && item.Sprite && item.Sprite.ENEMY && that.NotSelf(item.Sprite))
-        {
-            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (that.EnemyCollision && offset) that.EnemyCollision(item.Sprite, offset);
-        }
-        if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
-        {
-            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (offset)
-            {
-                item.Sprite.SignGroup.Show();
-                if (Game.Keys.G.down)
-                {
-                    //we're gonna want to clean this up
-                    Spawner.UnSpawn();
-                    Game.UnSpawn();
-                    Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
-                    Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
-                    Game.Player.Rectangle.x = item.Sprite.addData.y || 0;
-                }
-            }
-            else
-            {
-                item.Sprite.SignGroup.Hide();
-            }
-        }
+        if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
     }
-    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
-
     if (that.hitLock)
     {
         that.hitLockCounter += Game.deltaTime;
@@ -2997,7 +2993,6 @@ Torch.Platformer.Spawner.prototype.Update = function()
                 item.Sprite = spr;
                 item.spawned = true;
                 spr.spawnItem = item;
-                spr.DrawParams = {tint: "green"};
             }
             else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
             {
@@ -3009,7 +3004,11 @@ Torch.Platformer.Spawner.prototype.Update = function()
                     spr.spawnItem = item;
                 }
             }
-            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {
+                x: item.Sprite.Rectangle.x,
+                y: item.Sprite.Rectangle.y,
+                width: item.Sprite.Rectangle.width,
+                height: item.Sprite.Rectangle.height} ) )
             {
                 item.Sprite.Trash();
                 item.Sprite = null;
@@ -3043,4 +3042,4 @@ var Walking = {
 }
 
 
-Torch.version='Torch-2016-8-12';
+Torch.version='Torch-2016-8-13';

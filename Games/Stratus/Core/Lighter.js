@@ -63,6 +63,7 @@ Lighter.Init = function()
 Lighter.Update = function()
 {
     var that = this;
+    if (!player) return;
     that.topBlocker.Rectangle.y = player.Rectangle.y - that.topBlocker.Rectangle.height - ( (1/9) * Game.Viewport.height );
     that.bottomBlocker.Rectangle.y = 1 + player.Rectangle.y + ( (1/3) * Game.Viewport.height ) - ( (1/6) * Game.Viewport.height);
 

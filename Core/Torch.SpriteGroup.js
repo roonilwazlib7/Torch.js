@@ -6,11 +6,13 @@ Torch.SpriteGroup = function(sprites)
     {
         that.sprites[i].anchorX = that.sprites[i].Rectangle.x;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Add = function(sprites)
 {
     var that = this;
     that.sprites = that.sprites.concat(sprites);
+    return that;
 }
 Torch.SpriteGroup.prototype.Trash = function()
 {
@@ -19,6 +21,7 @@ Torch.SpriteGroup.prototype.Trash = function()
     {
         that.sprites[i].Trash();
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Shift = function(transition)
 {
@@ -29,6 +32,7 @@ Torch.SpriteGroup.prototype.Shift = function(transition)
         if (transition.x) sprite.Rectangle.x = sprite.anchorX + transition.x;
         //if (transition.y) sprite.Rectangle.y = sprite.Rectangle.y + transition.y;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Hide = function()
 {
@@ -38,6 +42,7 @@ Torch.SpriteGroup.prototype.Hide = function()
         var sprite = that.sprites[i];
         sprite.draw = false;
     }
+    return that;
 };
 Torch.SpriteGroup.prototype.Show = function()
 {
@@ -47,6 +52,7 @@ Torch.SpriteGroup.prototype.Show = function()
         var sprite = that.sprites[i];
         sprite.draw = true;
     }
+    return that;
 }
 Torch.SpriteGroup.prototype.Center = function()
 {
@@ -54,6 +60,7 @@ Torch.SpriteGroup.prototype.Center = function()
     that.All(function(sprite){
         sprite.Center();
     });
+    return that;
 }
 Torch.SpriteGroup.prototype.ToggleFixed = function()
 {
@@ -61,6 +68,7 @@ Torch.SpriteGroup.prototype.ToggleFixed = function()
     that.All(function(sprite){
         sprite.ToggleFixed();
     });
+    return that;
 }
 Torch.SpriteGroup.prototype.All = function(handle)
 {
@@ -70,4 +78,5 @@ Torch.SpriteGroup.prototype.All = function(handle)
         var sprite = that.sprites[i];
         handle(sprite);
     }
+    return that;
 }

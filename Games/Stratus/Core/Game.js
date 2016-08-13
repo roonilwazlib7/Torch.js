@@ -5,6 +5,26 @@ Torch.StrictErrors(); //catch all errors. If any error is thrown, the game is
 //declare a bunch of global variables
 var Game, Config, TitleText, TitleText2, Spawner, SamplePlayList, player, debug, healthText, healthBar, healthBarBackground, statusBar;
 
+//a little object to display debug info (fps, etc.)
+var DebugInfo = function(game, x, y, data)
+{
+    this.InitText(game, x, y, data);
+}
+DebugInfo.is(Torch.Text);
+
+DebugInfo.prototype.Update = function()
+{
+    var that = this;
+    that.UpdateText();
+    var fps = Game.fps;
+    var avgFps = Game.averageFps;
+    that.text = "FPS:{0}  T:{1} avgFPS:{2}".format(fps, Math.ceil(Game.time / 1000), avgFps);
+    if (player != undefined)
+    {
+        that.text += " L:{0} R:{1} B:{2}".format(player.onLeft, player.onRight, player.onGround);
+    }
+}
+
 var TestingEnemies = function()
 {
     var villager = new Villager(Game, 500, 700);
@@ -40,7 +60,6 @@ var StartGamePlay = function()
     Lighter.SetLevel(0);
 
     //Torch.Camera.Track(player);
-    if (Config.SHOW_DEBUG) debug.ToggleFixed();
 }
 var StartGame = function()
 {
@@ -119,36 +138,7 @@ var StartStratus = function()
     }
     function Update()
     {
-        if (!Game.Keys.O.down && Game.oWasDown)
-        {
-            Explode(player);
-            Game.oWasDown = false;
-        }
-        if (Game.Keys.O.down)
-        {
-            Game.oWasDown = true;
-        }
-        else
-        {
-            Game.oWasDown = false;
-        }
-
-        if (Config.SHOW_DEBUG)
-        {
-            var fps = Game.fps;
-            var avgFps = Game.averageFps;
-            debug.text = "FPS:{0}  T:{1} avgFPS:{2}".format(fps, Math.ceil(Game.time / 1000), avgFps);
-            if (player != undefined)
-            {
-                debug.text += " L:{0} R:{1} B:{2}".format(player.onLeft, player.onRight, player.onGround);
-            }
-        }
-
-        if (player)
-        {
-            Lighter.Update();
-        }
-
+        Lighter.Update();
     }
     function Draw()
     {
@@ -162,11 +152,10 @@ var StartStratus = function()
 
         if (Config.SHOW_DEBUG)
         {
-            debug = new Torch.Text(Game, 10, 10, {
-                text: "0"
-            });
+            debug = new DebugInfo(Game, 10, 10, {});
             debug.DrawIndex(9000).Color("green").Font("monospace")
-                                .FontSize(12).FontWeight("bold");
+                                .FontSize(12).FontWeight("bold")
+                                .ToggleFixed(true);
         }
         if (Config.PLAY_SOUND)
         {
@@ -175,7 +164,6 @@ var StartStratus = function()
             "reptilla", "mr-brightside", "buddy-holly",
             "today", "more-than-a-feeling"]).Randomize().Play();
         }
-
         if (Config.SHOW_MENU)
         {
             StartGame();

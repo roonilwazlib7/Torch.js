@@ -58,14 +58,14 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
         {
             if (offset.x < offset.y)
             {
-                that.Body.y.velocity = 0;
+                that.Body.Velocity("y", 0);
                 if (offset.vx > 0)
                 {
                     //colDir = "l"
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.x += offset.x + Torch.Platformer.SHIFT_COLLIDE_LEFT;
-                        that.Body.x.velocity = 0;
+                        that.Body.Velocity("x", 0);
                         that.onLeft = true;
                     }
                     else
@@ -79,7 +79,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.x -= offset.x;
-                        that.Body.x.velocity = 0;
+                        that.Body.Velocity("x", 0);
                         that.onRight = true;
                     }
                     else
@@ -95,7 +95,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                 {
                     //colDir = "t";
                     that.Rectangle.y += offset.y;
-                    that.Body.y.velocity = 0;
+                    that.Body.Velocity("y", 0);
                 }
                 else if ( offset.vy < 0)
                 {
@@ -103,8 +103,7 @@ Torch.Platformer.Actor.prototype.BlockCollision = function(item, offset)
                     if (!item.Sprite.Slope)
                     {
                         that.Rectangle.y -= (offset.y - item.Sprite.sink);
-                        that.Body.y.acceleration = 0;
-                        that.Body.y.velocity = 0;
+                        that.Body.Acceleration("y", 0).Velocity("y", 0);
                         that.onGround = true;
                         if (!that.inFluid) that.currentFriction = item.Sprite.friction;
                     }
@@ -159,35 +158,8 @@ Torch.Platformer.Actor.prototype.UpdateActor = function()
             var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
             that.FluidCollision(item, offset);
         }
-        if (item.spawned && item.Sprite && item.Sprite.ENEMY && that.NotSelf(item.Sprite))
-        {
-            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (that.EnemyCollision && offset) that.EnemyCollision(item.Sprite, offset);
-        }
-        if (item.spawned && item.Sprite && item.Sprite.DOOR && that.NotSelf(item.Sprite) && that.PLAYER)
-        {
-            var offset = that.Rectangle.Intersects(item.Sprite.Rectangle);
-            if (offset)
-            {
-                item.Sprite.SignGroup.Show();
-                if (Game.Keys.G.down)
-                {
-                    //we're gonna want to clean this up
-                    Spawner.UnSpawn();
-                    Game.UnSpawn();
-                    Spawner.Spawn(TestingWorld[item.Sprite.addData.Room]);
-                    Game.Player.Rectangle.x = item.Sprite.addData.x || 0;
-                    Game.Player.Rectangle.x = item.Sprite.addData.y || 0;
-                }
-            }
-            else
-            {
-                item.Sprite.SignGroup.Hide();
-            }
-        }
+        if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
     }
-    if (!that.onGround && !that.inFluid) that.Body.y.acceleration = Torch.Platformer.Gravity;
-
     if (that.hitLock)
     {
         that.hitLockCounter += Game.deltaTime;
@@ -247,7 +219,6 @@ Torch.Platformer.Spawner.prototype.Update = function()
                 item.Sprite = spr;
                 item.spawned = true;
                 spr.spawnItem = item;
-                spr.DrawParams = {tint: "green"};
             }
             else if (!item.spawned && !item.dead && viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
             {
@@ -259,7 +230,11 @@ Torch.Platformer.Spawner.prototype.Update = function()
                     spr.spawnItem = item;
                 }
             }
-            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {x: item.Sprite.Rectangle.x, y: item.Sprite.Rectangle.y, width: item.Sprite.Rectangle.width, height: item.Sprite.Rectangle.height} ) )
+            else if (item.spawned && item.Sprite && item.Sprite.Rectangle && !viewRect.Intersects( {
+                x: item.Sprite.Rectangle.x,
+                y: item.Sprite.Rectangle.y,
+                width: item.Sprite.Rectangle.width,
+                height: item.Sprite.Rectangle.height} ) )
             {
                 item.Sprite.Trash();
                 item.Sprite = null;

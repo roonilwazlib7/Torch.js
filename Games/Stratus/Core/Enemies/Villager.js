@@ -48,11 +48,17 @@ var VillagerIdleState = new Torch.StateMachine.State(
         villager.walking = Walking.None;
         if (villager.facing == Facing.Right)
         {
-            villager.Bind.TextureSheet(villager.Assets.Right_Idle).Step(villager.IDLE_STEP)
+            villager.Bind.TextureSheet(villager.Assets.Right_Idle).Step(villager.IDLE_STEP, function(index)
+            {
+
+            });
         }
         else if (villager.facing == Facing.Left)
         {
-            villager.Bind.TextureSheet(villager.Assets.Left_Idle).Step(villager.IDLE_STEP);
+            villager.Bind.TextureSheet(villager.Assets.Left_Idle).Step(villager.IDLE_STEP, function(index)
+            {
+
+            });
         }
     },
     function(villager)

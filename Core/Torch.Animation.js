@@ -86,6 +86,7 @@ Torch.Animation.TextureSheet = function(TextureSheet, game)
 	this.elapsedTime = 0;
 	this.delay = 0;
 	this.delayCount = 0;
+	this.onStep = null;
 	game.animations.push(this);
 };
 Torch.Animation.TextureSheet.is(Torch.Animation);
@@ -98,6 +99,7 @@ Torch.Animation.TextureSheet.prototype.Update = function()
 	{
 		that.elapsedTime = 0;
 		that.textureIndex++;
+		if (that.onStep) that.onStep(that.textureIndex);
 	}
 	if (that.textureIndex >= that.maxIndex && that.delayCount <= 0)
 	{
@@ -122,10 +124,21 @@ Torch.Animation.TextureSheet.prototype.GetCurrentFrame = function()
 		return that.TextureSheet[that.textureIndex];
 	}
 };
-Torch.Animation.TextureSheet.prototype.Step = function(step)
+Torch.Animation.TextureSheet.prototype.Step = function(step, onStep)
 {
 	var that = this;
-	that.step = step;
+	if (step == undefined)
+	{
+		return that.step;
+	}
+	else
+	{
+		that.step = step;
+		if (onStep != undefined)
+		{
+			that.onStep = onStep;
+		}
+	}
 	return that;
 }
 

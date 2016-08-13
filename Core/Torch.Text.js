@@ -2,7 +2,15 @@ var cnv = document.createElement("CANVAS");
 cnv.width = 500;
 cnv.height = 500;
 Torch.measureCanvas = cnv.getContext("2d");
+
 Torch.Text = function(game,x,y,data)
+{
+    this.InitText(game, x, y, data);
+}
+Torch.Text.is(Torch.Sprite);
+
+Torch.Text.prototype.TEXT = true;
+Torch.Text.prototype.InitText = function(game, x, y, data)
 {
     this.InitSprite(game,x,y);
     this.data = data;
@@ -10,15 +18,13 @@ Torch.Text = function(game,x,y,data)
     this.font = "Arial";
     this.fontSize = 16;
     this.fontWeight = "";
-    this.color = "red";
+    this.color = "#2b4531";
     this.text = "";
     this.lastText = "";
     this.width = 100;
     this.height = 100;
     this.Init();
 }
-Torch.Text.is(Torch.Sprite);
-Torch.Text.prototype.TEXT = true;
 Torch.Text.prototype.Init = function()
 {
     var that = this;
@@ -64,6 +70,12 @@ Torch.Text.prototype.Render = function()
 }
 
 Torch.Text.prototype.Update = function()
+{
+    var that = this;
+    that.UpdateText();
+}
+
+Torch.Text.prototype.UpdateText = function()
 {
     var that = this;
     that.UpdateSprite();

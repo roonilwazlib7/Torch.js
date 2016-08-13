@@ -24,8 +24,6 @@ Torch.Game = function(canvasId, width, height, name)
     this.zoom = 1;
     this.uidCounter = 0;
 
-    this.gameHasRunSuccessfully = false;
-    this.gameFailedToRun = false;
     this.paused = false;
 
     this.time = null;
@@ -74,17 +72,9 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
 
     that.Load.Load(function()
     {
-        try
-        {
-            that.init();
-            that.WireUpEvents();
-            that.Run();
-        }
-        catch (e)
-        {
-            that.FatalError(e);
-        }
-
+        that.init();
+        that.WireUpEvents();
+        that.Run();
     });
 
     that.canvasNode.width = typeof(that.width) == "string" ? document.body.clientWidth - 50 : that.width;
