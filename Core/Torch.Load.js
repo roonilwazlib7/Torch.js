@@ -49,17 +49,24 @@ Torch.Load.prototype.Texture = function(path, id)
 {
     var that = this;
 
-    if (that.textures[id])
+    if (typeof(path) == "string")
     {
-        Torch.Error("Asset ID '" + id + "' already exists");
+        that.Stack.push({
+            _torch_asset: "texture",
+            id: id,
+            path: path
+        });
+        that.finish_stack++;
+    }
+    else
+    {
+        for (var i = 0; i < path.length; i++)
+        {
+            that.Texture(path[i][0], path[i][1]);
+        }
     }
 
-    that.Stack.push({
-        _torch_asset: "texture",
-        id: id,
-        path: path
-    });
-    that.finish_stack++;
+
 };
 Torch.Load.prototype.PixlTexture = function(pattern, pallette, id)
 {
@@ -148,7 +155,7 @@ Torch.Load.prototype.AssetFile = function(path)
     {
         if (er)
         {
-            that.game.FatalError(new Error("Torch.Load.AssetFile file '{0}' could not be loaded due to: ".format(path) + er));
+            that.game.FatalError("Torch.Load.AssetFile file '{0}' could not be loaded due to: ".format(path) + er);
         }
         else
         {
@@ -174,8 +181,8 @@ Torch.Load.prototype.AssetFile = function(path)
                     break;
                 }
             }
+            that.finish_stack--;
         }
-        that.finish_stack--;
     });
 
 }

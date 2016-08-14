@@ -308,6 +308,12 @@ Torch.Sprite.prototype.Trash = function()
     this.trash = true;
     return this;
 }
+Torch.Sprite.prototype.Clone = function(x, y)
+{
+    var that = this,
+        proto = that.constructor;
+    return new proto(that.game, x, y);
+}
 Torch.Sprite.prototype.NotSelf = function(otherSprite)
 {
     var that = this;

@@ -28,27 +28,26 @@ DebugInfo.prototype.Update = function()
 var TestingEnemies = function()
 {
     var villager = new Villager(Game, 500, 700);
-    villager.StateMachine("movement").Switch("idle");
-    window.villager = villager;
-
-    var villager2 = new Villager(Game, 1000, 500);
-    villager2.StateMachine("movement").Switch("idle");
-
-    //Torch.Timer.SetFutureEvent(15000, TestingEnemies);
+    villager.Clone(1000, 500).Clone(100, 200);
 }
 var StartGamePlay = function()
 {
     //this function starts actual game play
     Torch.Scale = 4;
+    //status bar keeps track of progression
     statusBar = new StatusBar(Game);
+    //bar to keep tack of health
     healthBar = new HealthBar(Game, statusBar);
+    //a red background behind the health
     healthBarBackground = new HealthBarBackground(Game, statusBar);
 
     healthText = new Torch.Text(Game, 10, 10, {
         text: "100",
         buffHeight: 5
     }).Color("white").FontWeight("bold").FontSize(24).Font("forward");
-    healthText.Rectangle.ShiftFrom(statusBar.Rectangle,healthText.Rectangle.width,healthText.Rectangle.height / 1.5);
+    healthText.Rectangle.ShiftFrom(statusBar.Rectangle,
+        healthText.Rectangle.width,
+        healthText.Rectangle.height / 1.5);
     healthText.DrawIndex(100).ToggleFixed(true);
 
     player = new Player(Game, 120, 600);
@@ -63,32 +62,33 @@ var StartGamePlay = function()
 }
 var StartGame = function()
 {
+    var StartLogo, StartButton, StartMenu;
     //this function starts the game with that start menu
     Game.FlushSprites();
     Torch.Scale = 2;
 
-    var StartLogo = new Torch.Sprite(Game, 0, 150);
+    StartLogo = new Torch.Sprite(Game, 0, 150);
     StartLogo.Bind.Texture("main-logo");
 
-    var StartButton = new Torch.Sprite(Game, 0, 600);
+    StartButton = new Torch.Sprite(Game, 0, 600);
     StartButton.Bind.Texture("start-button");
-    StartButton.CenterVertical();
-
-    StartButton.MouseOver(function(){
+    StartButton.CenterVertical().MouseOver(function()
+    {
         StartButton.Opacity(0.6);
-    });
-    StartButton.MouseLeave(function(){
+
+    }).MouseLeave(function()
+    {
         StartButton.Opacity(1);
-    });
 
-    var StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
-    StartMenu.Center().ToggleFixed();
-
-    StartButton.Click(function(){
+    }).Click(function()
+    {
         Game.Clear("#000");
         StartMenu.Trash();
         StartGamePlay();
     });
+
+    StartMenu = new Torch.SpriteGroup([StartButton, StartLogo]);
+    StartMenu.Center().ToggleFixed();
 }
 var StartStratus = function()
 {
@@ -99,8 +99,10 @@ var StartStratus = function()
         Game.Load.File(__dirname + "/config.json", "Config");
         Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
         Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
-        Game.Load.Texture("Art/player.png", "player_right");
-        Game.Load.Texture("Art/player_left.png", "player_left");
+        Game.Load.Texture([
+            ["Art/player.png", "player_right"],
+            ["Art/player_left.png", "player_left"]
+        ]);
         Game.Load.Texture("Art/hand.png", "hand");
         Game.Load.Texture("Art/short-sword.png", "short-sword");
         Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");

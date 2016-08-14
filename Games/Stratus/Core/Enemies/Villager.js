@@ -29,6 +29,7 @@ Villager.prototype.InitEnemy = function()
     that.StateMachine("movement").State("idle", VillagerIdleState);
     that.StateMachine("movement").State("chase", VillagerChaseState);
     that.StateMachine("movement").State("hurt", VillagerHurtState);
+    that.StateMachine("movement").Switch("idle");
     that.Hand = new Hand(that, "#808080");
 }
 
