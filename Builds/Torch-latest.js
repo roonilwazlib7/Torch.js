@@ -373,6 +373,11 @@ Function.prototype.is = function(otherFunction)
     return this; //allow chaining
 }
 
+Function.prototype.Make = function(game, x, y)
+{
+    return new this(game, x, y);
+}
+
 String.prototype.format = function()
 {
     var args = arguments;

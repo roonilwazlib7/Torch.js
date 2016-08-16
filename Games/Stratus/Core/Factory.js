@@ -1,4 +1,11 @@
-var Factory = {};
+var Factory = {
+    Load: function()
+    {
+        this.Block.Load();
+        this.Enemy.Load();
+        this.Background.Load();
+    }
+};
 
 Factory.Block = function(baseWidth, baseHeight, asset, dir, mapImage, slope, allSheets)
 {

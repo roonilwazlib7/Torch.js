@@ -3,7 +3,8 @@ Torch.StrictErrors(); //catch all errors. If any error is thrown, the game is
                       //terminated and the error is reported
 
 //declare a bunch of global variables
-var Game, Config, TitleText, TitleText2, Spawner, SamplePlayList, player, debug, healthText, healthBar, healthBarBackground, statusBar;
+var Game, Config, TitleText, TitleText2, Spawner, SamplePlayList, player, debug,
+    healthText, healthBar, healthBarBackground, statusBar;
 
 //a little object to display debug info (fps, etc.)
 var DebugInfo = function(game, x, y, data)
@@ -14,10 +15,10 @@ DebugInfo.is(Torch.Text);
 
 DebugInfo.prototype.Update = function()
 {
-    var that = this;
+    var that = this,
+        fps = Game.fps,
+        avgFps = Game.averageFps;
     that.UpdateText();
-    var fps = Game.fps;
-    var avgFps = Game.averageFps;
     that.text = "FPS:{0}  T:{1} avgFPS:{2}".format(fps, Math.ceil(Game.time / 1000), avgFps);
     if (player != undefined)
     {
@@ -27,8 +28,8 @@ DebugInfo.prototype.Update = function()
 
 var TestingEnemies = function()
 {
-    var villager = new Villager(Game, 500, 700);
-    villager.Clone(1000, 500).Clone(100, 200);
+    Villager.Make(Game, 500, 700).Clone(1000, 500)
+                                 .Clone(100, 200).Clone(600,700);
 }
 var StartGamePlay = function()
 {
@@ -82,7 +83,6 @@ var StartGame = function()
 
     }).Click(function()
     {
-        Game.Clear("#000");
         StartMenu.Trash();
         StartGamePlay();
     });
@@ -119,9 +119,7 @@ var StartStratus = function()
         Game.Load.Texture("Art/faker-red.png", "faker-red");
         Game.Load.Texture("Art/glower.png", "glower");
 
-        Factory.Block.Load();
-        Factory.Enemy.Load();
-        Factory.Background.Load();
+        Factory.Load();
 
         Game.Load.Sound("Sound/hurt.wav", "player-hurt");
         Game.Load.Sound("Sound/villager-alert.wav", "villager-alert")
