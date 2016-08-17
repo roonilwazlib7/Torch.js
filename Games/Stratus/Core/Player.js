@@ -22,6 +22,11 @@ var Player = function(game, x, y)
     this.facing = Facing.Right;
     this.walking = Walking.None;
 
+    this.OnTrash = function()
+    {
+        that.Hand.Trash();
+    }
+
 }
 Player.is(Torch.Sprite).is(Torch.Platformer.Actor);
 

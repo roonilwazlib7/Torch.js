@@ -4,7 +4,7 @@
     "//": "MAP will launch the stratus map builder",
     "//": "TEST will launch unit tests",
     "//": "anything else will cause an error",
-    "BUILD_TYPE": "GAME",
+    "BUILD_TYPE": "MAP",
 
     "//": "decide what map we want to start at",
     "//": "this is a dev hack for now, we will want to switch to",

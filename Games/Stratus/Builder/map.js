@@ -87,7 +87,20 @@ Map.Export = function()
     var ex = that.Name + ";" + that.Scale + ";" + buffer + ";" + flags;
     fs.writeFile($("#inout").val(), ex, 'utf8', function(er, data)
     {
-
+        if (!er)
+        {
+            $("body").prepend('<div class="alert alert-success">'+
+                                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+
+                                    '<strong>Success!</strong> Map Exported!'+
+                            '</div>');
+        }
+        else
+        {
+            $("body").prepend('<div class="alert alert-danger">'+
+                                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+
+                                    '<strong>Success!</strong> Unable to export map!'+
+                            '</div>');
+        }
     });
 }
 

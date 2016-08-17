@@ -49,7 +49,6 @@ Hand.prototype.UpdatePosition = function()
     }
     else if (that.actor.facing == Facing.Left)
     {
-        console.log("-->");
         that.Rectangle.x = that.offset.x + that.actor.Rectangle.x;
     }
     that.Rectangle.y = that.offset.y + that.actor.Rectangle.y + (that.actor.Rectangle.height / 2);

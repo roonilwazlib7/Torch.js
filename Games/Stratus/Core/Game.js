@@ -29,7 +29,8 @@ DebugInfo.prototype.Update = function()
 var TestingEnemies = function()
 {
     Villager.Make(Game, 500, 700).Clone(1000, 500)
-                                 .Clone(100, 200).Clone(600,700);
+                                 .Clone(100, 200)
+                                 .Clone(600,700);
 }
 var StartGamePlay = function()
 {
@@ -51,11 +52,8 @@ var StartGamePlay = function()
         healthText.Rectangle.height / 1.5);
     healthText.DrawIndex(100).ToggleFixed(true);
 
-    player = new Player(Game, 120, 600);
-    Spawner = new Torch.Platformer.Spawner(
-        parseMapString( Game.Files[Config.STARTING_MAP] )
-    );
-    TestingEnemies();
+    Game.mapManager.LoadMap("test-map", {x: 120, y: 600});
+    //TestingEnemies();
     Lighter.Init();
     Lighter.SetLevel(0);
 
@@ -149,6 +147,7 @@ var StartStratus = function()
         Game.PixelScale();
         Game.Clear("#000");
         Config = JSON.parse(Game.Files["Config"]);
+        Game.mapManager = new MapManager().AddMap("test-map", Game.Files[Config.STARTING_MAP]);
 
         if (Config.SHOW_DEBUG)
         {

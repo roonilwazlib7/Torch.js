@@ -1,4 +1,39 @@
-var DEFS = Factory.Block.objects.concat(Factory.Enemy.objects).concat(Factory.Background.objects);
+var DEFS = Factory.Block.objects.concat(Factory.Background.objects).concat(Factory.Enemy.objects);
+
+var MapManager = function()
+{
+    this.spawner = null;
+    this.maps = {};
+}
+MapManager.prototype.LoadMap = function(mapId, playerLocation)
+{
+    var that = this;
+    if (that.spawner != null)
+    {
+        that.spawner.FlushSprites();
+    }
+    if (player)
+    {
+        player.Trash();
+    }
+    //hack for now
+    for (var i = 0; i < Game.spriteList.length; i++)
+    {
+        if (Game.spriteList[i].ACTOR)
+        {
+            Game.spriteList[i].Trash();
+        }
+    }
+    player = new Player(Game, playerLocation.x, playerLocation.y);
+    that.spawner = new Torch.Platformer.Spawner(parseMapString( that.maps[mapId] ));
+}
+MapManager.prototype.AddMap = function(mapId, mapData)
+{
+    var that = this;
+    that.maps[mapId] = mapData;
+    return that;
+}
+
 
 function parseMapString(map)
 {

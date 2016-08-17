@@ -203,6 +203,17 @@ Torch.Platformer.Spawner = function(spawnItems)
     Torch.Platformer.SetWorld(spawnItems);
 }
 Torch.Platformer.Spawner.is(Torch.GhostSprite);
+Torch.Platformer.Spawner.prototype.FlushSprites = function()
+{
+    var that = this;
+    for (var i = 0; i < that.spawnItems.length; i++)
+    {
+        if (that.spawnItems[i].Sprite)
+        {
+            that.spawnItems[i].Sprite.Trash();
+        }
+    }
+}
 Torch.Platformer.Spawner.prototype.Update = function()
 {
     var that = this;
