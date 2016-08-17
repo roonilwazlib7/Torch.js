@@ -392,7 +392,6 @@ Torch.Sprite.prototype.On = function(eventName, eventHandle)
 Torch.Sprite.prototype.Emit = function(eventName, eventArgs)
 {
     var that = this;
-    console.log("emitting...");
     if (that.events[eventName] != undefined)
     {
         that.events[eventName](eventArgs);

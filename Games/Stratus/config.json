@@ -12,12 +12,12 @@
     "STARTING_MAP": "test-map-2",
 
     "//": "decide wether or not to show the menu on start up",
-    "SHOW_MENU": true,
+    "SHOW_MENU": false,
 
     "//": "should we show the debug text?",
     "SHOW_DEBUG": true,
 
     "//": "should we play music?",
     "//": "this setting should be moved to user save configuration",
-    "PLAY_SOUND": true
+    "PLAY_SOUND": false
 }

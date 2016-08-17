@@ -25,13 +25,6 @@ DebugInfo.prototype.Update = function()
         that.text += " L:{0} R:{1} B:{2}".format(player.onLeft, player.onRight, player.onGround);
     }
 }
-
-var TestingEnemies = function()
-{
-    Villager.Make(Game, 500, 700).Clone(1000, 500)
-                                 .Clone(100, 200)
-                                 .Clone(600,700);
-}
 var StartGamePlay = function()
 {
     //this function starts actual game play
@@ -53,7 +46,6 @@ var StartGamePlay = function()
     healthText.DrawIndex(100).ToggleFixed(true);
 
     Game.mapManager.LoadMap("test-map", {x: 320, y: 600});
-    //TestingEnemies();
     Lighter.Init();
     Lighter.SetLevel(0);
 
@@ -91,75 +83,75 @@ var StartGame = function()
 var StartStratus = function()
 {
     Game = new Torch.Game("canvas", "fill","fill", "NewGame");
-    function Load()
+    function Load(game)
     {
-        Game.Load.File(__dirname + "/Maps/test-map.txt", "test-map");
-        Game.Load.File(__dirname + "/Maps/test-map-2.txt", "test-map-2");
-        Game.Load.File(__dirname + "/config.json", "Config");
-        Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
-        Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
-        Game.Load.Texture([
+        game.Load.File(__dirname + "/Maps/test-map.txt", "test-map");
+        game.Load.File(__dirname + "/Maps/test-map-2.txt", "test-map-2");
+        game.Load.File(__dirname + "/config.json", "Config");
+        game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
+        game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
+        game.Load.Texture([
             ["Art/player.png", "player_right"],
             ["Art/player_left.png", "player_left"]
         ]);
-        Game.Load.Texture("Art/hand.png", "hand");
-        Game.Load.Texture("Art/short-sword.png", "short-sword");
-        Game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
-        Game.Load.Texture("Art/play-button.png", "start-button");
-        Game.Load.Texture("Art/main-logo.png", "main-logo");
-        Game.Load.Texture("Art/status-bar.png", "status-bar");
-        Game.Load.Texture("Art/health-bar.png", "health-bar");
-        Game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
-        Game.Load.Texture("Art/game-over.png", "game-over");
-        Game.Load.Texture("Art/continue.png", "continue");
-        Game.Load.Texture("Art/mouse.png", "mouse");
+        game.Load.Texture("Art/hand.png", "hand");
+        game.Load.Texture("Art/short-sword.png", "short-sword");
+        game.Load.Texture("Art/short-sword-left.png", "short-sword-left");
+        game.Load.Texture("Art/play-button.png", "start-button");
+        game.Load.Texture("Art/main-logo.png", "main-logo");
+        game.Load.Texture("Art/status-bar.png", "status-bar");
+        game.Load.Texture("Art/health-bar.png", "health-bar");
+        game.Load.Texture("Art/health-bar-background.png", "health-bar-background");
+        game.Load.Texture("Art/game-over.png", "game-over");
+        game.Load.Texture("Art/continue.png", "continue");
+        game.Load.Texture("Art/mouse.png", "mouse");
 
-        Game.Load.Texture("Art/faker-black.png", "faker-black");
-        Game.Load.Texture("Art/faker-red.png", "faker-red");
-        Game.Load.Texture("Art/glower.png", "glower");
+        game.Load.Texture("Art/faker-black.png", "faker-black");
+        game.Load.Texture("Art/faker-red.png", "faker-red");
+        game.Load.Texture("Art/glower.png", "glower");
 
         Factory.Load();
 
-        Game.Load.Sound("Sound/hurt.wav", "player-hurt");
-        Game.Load.Sound("Sound/villager-alert.wav", "villager-alert")
+        game.Load.Sound("Sound/hurt.wav", "player-hurt");
+        game.Load.Sound("Sound/villager-alert.wav", "villager-alert")
 
-        Game.Load.Sound("Sound/ResistorAnthems2012/Resistor Anthems/09 Come and Find Me - B mix.mp3", "ascending");
-        Game.Load.Sound("Sound/someday.mp3", "someday");
-        Game.Load.Sound("Sound/twelve-fifty-one.mp3", "twelve-fifty-one");
-        Game.Load.Sound("Sound/under-darkness.mp3", "under-darkness");
-        Game.Load.Sound("Sound/hard-to-explain.mp3", "hard-to-explain");
-        Game.Load.Sound("Sound/reptilla.mp3", "reptilla");
-        Game.Load.Sound("Sound/mr-brightside.mp3", "mr-brightside");
-        Game.Load.Sound("Sound/buddy-holly.mp3", "buddy-holly");
-        Game.Load.Sound("Sound/today.mp3", "today");
-        Game.Load.Sound("Sound/more-than-a-feeling.mp3", "more-than-a-feeling");
-        Game.Load.Sound("Sound/no-rest.mp3", "no-rest");
+        game.Load.Sound("Sound/ResistorAnthems2012/Resistor Anthems/09 Come and Find Me - B mix.mp3", "ascending");
+        game.Load.Sound("Sound/someday.mp3", "someday");
+        game.Load.Sound("Sound/twelve-fifty-one.mp3", "twelve-fifty-one");
+        game.Load.Sound("Sound/under-darkness.mp3", "under-darkness");
+        game.Load.Sound("Sound/hard-to-explain.mp3", "hard-to-explain");
+        game.Load.Sound("Sound/reptilla.mp3", "reptilla");
+        game.Load.Sound("Sound/mr-brightside.mp3", "mr-brightside");
+        game.Load.Sound("Sound/buddy-holly.mp3", "buddy-holly");
+        game.Load.Sound("Sound/today.mp3", "today");
+        game.Load.Sound("Sound/more-than-a-feeling.mp3", "more-than-a-feeling");
+        game.Load.Sound("Sound/no-rest.mp3", "no-rest");
     }
-    function Update()
+    function Update(game)
     {
         Lighter.Update();
     }
-    function Draw()
+    function Draw(game)
     {
 
     }
-    function Init()
+    function Init(game)
     {
-        Game.PixelScale();
-        Game.Clear("#000");
-        Config = JSON.parse(Game.Files["Config"]);
-        Game.mapManager = new MapManager().AddMap("test-map", Game.Files[Config.STARTING_MAP])
+        game.PixelScale();
+        game.Clear("#000");
+        Config = JSON.parse(game.Files["Config"]);
+        game.mapManager = new MapManager().AddMap("test-map", game.Files[Config.STARTING_MAP])
 
         if (Config.SHOW_DEBUG)
         {
-            debug = new DebugInfo(Game, 10, 10, {});
+            debug = new DebugInfo(game, 10, 10, {});
             debug.DrawIndex(9000).Color("green").Font("monospace")
                                 .FontSize(12).FontWeight("bold")
                                 .ToggleFixed(true);
         }
         if (Config.PLAY_SOUND)
         {
-            SamplePlayList = new Torch.Sound.PlayList(Game, ["ascending","someday",
+            SamplePlayList = new Torch.Sound.PlayList(game, ["ascending","someday",
             "twelve-fifty-one", "under-darkness", "hard-to-explain",
             "reptilla", "mr-brightside", "buddy-holly",
             "today", "more-than-a-feeling"]).Randomize().Play();

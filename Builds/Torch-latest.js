@@ -691,7 +691,24 @@ Torch.Game = function(canvasId, width, height, name)
     this.DrawStack = [];
     this.AddStack = [];
     this.GamePads = [];
+
+    this.events = {};
 };
+Torch.Game.prototype.On = function(eventName, eventHandle)
+{
+    var that = this;
+    that.events[eventName] = eventHandle;
+    return that;
+}
+Torch.Game.prototype.Emit = function(eventName, eventArgs)
+{
+    var that = this;
+    if (that.events[eventName] != undefined)
+    {
+        that.events[eventName](eventArgs);
+    }
+    return that;
+}
 Torch.Game.prototype.PixelScale = function()
 {
     var that = this;
@@ -724,11 +741,11 @@ Torch.Game.prototype.Start = function(load, update, draw, init)
     this.draw = draw;
     this.init = init;
 
-    that.load();
+    that.load(that);
 
     that.Load.Load(function()
     {
-        that.init();
+        that.init(that);
         that.WireUpEvents();
         that.Run();
     });
@@ -768,8 +785,8 @@ Torch.Game.prototype.RunGame = function(timestamp)
     that.time = timestamp;
     that.canvas.clearRect(0, 0, that.Viewport.width, that.Viewport.height);
 
-    that.draw();
-    that.update();
+    that.draw(that);
+    that.update(that);
     that.Viewport.Update();
     that.UpdateAndDrawSprites();
     that.UpdateAnimations();
@@ -817,6 +834,7 @@ Torch.Game.prototype.FatalError = function(error)
     $("body").prepend("<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code><br><code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>");
     that.RunGame = function(){};
     that.Run = function(){};
+    that.Emit("FatalError");
     throw error;
 
 };
@@ -1969,7 +1987,6 @@ Torch.Sprite.prototype.On = function(eventName, eventHandle)
 Torch.Sprite.prototype.Emit = function(eventName, eventArgs)
 {
     var that = this;
-    console.log("emitting...");
     if (that.events[eventName] != undefined)
     {
         that.events[eventName](eventArgs);
