@@ -52,7 +52,7 @@ var StartGamePlay = function()
         healthText.Rectangle.height / 1.5);
     healthText.DrawIndex(100).ToggleFixed(true);
 
-    Game.mapManager.LoadMap("test-map", {x: 120, y: 600});
+    Game.mapManager.LoadMap("test-map", {x: 320, y: 600});
     //TestingEnemies();
     Lighter.Init();
     Lighter.SetLevel(0);
@@ -71,15 +71,15 @@ var StartGame = function()
 
     StartButton = new Torch.Sprite(Game, 0, 600);
     StartButton.Bind.Texture("start-button");
-    StartButton.CenterVertical().MouseOver(function()
+    StartButton.CenterVertical().On("MouseOver", function()
     {
         StartButton.Opacity(0.6);
 
-    }).MouseLeave(function()
+    }).On("MouseLeave", function()
     {
         StartButton.Opacity(1);
 
-    }).Click(function()
+    }).On("Click", function()
     {
         StartMenu.Trash();
         StartGamePlay();
@@ -94,6 +94,7 @@ var StartStratus = function()
     function Load()
     {
         Game.Load.File(__dirname + "/Maps/test-map.txt", "test-map");
+        Game.Load.File(__dirname + "/Maps/test-map-2.txt", "test-map-2");
         Game.Load.File(__dirname + "/config.json", "Config");
         Game.Load.TextureSheet("Art/player-walk/player_walk.png", "player_walk_right", 32, 16, 16, 16);
         Game.Load.TextureSheet("Art/player-walk/player_walk_left.png", "player_walk_left", 32, 16, 16, 16);
@@ -147,7 +148,7 @@ var StartStratus = function()
         Game.PixelScale();
         Game.Clear("#000");
         Config = JSON.parse(Game.Files["Config"]);
-        Game.mapManager = new MapManager().AddMap("test-map", Game.Files[Config.STARTING_MAP]);
+        Game.mapManager = new MapManager().AddMap("test-map", Game.Files[Config.STARTING_MAP])
 
         if (Config.SHOW_DEBUG)
         {

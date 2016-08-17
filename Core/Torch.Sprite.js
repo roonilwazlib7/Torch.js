@@ -28,10 +28,6 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
     this.DrawTexture = null;
     this.TexturePack = null;
     this.TextureSheet = null;
-    this.onClick = null;
-    this.onClickAway = null;
-    this.onMouseOver = null;
-    this.onMouseLeave = null;
     this.onMoveFinish = null;
 
     this.mouseOver = false;
@@ -48,6 +44,8 @@ Torch.Sprite.prototype.InitSprite = function(game,x,y)
 
     this._torch_add = "Sprite";
     this._torch_uid = "";
+
+    this.events = {};
 
     game.Add(this);
 }
@@ -85,11 +83,14 @@ Torch.Sprite.prototype.UpdateEvents = function()
     if (!this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle) && that.mouseOver)
     {
         that.mouseOver = false;
-        if (that.onMouseLeave)that.onMouseLeave(that);
+        that.Emit("MouseLeave", that);
     }
     if (this.game.Mouse.GetRectangle(this.game).Intersects(that.Rectangle))
     {
-        if (that.onMouseOver && !that.mouseOver) that.onMouseOver(that);
+        if (!that.mouseOver)
+        {
+            that.Emit("MouseOver", that);
+        }
         that.mouseOver = true;
     }
     else if (that.fixed)
@@ -120,11 +121,9 @@ Torch.Sprite.prototype.UpdateEvents = function()
     if (that.clickTrigger && !that.game.Mouse.down && that.mouseOver)
     {
         that.wasClicked = true;
-        if (that.onClick)
-        {
-            that.onClick(that);
 
-        }
+        that.Emit("Click", that);
+
         that.clickTrigger = false;
     }
     if (that.clickTrigger && !that.game.Mouse.down && !that.mouseOver)
@@ -134,12 +133,9 @@ Torch.Sprite.prototype.UpdateEvents = function()
 
     if (!that.game.Mouse.down && !that.mouseOver && that.clickAwayTrigger)
     {
-        if (that.onClickAway)
-        {
-            that.onClickAway();
-            that.wasClicked = false;
-            that.clickAwayTrigger = false;
-        }
+        that.Emit("ClickAway", that);
+        that.wasClicked = false;
+        that.clickAwayTrigger = false;
     }
     else if (that.clickTrigger && !that.game.Mouse.down && that.mouseOver)
     {
@@ -243,46 +239,6 @@ Torch.Sprite.prototype.Draw = function()
         that.game.Draw(that.GetCurrentDraw(), DrawRec, DrawParams);
     }
 }
-Torch.Sprite.prototype.Click = function(eventFunction)
-{
-    var that = this;
-    if (typeof(eventFunction) != "function")
-    {
-        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
-    }
-    that.onClick = eventFunction;
-    return that;
-};
-Torch.Sprite.prototype.ClickAway = function(eventFunction)
-{
-    var that = this;
-    if (typeof(eventFunction) != "function")
-    {
-        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
-    }
-    that.onClickAway = eventFunction;
-    return that;
-}
-Torch.Sprite.prototype.MouseOver = function(eventFunction)
-{
-    var that = this;
-    if (typeof(eventFunction) != "function")
-    {
-        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
-    }
-    that.onMouseOver = eventFunction;
-    return that;
-}
-Torch.Sprite.prototype.MouseLeave = function(eventFunction)
-{
-    var that = this;
-    if (typeof(eventFunction) != "function")
-    {
-        that.game.FatalError("Event handler must be a function. Was {0}".format(typeof(eventFunction)));
-    }
-    that.onMouseLeave = eventFunction;
-    return that;
-}
 Torch.Sprite.prototype.OnceEffect = function()
 {
     var that = this;
@@ -319,6 +275,33 @@ Torch.Sprite.prototype.NotSelf = function(otherSprite)
     var that = this;
     return (otherSprite._torch_uid != that._torch_uid);
 };
+Torch.Sprite.prototype.Position = function(plane, optionalArgument)
+{
+    var that = this;
+    if (optionalArgument == null || optionalArgument == undefined)
+    {
+        return that.Rectangle[plane];
+    }
+    else
+    {
+        if (typeof(optionalArgument) != "number")
+        {
+            that.game.FatalError("Cannot set position. Expected number, got: {0}".format(typeof(optionalArgument)));
+        }
+        that.Rectangle[plane] = optionalArgument;
+        return that;
+    }
+}
+Torch.Sprite.prototype.Move = function(plane, argument)
+{
+    var that = this;
+    if (typeof(argument) != "number")
+    {
+        that.game.FatalError("Cannot move position. Expected number, got: {0}".format(typeof(argument)))
+    }
+    that.Position(plane, that.Position(plane) + argument);
+    return that;
+}
 Torch.Sprite.prototype.Rotation = function(rotation)
 {
     var that = this;
@@ -398,6 +381,22 @@ Torch.Sprite.prototype.CenterVertical = function()
     var height = that.game.canvasNode.height;
     var y = (height / 2) - (that.Rectangle.height/2);
     that.Rectangle.y = y;
+    return that;
+}
+Torch.Sprite.prototype.On = function(eventName, eventHandle)
+{
+    var that = this;
+    that.events[eventName] = eventHandle;
+    return that;
+}
+Torch.Sprite.prototype.Emit = function(eventName, eventArgs)
+{
+    var that = this;
+    console.log("emitting...");
+    if (that.events[eventName] != undefined)
+    {
+        that.events[eventName](eventArgs);
+    }
     return that;
 }
 Torch.Sprite.prototype.ToErrorString = function()

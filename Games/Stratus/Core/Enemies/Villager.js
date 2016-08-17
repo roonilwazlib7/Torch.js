@@ -73,7 +73,7 @@ VillagerChaseState = new Torch.StateMachine.State(
         var directionToPlayer = villager.GetDirectionVector(player);
         if (directionToPlayer.x > 0)
         {
-            if (villager.onGround)
+            if (villager.onGround && !villager.onRight)
             {
                 villager.Body.Velocity("x", villager.CHASE_VELOCITY);
             }
@@ -84,7 +84,7 @@ VillagerChaseState = new Torch.StateMachine.State(
                 villager.Bind.TextureSheet(villager.Assets.Walk_Right).Step(250);
             }
         }
-        else if (directionToPlayer.x < 0)
+        else if (directionToPlayer.x < 0 && !villager.onLeft )
         {
             if (villager.onGround) villager.Body.Velocity("x", -villager.CHASE_VELOCITY);
             if (villager.walking != Walking.Left)
