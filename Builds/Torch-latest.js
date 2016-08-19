@@ -1014,6 +1014,18 @@ Torch.Game.prototype.File = function(fileId)
         return that.Files[fileId];
     }
 }
+Torch.Game.prototype.Sound = function(soundId)
+{
+    var that = this;
+    if (that.Assets.Sounds[soundId] == undefined)
+    {
+        that.FatalError("Unable to access no-existent file: {0}. File does not exist".format(soundId));
+    }
+    else
+    {
+        return that.Assets.Sounds[soundId].audio;
+    }
+}
 Torch.Game.prototype.getCanvasEvents = function()
 {
     var that = this;
@@ -2041,6 +2053,13 @@ Torch.Sprite.prototype.GetDistance = function(otherSprite)
     var thisVec = new Torch.Vector(that.Rectangle.x, that.Rectangle.y);
     var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
     return thisVec.GetDistance(otherVec);
+}
+Torch.Sprite.prototype.GetAngle = function(otherSprite)
+{
+    var that = this;
+    var directionVector = that.GetDirectionVector(otherSprite);
+    var angle = Math.atan2(directionVector.y, directionVector.x);
+    return angle + (Math.PI + (Math.PI/2) );
 }
 Torch.Sprite.prototype.Center = function()
 {
@@ -3182,4 +3201,4 @@ var Walking = {
 }
 
 
-Torch.version='Torch-2016-8-18';
+Torch.version='Torch-2016-8-19';

@@ -5,7 +5,7 @@ var BackgroundManager = function(game)
         this.InitSprite(game, 0, 0);
         this.Bind.Texture("background");
         this.Width(game.Viewport.width).Height(game.Viewport.height).DrawIndex(0);
-        this.DrawIndex(-1);
+        this.DrawIndex(-10);
     }
     bg.is(Torch.Sprite);
 

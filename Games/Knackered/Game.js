@@ -24,7 +24,7 @@ function Knackered()
         //start the game with no menu
         gameStage = new GameStage(game).Start("main");
         //play the background music and loop it
-        //game.Sounds("background-music").Play().Loop();
+        //game.Sound("background-music").play();
     }
     function Draw(game)
     {

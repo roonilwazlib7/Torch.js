@@ -8,7 +8,7 @@ var GameStage = function(game)
         //initialize the player
         player = new Player(that.game, 0, 0);
         //initialize enemies
-        //enemyManager = new EnemyManager(that.game);
+        enemyManager = new EnemyManager(that.game);
         //initialize backgrounds
         backgroundManager = new BackgroundManager(that.game);
         //initialize score

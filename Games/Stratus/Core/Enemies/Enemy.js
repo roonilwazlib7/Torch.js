@@ -8,7 +8,6 @@ Enemy.prototype.StateMachine = function(stateMachineName)
     //of state machines
     //this is where the 'AI' happens
     var that = this;
-    console.log(that.StateMachineIndex[stateMachineName]);
     if (that.StateMachineIndex[stateMachineName] == undefined)
     {
         that.StateMachineIndex[stateMachineName] = that.StateMachines.length;

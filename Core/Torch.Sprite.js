@@ -422,6 +422,13 @@ Torch.Sprite.prototype.GetDistance = function(otherSprite)
     var otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
     return thisVec.GetDistance(otherVec);
 }
+Torch.Sprite.prototype.GetAngle = function(otherSprite)
+{
+    var that = this;
+    var directionVector = that.GetDirectionVector(otherSprite);
+    var angle = Math.atan2(directionVector.y, directionVector.x);
+    return angle + (Math.PI + (Math.PI/2) );
+}
 Torch.Sprite.prototype.Center = function()
 {
     var that = this;

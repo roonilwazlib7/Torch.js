@@ -358,6 +358,18 @@ Torch.Game.prototype.File = function(fileId)
         return that.Files[fileId];
     }
 }
+Torch.Game.prototype.Sound = function(soundId)
+{
+    var that = this;
+    if (that.Assets.Sounds[soundId] == undefined)
+    {
+        that.FatalError("Unable to access no-existent file: {0}. File does not exist".format(soundId));
+    }
+    else
+    {
+        return that.Assets.Sounds[soundId].audio;
+    }
+}
 Torch.Game.prototype.getCanvasEvents = function()
 {
     var that = this;
