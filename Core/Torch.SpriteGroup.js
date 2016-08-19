@@ -1,17 +1,32 @@
-Torch.SpriteGroup = function(sprites)
+Torch.SpriteGroup = function(sprites, game)
 {
     var that = this;
     this.sprites = sprites;
+    this.game = game;
     for (var i = 0; i < that.sprites.length; i++)
     {
         that.sprites[i].anchorX = that.sprites[i].Rectangle.x;
     }
     return that;
 };
-Torch.SpriteGroup.prototype.Add = function(sprites)
+Torch.SpriteGroup.prototype.Factory = function(spriteClass)
+{
+    this.spriteFactory = spriteClass;
+    return this;
+}
+Torch.SpriteGroup.prototype.Add = function(sprites, x, y)
 {
     var that = this;
-    that.sprites = that.sprites.concat(sprites);
+    if (sprites == null && that.spriteFactory != undefined)
+    {
+        var newSprite = new that.spriteFactory(that.game, x, y);
+        that.sprites.push(newSprite);
+        return newSprite;
+    }
+    else
+    {
+        that.sprites = that.sprites.concat(sprites);
+    }
     return that;
 }
 Torch.SpriteGroup.prototype.Trash = function()

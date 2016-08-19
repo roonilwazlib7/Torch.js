@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>if (window.module) module = window.module;</script>
+        <link href = "map.css" rel = "stylesheet" />
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    </head>
+    <body>
+        <h1 style="text-align:center">Error Building</h1>
+        <div class="container" id = "messages">
+
+        </div>
+    </body>
+    <script>
+        var message = window.location.hash;
+        var _alert = $("<div class='alert alert-danger'></div>");
+        var htmlMessage = $("<span><strong>Error!</strong> " + message.replace(/#/g, "") + "</span>");
+        _alert.append(htmlMessage);
+        $("#messages").append(_alert);
+        console.log(message);
+    </script>
+</html>

@@ -76,6 +76,10 @@ Torch.Sprite.prototype.UpdateSprite = function()
         width: that.Rectangle.width - (2 * shiftX),
         height: that.Rectangle.height - (2 * shiftY)
     };
+    if (!that.Rectangle.Intersects(that.game.BoundRec))
+    {
+        that.Emit("OutOfBounds", that);
+    }
 }
 Torch.Sprite.prototype.UpdateEvents = function()
 {
@@ -275,6 +279,23 @@ Torch.Sprite.prototype.NotSelf = function(otherSprite)
     var that = this;
     return (otherSprite._torch_uid != that._torch_uid);
 };
+Torch.Sprite.prototype.Velocity = function(plane, optionalArgument)
+{
+    var that = this;
+    if (optionalArgument == null || optionalArgument == undefined)
+    {
+        return that.Body.Velocity(plane);
+    }
+    else
+    {
+        if (typeof(optionalArgument) != "number")
+        {
+            that.game.FatalError("Cannot set velocity. Expected number, got: {0}".format(typeof(optionalArgument)));
+        }
+        that.Body.Velocity(plane, optionalArgument);
+        return that;
+    }
+}
 Torch.Sprite.prototype.Position = function(plane, optionalArgument)
 {
     var that = this;
@@ -289,6 +310,40 @@ Torch.Sprite.prototype.Position = function(plane, optionalArgument)
             that.game.FatalError("Cannot set position. Expected number, got: {0}".format(typeof(optionalArgument)));
         }
         that.Rectangle[plane] = optionalArgument;
+        return that;
+    }
+}
+Torch.Sprite.prototype.Width = function(optionalArgument)
+{
+    var that = this;
+    if (optionalArgument == null || optionalArgument == undefined)
+    {
+        return that.Rectangle.width;
+    }
+    else
+    {
+        if (typeof(optionalArgument) != "number")
+        {
+            that.game.FatalError("Cannot set width. Expected number, got: {0}".format(typeof(optionalArgument)));
+        }
+        that.Rectangle.width = optionalArgument;
+        return that;
+    }
+}
+Torch.Sprite.prototype.Height = function(optionalArgument)
+{
+    var that = this;
+    if (optionalArgument == null || optionalArgument == undefined)
+    {
+        return that.Rectangle.height;
+    }
+    else
+    {
+        if (typeof(optionalArgument) != "number")
+        {
+            that.game.FatalError("Cannot set height. Expected number, got: {0}".format(typeof(optionalArgument)));
+        }
+        that.Rectangle.height = optionalArgument;
         return that;
     }
 }

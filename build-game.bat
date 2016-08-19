@@ -1,3 +1,3 @@
 @echo off
-cd Games\Stratus
+cd Games\Knackered
 npm start

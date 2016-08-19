@@ -6,18 +6,18 @@ var GameStage = function(game)
     this.stages["main"] = function()
     {
         //initialize the player
-        player = new Player(that, 0, 0);
+        player = new Player(that.game, 0, 0);
         //initialize enemies
-        enemyManager = new EnemyManager(game);
+        //enemyManager = new EnemyManager(that.game);
         //initialize backgrounds
-        backgroundManager = new BackgroundManager(game);
+        backgroundManager = new BackgroundManager(that.game);
         //initialize score
-        scoreManager = new ScoreManager(game);
+        //scoreManager = new ScoreManager(that.game);
     }
 }
-GameStage.prototype.Start(stage)
+GameStage.prototype.Start = function(stage)
 {
     var that = this;
-    that.stages[stage](game);
+    that.stages[stage](that.game);
     return that;
 }

@@ -61,6 +61,14 @@ Torch.Game.prototype.PixelScale = function()
     that.canvas.imageSmoothingEnabled = false;
     return that;
 };
+Torch.Game.prototype.Bounds = function(boundRec)
+{
+    var that = this;
+    if (boundRec == undefined)
+    {
+        that.BoundRec = that.Viewport.GetViewRectangle();
+    }
+};
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
     var that = this;
