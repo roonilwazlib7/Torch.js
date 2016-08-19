@@ -137,10 +137,9 @@ var StartStratus = function()
     }
     function Init(game)
     {
-        game.PixelScale();
-        game.Clear("#000");
+        game.PixelScale().Clear("#000");
         Config = JSON.parse(game.Files["Config"]);
-        game.mapManager = new MapManager().AddMap("test-map", game.Files[Config.STARTING_MAP])
+        game.mapManager = new MapManager().AddMap("test-map", game.File(Config.STARTING_MAP) );
 
         if (Config.SHOW_DEBUG)
         {

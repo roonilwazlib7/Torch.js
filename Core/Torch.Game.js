@@ -59,6 +59,7 @@ Torch.Game.prototype.PixelScale = function()
     that.canvas.webkitImageSmoothingEnabled = false;
     that.canvas.mozImageSmoothingEnabled = false;
     that.canvas.imageSmoothingEnabled = false;
+    return that;
 };
 Torch.Game.prototype.Start = function(load, update, draw, init)
 {
@@ -116,6 +117,7 @@ Torch.Game.prototype.Task = function(task)
 {
     var that = this;
     that.taskList.push(task);
+    return that;
 }
 Torch.Game.prototype.RunGame = function(timestamp)
 {
@@ -157,6 +159,7 @@ Torch.Game.prototype.FlushSprites = function()
     {
         that.spriteList[i].Trash();
     }
+    return that;
 }
 Torch.Game.prototype.FatalError = function(error)
 {
@@ -333,6 +336,19 @@ Torch.Game.prototype.Clear = function(color)
     }
 
     that.canvasNode.style.backgroundColor = color;
+    return that;
+};
+Torch.Game.prototype.File = function(fileId)
+{
+    var that = this;
+    if (that.Files[fileId] == undefined)
+    {
+        that.FatalError("Unable to access no-existent file: {0}. File does not exist".format(fileId));
+    }
+    else
+    {
+        return that.Files[fileId];
+    }
 }
 Torch.Game.prototype.getCanvasEvents = function()
 {
@@ -457,4 +473,5 @@ Torch.Game.prototype.TogglePause = function()
 {
     if (!this.paused) this.paused = true;
     else this.paused = false;
+    return that;
 }
