@@ -12,7 +12,7 @@ var BackgroundManager = function(game)
     var bg1 = new bg();
     var bg2 = bg1.Clone();
 
-    bg1.Velocity("y", 0.5);
+    bg1.Velocity("y", 0.3);
     bg1.On("OutOfBounds", function(bg)
     {
         bg1.Position("x", 0).Position("y", 0);
