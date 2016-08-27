@@ -1,4 +1,4 @@
-//Torch.StrictErrors();
+Torch.StrictErrors();
 
 var Game, player, gameStage, enemyManager, backgroundManager, scoreManager;
 
