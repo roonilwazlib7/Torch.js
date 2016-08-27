@@ -1,4 +1,4 @@
-Torch.StrictErrors();
+//Torch.StrictErrors();
 
 var Game, player, gameStage, enemyManager, backgroundManager, scoreManager;
 
@@ -12,6 +12,7 @@ function Knackered()
         game.Load.Texture("Art/enemy.png", "enemy");
         game.Load.Texture("Art/player.png", "player");
         game.Load.Texture("Art/bullet.png", "bullet");
+        game.Load.Texture("Art/bullet-explode.png", "bullet-explode");
         game.Load.Texture("Art/background.svg", "background");
         //sounds
         game.Load.Sound("Sound/background-music.mp3", "background-music");

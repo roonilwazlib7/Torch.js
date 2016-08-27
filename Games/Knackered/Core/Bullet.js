@@ -27,10 +27,36 @@ Bullet.prototype.Target = function(target)
     return this;
 }
 
+Bullet.prototype.Explode = function()
+{
+    var that = this;
+    that.Velocity("x", 0).Velocity("y", 0);
+    that.Bind.Texture("bullet-explode");
+    Torch.Timer.SetFutureEvent(100, ()=>{
+        that.Trash();
+    });
+}
+
 Bullet.prototype.Update = function()
 {
     var that = this;
     that.UpdateSprite();
-
-
+    if (that.target == "player")
+    {
+        if (that.CollidesWith(player).AABB())
+        {
+            that.Explode();
+        }
+    }
+    else if (that.target == "enemy")
+    {
+        var enemies = enemyManager.Enemies();
+        for (var i = 0; i < enemies.length; i++)
+        {
+            if (that.CollidesWith(enemies[i]).AABB())
+            {
+                that.Explode();
+            }
+        }
+    }
 }

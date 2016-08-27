@@ -28,6 +28,8 @@ f.close()
 
 print("Built: " + NAME)
 
+os.system("coffee --compile --output Core/ Src/")
+
 if os.name == 'nt':
     #windows
     os.system("build-game.bat")

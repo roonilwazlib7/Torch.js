@@ -74,6 +74,11 @@ Enemy.prototype.CreateShootState = function()
             (enemy) => {
                 enemy.Velocity("x", 0).Velocity("y", 0);
                 var directionToPlayer = enemy.GetDirectionVector(player);
+                var distanceToPlayer = enemy.GetDistance(player);
+                if (distanceToPlayer >= 500)
+                {
+                    enemy.StateMachine("movement").Switch("chase");
+                }
                 if (enemy.shootTimer >= 500)
                 {
                     var bullet = enemy.Bullets.Add(null, enemy.Position("x") + (enemy.Width() / 2),

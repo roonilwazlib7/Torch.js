@@ -2101,6 +2101,17 @@ Torch.Sprite.prototype.ToErrorString = function()
     str += JSON.stringify(obj, null, 4);
     return str + "<br/>";
 }
+Torch.Sprite.prototype.CollidesWith = function(otherSprite)
+{
+    var that = this;
+    var collider = {
+        AABB: function()
+        {
+            return that.Rectangle.Intersects(otherSprite.Rectangle);
+        }
+    }
+    return collider;
+}
 
 Torch.GhostSprite = function(){};
 Torch.GhostSprite.is(Torch.Sprite);
