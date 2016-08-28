@@ -1,5 +1,3 @@
-Torch.Game.prototype.GamePads = [];
-
 Torch.GamePad = function(nativeGamePad)
 {
     var that = this;

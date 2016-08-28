@@ -265,10 +265,10 @@ class Sprite
             return @
 
     DrawIndex: (drawIndex) ->
-        if (drawIndex is undefined)
+        if drawIndex is undefined
             return @drawIndex
         else
-            if (typeof(drawIndex) isnt "number")
+            if typeof(drawIndex) isnt "number"
                 @game.FatalError("DrawIndex values must be a number. Provided was '#{typeof(drawIndex)}'")
             @drawIndex = drawIndex
             return @
