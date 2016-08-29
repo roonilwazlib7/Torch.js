@@ -32,7 +32,6 @@
 
     StateMachine.prototype.Update = function() {
       if (this.currentState !== null && this.currentState !== void 0) {
-        console.log(this);
         return this.currentState.Execute(this.obj);
       }
     };

@@ -9,6 +9,8 @@ class Game
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
+        @Timer = new Torch.Timer(@)
+        @Camera = new Torch.Camera()
         @Keys = new Torch.Keys()
 
         @deltaTime = 0
@@ -111,12 +113,12 @@ class Game
         @draw(@)
         @update(@)
         @Viewport.Update()
+        @Camera.Update()
+        @Timer.Update()
         @UpdateAndDrawSprites()
         @UpdateAnimations()
         @UpdateTimeInfo()
         @UpdateTasks()
-        Torch.Camera.Update()
-        Torch.Timer.Update()
         @UpdateGamePads()
 
         window.requestAnimationFrame (timestamp) =>

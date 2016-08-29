@@ -24,7 +24,6 @@ class StateMachine
 
     Update: ->
         if @currentState isnt null and @currentState isnt undefined
-            console.log(this)
             @currentState.Execute(@obj);
 
 class State

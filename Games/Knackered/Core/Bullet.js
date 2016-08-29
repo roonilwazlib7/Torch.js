@@ -32,7 +32,7 @@ Bullet.prototype.Explode = function()
     var that = this;
     that.Velocity("x", 0).Velocity("y", 0);
     that.Bind.Texture("bullet-explode");
-    Torch.Timer.SetFutureEvent(100, ()=>{
+    that.game.Timer.SetFutureEvent(100, ()=>{
         that.Trash();
     });
 }

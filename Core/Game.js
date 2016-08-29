@@ -15,6 +15,8 @@
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
+      this.Timer = new Torch.Timer(this);
+      this.Camera = new Torch.Camera();
       this.Keys = new Torch.Keys();
       this.deltaTime = 0;
       this.fps = 0;
@@ -122,12 +124,12 @@
       this.draw(this);
       this.update(this);
       this.Viewport.Update();
+      this.Camera.Update();
+      this.Timer.Update();
       this.UpdateAndDrawSprites();
       this.UpdateAnimations();
       this.UpdateTimeInfo();
       this.UpdateTasks();
-      Torch.Camera.Update();
-      Torch.Timer.Update();
       this.UpdateGamePads();
       return window.requestAnimationFrame((function(_this) {
         return function(timestamp) {

@@ -3,7 +3,8 @@
   var FutureEvent, Timer;
 
   Timer = (function() {
-    function Timer() {
+    function Timer(game) {
+      this.game = game;
       this.futureEvents = [];
     }
 
@@ -19,7 +20,7 @@
     };
 
     Timer.prototype.SetFutureEvent = function(timeToOccur, handle) {
-      return this.futureEvents.push(new Torch.FutureEvent(timeToOccur, handle));
+      return this.futureEvents.push(new Torch.FutureEvent(timeToOccur, handle, this.game));
     };
 
     return Timer;
@@ -27,14 +28,15 @@
   })();
 
   FutureEvent = (function() {
-    function FutureEvent(timeToOccur1, handle1) {
+    function FutureEvent(timeToOccur1, handle1, game) {
       this.timeToOccur = timeToOccur1;
       this.handle = handle1;
+      this.game = game;
       this.time = 0;
     }
 
     FutureEvent.prototype.Update = function() {
-      this.time += Game.deltaTime;
+      this.time += this.game.deltaTime;
       if (this.time >= this.timeToOccur) {
         if (this.handle !== null && this.handle !== void 0) {
           this.handle();
@@ -47,7 +49,7 @@
 
   })();
 
-  Torch.Timer = new Timer();
+  Torch.Timer = Timer;
 
   Torch.FutureEvent = FutureEvent;
 
