@@ -1,2 +1,4 @@
 #we don't want node stuff
 node_modules
+_tmp.bat
+_tmp.sh

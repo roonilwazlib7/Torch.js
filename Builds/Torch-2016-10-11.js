@@ -3253,4 +3253,4 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 }).call(this);
 
 
-Torch.version='Torch-2016-10-15';
+Torch.version='Torch-2016-10-11';

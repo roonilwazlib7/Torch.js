@@ -2344,7 +2344,7 @@ var Walking = {
       $("body").empty();
       $("body").prepend("<code style='color:#C9302Cfont-size:18px'>Time: " + this.time + "</code>");
       $("body").prepend("<code style='color:#C9302Cfont-size:20px'>" + stack + "</code><br>");
-      $("body").prepend("<code style='color:#C9302Cmargin-left:15%font-size:24px'> " + error + " </code><br> <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>");
+      $("body").prepend("<code style='color:#C9302Cmargin-left:15%font-size:24px'>" + error + "</code><br><code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>");
       this.RunGame = function() {};
       this.Run = function() {};
       this.Emit("FatalError");
@@ -3253,4 +3253,4 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
 }).call(this);
 
 
-Torch.version='Torch-2016-10-15';
+Torch.version='Torch-2016-9-10';
