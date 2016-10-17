@@ -6,6 +6,7 @@
 
   Sprite = (function() {
     function Sprite() {
+      alert("LLL");
       this.InitSprite();
     }
 
@@ -40,6 +41,7 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
+      this.renderer = new CanvasRenderer(this);
       return game.Add(this);
     };
 
@@ -166,33 +168,7 @@
     };
 
     Sprite.prototype.Draw = function() {
-      var DrawParams, DrawRec, Params, drawParams, frame, ref;
-      DrawRec = new Torch.Rectangle(this.Rectangle.x, this.Rectangle.y, this.Rectangle.width, this.Rectangle.height);
-      if (this.fixed) {
-        DrawRec.x -= this.game.Viewport.x;
-        DrawRec.y -= this.game.Viewport.y;
-      }
-      if (this.TexturePack) {
-        return this.game.Draw(this.GetCurrentDraw(), DrawRec, this.DrawParams);
-      } else if (this.TextureSheet) {
-        drawParams = (ref = this.DrawParams) != null ? ref : {};
-        Params = Object.create(drawParams);
-        frame = this.GetCurrentDraw();
-        Params.clipX = frame.clipX;
-        Params.clipY = frame.clipY;
-        Params.clipWidth = frame.clipWidth;
-        Params.clipHeight = frame.clipHeight;
-        Params.IsTextureSheet = true;
-        Params.rotation = this.rotation;
-        Params.alpha = this.opacity;
-        return this.game.Draw(this.DrawTexture, DrawRec, Params);
-      } else if (this.DrawTexture) {
-        DrawParams = {
-          alpha: this.opacity,
-          rotation: this.rotation
-        };
-        return this.game.Draw(this.GetCurrentDraw(), DrawRec, DrawParams);
-      }
+      return this.renderer.Draw();
     };
 
     Sprite.prototype.OnceEffect = function() {

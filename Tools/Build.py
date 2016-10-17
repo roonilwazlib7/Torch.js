@@ -1,57 +1,46 @@
 import datetime
 import os
 import json
-COMBINED = ""
-BUILD = str(datetime.date.today().year) + "-" + str(datetime.date.today().month) + "-" + str(datetime.date.today().day);
-items = ["pixl/pixl.js", "Torch.js", "Torch.Keys.js",
-        "Torch.Load.js",
-        "math.js",
-        "Torch.Sprite.js", "Torch.Text.js", "Torch.Sound.js",
-        "Torch.Particles.js",
-        "Torch.Debug.js", "Torch.GamePad.js",
-        "Torch.Platformer.js", "SpriteGroup.js", "Game.js", "Timer.js", "Mouse.js", "StateMachine.js", "Viewport.js",
-        "Camera.js", "Torch.Bind.js", "Animation.js", "Color.js", "Electron.js"]
-NAME = "Torch-" + BUILD
 
-os.system("coffee --compile --output Core/ Src/")
-
-for path in items:
-    f = open("Core/" + path)
-    COMBINED += f.read()
+def Write(path, content):
+    f = open(path, "w+")
+    f.write(content)
     f.close()
 
-COMBINED += "\n\nTorch.version='" + NAME + "';"
+def Read(path):
+    f = open(path, "r")
+    content = f.read()
+    f.close()
+    return content
 
-f = open("Builds/" + NAME + ".js", "w+")
-f.write(COMBINED)
-f.close()
+# compile Torch from coffee into js
+os.system("coffee --compile --output Core/ Src/")
 
-f = open("Builds/Torch-latest.js", "w+")
-f.write(COMBINED)
-f.close()
+# grab the config file
+config = json.loads ( Read(".build-config.json") )
 
-f = open(".build-config.json", "r")
-config_file = f.read()
-f.close()
+COMBINED = ""
+BUILD = str(datetime.date.today().year) + "-" + str(datetime.date.today().month) + "-" + str(datetime.date.today().day);
+NAME = "Torch-" + BUILD
 
+for path in config["SourceMap"]:
+    COMBINED += Read("Core/" + path)
 
-print("Built: " + NAME)
-print("Starting debug...")
+COMBINED += "\n\nTorch.build='" + NAME + "';Torch.version='" + config["Version"] + "';"
 
-config = json.loads(config_file)
+Write("Builds/" + NAME + ".js", COMBINED)
+Write("Builds/Torch-latest.js", COMBINED)
+
 
 if config["Source"] == "Coffee":
     os.system("coffee --compile --output Games/" + config["Game"] + "/Core Games/" + config["Game"] + "/Src")
 
-windows_script = """
+command_script = """
 @echo off
 cd Games\\""" + config["Game"] + """
 npm start
-del _tmp.bat
+del "%~f0"
 """
 
-
-f = open("_tmp.bat", "w+")
-f.write(windows_script)
-f.close()
+Write("_tmp.bat", command_script)
 os.system("_tmp.bat")

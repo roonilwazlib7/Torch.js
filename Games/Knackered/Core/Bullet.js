@@ -44,6 +44,7 @@
 
     Bullet.prototype.Update = function() {
       var en, enemies, i, len, results;
+      Bullet.__super__.Update.call(this);
       if (this.target === "player") {
         if (this.CollidesWith(player).AABB()) {
           return this.Explode();

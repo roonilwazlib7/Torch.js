@@ -1,5 +1,5 @@
 class Game
-    constructor: (@canvasId, @width, @height, @name) ->
+    constructor: (@canvasId, @width, @height, @name, @graphicsType = Torch.CANVAS) ->
         console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white")
         @canvasNode = document.getElementById(@canvasId)
         @canvas = @canvasNode.getContext("2d")
@@ -108,7 +108,6 @@ class Game
 
         @deltaTime = Math.round(timestamp - @time)
         @time = timestamp
-        @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
 
         @draw(@)
         @update(@)
@@ -168,6 +167,7 @@ class Game
         @spriteList = cleanedSprites
 
     DrawSprites: ->
+        @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
         @spriteList.sort (a, b) ->
             return a.drawIndex - b.drawIndex
         for sprite in @spriteList

@@ -3,11 +3,12 @@
   var Game;
 
   Game = (function() {
-    function Game(canvasId, width1, height1, name1) {
+    function Game(canvasId, width1, height1, name1, graphicsType) {
       this.canvasId = canvasId;
       this.width = width1;
       this.height = height1;
       this.name = name1;
+      this.graphicsType = graphicsType != null ? graphicsType : Torch.CANVAS;
       console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white");
       this.canvasNode = document.getElementById(this.canvasId);
       this.canvas = this.canvasNode.getContext("2d");
@@ -120,7 +121,6 @@
       }
       this.deltaTime = Math.round(timestamp - this.time);
       this.time = timestamp;
-      this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.draw(this);
       this.update(this);
       this.Viewport.Update();
@@ -206,6 +206,7 @@
 
     Game.prototype.DrawSprites = function() {
       var i, len, ref, results, sprite;
+      this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
       });

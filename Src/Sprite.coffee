@@ -1,5 +1,6 @@
 class Sprite
     constructor: ->
+        alert("LLL")
         @InitSprite()
 
     InitSprite: (game, x = 0, y = 0)->
@@ -32,6 +33,7 @@ class Sprite
         @_torch_uid = ""
 
         @events = {}
+        @renderer = new CanvasRenderer(@)
 
         game.Add(@)
 
@@ -150,33 +152,7 @@ class Sprite
             return @DrawTexture
 
     Draw: ->
-        DrawRec = new Torch.Rectangle(@Rectangle.x, @Rectangle.y, @Rectangle.width, @Rectangle.height)
-        if @fixed
-            DrawRec.x -= @game.Viewport.x
-            DrawRec.y -= @game.Viewport.y
-
-        if @TexturePack
-            @game.Draw(@GetCurrentDraw(), DrawRec, @DrawParams)
-
-        else if @TextureSheet
-            drawParams = @DrawParams ? {}
-            Params = Object.create(drawParams)
-            frame = @GetCurrentDraw()
-            Params.clipX = frame.clipX
-            Params.clipY = frame.clipY
-            Params.clipWidth = frame.clipWidth
-            Params.clipHeight = frame.clipHeight
-            Params.IsTextureSheet = true
-            Params.rotation = @rotation
-            Params.alpha = @opacity
-            @game.Draw(@DrawTexture, DrawRec, Params)
-
-        else if @DrawTexture
-            DrawParams =
-                alpha: @opacity,
-                rotation: @rotation
-
-            @game.Draw(@GetCurrentDraw(), DrawRec, DrawParams)
+        @renderer.Draw()
 
     OnceEffect: ->
         return true #this needs to be removed

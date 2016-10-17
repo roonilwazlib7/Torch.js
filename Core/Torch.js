@@ -40,6 +40,9 @@ window.onerror = function()
 
 var Torch =
 {
+    CANVAS: 1,
+    WEBGL: 2,
+    
     Message: function(message, color)
     {
         if ( $("#torch_message").length > 0 )

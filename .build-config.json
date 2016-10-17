@@ -1,4 +1,39 @@
 {
-    "Game": "Stratus",
-    "Source": "JavaScript"
+    "Game": "Knackered",
+    "Source": "Coffee",
+    "Version": "0.0.1",
+
+    "SourceMap":
+    [
+            "three/three.min.js",
+            "pixl/pixl.js",
+            "math/math.js",
+
+            "Torch.js",
+            "Torch.Keys.js",
+            "Torch.Load.js",
+            "Torch.Sprite.js",
+            "Torch.Text.js",
+            "Torch.Sound.js",
+            "Torch.Particles.js",
+            "Torch.Debug.js",
+            "Torch.GamePad.js",
+            "Torch.Platformer.js",
+
+            "SpriteGroup.js",
+            "Game.js",
+            "Timer.js",
+            "Mouse.js",
+            "StateMachine.js",
+            "Viewport.js",
+            "Camera.js",
+
+            "Torch.Bind.js",
+
+            "Animation.js",
+            "Color.js",
+            "Electron.js",
+            "CanvasRenderer.js",
+            "WebGLRenderer.js"
+        ]
 }
