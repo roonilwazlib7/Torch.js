@@ -1,6 +1,5 @@
 class Sprite
     constructor: ->
-        alert("LLL")
         @InitSprite()
 
     InitSprite: (game, x = 0, y = 0)->
@@ -12,6 +11,8 @@ class Sprite
         @Body = new Torch.Body()
         @HitBox = new Torch.HitBox()
         @game = game
+
+        @GL = @game.graphicsType is Torch.WEBGL
 
         @DrawTexture = null
         @TexturePack = null
@@ -33,7 +34,7 @@ class Sprite
         @_torch_uid = ""
 
         @events = {}
-        @renderer = new CanvasRenderer(@)
+        @renderer = null # new CanvasRenderer(@)
 
         game.Add(@)
 
@@ -152,7 +153,7 @@ class Sprite
             return @DrawTexture
 
     Draw: ->
-        @renderer.Draw()
+        if @renderer isnt null then @renderer.Draw()
 
     OnceEffect: ->
         return true #this needs to be removed

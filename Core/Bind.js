@@ -20,6 +20,21 @@
       }
     };
 
+    Bind.prototype.WebGLTexture = function() {
+      var map, material, object;
+      map = new THREE.TextureLoader().load('player.png');
+      map.wrapS = map.wrapT = THREE.RepeatWrapping;
+      map.anisotropy = 16;
+      material = new THREE.MeshLambertMaterial({
+        map: map,
+        side: THREE.DoubleSide
+      });
+      object = new THREE.Mesh(new THREE.SphereGeometry(75, 20, 10), material);
+      object.position.set(-400, 0, 200);
+      this.sprite.game.gl_scene.add(object);
+      return console.log(object);
+    };
+
     Bind.prototype.Texture = function() {
       return function(textureId, optionalParameters) {
         var scale, tex;

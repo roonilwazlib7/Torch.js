@@ -6,7 +6,6 @@
 
   Sprite = (function() {
     function Sprite() {
-      alert("LLL");
       this.InitSprite();
     }
 
@@ -25,6 +24,7 @@
       this.Body = new Torch.Body();
       this.HitBox = new Torch.HitBox();
       this.game = game;
+      this.GL = this.game.graphicsType === Torch.WEBGL;
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
@@ -41,7 +41,7 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
-      this.renderer = new CanvasRenderer(this);
+      this.renderer = null;
       return game.Add(this);
     };
 
@@ -168,7 +168,9 @@
     };
 
     Sprite.prototype.Draw = function() {
-      return this.renderer.Draw();
+      if (this.renderer !== null) {
+        return this.renderer.Draw();
+      }
     };
 
     Sprite.prototype.OnceEffect = function() {

@@ -4,9 +4,7 @@ exports = this
 
 class WebGLRenderer
 
-    constructor: (@sprite) ->
+    constructor: () ->
 
     Draw: ->
-        scene = new THREE.Scene()
-
-        scene.add( new THREE.AmbientLight( 0x404040 ) );
+        

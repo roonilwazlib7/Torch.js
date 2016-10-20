@@ -5,9 +5,7 @@
   exports = this;
 
   WebGLRenderer = (function() {
-    function WebGLRenderer(sprite) {
-      this.sprite = sprite;
-    }
+    function WebGLRenderer() {}
 
     WebGLRenderer.prototype.Draw = function() {};
 

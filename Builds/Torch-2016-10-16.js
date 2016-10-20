@@ -4145,7 +4145,11 @@ Torch.Bind.prototype.TextureSheet = function(textureSheetId, optionalParameters)
       this.sprite = sprite;
     }
 
-    WebGLRenderer.prototype.Draw = function() {};
+    WebGLRenderer.prototype.Draw = function() {
+      var scene;
+      scene = new THREE.Scene();
+      return scene.add(new THREE.AmbientLight(0x404040));
+    };
 
     return WebGLRenderer;
 

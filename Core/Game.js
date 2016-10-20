@@ -4,15 +4,32 @@
 
   Game = (function() {
     function Game(canvasId, width1, height1, name1, graphicsType) {
+      var light;
       this.canvasId = canvasId;
       this.width = width1;
       this.height = height1;
       this.name = name1;
       this.graphicsType = graphicsType != null ? graphicsType : Torch.CANVAS;
       console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white");
-      this.canvasNode = document.getElementById(this.canvasId);
-      this.canvas = this.canvasNode.getContext("2d");
-      this.Clear("#cc5200");
+      if (this.graphicsType === Torch.CANVAS) {
+        this.canvasNode = document.getElementById(this.canvasId);
+        this.canvas = this.canvasNode.getContext("2d");
+        this.Clear("#cc5200");
+      } else {
+        this.gl_rendererContainer = document.getElementById(this.canvasId);
+        light = new THREE.DirectionalLight("#fff");
+        light.position.set(0, 1, 0);
+        this.gl_scene = new THREE.Scene();
+        this.gl_camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+        this.gl_camera.position.y = 400;
+        this.gl_renderer = new THREE.WebGLRenderer({
+          antialias: true
+        });
+        this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
+        this.gl_renderer.setPixelRatio(window.devicePixelRatio);
+        this.gl_scene.add(light);
+        this.gl_rendererContainer.appendChild(this.gl_renderer.domElement);
+      }
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
@@ -65,6 +82,7 @@
     };
 
     Game.prototype.Start = function(load, update, draw, init) {
+      console.log("init game");
       if (load === void 0) {
         this.FatalError("Unable to start game '" + this.name + "' without load function");
       }
@@ -84,11 +102,15 @@
       this.load(this);
       this.Load.Load((function(_this) {
         return function() {
+          console.log("init game");
           _this.init(_this);
           _this.WireUpEvents();
           return _this.Run();
         };
       })(this));
+      if (this.graphicsType === Torch.WEBGL) {
+        return;
+      }
       this.canvasNode.width = this.width;
       this.canvasNode.height = this.height;
       if (typeof this.width === "string") {
@@ -131,6 +153,9 @@
       this.UpdateTimeInfo();
       this.UpdateTasks();
       this.UpdateGamePads();
+      if (this.graphicsType === Torch.WEBGL) {
+        this.gl_renderer.render(this.gl_scene, this.gl_camera);
+      }
       return window.requestAnimationFrame((function(_this) {
         return function(timestamp) {
           return _this.RunGame(timestamp);

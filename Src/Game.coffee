@@ -1,10 +1,29 @@
 class Game
     constructor: (@canvasId, @width, @height, @name, @graphicsType = Torch.CANVAS) ->
         console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white")
-        @canvasNode = document.getElementById(@canvasId)
-        @canvas = @canvasNode.getContext("2d")
 
-        @Clear("#cc5200")
+        if @graphicsType is Torch.CANVAS
+            @canvasNode = document.getElementById(@canvasId)
+            @canvas = @canvasNode.getContext("2d")
+            @Clear("#cc5200")
+        else
+            @gl_rendererContainer = document.getElementById(@canvasId)
+            light = new THREE.DirectionalLight("#fff")
+            light.position.set(0,1,0)
+
+            @gl_scene = new THREE.Scene()
+            @gl_camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 )
+            @gl_camera.position.y = 400
+            @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
+            @gl_renderer.setSize( window.innerWidth, window.innerHeight )
+            @gl_renderer.setPixelRatio( window.devicePixelRatio )
+
+            @gl_scene.add(light)
+
+            @gl_rendererContainer.appendChild(@gl_renderer.domElement)
+
+            # @gl_scene.add( new THREE.AmbientLight( 0x404040 ) )
+
 
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
@@ -73,9 +92,12 @@ class Game
         @load(@)
 
         @Load.Load =>
+            console.log("init game")
             @init(@)
             @WireUpEvents()
             @Run()
+
+        if @graphicsType is Torch.WEBGL then return
 
         @canvasNode.width = @width
         @canvasNode.height = @height
@@ -119,6 +141,10 @@ class Game
         @UpdateTimeInfo()
         @UpdateTasks()
         @UpdateGamePads()
+
+        if @graphicsType is Torch.WEBGL
+
+            @gl_renderer.render( @gl_scene, @gl_camera )
 
         window.requestAnimationFrame (timestamp) =>
             @RunGame(timestamp)
