@@ -37,17 +37,7 @@
       return this.hex = "#" + this.GetHexadecimal(r, a) + this.GetHexadecimal(g, a) + this.GetHexadecimal(b, a);
     };
 
-    Color.prototype.GetRGBFromHex = function() {
-      var hexBlue, hexGreen, hexRed;
-      this.hex = hex.split("#")[1];
-      hexRed = this.hex.slice(0, 2);
-      hexGreen = this.hex.slice(2, 4);
-      hexBlue = this.hex.slice(4, 6);
-      this.Red = parseInt(hexRed, 16);
-      this.Blue = parseInt(hexBlue, 16);
-      this.Green = parseInt(hexGreen, 16);
-      return this.hex = '#' + this.hex;
-    };
+    Color.prototype.GetRGBFromHex = function() {};
 
     Color.prototype.BlendHex = function() {
       return this.GetRGBFromHex(this.hex);

@@ -1,6 +1,6 @@
 class Sprite
-    constructor: ->
-        @InitSprite()
+    constructor: (game, x, y)->
+        @InitSprite(game, x, y)
 
     InitSprite: (game, x = 0, y = 0)->
         if game is null or game is undefined
@@ -62,6 +62,14 @@ class Sprite
 
         if not @Rectangle.Intersects(@game.BoundRec)
             @Emit("OutOfBounds", @)
+
+        if @GL
+            # change the position of the three.js object to match sprite
+            object = @game.gl_scene.getObjectByName(@_torch_uid )
+            object.position.z = @Rectangle.z
+            object.position.x = @Rectangle.x
+            object.position.y = @Rectangle.y
+            console.log(object)
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver
@@ -154,6 +162,7 @@ class Sprite
 
     Draw: ->
         if @renderer isnt null then @renderer.Draw()
+
 
     OnceEffect: ->
         return true #this needs to be removed

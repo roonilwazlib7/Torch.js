@@ -42,7 +42,7 @@ var Torch =
 {
     CANVAS: 1,
     WEBGL: 2,
-    
+
     Message: function(message, color)
     {
         if ( $("#torch_message").length > 0 )
@@ -81,6 +81,7 @@ var Torch =
 Torch.Rectangle = function(x, y, width, height){
     this.x = x;
     this.y = y;
+    this.z = -10;
     this.width = width;
     this.height = height;
 };

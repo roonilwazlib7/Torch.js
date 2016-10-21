@@ -20,15 +20,16 @@
         light = new THREE.DirectionalLight("#fff");
         light.position.set(0, 1, 0);
         this.gl_scene = new THREE.Scene();
-        this.gl_camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
-        this.gl_camera.position.y = 400;
+        this.gl_camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
+        this.gl_camera.position.z = 500;
         this.gl_renderer = new THREE.WebGLRenderer({
           antialias: true
         });
         this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
         this.gl_renderer.setPixelRatio(window.devicePixelRatio);
         this.gl_scene.add(light);
-        this.gl_rendererContainer.appendChild(this.gl_renderer.domElement);
+        this.canvasNode = this.gl_renderer.domElement;
+        this.gl_rendererContainer.appendChild(this.canvasNode);
       }
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
@@ -82,7 +83,6 @@
     };
 
     Game.prototype.Start = function(load, update, draw, init) {
-      console.log("init game");
       if (load === void 0) {
         this.FatalError("Unable to start game '" + this.name + "' without load function");
       }
@@ -102,7 +102,6 @@
       this.load(this);
       this.Load.Load((function(_this) {
         return function() {
-          console.log("init game");
           _this.init(_this);
           _this.WireUpEvents();
           return _this.Run();
@@ -154,6 +153,7 @@
       this.UpdateTasks();
       this.UpdateGamePads();
       if (this.graphicsType === Torch.WEBGL) {
+        this.gl_camera.lookAt(this.gl_scene.position);
         this.gl_renderer.render(this.gl_scene, this.gl_camera);
       }
       return window.requestAnimationFrame((function(_this) {
@@ -231,7 +231,9 @@
 
     Game.prototype.DrawSprites = function() {
       var i, len, ref, results, sprite;
-      this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
+      if (this.graphicsType !== Torch.WEBGL) {
+        this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
+      }
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
       });

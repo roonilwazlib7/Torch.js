@@ -12,15 +12,16 @@ class Game
             light.position.set(0,1,0)
 
             @gl_scene = new THREE.Scene()
-            @gl_camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 )
-            @gl_camera.position.y = 400
+            @gl_camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 )
+            @gl_camera.position.z = 500
             @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
             @gl_renderer.setSize( window.innerWidth, window.innerHeight )
             @gl_renderer.setPixelRatio( window.devicePixelRatio )
 
             @gl_scene.add(light)
 
-            @gl_rendererContainer.appendChild(@gl_renderer.domElement)
+            @canvasNode = @gl_renderer.domElement
+            @gl_rendererContainer.appendChild(@canvasNode)
 
             # @gl_scene.add( new THREE.AmbientLight( 0x404040 ) )
 
@@ -92,7 +93,6 @@ class Game
         @load(@)
 
         @Load.Load =>
-            console.log("init game")
             @init(@)
             @WireUpEvents()
             @Run()
@@ -143,7 +143,7 @@ class Game
         @UpdateGamePads()
 
         if @graphicsType is Torch.WEBGL
-
+            @gl_camera.lookAt( @gl_scene.position )
             @gl_renderer.render( @gl_scene, @gl_camera )
 
         window.requestAnimationFrame (timestamp) =>
@@ -185,7 +185,8 @@ class Game
         cleanedSprites = []
         for sprite in @spriteList
             if not sprite.trash
-                if not sprite.game.paused then sprite.Update()
+                if not sprite.game.paused
+                    sprite.Update()
                 cleanedSprites.push(sprite)
             else
                 sprite.trashed = true
@@ -193,9 +194,12 @@ class Game
         @spriteList = cleanedSprites
 
     DrawSprites: ->
-        @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
+        if @graphicsType isnt Torch.WEBGL
+            @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
+
         @spriteList.sort (a, b) ->
             return a.drawIndex - b.drawIndex
+
         for sprite in @spriteList
             if sprite.draw and not sprite.trash and not sprite.GHOST_SPRITE
                 sprite.Draw()

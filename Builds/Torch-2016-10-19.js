@@ -3093,7 +3093,6 @@ var Walking = {
     };
 
     Game.prototype.Start = function(load, update, draw, init) {
-      console.log("init game");
       if (load === void 0) {
         this.FatalError("Unable to start game '" + this.name + "' without load function");
       }
@@ -3113,7 +3112,6 @@ var Walking = {
       this.load(this);
       this.Load.Load((function(_this) {
         return function() {
-          console.log("init game");
           _this.init(_this);
           _this.WireUpEvents();
           return _this.Run();
@@ -3735,6 +3733,20 @@ Torch.Bind.prototype.Reset = function()
     }
 
 }
+
+Torch.prototype.Bind.WebGLTexture = function()
+{
+    var that = this;
+    map = new THREE.TextureLoader().load( 'player.png' )
+    map.wrapS = map.wrapT = THREE.RepeatWrapping
+    map.anisotropy = 16
+    material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } )
+    object = new THREE.Mesh( new THREE.SphereGeometry( 75, 20, 10 ), material )
+    object.position.set( -400, 0, 200 )
+
+    that.sprite.game.gl_scene.add(object)
+}
+
 Torch.Bind.prototype.Texture = function(textureId, optionalParameters)
 {
     var that = this;

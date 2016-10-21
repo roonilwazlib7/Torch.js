@@ -5,8 +5,8 @@
     hasProp = {}.hasOwnProperty;
 
   Sprite = (function() {
-    function Sprite() {
-      this.InitSprite();
+    function Sprite(game, x, y) {
+      this.InitSprite(game, x, y);
     }
 
     Sprite.prototype.InitSprite = function(game, x, y) {
@@ -59,7 +59,7 @@
     };
 
     Sprite.prototype.UpdateSprite = function() {
-      var shiftX, shiftY;
+      var object, shiftX, shiftY;
       this.UpdateBody();
       this.UpdateEvents();
       shiftX = this.Rectangle.width / 8;
@@ -71,7 +71,14 @@
         height: this.Rectangle.height - (2 * shiftY)
       };
       if (!this.Rectangle.Intersects(this.game.BoundRec)) {
-        return this.Emit("OutOfBounds", this);
+        this.Emit("OutOfBounds", this);
+      }
+      if (this.GL) {
+        object = this.game.gl_scene.getObjectByName(this._torch_uid);
+        object.position.z = this.Rectangle.z;
+        object.position.x = this.Rectangle.x;
+        object.position.y = this.Rectangle.y;
+        return console.log(object);
       }
     };
 

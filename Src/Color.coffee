@@ -29,14 +29,14 @@ class Color
         @hex = "#" + @GetHexadecimal(r,a) + @GetHexadecimal(g,a) + @GetHexadecimal(b,a)
 
     GetRGBFromHex: ->
-        @hex = hex.split("#")[1]
-        hexRed = @hex.slice(0,2)
-        hexGreen = @hex.slice(2,4)
-        hexBlue = @hex.slice(4,6)
-        @Red = parseInt(hexRed, 16)
-        @Blue = parseInt(hexBlue, 16)
-        @Green = parseInt(hexGreen, 16)
-        @hex = '#' + @hex
+        # @hex = hex.split("#")[1]
+        # hexRed = @hex.slice(0,2)
+        # hexGreen = @hex.slice(2,4)
+        # hexBlue = @hex.slice(4,6)
+        # @Red = parseInt(hexRed, 16)
+        # @Blue = parseInt(hexBlue, 16)
+        # @Green = parseInt(hexGreen, 16)
+        # @hex = '#' + @hex
 
     BlendHex: -> @GetRGBFromHex(@hex)
 
