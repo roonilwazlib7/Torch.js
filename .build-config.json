@@ -17,7 +17,6 @@
             "Torch.Sound.js",
             "Torch.Particles.js",
             "Torch.Debug.js",
-            "Torch.GamePad.js",
             "Torch.Platformer.js",
 
             "SpriteGroup.js",
