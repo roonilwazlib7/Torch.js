@@ -1,3 +1,4 @@
+exports = this
 Function::is = (otherFunction) ->
     proto = this.prototype
     items = Object.create(otherFunction.prototype)
@@ -30,7 +31,10 @@ window.onerror = (args...) ->
 Torch =
     CANVAS: 1
     WEBGL: 2
-
+    Needs: (key) ->
+        # make sure we have the peoper torch components
+        if not Torch[key] then throw "Compenent #{key} is required"
+        return @
     Message: (message, color) ->
         if $("#torch_message").length > 0
             message = $("<p>" + message + "</p>")
@@ -158,3 +162,11 @@ Torch.GamePads =
     Pad2: 1,
     Pad3: 2,
     Pad4: 3
+
+Torch.Rectangle = Rectangle
+Torch.Vector = Vector
+Torch.Body = Body
+Torch.HitBox = HitBox
+Torch.Point = Point
+
+exports.Torch = Torch

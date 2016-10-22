@@ -5,6 +5,7 @@
   Bind = (function() {
     function Bind(sprite) {
       this.sprite = sprite;
+      this.sprite.gl_shape = new THREE.PlaneGeometry(100, 100, 4, 4);
     }
 
     Bind.prototype.Reset = function() {
@@ -21,18 +22,16 @@
     };
 
     Bind.prototype.WebGLTexture = function() {
-      var map, material, object;
-      map = new THREE.TextureLoader().load('player.png');
-      map.wrapS = map.wrapT = THREE.RepeatWrapping;
-      map.anisotropy = 16;
-      material = new THREE.MeshLambertMaterial({
-        map: map,
-        side: THREE.DoubleSide
+      var material, object;
+      material = new THREE.MeshBasicMaterial({
+        color: 0xF06565
       });
-      object = new THREE.Mesh(new THREE.SphereGeometry(75, 20, 10), material);
-      object.position.set(-400, 0, 200);
-      this.sprite.game.gl_scene.add(object);
-      return console.log(object);
+      object = new THREE.Mesh(this.sprite.gl_shape, material);
+      object.position.z = this.sprite.Rectangle.z;
+      object.position.x = this.sprite.Rectangle.x;
+      object.position.y = this.sprite.Rectangle.y;
+      object.name = this.sprite._torch_uid;
+      return this.sprite.game.gl_scene.add(object);
     };
 
     Bind.prototype.Texture = function() {

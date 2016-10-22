@@ -43,16 +43,16 @@
       return this;
     };
 
-    PlayList.prototype.Update = function() {};
-
-    if (PlayList.game.Assets.GetSound(PlayList.currentSong).currentTime >= PlayList.game.Assets.GetSound(PlayList.currentSong).duration) {
-      PlayList.index++;
-      PlayList.currentSong = PlayList.songList[PlayList.index];
-      PlayList.Play();
-      if (PlayList.index === PlayList.songList.length - 1) {
-        PlayList.index = 0;
+    PlayList.prototype.Update = function() {
+      if (this.game.Assets.GetSound(this.currentSong).currentTime >= this.game.Assets.GetSound(this.currentSong).duration) {
+        this.index++;
+        this.currentSong = this.songList[this.index];
+        this.Play();
+        if (this.index === this.songList.length - 1) {
+          return this.index = 0;
+        }
       }
-    }
+    };
 
     return PlayList;
 

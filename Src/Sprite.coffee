@@ -63,13 +63,13 @@ class Sprite
         if not @Rectangle.Intersects(@game.BoundRec)
             @Emit("OutOfBounds", @)
 
-        if @GL
+        # if @GL
             # change the position of the three.js object to match sprite
-            object = @game.gl_scene.getObjectByName(@_torch_uid )
-            object.position.z = @Rectangle.z
-            object.position.x = @Rectangle.x
-            object.position.y = @Rectangle.y
-            console.log(object)
+            # object = @game.gl_scene.getObjectByName(@_torch_uid )
+            # if object
+            #     object.position.z = @Rectangle.z
+            #     object.position.x = @Rectangle.x
+            #     object.position.y = @Rectangle.y
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver
@@ -106,7 +106,7 @@ class Sprite
         if @clickTrigger and not @game.Mouse.down and not @mouseOver
             @clickTrigger = false
 
-        if not @game.Mouse.down not not @mouseOver and @clickAwayTrigger
+        if not @game.Mouse.down and not @mouseOver and @clickAwayTrigger
             @Emit("ClickAway", @)
             @wasClicked = false
             @clickAwayTrigger = false

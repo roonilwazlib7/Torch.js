@@ -59,7 +59,7 @@
     };
 
     Sprite.prototype.UpdateSprite = function() {
-      var object, shiftX, shiftY;
+      var shiftX, shiftY;
       this.UpdateBody();
       this.UpdateEvents();
       shiftX = this.Rectangle.width / 8;
@@ -71,14 +71,7 @@
         height: this.Rectangle.height - (2 * shiftY)
       };
       if (!this.Rectangle.Intersects(this.game.BoundRec)) {
-        this.Emit("OutOfBounds", this);
-      }
-      if (this.GL) {
-        object = this.game.gl_scene.getObjectByName(this._torch_uid);
-        object.position.z = this.Rectangle.z;
-        object.position.x = this.Rectangle.x;
-        object.position.y = this.Rectangle.y;
-        return console.log(object);
+        return this.Emit("OutOfBounds", this);
       }
     };
 
@@ -117,7 +110,7 @@
       if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
         this.clickTrigger = false;
       }
-      if (!this.game.Mouse.down(!!this.mouseOver && this.clickAwayTrigger)) {
+      if (!this.game.Mouse.down && !this.mouseOver && this.clickAwayTrigger) {
         this.Emit("ClickAway", this);
         this.wasClicked = false;
         return this.clickAwayTrigger = false;

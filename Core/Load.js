@@ -151,8 +151,8 @@
             im.refId = stackItem.id;
             im.onload = (function(_this) {
               return function() {
-                _this.textures[_this.refId].width = _this.width;
-                _this.textures[_this.refId].height = _this.height;
+                _this.textures[stackItem.id].width = _this.width;
+                _this.textures[stackItem.id].height = _this.height;
                 return _this.finish_stack--;
               };
             })(this);

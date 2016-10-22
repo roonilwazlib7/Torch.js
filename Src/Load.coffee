@@ -100,7 +100,6 @@ class Load
         @textureSheets[id] = sheet;
 
     File: (path, id) -> # should change this to load syncronously
-
         if not Torch.fs
             @game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)))
 
@@ -131,8 +130,8 @@ class Load
                     im.refId = stackItem.id
 
                     im.onload = =>
-                        @textures[this.refId].width = this.width
-                        @textures[this.refId].height = this.height
+                        @textures[stackItem.id].width = this.width
+                        @textures[stackItem.id].height = this.height
                         @finish_stack--
 
                 when "sound"

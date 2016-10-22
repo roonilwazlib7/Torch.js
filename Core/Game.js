@@ -3,14 +3,14 @@
   var Game;
 
   Game = (function() {
-    function Game(canvasId, width1, height1, name1, graphicsType) {
+    function Game(canvasId, width1, height1, name, graphicsType) {
       var light;
       this.canvasId = canvasId;
       this.width = width1;
       this.height = height1;
-      this.name = name1;
+      this.name = name;
       this.graphicsType = graphicsType != null ? graphicsType : Torch.CANVAS;
-      console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white");
+      console.log("%c   " + Torch.version + "-" + this.name + "  ", "background-color:#cc5200; color:white");
       if (this.graphicsType === Torch.CANVAS) {
         this.canvasNode = document.getElementById(this.canvasId);
         this.canvas = this.canvasNode.getContext("2d");
@@ -20,8 +20,8 @@
         light = new THREE.DirectionalLight("#fff");
         light.position.set(0, 1, 0);
         this.gl_scene = new THREE.Scene();
-        this.gl_camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
-        this.gl_camera.position.z = 500;
+        this.gl_camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+        this.gl_camera.position.z = 400;
         this.gl_renderer = new THREE.WebGLRenderer({
           antialias: true
         });
@@ -30,13 +30,14 @@
         this.gl_scene.add(light);
         this.canvasNode = this.gl_renderer.domElement;
         this.gl_rendererContainer.appendChild(this.canvasNode);
+        this.gl_scene.add(new THREE.AmbientLight(0x404040));
       }
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera();
-      this.Keys = new Torch.Keys();
+      this.Keys = new Keys();
       this.deltaTime = 0;
       this.fps = 0;
       this.averageFps = 0;
@@ -409,6 +410,7 @@
 
     Game.prototype.WireUpEvents = function() {
       var bodyEvents, eventItem, i, j, len, len1, pads, ref;
+      return;
       bodyEvents = [
         [
           "keydown", (function(_this) {

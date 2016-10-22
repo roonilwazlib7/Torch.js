@@ -1,6 +1,6 @@
 class Game
     constructor: (@canvasId, @width, @height, @name, @graphicsType = Torch.CANVAS) ->
-        console.log("%c   " + Torch.version + "-" + name + "  ", "background-color:#cc5200 color:white")
+        console.log("%c   " + Torch.version + "-" + @name + "  ", "background-color:#cc5200; color:white")
 
         if @graphicsType is Torch.CANVAS
             @canvasNode = document.getElementById(@canvasId)
@@ -12,8 +12,8 @@ class Game
             light.position.set(0,1,0)
 
             @gl_scene = new THREE.Scene()
-            @gl_camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 )
-            @gl_camera.position.z = 500
+            @gl_camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 )
+            @gl_camera.position.z = 400
             @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
             @gl_renderer.setSize( window.innerWidth, window.innerHeight )
             @gl_renderer.setPixelRatio( window.devicePixelRatio )
@@ -23,7 +23,7 @@ class Game
             @canvasNode = @gl_renderer.domElement
             @gl_rendererContainer.appendChild(@canvasNode)
 
-            # @gl_scene.add( new THREE.AmbientLight( 0x404040 ) )
+            @gl_scene.add( new THREE.AmbientLight( 0x404040 ) )
 
 
         @Load = new Torch.Load(@)
@@ -31,7 +31,7 @@ class Game
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
         @Camera = new Torch.Camera()
-        @Keys = new Torch.Keys()
+        @Keys = new Keys()
 
         @deltaTime = 0
         @fps = 0
@@ -321,6 +321,7 @@ class Game
         return evts
 
     WireUpEvents: ->
+        return
         bodyEvents =
         [
             [

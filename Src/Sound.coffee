@@ -36,10 +36,9 @@ class PlayList extends Torch.GhostSprite
         return @
 
     Update: ->
-
-    if @game.Assets.GetSound(@currentSong).currentTime >= @game.Assets.GetSound(@currentSong).duration
-        @index++
-        @currentSong = @songList[@index]
-        @Play()
-        if @index is @songList.length - 1
-            @index = 0
+        if @game.Assets.GetSound(@currentSong).currentTime >= @game.Assets.GetSound(@currentSong).duration
+            @index++
+            @currentSong = @songList[@index]
+            @Play()
+            if @index is @songList.length - 1
+                @index = 0
