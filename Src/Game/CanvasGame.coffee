@@ -1,30 +1,13 @@
 class Game
-    constructor: (@canvasId, @width, @height, @name, @graphicsType = Torch.CANVAS) ->
+    constructor: (@canvasId, @width, @height, @name, @graphicsType) ->
+        @InitGame()
+
+    InitGame: ->
+        @InitGraphics()
+        @InitComponents()
+
+    InitComponents: ->
         console.log("%c   " + Torch.version + "-" + @name + "  ", "background-color:#cc5200; color:white")
-
-        if @graphicsType is Torch.CANVAS
-            @canvasNode = document.getElementById(@canvasId)
-            @canvas = @canvasNode.getContext("2d")
-            @Clear("#cc5200")
-        else
-            @gl_rendererContainer = document.getElementById(@canvasId)
-            light = new THREE.DirectionalLight("#fff")
-            light.position.set(0,1,0)
-
-            @gl_scene = new THREE.Scene()
-            @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 20000 )
-            @gl_camera.position.z = 500
-            @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
-            @gl_renderer.setSize( window.innerWidth, window.innerHeight )
-            @gl_renderer.setPixelRatio( window.devicePixelRatio )
-
-            @gl_scene.add(light)
-
-            @canvasNode = @gl_renderer.domElement
-            @gl_rendererContainer.appendChild(@canvasNode)
-
-
-
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
@@ -53,6 +36,11 @@ class Game
         @GamePads = []
 
         @events = {}
+
+    InitGraphics: ->
+        @canvasNode = document.getElementById(@canvasId)
+        @canvas = @canvasNode.getContext("2d")
+        @Clear("#cc5200")
 
     On: (eventName, eventHandle) ->
         @events[eventName] = eventHandle
@@ -141,10 +129,6 @@ class Game
         @UpdateTasks()
         @UpdateGamePads()
 
-        if @graphicsType is Torch.WEBGL
-            @gl_camera.lookAt( @gl_scene.position )
-            @gl_renderer.render( @gl_scene, @gl_camera )
-
         window.requestAnimationFrame (timestamp) =>
             @RunGame(timestamp)
 
@@ -193,8 +177,7 @@ class Game
         @spriteList = cleanedSprites
 
     DrawSprites: ->
-        if @graphicsType isnt Torch.WEBGL
-            @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
+        @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
 
         @spriteList.sort (a, b) ->
             return a.drawIndex - b.drawIndex
@@ -399,4 +382,4 @@ class Game
         return @
 
 # expose to Torch
-Torch.Game = Game
+Torch.CanvasGame = Game

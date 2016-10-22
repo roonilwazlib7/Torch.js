@@ -13,7 +13,7 @@ function Load(game)
 function Init(game)
 {
     game.Bounds();
-        // game.Clear("#000");
+    game.Clear("green");
     sp = new Torch.Sprite(Game, 0, 0);
     sp.Bind.WebGLTexture("player");
 }
@@ -23,6 +23,7 @@ function Draw(game)
 }
 function Update(game)
 {
+     //sp.Move("x", 1);
     // if (game.Keys.Space.down)
     // {
     //     sp.Move("x", 1);

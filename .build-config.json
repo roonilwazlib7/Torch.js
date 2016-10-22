@@ -17,7 +17,10 @@
             "Mouse.js",
             "Camera.js",
             "Keys.js",
-            "Game.js",
+
+            "Game/CanvasGame.js",
+            "Game/WebGLGame.js",
+            "Game/Game.js",
 
             "Sound.js",
             "StateMachine.js",

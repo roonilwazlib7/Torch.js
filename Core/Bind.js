@@ -24,7 +24,6 @@
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
-      console.log(map);
       material = new THREE.MeshBasicMaterial({
         map: map
       });
@@ -32,6 +31,7 @@
       object.position.z = this.sprite.Rectangle.z;
       object.position.x = this.sprite.Rectangle.x;
       object.position.y = this.sprite.Rectangle.y;
+      object.rotation.z = Math.PI;
       object.name = this.sprite._torch_uid;
       return this.sprite.game.gl_scene.add(object);
     };

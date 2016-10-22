@@ -19,13 +19,13 @@ class Bind
         #map.anisotropy = 16
 
         map = @sprite.game.Assets.Textures[textureId].gl_texture
-        console.log(map)
-        material = new THREE.MeshBasicMaterial({map: map}) #new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } )
+        material = new THREE.MeshBasicMaterial({map: map})
         object = new THREE.Mesh(@sprite.gl_shape , material )
 
         object.position.z = @sprite.Rectangle.z # -10
         object.position.x = @sprite.Rectangle.x
         object.position.y = @sprite.Rectangle.y
+        object.rotation.z = Math.PI
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)
