@@ -1,6 +1,4 @@
 {
-    "Game": "GL",
-    "Source": "JavaScript",
     "Version": "0.0.1",
 
     "SourceMap":
@@ -9,10 +7,9 @@
             "pixl/pixl.js",
             "math/math.js",
 
-            "Torch.js",
-            "Torch.Keys.js",
-            "Torch.Load.js",
-
+            "Torch_c.js",
+            "Keys.js",
+            "Load.js",
             "Sprite.js",
             "Text.js",
             "Sound.js",
@@ -35,5 +32,10 @@
         "NeedsWork":
         [
             "Torch.Particles.js"
-        ]
+        ],
+
+        "Game": {
+            "Name": "GL",
+            "Source": "JavaScript"
+        }
 }

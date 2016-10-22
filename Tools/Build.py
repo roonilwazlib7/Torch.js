@@ -32,12 +32,12 @@ Write("Builds/" + NAME + ".js", COMBINED)
 Write("Builds/Torch-latest.js", COMBINED)
 
 
-if config["Source"] == "Coffee":
+if config["Game"]["Source"] == "Coffee":
     os.system("coffee --compile --output Games/" + config["Game"] + "/Core Games/" + config["Game"] + "/Src")
 
 command_script = """
 @echo off
-cd Games\\""" + config["Game"] + """
+cd Games\\""" + config["Game"]["Name"] + """
 npm start
 del "%~f0"
 """

@@ -20,171 +20,139 @@ class Load
         @loaded = false
         @loadLog = ""
 
-Torch.Load.prototype.Sound = function(path, id)
-{
-    var that = this;
-    if (that.sound[id])
-    {
-        Torch.Error("Asset ID '" + id + "' already exists");
-    }
-    that.Stack.push({
-        _torch_asset: "sound",
-        id: id,
-        path: path
-    });
-    that.finish_stack++;
-}
-Torch.Load.prototype.Texture = function(path, id)
-{
-    var that = this;
+    Sound: (path, id) ->
 
-    if (typeof(path) == "string")
-    {
-        that.Stack.push({
-            _torch_asset: "texture",
-            id: id,
+        if @sound[id]
+            Torch.Error("Asset ID '" + id + "' already exists")
+
+        @Stack.push
+            _torch_asset: "sound"
+            id: id
             path: path
-        });
-        that.finish_stack++;
-    }
-    else
-    {
-        for (var i = 0; i < path.length; i++)
-        {
-            that.Texture(path[i][0], path[i][1]);
-        }
-    }
 
+        @finish_stack++;
 
-};
-Torch.Load.prototype.PixlTexture = function(pattern, pallette, id)
-{
-    var that = this;
-    var imSrc = pixl(pattern, pallette).src;
-    that.Stack.push({
-        _torch_asset: "texture",
-        id: id,
-        path: imSrc
-    });
-};
-Torch.Load.prototype.TexturePack = function(path, id, range, fileType)
-{
-    var that = this;
-    var pack = [];
-    for (var i = 1; i <= range; i++)
-    {
-        var packPath = path + "_" + i.toString() + "." + fileType;
-        var packId = id + "_" + i.toString();
+    Texture: (path, id) ->
+        if typeof(path) is "string"
 
-        that.Stack.push({
-            _torch_asset: "texture",
-            id: packId,
-            path: packPath
-        });
+            @Stack.push
+                _torch_asset: "texture"
+                id: id
+                path: path
+            @finish_stack++
 
-        pack.push(packId);
-
-        that.finish_stack++;
-    }
-    that.texturePacks[id] = pack;
-};
-Torch.Load.prototype.TextureSheet = function(path, id, totalWidth, totalHeight, clipWidth, clipHeight)
-{
-    var that = this;
-    totalWidth += clipWidth;
-    var rows = totalHeight / clipHeight;
-    var columns = totalWidth / clipWidth;
-    var sheet = [];
-
-    that.Stack.push({
-        _torch_asset: "texture",
-        id: id,
-        path: path
-    });
-
-    for (var i = 0; i < columns; i++)
-    {
-        for (var j = 0; j < rows; j++)
-        {
-            var sheetClip = {
-                clipX: i * clipWidth,
-                clipY: j * clipHeight,
-                clipWidth: clipWidth,
-                clipHeight: clipHeight
-            };
-            sheet.push(sheetClip);
-        }
-    }
-    that.textureSheets[id] = sheet;
-};
-Torch.Load.prototype.File = function(path, id)
-{
-    var that = this;
-    if (!Torch.fs) that.game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)));
-    that.finish_stack++;
-    Torch.fs.readFile(path, 'utf8', function(er, data)
-    {
-        that.finish_stack--;
-        if (er)
-        {
-            that.game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded".format(path)));
-        }
         else
-        {
-            that.game.Files[id] = data;
-        }
-    });
-};
-//sound, sound pack ?
-Torch.Load.prototype.Load = function(finishFunction)
-{
-    var that = this;
-    for (var i = 0; i < that.Stack.length; i++)
-    {
-        switch(that.Stack[i]._torch_asset)
-        {
-            case "texture":
-                var im = new Image();
-                im.src = that.Stack[i].path;
+            for p,i in path
+                @Texture(path[i][0], path[i][1]);
 
-                that.Stack[i].image = im;
+    PixlTexture: (pattern, pallette, id) ->
+        imSrc = pixl(pattern, pallette).src
+        @Stack.push
+            _torch_asset: "texture"
+            id: id
+            path: imSrc
 
-                that.textures[that.Stack[i].id] = that.Stack[i];
+    TexturePack: (path, id, range, fileType) ->
+        pack = []
+        i = 1 # this might be the bug
+        while i <= range
+            packPath = path + "_" + i.toString() + "." + fileType
+            packId = id + "_" + i.toString()
 
-                im.refId = that.Stack[i].id;
+            @Stack.push
+                _torch_asset: "texture"
+                id: packId
+                path: packPath
 
-                im.onload = function()
-                {
-                    that.textures[this.refId].width = this.width;
-                    that.textures[this.refId].height = this.height;
-                    that.finish_stack--;
-                }
-            break;
-            case "sound":
-                var aud = new Audio();
-                aud.src = that.Stack[i].path;
-                that.Stack[i].audio = aud;
-                that.sound[that.Stack[i].id] = that.Stack[i];
-                that.finish_stack--;
-                aud.toggle = function(){
-                    var that = this;
-                    that.currentTime = 0;
-                    that.play();
-                }
-            break;
-        }
+            pack.push(packId)
 
-    }
-    var TIME_TO_LOAD = 0;
-    _l = setInterval(function()
-    {
-        TIME_TO_LOAD++
-        if (that.finish_stack <= 0)
-        {
-            $(".font-loader").remove();
-            finishFunction();
-            clearInterval(_l);
+            @finish_stack++;
+            i++
 
-        }
-    }, 1000/60);
-}
+        @texturePacks[id] = pack;
+
+    TextureSheet: (path, id, totalWidth, totalHeight, clipWidth, clipHeight) ->
+        totalWidth += clipWidth
+        rows = totalHeight / clipHeight
+        columns = totalWidth / clipWidth
+        sheet = []
+
+        @Stack.push
+            _torch_asset: "texture"
+            id: id
+            path: path
+
+        i = j = 0
+
+        while i < columns
+
+            while j < rows
+                sheetClip =
+                    clipX: i * clipWidth
+                    clipY: j * clipHeight
+                    clipWidth: clipWidth
+                    clipHeight: clipHeight
+                sheet.push(sheetClip)
+
+                j++
+            i++
+
+        @textureSheets[id] = sheet;
+
+    File: (path, id) -> # should change this to load syncronously
+
+        if not Torch.fs
+            @game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)))
+
+        @finish_stack++
+
+        Torch.fs.readFile path, 'utf8', (er, data) =>
+            @finish_stack--
+            if (er)
+                @game.FatalError(new Error("Torch.Load.File file '{0}' could not be loaded".format(path)))
+            else
+                @game.Files[id] = data
+
+    # sound, sound pack ?
+    Load: (finishFunction) ->
+        TIME_TO_LOAD = 0
+        for stackItem in @Stack
+
+            switch stackItem._torch_asset
+
+                when "texture"
+                    im = new Image()
+                    im.src = stackItem.path
+
+                    stackItem.image = im
+
+                    @textures[stackItem.id] = stackItem
+
+                    im.refId = stackItem.id
+
+                    im.onload = =>
+                        @textures[this.refId].width = this.width
+                        @textures[this.refId].height = this.height
+                        @finish_stack--
+
+                when "sound"
+                    aud = new Audio()
+                    aud.src = stackItem.path
+                    stackItem.audio = aud
+                    @sound[stackItem.id] = stackItem
+                    @finish_stack--
+                    aud.toggle = ->
+                        @currentTime = 0
+                        @play()
+
+
+        _i = =>
+            TIME_TO_LOAD++
+            if @finish_stack <= 0
+                $(".font-loader").remove()
+                finishFunction()
+                clearInterval(_l)
+
+        _l = setInterval(_i, 1000/60)
+
+Torch.Load = Load

@@ -1635,46 +1635,6 @@ Torch.Load.prototype.File = function(path, id)
         }
     });
 };
-Torch.Load.prototype.AssetFile = function(path)
-{
-    var that = this;
-    //should probably check for electron here
-    that.finish_stack++;
-    Torch.fs.readFile(path, 'utf8', function(er, data)
-    {
-        if (er)
-        {
-            that.game.FatalError("Torch.Load.AssetFile file '{0}' could not be loaded due to: ".format(path) + er);
-        }
-        else
-        {
-            var lines = data.split("\n");
-            for (var i = 0; i < lines.length; i++)
-            {
-                var line = lines[i];
-                var info = line.split(" ");
-                var assetType = info[0];
-                var assetPath = info[1]
-                var assetId = info[2];
-                var totalWidth = info[3];
-                var totalHeight = info[4];
-                var clipWidth = info[5];
-                var clipHeight = info[6];
-                switch (assetType)
-                {
-                    case "texture":
-                    that.Texture(assetPath, assetId);
-                    break;
-                    case "texture_sheet":
-                    that.Texture(assetPath, assetId, parseInt(totalWidth), parseInt(totalHeight), parseInt(clipWidth), parseInt(clipHeight));
-                    break;
-                }
-            }
-            that.finish_stack--;
-        }
-    });
-
-}
 //sound, sound pack ?
 Torch.Load.prototype.Load = function(finishFunction)
 {
