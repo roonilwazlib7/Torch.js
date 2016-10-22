@@ -1,36 +1,25 @@
-Torch.Load = function(game)
-{
-    this.game = game;
-    this.game.Assets = {
-        game: game,
-        GetTexture: function(id)
-        {
-            return this.game.Assets.Textures[id];
-        },
-        GetTexturePack: function(id)
-        {
-            return this.game.Assets.TexturePacks[id];
-        },
-        GetTextureSheet: function(id)
-        {
-            return this.game.Assets.TextureSheets[id];
-        },
-        GetSound: function(id)
-        {
-            return this.game.Assets.Sounds[id].audio;
-        }
-    };
-    this.game.Files = [];
-    this.textures = this.game.Assets.Textures = [];
-    this.texturePacks = this.game.Assets.TexturePacks = [];
-    this.textureSheets = this.game.Assets.TextureSheets = [];
-    this.sound = this.game.Assets.Sounds = [];
-    this.Stack = [];
-    this.finish_stack = 0;
-    this.loaded = false;
-    this.loadLog = "";
+class Load
+    constructor: (@game) ->
+        @game.Assets =
+            game: @game
+            GetTexture: (id) -> return @game.Assets.Textures[id]
 
-};
+            GetTexturePack: (id) ->return @game.Assets.TexturePacks[id]
+
+            GetTextureSheet: (id) ->return @game.Assets.TextureSheets[id]
+
+            GetSound: (id) ->return @game.Assets.Sounds[id].audio
+
+        @game.Files = []
+        @textures = @game.Assets.Textures = []
+        @texturePacks = @game.Assets.TexturePacks = []
+        @textureSheets = @game.Assets.TextureSheets = []
+        @sound = @game.Assets.Sounds = []
+        @Stack = []
+        @finish_stack = 0
+        @loaded = false
+        @loadLog = ""
+
 Torch.Load.prototype.Sound = function(path, id)
 {
     var that = this;

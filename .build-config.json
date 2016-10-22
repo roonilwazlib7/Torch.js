@@ -12,13 +12,10 @@
             "Torch.js",
             "Torch.Keys.js",
             "Torch.Load.js",
-            "Torch.Sprite.js",
-            "Torch.Text.js",
-            "Torch.Sound.js",
-            "Torch.Particles.js",
-            "Torch.Debug.js",
-            "Torch.Platformer.js",
 
+            "Sprite.js",
+            "Text.js",
+            "Sound.js",
             "SpriteGroup.js",
             "Game.js",
             "Timer.js",
@@ -26,13 +23,17 @@
             "StateMachine.js",
             "Viewport.js",
             "Camera.js",
-
-            "Torch.Bind.js",
-
+            "Platformer.js",
+            "Bind.js",
             "Animation.js",
             "Color.js",
             "Electron.js",
             "CanvasRenderer.js",
             "WebGLRenderer.js"
+        ],
+
+        "NeedsWork":
+        [
+            "Torch.Particles.js"
         ]
 }

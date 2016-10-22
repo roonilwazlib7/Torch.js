@@ -7,7 +7,26 @@
   ParticleEmitter = (function(superClass) {
     extend(ParticleEmitter, superClass);
 
-    function ParticleEmitter(x, y, particleDecayTime, step, once) {}
+    function ParticleEmitter(x, y, particleDecayTime, step, once) {
+      if (once == null) {
+        once = false;
+      }
+      this.InitSprite(x, y);
+      this.PARTICLE_DECAY_TIME = particleDecayTime;
+      this.STEP = step;
+      this.elapsedTime = 0;
+      this.OnEmit = null;
+      this.once = once;
+    }
+
+    ParticleEmitter.prototype.Update = function() {
+      ParticleEmitter.__super__.Update.call(this);
+      this.elapsedTime += this.game.deltaTime;
+      if (this.elapsedTime >= this.STEP) {
+        this.Emit();
+        return that.elapsedTime = 0;
+      }
+    };
 
     return ParticleEmitter;
 
