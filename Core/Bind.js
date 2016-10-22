@@ -5,7 +5,7 @@
   Bind = (function() {
     function Bind(sprite) {
       this.sprite = sprite;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(100, 100, 4, 4);
+      this.sprite.gl_shape = new THREE.PlaneGeometry(98, 75, 8, 8);
     }
 
     Bind.prototype.Reset = function() {
@@ -21,10 +21,12 @@
       }
     };
 
-    Bind.prototype.WebGLTexture = function() {
-      var material, object;
+    Bind.prototype.WebGLTexture = function(textureId) {
+      var map, material, object;
+      map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+      console.log(map);
       material = new THREE.MeshBasicMaterial({
-        color: 0xF06565
+        map: map
       });
       object = new THREE.Mesh(this.sprite.gl_shape, material);
       object.position.z = this.sprite.Rectangle.z;

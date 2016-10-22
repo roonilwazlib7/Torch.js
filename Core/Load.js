@@ -137,8 +137,9 @@
     };
 
     Load.prototype.Load = function(finishFunction) {
-      var TIME_TO_LOAD, _i, _l, aud, im, k, len, ref, stackItem;
+      var TIME_TO_LOAD, _i, _l, aud, im, k, len, ref, stackItem, textureLoader;
       TIME_TO_LOAD = 0;
+      textureLoader = new THREE.TextureLoader();
       ref = this.Stack;
       for (k = 0, len = ref.length; k < len; k++) {
         stackItem = ref[k];
@@ -151,8 +152,12 @@
             im.refId = stackItem.id;
             im.onload = (function(_this) {
               return function() {
+                var texture;
                 _this.textures[stackItem.id].width = _this.width;
                 _this.textures[stackItem.id].height = _this.height;
+                texture = textureLoader.load(im.src);
+                texture.anisotropy = 16;
+                _this.textures[stackItem.id].gl_texture = texture;
                 return _this.finish_stack--;
               };
             })(this);

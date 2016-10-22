@@ -1636,8 +1636,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Load.prototype.Load = function(finishFunction) {
-      var TIME_TO_LOAD, _i, _l, aud, im, k, len, ref, stackItem;
+      var TIME_TO_LOAD, _i, _l, aud, im, k, len, ref, stackItem, textureLoader;
       TIME_TO_LOAD = 0;
+      textureLoader = new THREE.TextureLoader();
       ref = this.Stack;
       for (k = 0, len = ref.length; k < len; k++) {
         stackItem = ref[k];
@@ -1650,8 +1651,12 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
             im.refId = stackItem.id;
             im.onload = (function(_this) {
               return function() {
+                var texture;
                 _this.textures[stackItem.id].width = _this.width;
                 _this.textures[stackItem.id].height = _this.height;
+                texture = textureLoader.load(im.src);
+                texture.anisotropy = 16;
+                _this.textures[stackItem.id].gl_texture = texture;
                 return _this.finish_stack--;
               };
             })(this);
@@ -2519,8 +2524,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         light = new THREE.DirectionalLight("#fff");
         light.position.set(0, 1, 0);
         this.gl_scene = new THREE.Scene();
-        this.gl_camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
-        this.gl_camera.position.z = 400;
+        this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
+        this.gl_camera.position.z = 500;
         this.gl_renderer = new THREE.WebGLRenderer({
           antialias: true
         });
@@ -2529,7 +2534,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         this.gl_scene.add(light);
         this.canvasNode = this.gl_renderer.domElement;
         this.gl_rendererContainer.appendChild(this.canvasNode);
-        this.gl_scene.add(new THREE.AmbientLight(0x404040));
       }
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
@@ -3436,7 +3440,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Bind = (function() {
     function Bind(sprite) {
       this.sprite = sprite;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(100, 100, 4, 4);
+      this.sprite.gl_shape = new THREE.PlaneGeometry(98, 75, 8, 8);
     }
 
     Bind.prototype.Reset = function() {
@@ -3452,10 +3456,12 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
     };
 
-    Bind.prototype.WebGLTexture = function() {
-      var material, object;
+    Bind.prototype.WebGLTexture = function(textureId) {
+      var map, material, object;
+      map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+      console.log(map);
       material = new THREE.MeshBasicMaterial({
-        color: 0xF06565
+        map: map
       });
       object = new THREE.Mesh(this.sprite.gl_shape, material);
       object.position.z = this.sprite.Rectangle.z;

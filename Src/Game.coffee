@@ -12,8 +12,8 @@ class Game
             light.position.set(0,1,0)
 
             @gl_scene = new THREE.Scene()
-            @gl_camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 )
-            @gl_camera.position.z = 400
+            @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 20000 )
+            @gl_camera.position.z = 500
             @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
             @gl_renderer.setSize( window.innerWidth, window.innerHeight )
             @gl_renderer.setPixelRatio( window.devicePixelRatio )
@@ -23,7 +23,6 @@ class Game
             @canvasNode = @gl_renderer.domElement
             @gl_rendererContainer.appendChild(@canvasNode)
 
-            @gl_scene.add( new THREE.AmbientLight( 0x404040 ) )
 
 
         @Load = new Torch.Load(@)

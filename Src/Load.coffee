@@ -115,6 +115,7 @@ class Load
     # sound, sound pack ?
     Load: (finishFunction) ->
         TIME_TO_LOAD = 0
+        textureLoader = new THREE.TextureLoader()
         for stackItem in @Stack
 
             switch stackItem._torch_asset
@@ -132,6 +133,11 @@ class Load
                     im.onload = =>
                         @textures[stackItem.id].width = this.width
                         @textures[stackItem.id].height = this.height
+
+                        texture = textureLoader.load(im.src)
+                        #texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+                        texture.anisotropy = 16
+                        @textures[stackItem.id].gl_texture = texture
                         @finish_stack--
 
                 when "sound"

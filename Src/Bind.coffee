@@ -1,6 +1,6 @@
 class Bind
     constructor: (@sprite) ->
-        @sprite.gl_shape = new THREE.PlaneGeometry( 100, 100, 4, 4 )
+        @sprite.gl_shape = new THREE.PlaneGeometry( 98, 75, 8, 8 )
 
     Reset: ->
         if @sprite.TextureSheetAnimation
@@ -13,11 +13,14 @@ class Bind
             @sprite.anim = null
             @sprite.TexturePack = null
 
-    WebGLTexture: ->
+    WebGLTexture: (textureId) ->
         #map = new THREE.TextureLoader().load( 'player.png' )
         #map.wrapS = map.wrapT = THREE.RepeatWrapping
         #map.anisotropy = 16
-        material = new THREE.MeshBasicMaterial({color:0xF06565}) #new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } )
+
+        map = @sprite.game.Assets.Textures[textureId].gl_texture
+        console.log(map)
+        material = new THREE.MeshBasicMaterial({map: map}) #new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } )
         object = new THREE.Mesh(@sprite.gl_shape , material )
 
         object.position.z = @sprite.Rectangle.z # -10

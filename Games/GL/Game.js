@@ -8,14 +8,14 @@ var sp;
 function Load(game)
 {
         //textures
-    game.Load.Texture("player.png", "player");
+    game.Load.Texture("enemy.png", "player");
 }
 function Init(game)
 {
     game.Bounds();
         // game.Clear("#000");
     sp = new Torch.Sprite(Game, 0, 0);
-    sp.Bind.WebGLTexture();
+    sp.Bind.WebGLTexture("player");
 }
 function Draw(game)
 {

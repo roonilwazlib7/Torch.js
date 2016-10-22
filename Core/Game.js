@@ -20,8 +20,8 @@
         light = new THREE.DirectionalLight("#fff");
         light.position.set(0, 1, 0);
         this.gl_scene = new THREE.Scene();
-        this.gl_camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
-        this.gl_camera.position.z = 400;
+        this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
+        this.gl_camera.position.z = 500;
         this.gl_renderer = new THREE.WebGLRenderer({
           antialias: true
         });
@@ -30,7 +30,6 @@
         this.gl_scene.add(light);
         this.canvasNode = this.gl_renderer.domElement;
         this.gl_rendererContainer.appendChild(this.canvasNode);
-        this.gl_scene.add(new THREE.AmbientLight(0x404040));
       }
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
