@@ -3,9 +3,8 @@ class Game extends Torch.CanvasGame
         @InitGame()
 
     InitGraphics: ->
-        console.log("canvasId:" + @canvasId)
         @gl_rendererContainer = document.getElementById(@canvasId)
-        light = new THREE.DirectionalLight("#fff")
+        light = new THREE.PointLight( 0xff0000, 1, 100 );
         light.position.set(0,1,0)
 
         @gl_scene = new THREE.Scene()
@@ -31,5 +30,8 @@ class Game extends Torch.CanvasGame
         if @graphicsType is Torch.WEBGL
             @gl_camera.lookAt( @gl_scene.position )
             @gl_renderer.render( @gl_scene, @gl_camera )
+
+    Scene: (item) ->
+        @gl_scene.add(item)
 
 Torch.WebGLGame = Game

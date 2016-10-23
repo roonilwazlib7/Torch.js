@@ -63,13 +63,13 @@ class Sprite
         if not @Rectangle.Intersects(@game.BoundRec)
             @Emit("OutOfBounds", @)
 
-        # if @GL
+        if @GL
             # change the position of the three.js object to match sprite
-            # object = @game.gl_scene.getObjectByName(@_torch_uid )
-            # if object
-            #     object.position.z = @Rectangle.z
-            #     object.position.x = @Rectangle.x
-            #     object.position.y = @Rectangle.y
+            object = @game.gl_scene.getObjectByName(@_torch_uid )
+            if object
+                object.position.z = @Rectangle.z
+                object.position.x = @Rectangle.x
+                object.position.y = @Rectangle.y
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver

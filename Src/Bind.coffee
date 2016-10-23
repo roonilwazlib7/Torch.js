@@ -19,7 +19,7 @@ class Bind
         #map.anisotropy = 16
 
         map = @sprite.game.Assets.Textures[textureId].gl_texture
-        material = new THREE.MeshBasicMaterial({map: map})
+        material = new THREE.MeshPhongMaterial({map: map})
         object = new THREE.Mesh(@sprite.gl_shape , material )
 
         object.position.z = @sprite.Rectangle.z # -10
@@ -31,6 +31,11 @@ class Bind
         @sprite.game.gl_scene.add(object)
 
     Texture: -> (textureId, optionalParameters) ->
+
+        if @sprite.GL
+            @WebGLTexture(textureId)
+            return
+
         tex = null
         if typeof(textureId) is "string"
             tex = @sprite.game.Assets.Textures[textureId]

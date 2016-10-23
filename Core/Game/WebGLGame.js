@@ -18,9 +18,8 @@
 
     Game.prototype.InitGraphics = function() {
       var light;
-      console.log("canvasId:" + this.canvasId);
       this.gl_rendererContainer = document.getElementById(this.canvasId);
-      light = new THREE.DirectionalLight("#fff");
+      light = new THREE.PointLight(0xff0000, 1, 100);
       light.position.set(0, 1, 0);
       this.gl_scene = new THREE.Scene();
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
@@ -33,6 +32,28 @@
       this.gl_scene.add(light);
       this.canvasNode = this.gl_renderer.domElement;
       return this.gl_rendererContainer.appendChild(this.canvasNode);
+    };
+
+    Game.prototype.DrawSprites = function() {
+      var i, len, ref, sprite;
+      this.spriteList.sort(function(a, b) {
+        return a.drawIndex - b.drawIndex;
+      });
+      ref = this.spriteList;
+      for (i = 0, len = ref.length; i < len; i++) {
+        sprite = ref[i];
+        if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE) {
+          sprite.Draw();
+        }
+      }
+      if (this.graphicsType === Torch.WEBGL) {
+        this.gl_camera.lookAt(this.gl_scene.position);
+        return this.gl_renderer.render(this.gl_scene, this.gl_camera);
+      }
+    };
+
+    Game.prototype.Scene = function(item) {
+      return this.gl_scene.add(item);
     };
 
     return Game;

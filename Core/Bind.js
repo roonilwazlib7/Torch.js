@@ -24,7 +24,7 @@
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
-      material = new THREE.MeshBasicMaterial({
+      material = new THREE.MeshPhongMaterial({
         map: map
       });
       object = new THREE.Mesh(this.sprite.gl_shape, material);
@@ -39,6 +39,10 @@
     Bind.prototype.Texture = function() {
       return function(textureId, optionalParameters) {
         var scale, tex;
+        if (this.sprite.GL) {
+          this.WebGLTexture(textureId);
+          return;
+        }
         tex = null;
         if (typeof textureId === "string") {
           tex = this.sprite.game.Assets.Textures[textureId];

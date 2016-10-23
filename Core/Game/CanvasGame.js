@@ -220,24 +220,22 @@
     };
 
     Game.prototype.DrawSprites = function() {
-      var i, len, ref, sprite;
-      if (this.graphicsType !== Torch.WEBGL) {
-        this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
-      }
+      var i, len, ref, results, sprite;
+      this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
       });
       ref = this.spriteList;
+      results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         sprite = ref[i];
         if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE) {
-          sprite.Draw();
+          results.push(sprite.Draw());
+        } else {
+          results.push(void 0);
         }
       }
-      if (this.graphicsType === Torch.WEBGL) {
-        this.gl_camera.lookAt(this.gl_scene.position);
-        return this.gl_renderer.render(this.gl_scene, this.gl_camera);
-      }
+      return results;
     };
 
     Game.prototype.UpdateAndDrawSprites = function() {
