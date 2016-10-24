@@ -302,6 +302,9 @@
           this.game.FatalError("DrawIndex values must be a number. Provided was '" + (typeof drawIndex) + "'");
         }
         this.drawIndex = drawIndex;
+        if (this.GL) {
+          this.game.gl_scene.getObjectByName(this._torch_uid).renderOrder = drawIndex;
+        }
         return this;
       }
     };

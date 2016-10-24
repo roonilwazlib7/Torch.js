@@ -257,6 +257,10 @@ class Sprite
             if typeof(drawIndex) isnt "number"
                 @game.FatalError("DrawIndex values must be a number. Provided was '#{typeof(drawIndex)}'")
             @drawIndex = drawIndex
+
+            if @GL
+                @game.gl_scene.getObjectByName(@_torch_uid ).renderOrder = drawIndex
+
             return @
 
     GetDirectionVector: (otherSprite) ->

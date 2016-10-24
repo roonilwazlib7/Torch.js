@@ -3680,7 +3680,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Bind = (function() {
     function Bind(sprite) {
       this.sprite = sprite;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(98, 75, 8, 8);
+      this.sprite.gl_shape = new THREE.PlaneGeometry(1600, 1000, 8, 8);
     }
 
     Bind.prototype.Reset = function() {
@@ -4139,4 +4139,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 }).call(this);
 
 
-Torch.build='Torch-2016-10-24';Torch.version='0.0.1';
+Torch.build='Torch-2016-10-23';Torch.version='0.0.1';

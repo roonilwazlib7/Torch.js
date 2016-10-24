@@ -18,13 +18,38 @@
     };
 
     Game.prototype.InitComponents = function() {
+      var _char, _keys, i;
       console.log("%c   " + Torch.version + "-" + this.name + "  ", "background-color:#cc5200; color:white");
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera();
-      this.Keys = new Keys();
+      _keys = {};
+      i = 0;
+      while (i < 230) {
+        _char = String.fromCharCode(i).toUpperCase();
+        _keys[_char] = {
+          down: false
+        };
+        i++;
+      }
+      _keys["Space"] = {
+        down: false
+      };
+      _keys["LeftArrow"] = {
+        down: false
+      };
+      _keys["RightArrow"] = {
+        down: false
+      };
+      _keys["UpArrow"] = {
+        down: false
+      };
+      _keys["DownArrow"] = {
+        down: false
+      };
+      this.Keys = _keys;
       this.deltaTime = 0;
       this.fps = 0;
       this.averageFps = 0;
@@ -120,9 +145,13 @@
       if (o === void 0 || o._torch_add === void 0) {
         this.FatalError("Cannot add object: " + o.constructor.name + " to game");
       }
-      o._torch_uid = "TORCHSPRITE" + this.uidCounter.toString();
-      this.AddStack.push(o);
-      return this.uidCounter++;
+      if (o._torch_add === "Sprite") {
+        o._torch_uid = "TORCHSPRITE" + this.uidCounter.toString();
+        this.AddStack.push(o);
+        return this.uidCounter++;
+      } else if (o._torch_add === "Light") {
+        return this.gl_scene.add(o.light);
+      }
     };
 
     Game.prototype.Task = function(task) {
@@ -158,11 +187,11 @@
     };
 
     Game.prototype.FlushSprites = function() {
-      var i, len, ref, results, sprite;
+      var j, len, ref, results, sprite;
       ref = this.spriteList;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        sprite = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        sprite = ref[j];
         results.push(sprite.Trash());
       }
       return results;
@@ -190,22 +219,22 @@
     };
 
     Game.prototype.UpdateTasks = function() {
-      var i, len, ref, results, task;
+      var j, len, ref, results, task;
       ref = this.taskList;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        task = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        task = ref[j];
         results.push(task());
       }
       return results;
     };
 
     Game.prototype.UpdateSprites = function() {
-      var cleanedSprites, i, len, ref, sprite;
+      var cleanedSprites, j, len, ref, sprite;
       cleanedSprites = [];
       ref = this.spriteList;
-      for (i = 0, len = ref.length; i < len; i++) {
-        sprite = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        sprite = ref[j];
         if (!sprite.trash) {
           if (!sprite.game.paused) {
             sprite.Update();
@@ -220,15 +249,15 @@
     };
 
     Game.prototype.DrawSprites = function() {
-      var i, len, ref, results, sprite;
+      var j, len, ref, results, sprite;
       this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
       });
       ref = this.spriteList;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        sprite = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        sprite = ref[j];
         if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE) {
           results.push(sprite.Draw());
         } else {
@@ -239,26 +268,26 @@
     };
 
     Game.prototype.UpdateAndDrawSprites = function() {
-      var i, len, o, ref;
+      var j, len, o, ref;
       if (this.loading) {
         return;
       }
       this.DrawSprites();
       this.UpdateSprites();
       ref = this.AddStack;
-      for (i = 0, len = ref.length; i < len; i++) {
-        o = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        o = ref[j];
         this.spriteList.push(o);
       }
       return this.AddStack = [];
     };
 
     Game.prototype.UpdateAnimations = function() {
-      var anim, i, len, ref, results;
+      var anim, j, len, ref, results;
       ref = this.animations;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        anim = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        anim = ref[j];
         results.push(anim.Run());
       }
       return results;
@@ -276,13 +305,13 @@
     };
 
     Game.prototype.UpdateGamePads = function() {
-      var i, len, pad, pads, results;
+      var j, len, pad, pads, results;
       if (navigator.getGamepads && typeof navigator.getGamepads) {
         this.GamePads = [];
         pads = navigator.getGamepads();
         results = [];
-        for (i = 0, len = pads.length; i < len; i++) {
-          pad = pads[i];
+        for (j = 0, len = pads.length; j < len; j++) {
+          pad = pads[j];
           if (pad) {
             results.push(this.GamePads.push(new Torch.GamePad(pad)));
           } else {
@@ -396,8 +425,7 @@
     };
 
     Game.prototype.WireUpEvents = function() {
-      var bodyEvents, eventItem, i, j, len, len1, pads, ref;
-      return;
+      var bodyEvents, eventItem, j, k, len, len1, pads, ref;
       bodyEvents = [
         [
           "keydown", (function(_this) {
@@ -442,12 +470,12 @@
         ]
       ];
       ref = this.getCanvasEvents();
-      for (i = 0, len = ref.length; i < len; i++) {
-        eventItem = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        eventItem = ref[j];
         this.canvasNode.addEventListener(eventItem[0], eventItem[1], false);
       }
-      for (j = 0, len1 = bodyEvents.length; j < len1; j++) {
-        eventItem = bodyEvents[j];
+      for (k = 0, len1 = bodyEvents.length; k < len1; k++) {
+        eventItem = bodyEvents[k];
         document.body.addEventListener(eventItem[0], eventItem[1], false);
       }
       window.addEventListener("gamepadconnected", (function(_this) {

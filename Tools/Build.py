@@ -33,7 +33,7 @@ Write("Builds/Torch-latest.js", COMBINED)
 
 
 if config["Game"]["Source"] == "Coffee":
-    os.system("coffee --compile --output Games/" + config["Game"] + "/Core Games/" + config["Game"] + "/Src")
+    os.system("coffee --compile --output Games/" + config["Game"]["Name"] + "/Core Games/" + config["Game"]["Name"] + "/Src")
 
 command_script = """
 @echo off

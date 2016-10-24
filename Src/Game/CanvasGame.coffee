@@ -13,7 +13,21 @@ class Game
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
         @Camera = new Torch.Camera()
-        @Keys = new Keys()
+
+        _keys = {}
+        i = 0
+        while i < 230
+            _char = String.fromCharCode(i).toUpperCase()
+            _keys[_char] = {down:false}
+            i++
+
+        _keys["Space"] = {down:false}
+        _keys["LeftArrow"] = {down:false}
+        _keys["RightArrow"] = {down:false}
+        _keys["UpArrow"] = {down:false}
+        _keys["DownArrow"] = {down:false}
+
+        @Keys = _keys
 
         @deltaTime = 0
         @fps = 0
@@ -102,10 +116,15 @@ class Game
         if o is undefined or o._torch_add is undefined
             @FatalError("Cannot add object: #{o.constructor.name} to game")
 
-        o._torch_uid = "TORCHSPRITE" + @uidCounter.toString()
+        if o._torch_add is "Sprite"
+            o._torch_uid = "TORCHSPRITE" + @uidCounter.toString()
 
-        @AddStack.push(o)
-        @uidCounter++
+            @AddStack.push(o)
+            @uidCounter++
+
+        else if o._torch_add is "Light"
+            @gl_scene.add(o.light)
+
 
     Task: (task) ->
         @taskList.push(task)
@@ -303,7 +322,6 @@ class Game
         return evts
 
     WireUpEvents: ->
-        return
         bodyEvents =
         [
             [

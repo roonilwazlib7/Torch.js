@@ -8,6 +8,10 @@
             "math/math.js",
 
             "Torch.js",
+            "Keys.js",
+
+            "ThreeExtensions/Lights.js",
+
             "Load.js",
             "Sprite.js",
             "Text.js",
@@ -16,7 +20,6 @@
             "Timer.js",
             "Mouse.js",
             "Camera.js",
-            "Keys.js",
 
                 "Game/CanvasGame.js",
                 "Game/WebGLGame.js",
@@ -39,6 +42,6 @@
 
         "Game": {
             "Name": "GL",
-            "Source": "JavaScript"
+            "Source": "Coffee"
         }
 }
