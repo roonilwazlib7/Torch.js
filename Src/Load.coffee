@@ -129,16 +129,20 @@ class Load
                     @textures[stackItem.id] = stackItem
 
                     im.refId = stackItem.id
+                    im.stackItem = stackItem
+                    im.loader = this
 
-                    im.onload = =>
-                        @textures[stackItem.id].width = this.width
-                        @textures[stackItem.id].height = this.height
+                    im.onload = ->
+                        this.loader.textures[this.stackItem.id].width = this.width
+                        this.loader.textures[this.stackItem.id].height = this.height
 
-                        texture = textureLoader.load(im.src)
-                        #texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+                        #texture = new THREE.Texture(this, THREE.UVMapping, THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.LinearFilter, THREE.LinearMipMapLinearFilter, THREE.RGBAFormat, THREE.UnsignedByteType, 4)
+                        texture = textureLoader.load(this.src)
                         texture.anisotropy = 16
-                        @textures[stackItem.id].gl_texture = texture
-                        @finish_stack--
+
+                        this.loader.textures[this.stackItem.id].gl_texture = texture
+                        this.loader.finish_stack--
+                        console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture)
 
                 when "sound"
                     aud = new Audio()

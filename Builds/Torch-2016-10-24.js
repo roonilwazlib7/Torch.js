@@ -1782,17 +1782,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
             stackItem.image = im;
             this.textures[stackItem.id] = stackItem;
             im.refId = stackItem.id;
-            im.onload = (function(_this) {
-              return function() {
-                var texture;
-                _this.textures[stackItem.id].width = _this.width;
-                _this.textures[stackItem.id].height = _this.height;
-                texture = textureLoader.load(im.src);
-                texture.anisotropy = 16;
-                _this.textures[stackItem.id].gl_texture = texture;
-                return _this.finish_stack--;
-              };
-            })(this);
+            im.stackItem = stackItem;
+            im.loader = this;
+            im.onload = function() {
+              var texture;
+              this.loader.textures[this.stackItem.id].width = this.width;
+              this.loader.textures[this.stackItem.id].height = this.height;
+              texture = textureLoader.load(this.src);
+              texture.anisotropy = 16;
+              this.loader.textures[this.stackItem.id].gl_texture = texture;
+              this.loader.finish_stack--;
+              return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);
+            };
             break;
           case "sound":
             aud = new Audio();

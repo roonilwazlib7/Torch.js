@@ -10,7 +10,7 @@ function Load(game)
 {
         //textures
     game.Load.Texture("enemy.png", "player");
-    //game.Load.Texture("black.png", "black");
+    game.Load.Texture("player.png", "black");
 }
 function Init(game)
 {
@@ -19,15 +19,15 @@ function Init(game)
 
     // var black = new Torch.Sprite(game, -500, 500);
     // black.Bind.WebGLTexture("black");
-    // black.DrawIndex(1)
+    //black.DrawIndex(10)
 
     game.player = new Player(game);
-    //game.player.DrawIndex(0)
+    game.player.DrawIndex(10)
 
     game.blueLight = new Torch.PointLight( 0x0000ff, 1, 100);
     game.Add( game.blueLight )
 
-    //game.Add( new Torch.AmbientLight(0xffffff) );
+    game.Add( new Torch.AmbientLight(0xffffff) );
 }
 function Draw(game)
 {
