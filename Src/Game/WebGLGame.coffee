@@ -10,7 +10,7 @@ class Game extends Torch.CanvasGame
         @gl_scene = new THREE.Scene()
         @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 20000 )
         @gl_camera.position.z = 500
-        @gl_renderer = new THREE.WebGLRenderer( { antialias: true } )
+        @gl_renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
         @gl_renderer.setSize( window.innerWidth, window.innerHeight )
         @gl_renderer.setPixelRatio( window.devicePixelRatio )
 

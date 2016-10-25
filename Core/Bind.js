@@ -23,6 +23,7 @@
 
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
+      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width, this.sprite.game.Assets.Textures[textureId].height, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map

@@ -157,7 +157,10 @@
               this.loader.textures[this.stackItem.id].width = this.width;
               this.loader.textures[this.stackItem.id].height = this.height;
               texture = textureLoader.load(this.src);
+              texture.format = THREE.RGBAFormat;
               texture.anisotropy = 16;
+              texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+              texture.needsUpdate = true;
               this.loader.textures[this.stackItem.id].gl_texture = texture;
               this.loader.finish_stack--;
               return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);

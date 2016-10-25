@@ -1789,7 +1789,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
               this.loader.textures[this.stackItem.id].width = this.width;
               this.loader.textures[this.stackItem.id].height = this.height;
               texture = textureLoader.load(this.src);
+              texture.format = THREE.RGBAFormat;
               texture.anisotropy = 16;
+              texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+              texture.needsUpdate = true;
               this.loader.textures[this.stackItem.id].gl_texture = texture;
               this.loader.finish_stack--;
               return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);
@@ -3179,7 +3182,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
       this.gl_camera.position.z = 500;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: true
+        antialias: true,
+        alpha: true
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
@@ -3699,6 +3703,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
+      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width, this.sprite.game.Assets.Textures[textureId].height, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map

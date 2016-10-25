@@ -25,7 +25,8 @@
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
       this.gl_camera.position.z = 500;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: true
+        antialias: true,
+        alpha: true
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);

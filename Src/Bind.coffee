@@ -18,6 +18,8 @@ class Bind
         #map.wrapS = map.wrapT = THREE.RepeatWrapping
         #map.anisotropy = 16
 
+        @sprite.gl_shape = new THREE.PlaneGeometry( @sprite.game.Assets.Textures[textureId].width, @sprite.game.Assets.Textures[textureId].height, 8, 8 )
+
         map = @sprite.game.Assets.Textures[textureId].gl_texture
         material = new THREE.MeshPhongMaterial({map: map})
         object = new THREE.Mesh(@sprite.gl_shape , material )
