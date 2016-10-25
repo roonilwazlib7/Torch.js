@@ -9,11 +9,12 @@ var blueLightMover = 0;
 function Load(game)
 {
     //textures
-    game.Load.Texture("enemy.png", "player");
-    game.Load.Texture("black.png", "black");
+    game.Load.Texture("ship.png", "player");
+    game.Load.Texture("player.png", "black");
 }
 function Init(game)
 {
+    Torch.Scale = 6;
     game.Bounds();
     game.Clear("black");
 
@@ -21,17 +22,10 @@ function Init(game)
     black.Bind.WebGLTexture("black");
     black.DrawIndex(2)
 
-    var greenLight = new Torch.PointLight( 0xffffff, 1, 100);
-    greenLight.light.position.x = -500;
-    greenLight.light.position.y = 500;
-
     game.player = new Player(game);
-    game.player.DrawIndex(9)
+    game.player.DrawIndex(9);
 
-    game.blueLight = new Torch.PointLight( 0x0000ff, 1, 100);
-    game.Add( game.blueLight )
-    game.Add( greenLight )
-    game.Add( new Torch.AmbientLight(0xffffff) );
+    //game.Add( new Torch.AmbientLight(0xffffff) );
 }
 function Draw(game)
 {
@@ -39,10 +33,6 @@ function Draw(game)
 }
 function Update(game)
 {
-    blueLightMover += 0.1
-
-    game.blueLight.light.position.x = 75 * Math.cos(blueLightMover);
-    game.blueLight.light.position.y = 75 * Math.sin(blueLightMover);
 }
 
 Game.Start(Load, Update, Draw, Init);

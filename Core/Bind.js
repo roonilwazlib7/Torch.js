@@ -23,18 +23,19 @@
 
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width, this.sprite.game.Assets.Textures[textureId].height, 8, 8);
+      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width * Torch.Scale, this.sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
       });
+      material.transparent = true;
       object = new THREE.Mesh(this.sprite.gl_shape, material);
       object.position.z = this.sprite.Rectangle.z;
       object.position.x = this.sprite.Rectangle.x;
       object.position.y = this.sprite.Rectangle.y;
-      object.rotation.z = Math.PI;
       object.name = this.sprite._torch_uid;
-      return this.sprite.game.gl_scene.add(object);
+      this.sprite.game.gl_scene.add(object);
+      return this.sprite.gl_scene_object = object;
     };
 
     Bind.prototype.Texture = function() {

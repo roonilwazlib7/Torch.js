@@ -138,10 +138,8 @@ class Load
 
                         #texture = new THREE.Texture(this, THREE.UVMapping, THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.LinearFilter, THREE.LinearMipMapLinearFilter, THREE.RGBAFormat, THREE.UnsignedByteType, 4)
                         texture = textureLoader.load(this.src)
-                        texture.format = THREE.RGBAFormat
-                        texture.anisotropy = 16
-                        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-                        texture.needsUpdate = true
+                        texture.magFilter = THREE.NearestFilter
+                        texture.minFilter = THREE.LinearMipMapLinearFilter
 
                         this.loader.textures[this.stackItem.id].gl_texture = texture
                         this.loader.finish_stack--

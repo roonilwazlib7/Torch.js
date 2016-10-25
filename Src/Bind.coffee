@@ -18,19 +18,22 @@ class Bind
         #map.wrapS = map.wrapT = THREE.RepeatWrapping
         #map.anisotropy = 16
 
-        @sprite.gl_shape = new THREE.PlaneGeometry( @sprite.game.Assets.Textures[textureId].width, @sprite.game.Assets.Textures[textureId].height, 8, 8 )
+        @sprite.gl_shape = new THREE.PlaneGeometry( @sprite.game.Assets.Textures[textureId].width * Torch.Scale, @sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8 )
 
         map = @sprite.game.Assets.Textures[textureId].gl_texture
+
         material = new THREE.MeshPhongMaterial({map: map})
+        material.transparent = true
+
         object = new THREE.Mesh(@sprite.gl_shape , material )
 
         object.position.z = @sprite.Rectangle.z # -10
         object.position.x = @sprite.Rectangle.x
         object.position.y = @sprite.Rectangle.y
-        object.rotation.z = Math.PI
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)
+        @sprite.gl_scene_object = object
 
     Texture: -> (textureId, optionalParameters) ->
 

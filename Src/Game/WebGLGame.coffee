@@ -4,20 +4,28 @@ class Game extends Torch.CanvasGame
 
     InitGraphics: ->
         @gl_rendererContainer = document.getElementById(@canvasId)
-        light = new THREE.PointLight( 0xff0000, 1, 100 );
-        light.position.set(0,1,0)
 
         @gl_scene = new THREE.Scene()
-        @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 20000 )
-        @gl_camera.position.z = 500
-        @gl_renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
+        @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 1000 )
+        @gl_camera.position.z = 600
+        @gl_renderer = new THREE.WebGLRenderer( {antialias: false} )
         @gl_renderer.setSize( window.innerWidth, window.innerHeight )
         @gl_renderer.setPixelRatio( window.devicePixelRatio )
 
-        @gl_scene.add(light)
-
         @canvasNode = @gl_renderer.domElement
         @gl_rendererContainer.appendChild(@canvasNode)
+
+        onWindowResize = ( event ) =>
+
+            SCREEN_WIDTH = window.innerWidth
+            SCREEN_HEIGHT = window.innerHeight
+
+            @gl_renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT )
+
+            @gl_camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT
+            @gl_camera.updateProjectionMatrix()
+
+        window.addEventListener( 'resize', onWindowResize, false )
 
     DrawSprites: ->
         @spriteList.sort (a, b) ->

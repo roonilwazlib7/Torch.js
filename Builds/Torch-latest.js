@@ -1789,10 +1789,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
               this.loader.textures[this.stackItem.id].width = this.width;
               this.loader.textures[this.stackItem.id].height = this.height;
               texture = textureLoader.load(this.src);
-              texture.format = THREE.RGBAFormat;
-              texture.anisotropy = 16;
-              texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-              texture.needsUpdate = true;
+              texture.magFilter = THREE.NearestFilter;
+              texture.minFilter = THREE.LinearMipMapLinearFilter;
               this.loader.textures[this.stackItem.id].gl_texture = texture;
               this.loader.finish_stack--;
               return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);
@@ -3174,22 +3172,29 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     }
 
     Game.prototype.InitGraphics = function() {
-      var light;
+      var onWindowResize;
       this.gl_rendererContainer = document.getElementById(this.canvasId);
-      light = new THREE.PointLight(0xff0000, 1, 100);
-      light.position.set(0, 1, 0);
       this.gl_scene = new THREE.Scene();
-      this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
-      this.gl_camera.position.z = 500;
+      this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+      this.gl_camera.position.z = 600;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
+        antialias: false
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
-      this.gl_scene.add(light);
       this.canvasNode = this.gl_renderer.domElement;
-      return this.gl_rendererContainer.appendChild(this.canvasNode);
+      this.gl_rendererContainer.appendChild(this.canvasNode);
+      onWindowResize = (function(_this) {
+        return function(event) {
+          var SCREEN_HEIGHT, SCREEN_WIDTH;
+          SCREEN_WIDTH = window.innerWidth;
+          SCREEN_HEIGHT = window.innerHeight;
+          _this.gl_renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+          _this.gl_camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+          return _this.gl_camera.updateProjectionMatrix();
+        };
+      })(this);
+      return window.addEventListener('resize', onWindowResize, false);
     };
 
     Game.prototype.DrawSprites = function() {
@@ -3703,18 +3708,19 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Bind.prototype.WebGLTexture = function(textureId) {
       var map, material, object;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width, this.sprite.game.Assets.Textures[textureId].height, 8, 8);
+      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width * Torch.Scale, this.sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
       });
+      material.transparent = true;
       object = new THREE.Mesh(this.sprite.gl_shape, material);
       object.position.z = this.sprite.Rectangle.z;
       object.position.x = this.sprite.Rectangle.x;
       object.position.y = this.sprite.Rectangle.y;
-      object.rotation.z = Math.PI;
       object.name = this.sprite._torch_uid;
-      return this.sprite.game.gl_scene.add(object);
+      this.sprite.game.gl_scene.add(object);
+      return this.sprite.gl_scene_object = object;
     };
 
     Bind.prototype.Texture = function() {
@@ -4145,4 +4151,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 }).call(this);
 
 
-Torch.build='Torch-2016-10-24';Torch.version='0.0.1';
+Torch.build='Torch-2016-10-25';Torch.version='0.0.1';

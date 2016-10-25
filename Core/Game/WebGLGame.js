@@ -17,22 +17,29 @@
     }
 
     Game.prototype.InitGraphics = function() {
-      var light;
+      var onWindowResize;
       this.gl_rendererContainer = document.getElementById(this.canvasId);
-      light = new THREE.PointLight(0xff0000, 1, 100);
-      light.position.set(0, 1, 0);
       this.gl_scene = new THREE.Scene();
-      this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 20000);
-      this.gl_camera.position.z = 500;
+      this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+      this.gl_camera.position.z = 600;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
+        antialias: false
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
-      this.gl_scene.add(light);
       this.canvasNode = this.gl_renderer.domElement;
-      return this.gl_rendererContainer.appendChild(this.canvasNode);
+      this.gl_rendererContainer.appendChild(this.canvasNode);
+      onWindowResize = (function(_this) {
+        return function(event) {
+          var SCREEN_HEIGHT, SCREEN_WIDTH;
+          SCREEN_WIDTH = window.innerWidth;
+          SCREEN_HEIGHT = window.innerHeight;
+          _this.gl_renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+          _this.gl_camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+          return _this.gl_camera.updateProjectionMatrix();
+        };
+      })(this);
+      return window.addEventListener('resize', onWindowResize, false);
     };
 
     Game.prototype.DrawSprites = function() {
