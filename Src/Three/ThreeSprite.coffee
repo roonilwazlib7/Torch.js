@@ -13,11 +13,11 @@ class ThreeSprite extends ThreeEntity
 
     Position: (plane, optionalArgument) ->
         if optionalArgument is null or optionalArgument is undefined
-            return @sprite.Rectangle[plane]
+            return @entity.position[plane]
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set position. Expected number, got: #{typeof(optionalArgument)}")
-            @sprite.Rectangle[plane] = optionalArgument
+            @entity.position[plane] = optionalArgument
             return @
 
     Rotation: (arg) ->

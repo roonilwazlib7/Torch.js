@@ -1635,12 +1635,12 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     ThreeSprite.prototype.Position = function(plane, optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.sprite.Rectangle[plane];
+        return this.entity.position[plane];
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
         }
-        this.sprite.Rectangle[plane] = optionalArgument;
+        this.entity.position[plane] = optionalArgument;
         return this;
       }
     };
