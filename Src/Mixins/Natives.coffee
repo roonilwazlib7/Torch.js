@@ -1,10 +1,10 @@
 # Modify some core js prototypes
-Function::is = Function::MixIn = (otherFunction) ->
+Function::MixIn = Function::is = (otherFunction) ->
     proto = this.prototype
     items = Object.create(otherFunction.prototype)
 
-    for key in items
-        proto[key] = items[key]
+    for key,value of items
+        proto[key] = value
 
     return this #allow chaining
 

@@ -22,8 +22,6 @@
   var CanvasGame;
 
   CanvasGame = (function() {
-    Game.MixIn(Torch.EventDispatcher);
-
     function CanvasGame(canvasId, width, height, name, graphicsType, pixel) {
       this.canvasId = canvasId;
       this.width = width;
@@ -34,20 +32,23 @@
       this.InitGame();
     }
 
+    CanvasGame.MixIn(Torch.EventDispatcher);
+
     CanvasGame.prototype.InitGame = function() {
+      this.InitEventDispatch();
       this.InitGraphics();
-      this.InitComponents();
-      return this.InitEventDispatch();
+      return this.InitComponents();
     };
 
     CanvasGame.prototype.InitComponents = function() {
-      var _char, _keys, i;
-      console.log("%c Torch v" + Torch.Version + " - " + this.name, "background-color:#" + Torch.Color.Flame + "; color:white; padding:2px; padding-right:5px;padding-left:5px");
+      var _char, _keys, i, styleString;
+      styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px";
+      console.log(styleString);
+      console.log("%c Torch v" + Torch.version + " - " + this.name, styleString);
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
-      this.Audio = new Torch.Audio(this);
       _keys = {};
       i = 0;
       while (i < 230) {

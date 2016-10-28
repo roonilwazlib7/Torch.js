@@ -18,14 +18,14 @@
  */
 
 (function() {
-  var Game,
+  var WebGLGame,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  Game = (function(superClass) {
-    extend(Game, superClass);
+  WebGLGame = (function(superClass) {
+    extend(WebGLGame, superClass);
 
-    function Game(canvasId, width, height, name, graphicsType, pixel) {
+    function WebGLGame(canvasId, width, height, name, graphicsType, pixel) {
       this.canvasId = canvasId;
       this.width = width;
       this.height = height;
@@ -35,7 +35,7 @@
       this.InitGame();
     }
 
-    Game.prototype.InitGraphics = function() {
+    WebGLGame.prototype.InitGraphics = function() {
       this.gl_rendererContainer = document.getElementById(this.canvasId);
       this.gl_scene = new THREE.Scene();
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
@@ -56,7 +56,7 @@
       })(this));
     };
 
-    Game.prototype.DrawSprites = function() {
+    WebGLGame.prototype.DrawSprites = function() {
       var i, len, ref, sprite;
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
@@ -72,7 +72,7 @@
       return this.gl_renderer.render(this.gl_scene, this.gl_camera);
     };
 
-    Game.prototype.UpdateSprites = function() {
+    WebGLGame.prototype.UpdateSprites = function() {
       var cleanedSprites, i, len, ref, sprite;
       cleanedSprites = [];
       ref = this.spriteList;
@@ -94,10 +94,10 @@
       return this.spriteList = cleanedSprites;
     };
 
-    return Game;
+    return WebGLGame;
 
   })(Torch.CanvasGame);
 
-  Torch.WebGLGame = Game;
+  Torch.WebGLGame = WebGLGame;
 
 }).call(this);

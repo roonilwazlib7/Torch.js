@@ -14,7 +14,7 @@
         Torch.CanvasGame dictates that WEBGL, through three.js, be used to render
         graphics.
 ###
-class Game extends Torch.CanvasGame
+class WebGLGame extends Torch.CanvasGame
     constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
         @InitGame()
 
@@ -66,4 +66,4 @@ class Game extends Torch.CanvasGame
         @spriteList = cleanedSprites
 
 
-Torch.WebGLGame = Game
+Torch.WebGLGame = WebGLGame

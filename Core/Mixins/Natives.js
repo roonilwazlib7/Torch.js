@@ -2,13 +2,13 @@
 (function() {
   var slice = [].slice;
 
-  Function.prototype.is = Function.prototype.MixIn = function(otherFunction) {
-    var i, items, key, len, proto;
+  Function.prototype.MixIn = Function.prototype.is = function(otherFunction) {
+    var items, key, proto, value;
     proto = this.prototype;
     items = Object.create(otherFunction.prototype);
-    for (i = 0, len = items.length; i < len; i++) {
-      key = items[i];
-      proto[key] = items[key];
+    for (key in items) {
+      value = items[key];
+      proto[key] = value;
     }
     return this;
   };

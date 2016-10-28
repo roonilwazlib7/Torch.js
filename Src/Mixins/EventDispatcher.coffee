@@ -1,9 +1,10 @@
+exports = this
 class EventDispatcher
     @dispatchers: []
 
     InitEventDispatch: ->
         @events = {}
-        @dispatchers.push(@)
+        EventDispatcher.dispatchers.push(@)
 
     On: (eventName, eventHandle) ->
         if not @events[eventName]
@@ -30,5 +31,5 @@ class EventDispatcher
             for key,val of @events
                 @events[key] = undefined
         return @
-        
+
 exports.EventDispatcher = EventDispatcher

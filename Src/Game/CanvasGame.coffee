@@ -17,23 +17,25 @@
 ###
 class CanvasGame
 
-    Game.MixIn(Torch.EventDispatcher)
-
     constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
         @InitGame()
 
+    CanvasGame.MixIn(Torch.EventDispatcher)
+
     InitGame: ->
+        @InitEventDispatch()
         @InitGraphics()
         @InitComponents()
-        @InitEventDispatch()
 
     InitComponents: ->
-        console.log("%c Torch v#{Torch.Version} - #{@name}", "background-color:##{Torch.Color.Flame}; color:white; padding:2px; padding-right:5px;padding-left:5px")
+        styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px"
+        console.log("%c Torch v#{Torch.version} - #{@name}", styleString)
+        
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
-        @Audio = new Torch.Audio(@)
+        # @Audio = new Torch.Audio(@) not ready for this yet
 
         _keys = {}
         i = 0

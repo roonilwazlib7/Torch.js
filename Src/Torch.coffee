@@ -63,7 +63,7 @@ class Torch
     WEBGL: 2
     PIXEL: 3
 
-    constructor ->
+    constructor: ->
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
         @AjaxLoader = AjaxLoader

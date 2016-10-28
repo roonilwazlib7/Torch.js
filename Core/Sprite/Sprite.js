@@ -28,11 +28,11 @@
     hasProp = {}.hasOwnProperty;
 
   Sprite = (function() {
-    Sprite.MixIn(Torch.EventDispatcher).MixIn(Torch.Trashable);
-
     function Sprite(game, x, y) {
       this.InitSprite(game, x, y);
     }
+
+    Sprite.MixIn(Torch.EventDispatcher).MixIn(Torch.Trashable);
 
     Sprite.prototype.InitSprite = function(game, x, y) {
       if (x == null) {

@@ -107,22 +107,20 @@
   })();
 
   Torch = (function() {
-    function Torch() {}
-
     Torch.prototype.CANVAS = 1;
 
     Torch.prototype.WEBGL = 2;
 
     Torch.prototype.PIXEL = 3;
 
-    constructor(function() {
+    function Torch() {
       this.GamePads = this.Enum("Pad1", "Pad2", "Pad3", "Pad4");
       this.AjaxData = this.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text");
       this.AjaxLoader = AjaxLoader;
       this.EventArgs = EventArgs;
       this.EventDispatcher = EventDispatcher;
-      return this.Trashable = Trashable;
-    });
+      this.Trashable = Trashable;
+    }
 
     Torch.prototype.Needs = function(key) {
       if (!Torch[key]) {
