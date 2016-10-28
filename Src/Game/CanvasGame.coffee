@@ -1,18 +1,39 @@
-class Game
-    constructor: (@canvasId, @width, @height, @name, @graphicsType) ->
+###
+    @class Torch.Game
+    @author roonilwazlib
+
+    @constructor
+        @param canvasId, string, REQUIRED
+        @param width, number|string, REQUIRED
+        @param height, number|string, REQUIRED
+        @param name, string, REQUIRED
+        @param graphicsType, enum, REQUIRED
+        @param pixel, enum
+
+    @description
+        Torch.Canvas game controls the base behavior of a Torch game. The gameloop,
+        asset loading, and initialization are handled here. Torch.CanvasGame
+        dictates the HTML5 2d canvas be used for rendering, as opposed to WEBGL
+###
+class CanvasGame
+
+    Game.MixIn(Torch.EventDispatcher)
+
+    constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
         @InitGame()
 
     InitGame: ->
         @InitGraphics()
         @InitComponents()
+        @InitEventDispatch()
 
     InitComponents: ->
-        console.log("%c   " + Torch.version + "-" + @name + "  ", "background-color:#cc5200; color:white")
+        console.log("%c Torch v#{Torch.Version} - #{@name}", "background-color:##{Torch.Color.Flame}; color:white; padding:2px; padding-right:5px;padding-left:5px")
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
-        @Camera = new Torch.Camera()
+        @Audio = new Torch.Audio(@)
 
         _keys = {}
         i = 0
@@ -56,19 +77,11 @@ class Game
         @canvas = @canvasNode.getContext("2d")
         @Clear("#cc5200")
 
-    On: (eventName, eventHandle) ->
-        @events[eventName] = eventHandle
-        return @
-
-    Emit: (eventName, eventArgs) ->
-        if @events[eventName] isnt undefined
-            @events[eventName](eventArgs)
-        return @
-
     PixelScale: ->
         @canvas.webkitImageSmoothingEnabled = false
         @canvas.mozImageSmoothingEnabled = false
         @canvas.imageSmoothingEnabled = false
+
         return @
 
     Bounds: (boundRec) ->
@@ -122,9 +135,11 @@ class Game
             @AddStack.push(o)
             @uidCounter++
 
-        else if o._torch_add is "Light"
-            @gl_scene.add(o.light)
+        else if o._torch_add is "Three"
+            @gl_scene.add(o.entity)
 
+        else if o._torch_add is "Task"
+            @taskList.push(o)
 
     Task: (task) ->
         @taskList.push(task)
@@ -139,7 +154,6 @@ class Game
 
         @draw(@)
         @update(@)
-        @Viewport.Update()
         @Camera.Update()
         @Timer.Update()
         @UpdateAndDrawSprites()
@@ -177,11 +191,17 @@ class Game
                           <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>")
         @RunGame = ->
         @Run = ->
-        @Emit("FatalError")
+        @Emit "FatalError", new Torch.EventArgs @,
+            error: error
         throw error
 
     UpdateTasks: ->
-        for task in @taskList then task()
+        cleanedTasks = []
+        for task in @taskList
+            task.Execute(@)
+
+            if not task.trash then cleanedTasks.push(task)
+        @taskList = cleanedTasks
 
     UpdateSprites: ->
         cleanedSprites = []
@@ -192,7 +212,7 @@ class Game
                 cleanedSprites.push(sprite)
             else
                 sprite.trashed = true
-                sprite.Emit("Trash")
+                sprite.Emit "Trash", new Torch.EventArgs(@)
         @spriteList = cleanedSprites
 
     DrawSprites: ->
@@ -235,38 +255,6 @@ class Game
                 if (pad)
                     @GamePads.push(new Torch.GamePad(pad))
 
-    Draw: (texture, rectangle, params = {}) ->
-        viewRect = @Viewport.GetViewRectangle()
-
-        if not rectangle.Intersects(viewRect)
-            return
-
-        @canvas.save()
-
-        x = Math.round(rectangle.x + @Viewport.x)
-        y = Math.round(rectangle.y + @Viewport.y)
-        width = rectangle.width
-        height = rectangle.height
-
-        rotation = params.rotation ? 0
-        rotation += @Viewport.rotation
-
-        @canvas.globalAlpha = params.alpha ? @canvas.globalAlpha
-
-        @canvas.translate(x + width / 2, y + height / 2)
-
-        @canvas.rotate(rotation)
-
-        if params.IsTextureSheet
-            @canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height)
-        else
-            @canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height)
-
-        @canvas.rotate(0)
-        @canvas.globalAlpha = 1
-
-        @canvas.restore()
-
     Clear: (color) ->
         if color is undefined
             @FatalError("Cannot clear undefined color")
@@ -293,14 +281,20 @@ class Game
             [
                 "mousemove", (e) =>
                     @Mouse.SetMousePos(@canvasNode, e)
+                    @Emit "MouseMove", new Torch.EventArgs @,
+                        nativeEvent: e
             ],
             [
                 "mousedown", (e) =>
                     @Mouse.down = true
+                    @Emit "MouseDown", new Torch.EventArgs @,
+                        nativeEvent: e
             ],
             [
                 "mouseup", (e) =>
                     @Mouse.down = false
+                    @Emit "MouseUp", new Torch.EventArgs @,
+                        nativeEvent: e
             ],
             [
                 "touchstart", (e) =>
@@ -315,66 +309,24 @@ class Game
                 "click", (e) =>
                     e.preventDefault()
                     e.stopPropagation()
+                    @Emit "Click", new Torch.EventArgs @,
+                        nativeEvent: e
                     return false
             ]
         ]
 
         return evts
 
+    getBodyEvents: -> # something happend here
+
     WireUpEvents: ->
-        bodyEvents =
-        [
-            [
-                "keydown", (e) =>
-                    c = e.keyCode
-                    if c is 32
-                        @Keys.Space.down = true
-
-                    else if c is 37
-                        @Keys.LeftArrow.down = true
-
-                    else if c is 38
-                        @Keys.UpArrow.down = true
-
-                    else if c is 39
-                        @Keys.RightArrow.down = true
-
-                    else if c is 40
-                        @Keys.DownArrow.down = true
-
-                    else
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true
-
-
-            ],
-            [
-                "keyup", (e) =>
-                    c = e.keyCode
-                    if c is 32
-                        @Keys.Space.down = false
-
-                    else if c is 37
-                        @Keys.LeftArrow.down = false
-
-                    else if c is 38
-                        @Keys.UpArrow.down = false
-
-                    else if c is 39
-                        @Keys.RightArrow.down = false
-
-                    else if c is 40
-                        @Keys.DownArrow.down = false
-
-                    else
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false
-            ]
-        ]
-
         for eventItem in @getCanvasEvents()
             @canvasNode.addEventListener(eventItem[0], eventItem[1], false)
 
-        for eventItem in bodyEvents
+        for eventItem in @getBodyEvents()
             document.body.addEventListener(eventItem[0], eventItem[1], false)
+
+        # document.body.addEventListener("keypress", RecordKeyPress, false)
 
         window.addEventListener "gamepadconnected", (e) =>
             gp = navigator.getGamepads()[e.gamepad.index]
@@ -382,6 +334,15 @@ class Game
             console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
             e.gamepad.index, e.gamepad.id,
             e.gamepad.buttons.length, e.gamepad.axes.length)
+
+        # window resize event
+        resize = (event) =>
+            @Viewport.width = window.innerWidth
+            @Viewport.height = window.innerHeight
+            @Emit "Resize", new Torch.EventArgs @,
+                nativeEvent: event
+
+        window.addEventListener( 'resize', resize, false )
 
         pads = navigator.getGamepads()
 
@@ -400,4 +361,4 @@ class Game
         return @
 
 # expose to Torch
-Torch.CanvasGame = Game
+Torch.CanvasGame = CanvasGame

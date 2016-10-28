@@ -5,7 +5,8 @@
   Electron = (function() {
     function Electron() {}
 
-    Electron.prototype.Import = function() {
+    Electron.Import = function() {
+      Torch.ELECTRON = true;
       return Torch.fs = require("fs");
     };
 

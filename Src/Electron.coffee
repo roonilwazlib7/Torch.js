@@ -1,5 +1,6 @@
 class Electron
-    Import: ->
+    @Import: ->
+        Torch.ELECTRON = true
         Torch.fs = require("fs")
 
 Torch.Electron = new Electron()

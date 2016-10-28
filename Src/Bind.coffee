@@ -1,6 +1,12 @@
 class Bind
+    constructor: (sprite) ->
+        return new WebGLBind(sprite) if sprite.GL
+        return new CanvasBind(sprite)
+
+
+
+class CanvasBind
     constructor: (@sprite) ->
-        @sprite.gl_shape = new THREE.PlaneGeometry( 98, 75, 8, 8 )
 
     Reset: ->
         if @sprite.TextureSheetAnimation
@@ -126,6 +132,38 @@ class Bind
         @sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale
         @sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale
         return anim
+
+class WebGLBind
+    constructor: (@sprite) ->
+
+    Texture: (textureId) ->
+        textureAsset = null
+        if textureId.gl_2d_canvas_generated_image
+            # same as in Load, should consolidate the two
+            texture = new THREE.TextureLoader().load(this.src)
+            texture.magFilter = THREE.NearestFilter
+            texture.minFilter = THREE.LinearMipMapLinearFilter
+
+            textureAsset =
+                width: textureId.image.width
+                height: textureId.image.height
+                gl_texture: texture
+        else
+            textureAsset = @sprite.game.Assets.Textures[textureId]
+
+        width = textureAsset.width * Torch.Scale
+        height = textureAsset.height * Torch.Scale
+        map = textureAsset.gl_texture
+
+        shape = new THREE.PlaneGeometry(width, height, 8, 8)
+        material = new THREE.MeshPhongMaterial({map: map, transparent: true})
+
+        @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, shape)
+
+        @sprite.gl_orig_width = width
+        @sprite.gl_orig_height = height
+        @sprite.Rectangle.width = width
+        @sprite.Rectangle.height = height
 
 #expose to Torch
 Torch.Bind = Bind

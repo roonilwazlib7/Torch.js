@@ -290,16 +290,9 @@
 
   })();
 
-  exports.Facing = {
-    Right: 0,
-    Left: 1
-  };
+  exports.Facing = Torch.Enum("Right", "Left");
 
-  exports.Walking = {
-    Right: 0,
-    Left: 1,
-    None: 2
-  };
+  exports.Walking = Torch.Enum("Right", "Left", "None");
 
   Torch.Platformer.Actor = Actor;
 

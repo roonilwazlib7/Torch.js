@@ -24,26 +24,16 @@
     return results;
   };
 
-  Light = (function() {
-    function Light() {}
+  Light = (function(superClass) {
+    extend(Light, superClass);
 
-    Light.prototype._torch_add = "Light";
-
-    Light.prototype.Remove = function() {
-      return this.game.gl_scene.remove(this.light);
-    };
-
-    Light.prototype.Position = function(plane, value) {
-      if (value === void 0) {
-        return this.light.position[plane];
-      }
-      this.light.position[plane] = value;
-      return this;
-    };
+    function Light() {
+      return Light.__super__.constructor.apply(this, arguments);
+    }
 
     return Light;
 
-  })();
+  })(ThreeEntity);
 
   ExtensionProperties(Light, "Color", "Intensity", "Distance", "Power", "Decay", "Shadow", "Target");
 
@@ -52,6 +42,7 @@
 
     function PointLight(color, intensity, distance, decay) {
       this.light = new THREE.PointLight(color, intensity, distance, decay);
+      this.Entity(this.light);
     }
 
     return PointLight;
@@ -63,6 +54,7 @@
 
     function AmbientLight(color, intensity) {
       this.light = new THREE.AmbientLight(color, intensity);
+      this.Entity(this.light);
     }
 
     return AmbientLight;
@@ -74,6 +66,7 @@
 
     function DirectionalLight(color, intensity) {
       this.light = new THREE.DirectionalLight(color, intensity);
+      this.Entity(this.light);
     }
 
     return DirectionalLight;
@@ -85,6 +78,7 @@
 
     function HemisphereLight(skyColor, groundColor, intensity) {
       this.light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+      this.Entity(this.light);
     }
 
     return HemisphereLight;
@@ -96,6 +90,7 @@
 
     function SpotLight(color, intensity, distance, angle, penumbra, decay) {
       this.light = new THREE.SpotLight(color, intensity, distance, angle, penumbra, decay);
+      this.Entity(this.light);
     }
 
     return SpotLight;

@@ -7,32 +7,45 @@
             "pixl/pixl.js",
             "math/math.js",
 
+            "Mixins/Natives.js",
+            "Mixins/EventDispatcher.js",
+            "Mixins/Trashable.js",
+
             "Torch.js",
-            "Keys.js",
 
-            "ThreeExtensions/Lights.js",
+            "Three/ThreeEntity.js",
+            "Three/ThreeSprite.js",
+            "Three/Lights.js",
 
-            "Load.js",
-            "Sprite.js",
-            "Text.js",
-            "SpriteGroup.js",
-            "Viewport.js",
-            "Timer.js",
-            "Mouse.js",
-            "Camera.js",
-
-                "Game/CanvasGame.js",
-                "Game/WebGLGame.js",
+            "Game/Components/Load.js",
+            "Game/Components/Viewport.js",
+            "Game/Components/Timer.js",
+            "Game/Components/Mouse.js",
+            "Game/Components/Camera.js",
+            "Game/CanvasGame.js",
+            "Game/WebGLGame.js",
             "Game/Game.js",
+
+            "Sprite/Sprite.js",
+            "Sprite/Text.js",
+            "Sprite/SpriteGroup.js",
+            "Sprite/Colliders/Collider.js",
+            "Sprite/Colliders/AABB.js",
+            "Sprite/Colliders/Circle.js",
+            "Sprite/Colliders/SAT.js",
+
+            "Plugins/Platformer.js",
+            "Plugins/SideScroller.js",
 
             "Sound.js",
             "StateMachine.js",
-            "Platformer.js",
             "Bind.js",
             "Animation.js",
             "Color.js",
             "Electron.js",
-            "CanvasRenderer.js"
+            "CanvasRenderer.js",
+            "Geometry.js"
+
         ],
 
         "NeedsWork":

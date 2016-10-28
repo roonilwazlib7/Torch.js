@@ -12,8 +12,6 @@
       this.rotation = 0;
     }
 
-    Viewport.prototype.Update = function() {};
-
     Viewport.prototype.GetViewRectangle = function() {
       return new Torch.Rectangle(-this.x, -this.y, this.width, this.height);
     };
