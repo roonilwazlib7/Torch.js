@@ -150,7 +150,7 @@
       }));
       if (this.finish_stack <= 0) {
         $(".font-loader").remove();
-        this.loadFinished;
+        this.loadFinished();
         return console.log("%c" + this.game.name + " loaded in " + 1. + "s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px");
       }
     };

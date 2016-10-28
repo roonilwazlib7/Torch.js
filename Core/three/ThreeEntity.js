@@ -14,8 +14,7 @@
     ThreeEntity.prototype._torch_add = "Three";
 
     ThreeEntity.prototype.Entity = function(entity) {
-      this.entity = entity;
-      return this.game = game;
+      return this.entity = entity;
     };
 
     ThreeEntity.prototype.Remove = function() {

@@ -33,7 +33,7 @@
     };
 
     CanvasBind.prototype.WebGLTexture = function(textureId) {
-      var height, map, material, object, width;
+      var height, map, material, width;
       width = this.sprite.game.Assets.Textures[textureId].width * Torch.Scale;
       height = this.sprite.game.Assets.Textures[textureId].height * Torch.Scale;
       this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
@@ -42,15 +42,9 @@
         map: map
       });
       material.transparent = true;
-      object = new THREE.Mesh(this.sprite.gl_shape, material);
-      object.position.z = this.sprite.Rectangle.z;
-      object.position.x = this.sprite.Rectangle.x;
-      object.position.y = this.sprite.Rectangle.y;
-      object.name = this.sprite._torch_uid;
-      this.sprite.game.gl_scene.add(object);
+      this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
-      this.sprite.gl_scene_object = object;
       this.sprite.Rectangle.width = width;
       return this.sprite.Rectangle.height = height;
     };

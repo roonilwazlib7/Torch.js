@@ -9,29 +9,47 @@
 
     function ThreeSprite(sprite, material, shape) {
       var object;
+      this.sprite = sprite;
       object = new THREE.Mesh(shape, material);
       object.position.z = this.sprite.Rectangle.z;
       object.position.x = this.sprite.Rectangle.x;
       object.position.y = this.sprite.Rectangle.y;
-      object.name = sprite._torch_uid;
-      sprite.game.gl_scene.add(object);
+      object.name = this.sprite._torch_uid;
+      this.sprite.game.gl_scene.add(object);
       this.Entity(object);
     }
 
+    ThreeSprite.prototype.Position = function(plane, optionalArgument) {
+      if (optionalArgument === null || optionalArgument === void 0) {
+        return this.sprite.Rectangle[plane];
+      } else {
+        if (typeof optionalArgument !== "number") {
+          this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
+        }
+        this.sprite.Rectangle[plane] = optionalArgument;
+        return this;
+      }
+    };
+
     ThreeSprite.prototype.Rotation = function(arg) {
-      return this.entity.rotation.z = arg;
+      this.entity.rotation.z = arg;
+      return this;
     };
 
     ThreeSprite.prototype.Opacity = function(arg) {
-      return this.entity.materials[0].opacity = arg;
+      this.entity.materials[0].opacity = arg;
+      return this;
     };
 
     ThreeSprite.prototype.DrawIndex = function(arg) {
-      return this.entity.renderOrder = arg;
+      this.entity.renderOrder = arg;
+      return this;
     };
 
     return ThreeSprite;
 
   })(ThreeEntity);
+
+  Torch.ThreeSprite = ThreeSprite;
 
 }).call(this);

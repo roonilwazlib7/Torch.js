@@ -30,18 +30,19 @@ class CanvasBind
         material = new THREE.MeshPhongMaterial({map: map})
         material.transparent = true
 
-        object = new THREE.Mesh(@sprite.gl_shape , material )
+        @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, @sprite.gl_shape)
 
-        object.position.z = @sprite.Rectangle.z # -10
-        object.position.x = @sprite.Rectangle.x
-        object.position.y = @sprite.Rectangle.y
-        object.name = @sprite._torch_uid
-
-        @sprite.game.gl_scene.add(object)
+        # object = new THREE.Mesh(@sprite.gl_shape , material )
+        #
+        # object.position.z = @sprite.Rectangle.z # -10
+        # object.position.x = @sprite.Rectangle.x
+        # object.position.y = @sprite.Rectangle.y
+        # object.name = @sprite._torch_uid
+        #
+        # @sprite.game.gl_scene.add(object)
 
         @sprite.gl_orig_width = width
         @sprite.gl_orig_height = height
-        @sprite.gl_scene_object = object
         @sprite.Rectangle.width = width
         @sprite.Rectangle.height = height
 

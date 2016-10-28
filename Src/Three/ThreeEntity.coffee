@@ -7,7 +7,6 @@ class ThreeEntity
 
     Entity: (entity) ->
         @entity = entity
-        @game = game
 
     Remove: ->
         if @game isnt null

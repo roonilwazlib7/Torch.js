@@ -30,7 +30,7 @@ class Sprite
     InitSprite: (game, x = 0, y = 0)->
         if game is null or game is undefined
             Torch.FatalError("Unable to initialize sprite without game")
-            
+
         @InitEventDispatch()
 
         @Bind = new Torch.Bind(@)
@@ -168,7 +168,7 @@ class Sprite
                     .Position("y", @Rectangle.y)
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
-                    .Opacity(@opacity)
+                    #.Opacity(@opacity)
                     .DrawIndex(@drawIndex)
 
     UpdateHitBox: ->
@@ -253,7 +253,7 @@ class Sprite
             @Rectangle.height = optionalArgument
             return @
 
-    Three: () ->
+    Three: ->
         throw "Unable to access three.js object" if not @GL
 
         return @gl_three_sprite

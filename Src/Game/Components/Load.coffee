@@ -133,7 +133,7 @@ class Load
         if @finish_stack <= 0
             # load has finished
             $(".font-loader").remove()
-            @loadFinished
+            @loadFinished()
 
             # successful load
             console.log("%c#{@game.name} loaded in #{1}s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px")

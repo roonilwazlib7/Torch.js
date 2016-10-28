@@ -43,12 +43,12 @@
     CanvasGame.prototype.InitComponents = function() {
       var _char, _keys, i, styleString;
       styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px";
-      console.log(styleString);
       console.log("%c Torch v" + Torch.version + " - " + this.name, styleString);
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
+      this.Camera = new Torch.Camera(this);
       _keys = {};
       i = 0;
       while (i < 230) {
@@ -162,6 +162,7 @@
         this.AddStack.push(o);
         return this.uidCounter++;
       } else if (o._torch_add === "Three") {
+        o.game = this;
         return this.gl_scene.add(o.entity);
       } else if (o._torch_add === "Task") {
         return this.taskList.push(o);
@@ -425,7 +426,53 @@
       return evts;
     };
 
-    CanvasGame.prototype.getBodyEvents = function() {};
+    CanvasGame.prototype.getBodyEvents = function() {
+      var bodyEvents;
+      bodyEvents = [
+        [
+          "keydown", (function(_this) {
+            return function(e) {
+              var c;
+              c = e.keyCode;
+              if (c === 32) {
+                return _this.Keys.Space.down = true;
+              } else if (c === 37) {
+                return _this.Keys.LeftArrow.down = true;
+              } else if (c === 38) {
+                return _this.Keys.UpArrow.down = true;
+              } else if (c === 39) {
+                return _this.Keys.RightArrow.down = true;
+              } else if (c === 40) {
+                return _this.Keys.DownArrow.down = true;
+              } else {
+                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+              }
+            };
+          })(this)
+        ], [
+          "keyup", (function(_this) {
+            return function(e) {
+              var c;
+              c = e.keyCode;
+              if (c === 32) {
+                return _this.Keys.Space.down = false;
+              } else if (c === 37) {
+                return _this.Keys.LeftArrow.down = false;
+              } else if (c === 38) {
+                return _this.Keys.UpArrow.down = false;
+              } else if (c === 39) {
+                return _this.Keys.RightArrow.down = false;
+              } else if (c === 40) {
+                return _this.Keys.DownArrow.down = false;
+              } else {
+                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+              }
+            };
+          })(this)
+        ]
+      ];
+      return bodyEvents;
+    };
 
     CanvasGame.prototype.WireUpEvents = function() {
       var eventItem, j, k, len, len1, pads, ref, ref1, resize;

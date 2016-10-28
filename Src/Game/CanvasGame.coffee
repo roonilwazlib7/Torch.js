@@ -30,11 +30,12 @@ class CanvasGame
     InitComponents: ->
         styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px"
         console.log("%c Torch v#{Torch.version} - #{@name}", styleString)
-        
+
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
+        @Camera = new Torch.Camera(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         _keys = {}
@@ -138,6 +139,7 @@ class CanvasGame
             @uidCounter++
 
         else if o._torch_add is "Three"
+            o.game = @
             @gl_scene.add(o.entity)
 
         else if o._torch_add is "Task"
@@ -319,7 +321,55 @@ class CanvasGame
 
         return evts
 
-    getBodyEvents: -> # something happend here
+    getBodyEvents: ->
+        bodyEvents =
+        [
+            [
+                "keydown", (e) =>
+                    c = e.keyCode
+                    if c is 32
+                        @Keys.Space.down = true
+
+                    else if c is 37
+                        @Keys.LeftArrow.down = true
+
+                    else if c is 38
+                        @Keys.UpArrow.down = true
+
+                    else if c is 39
+                        @Keys.RightArrow.down = true
+
+                    else if c is 40
+                        @Keys.DownArrow.down = true
+
+                    else
+                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true
+
+
+            ],
+            [
+                "keyup", (e) =>
+                    c = e.keyCode
+                    if c is 32
+                        @Keys.Space.down = false
+
+                    else if c is 37
+                        @Keys.LeftArrow.down = false
+
+                    else if c is 38
+                        @Keys.UpArrow.down = false
+
+                    else if c is 39
+                        @Keys.RightArrow.down = false
+
+                    else if c is 40
+                        @Keys.DownArrow.down = false
+
+                    else
+                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false
+            ]
+        ]
+        return bodyEvents
 
     WireUpEvents: ->
         for eventItem in @getCanvasEvents()
