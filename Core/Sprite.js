@@ -239,11 +239,18 @@
     };
 
     Sprite.prototype.Width = function(optionalArgument) {
+      var scale;
       if (optionalArgument === null || optionalArgument === void 0) {
         return this.Rectangle.width;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
+          console.log("here");
+          if (this.GL) {
+            scale = optionalArgument / this.gl_orig_width;
+            this.gl_scene_object.scale.x = scale;
+            console.log(scale);
+          }
         }
         this.Rectangle.width = optionalArgument;
         return this;

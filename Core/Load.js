@@ -160,8 +160,7 @@
               texture.magFilter = THREE.NearestFilter;
               texture.minFilter = THREE.LinearMipMapLinearFilter;
               this.loader.textures[this.stackItem.id].gl_texture = texture;
-              this.loader.finish_stack--;
-              return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);
+              return this.loader.finish_stack--;
             };
             break;
           case "sound":

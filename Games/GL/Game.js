@@ -33,6 +33,11 @@ function Draw(game)
 }
 function Update(game)
 {
+    if (game.Keys.Space.down)
+    {
+        game.player.gl_scene_object.scale.x = 3;
+        //game.player.Width(600);
+    }
 }
 
 Game.Start(Load, Update, Draw, Init);

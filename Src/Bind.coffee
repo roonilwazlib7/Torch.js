@@ -14,11 +14,10 @@ class Bind
             @sprite.TexturePack = null
 
     WebGLTexture: (textureId) ->
-        #map = new THREE.TextureLoader().load( 'player.png' )
-        #map.wrapS = map.wrapT = THREE.RepeatWrapping
-        #map.anisotropy = 16
+        width = @sprite.game.Assets.Textures[textureId].width * Torch.Scale
+        height = @sprite.game.Assets.Textures[textureId].height * Torch.Scale
 
-        @sprite.gl_shape = new THREE.PlaneGeometry( @sprite.game.Assets.Textures[textureId].width * Torch.Scale, @sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8 )
+        @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
 
         map = @sprite.game.Assets.Textures[textureId].gl_texture
 
@@ -33,7 +32,12 @@ class Bind
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)
+
+        @sprite.gl_orig_width = width
+        @sprite.gl_orig_height = height
         @sprite.gl_scene_object = object
+        @sprite.Rectangle.width = width
+        @sprite.Rectangle.height = height
 
     Texture: -> (textureId, optionalParameters) ->
 

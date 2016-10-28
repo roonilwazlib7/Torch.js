@@ -6,7 +6,8 @@ class Player extends Torch.Sprite
         @Bind.WebGLTexture("player")
 
         # internal light
-        @internalLight = new Torch.PointLight( 0xffffff, 1, 500)
+        @internalLight = new Torch.PointLight( 0xffffff, 2, 500)
+
         @game.Add(@internalLight)
 
     Update: ->
@@ -19,8 +20,8 @@ class Player extends Torch.Sprite
         @Velocity("y", -@VELOCITY) if keys.S.down
         @Velocity("y", @VELOCITY) if keys.W.down
 
-        @internalLight.light.position.x = @Position("x")
-        @internalLight.light.position.y = @Position("y")
+        @internalLight.Position("x", @Position("x") )
+        @internalLight.Position("y", @Position("y") + (@Rectangle.height / 4.5) )
 
 
 

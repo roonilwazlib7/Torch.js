@@ -22,8 +22,10 @@
     };
 
     Bind.prototype.WebGLTexture = function(textureId) {
-      var map, material, object;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width * Torch.Scale, this.sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8);
+      var height, map, material, object, width;
+      width = this.sprite.game.Assets.Textures[textureId].width * Torch.Scale;
+      height = this.sprite.game.Assets.Textures[textureId].height * Torch.Scale;
+      this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
@@ -35,7 +37,11 @@
       object.position.y = this.sprite.Rectangle.y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
-      return this.sprite.gl_scene_object = object;
+      this.sprite.gl_orig_width = width;
+      this.sprite.gl_orig_height = height;
+      this.sprite.gl_scene_object = object;
+      this.sprite.Rectangle.width = width;
+      return this.sprite.Rectangle.height = height;
     };
 
     Bind.prototype.Texture = function() {

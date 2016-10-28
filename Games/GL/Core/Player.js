@@ -14,7 +14,7 @@
     function Player(game) {
       this.InitSprite(game, 0, 0);
       this.Bind.WebGLTexture("player");
-      this.internalLight = new Torch.PointLight(0xffffff, 1, 500);
+      this.internalLight = new Torch.PointLight(0xffffff, 2, 500);
       this.game.Add(this.internalLight);
     }
 
@@ -36,9 +36,8 @@
       if (keys.W.down) {
         this.Velocity("y", this.VELOCITY);
       }
-      this.internalLight.light.position.x = this.Position("x");
-      this.internalLight.light.position.y = this.Position("y");
-      return this.internalLight.light.intensity -= 0.01;
+      this.internalLight.Position("x", this.Position("x"));
+      return this.internalLight.Position("y", this.Position("y") + (this.Rectangle.height / 4.5));
     };
 
     return Player;

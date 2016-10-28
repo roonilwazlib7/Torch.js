@@ -1792,8 +1792,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
               texture.magFilter = THREE.NearestFilter;
               texture.minFilter = THREE.LinearMipMapLinearFilter;
               this.loader.textures[this.stackItem.id].gl_texture = texture;
-              this.loader.finish_stack--;
-              return console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture);
+              return this.loader.finish_stack--;
             };
             break;
           case "sound":
@@ -2069,11 +2068,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.Width = function(optionalArgument) {
+      var scale;
       if (optionalArgument === null || optionalArgument === void 0) {
         return this.Rectangle.width;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
+          console.log("here");
+          if (this.GL) {
+            scale = optionalArgument / this.gl_orig_width;
+            this.gl_scene_object.scale.x = scale;
+            console.log(scale);
+          }
         }
         this.Rectangle.width = optionalArgument;
         return this;
@@ -3707,8 +3713,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Bind.prototype.WebGLTexture = function(textureId) {
-      var map, material, object;
-      this.sprite.gl_shape = new THREE.PlaneGeometry(this.sprite.game.Assets.Textures[textureId].width * Torch.Scale, this.sprite.game.Assets.Textures[textureId].height * Torch.Scale, 8, 8);
+      var height, map, material, object, width;
+      width = this.sprite.game.Assets.Textures[textureId].width * Torch.Scale;
+      height = this.sprite.game.Assets.Textures[textureId].height * Torch.Scale;
+      this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
       map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
@@ -3720,7 +3728,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       object.position.y = this.sprite.Rectangle.y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
-      return this.sprite.gl_scene_object = object;
+      this.sprite.gl_orig_width = width;
+      this.sprite.gl_orig_height = height;
+      this.sprite.gl_scene_object = object;
+      this.sprite.Rectangle.width = width;
+      return this.sprite.Rectangle.height = height;
     };
 
     Bind.prototype.Texture = function() {

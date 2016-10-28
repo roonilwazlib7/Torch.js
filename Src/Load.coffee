@@ -143,7 +143,6 @@ class Load
 
                         this.loader.textures[this.stackItem.id].gl_texture = texture
                         this.loader.finish_stack--
-                        console.log(this.stackItem.id, this.loader.textures[this.stackItem.id].gl_texture)
 
                 when "sound"
                     aud = new Audio()

@@ -213,6 +213,13 @@ class Sprite
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set width. Expected number, got: #{typeof(optionalArgument)}")
+
+                console.log("here")
+                if @GL
+                    scale = optionalArgument / @gl_orig_width
+                    @gl_scene_object.scale.x = scale
+                    console.log(scale)
+
             @Rectangle.width = optionalArgument
             return @
 
