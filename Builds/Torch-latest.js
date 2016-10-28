@@ -3029,7 +3029,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.UpdateGLEntities = function() {
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Rectangle.x).Position("y", this.Rectangle.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", this.Rectangle.x).Position("y", -this.Rectangle.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 

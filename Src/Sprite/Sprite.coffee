@@ -165,7 +165,7 @@ class Sprite
         # the corresponding three.js mesh being rendered
         if @GL and @gl_three_sprite
             @Three().Position("x", @Rectangle.x)
-                    .Position("y", @Rectangle.y)
+                    .Position("y", -@Rectangle.y)
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
                     #.Opacity(@opacity)

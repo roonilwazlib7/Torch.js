@@ -24,6 +24,9 @@ function Init(game)
 
     game.player = new Player(game);
     game.player.DrawIndex(9);
+    game.player.On("Click", function(){
+        alert("clicked!");
+    });
 
     //game.Add( new Torch.AmbientLight(0xffffff) );
 }

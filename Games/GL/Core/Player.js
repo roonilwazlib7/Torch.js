@@ -31,13 +31,13 @@
         this.Velocity("x", -this.VELOCITY);
       }
       if (keys.S.down) {
-        this.Velocity("y", -this.VELOCITY);
-      }
-      if (keys.W.down) {
         this.Velocity("y", this.VELOCITY);
       }
+      if (keys.W.down) {
+        this.Velocity("y", -this.VELOCITY);
+      }
       this.internalLight.Position("x", this.Position("x"));
-      return this.internalLight.Position("y", this.Position("y") + (this.Rectangle.height / 4.5));
+      return this.internalLight.Position("y", -this.Position("y") + (this.Rectangle.height / 4.5));
     };
 
     return Player;
