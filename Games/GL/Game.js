@@ -2,7 +2,7 @@ Torch.StrictErrors();
 
 
 
-var Game = new Torch.Game("container", "fill", "fill", "Knackered", Torch.WEBGL);
+var Game = new Torch.Game("container", "fill", "fill", "Void", Torch.WEBGL);
 
 var blueLightMover = 0;
 

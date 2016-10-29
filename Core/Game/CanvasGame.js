@@ -41,9 +41,13 @@
     };
 
     CanvasGame.prototype.InitComponents = function() {
-      var _char, _keys, i, styleString;
+      var _char, _keys, graphicsString, i, styleString;
       styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px";
-      console.log("%c Torch v" + Torch.version + " - " + this.name, styleString);
+      graphicsString = "WebGL";
+      if (this.graphicsType === Torch.CANVAS) {
+        graphicsString = "Canvas";
+      }
+      console.log("%c Torch v" + Torch.version + " |" + graphicsString + "| - " + this.name, styleString);
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);

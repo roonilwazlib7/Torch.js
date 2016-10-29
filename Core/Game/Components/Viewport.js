@@ -16,6 +16,14 @@
       return new Torch.Rectangle(-this.x, -this.y, this.width, this.height);
     };
 
+    Viewport.prototype.HalfWidth = function() {
+      return this.width / 2;
+    };
+
+    Viewport.prototype.HalfHeight = function() {
+      return this.height / 2;
+    };
+
     return Viewport;
 
   })();

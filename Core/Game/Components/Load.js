@@ -143,6 +143,7 @@
     };
 
     Load.prototype.LoadItemFinished = function() {
+      var timeToLoad;
       this.finish_stack--;
       this.progress = (this.totalLoad - this.finish_stack) / this.totalLoad;
       this.game.Emit("LoadProgressed", new Torch.EventArgs(this.game, {
@@ -151,7 +152,8 @@
       if (this.finish_stack <= 0) {
         $(".font-loader").remove();
         this.loadFinished();
-        return console.log("%c" + this.game.name + " loaded in " + 1. + "s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px");
+        timeToLoad = (new Date().getTime() - this.startTime) / 1000;
+        return console.log("%c" + this.game.name + " loaded in " + timeToLoad + "s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px");
       }
     };
 
@@ -160,6 +162,7 @@
       textureLoader = new THREE.TextureLoader();
       this.loadFinished = finishFunction;
       this.totalLoad = this.finish_stack;
+      this.startTime = new Date().getTime();
       try {
         ref = this.Stack;
         results = [];

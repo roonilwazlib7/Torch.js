@@ -29,7 +29,11 @@ class CanvasGame
 
     InitComponents: ->
         styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px"
-        console.log("%c Torch v#{Torch.version} - #{@name}", styleString)
+        graphicsString = "WebGL"
+
+        if @graphicsType is Torch.CANVAS then graphicsString = "Canvas"
+
+        console.log("%c Torch v#{Torch.version} |#{graphicsString}| - #{@name}", styleString)
 
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)

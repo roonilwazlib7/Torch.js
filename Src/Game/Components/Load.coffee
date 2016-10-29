@@ -135,13 +135,16 @@ class Load
             $(".font-loader").remove()
             @loadFinished()
 
+            timeToLoad = (new Date().getTime() - @startTime) / 1000
+
             # successful load
-            console.log("%c#{@game.name} loaded in #{1}s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px")
+            console.log("%c#{@game.name} loaded in #{timeToLoad}s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px")
 
     Load: (finishFunction) ->
         textureLoader = new THREE.TextureLoader()
         @loadFinished = finishFunction
         @totalLoad = @finish_stack
+        @startTime = new Date().getTime()
 
         try
             for stackItem in @Stack

@@ -174,7 +174,7 @@
 
     Sprite.prototype.UpdateGLEntities = function() {
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Rectangle.x).Position("y", -this.Rectangle.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2)).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 

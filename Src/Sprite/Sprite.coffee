@@ -164,11 +164,10 @@ class Sprite
         # send all graphics-related information to
         # the corresponding three.js mesh being rendered
         if @GL and @gl_three_sprite
-            @Three().Position("x", @Rectangle.x)
-                    .Position("y", -@Rectangle.y)
+            @Three().Position("x",  @Position("x") - (window.innerWidth / 2) )
+                    .Position("y", -@Position("y") + (window.innerHeight / 2) )
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
-                    #.Opacity(@opacity)
                     .DrawIndex(@drawIndex)
 
     UpdateHitBox: ->

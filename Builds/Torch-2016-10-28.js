@@ -2051,14 +2051,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return new Torch.Rectangle(-this.x, -this.y, this.width, this.height);
     };
 
-    Viewport.prototype.HalfWidth = function() {
-      return this.width / 2;
-    };
-
-    Viewport.prototype.HalfHeight = function() {
-      return this.height / 2;
-    };
-
     return Viewport;
 
   })();
@@ -3044,7 +3036,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.UpdateGLEntities = function() {
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2)).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", this.Rectangle.x - this.game.Viewport.width / 2).Position("y", -(this.Rectangle.y - this.game.Viewport.height / 2)).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 
@@ -4732,4 +4724,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 }).call(this);
 
 
-Torch.build='Torch-2016-10-29';Torch.version='0.0.1';
+Torch.build='Torch-2016-10-28';Torch.version='0.0.1';

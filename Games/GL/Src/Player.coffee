@@ -20,8 +20,11 @@ class Player extends Torch.Sprite
         @Velocity("y", @VELOCITY) if keys.S.down
         @Velocity("y", -@VELOCITY) if keys.W.down
 
-        @internalLight.Position("x", @Position("x") )
-        @internalLight.Position("y", -@Position("y") + (@Rectangle.height / 4.5) )
+        # @Position("x", @game.Mouse.x)
+        # @Position("y", @game.Mouse.y)
+
+        @internalLight.Position("x", @Position("x") - (window.innerWidth/2))
+        @internalLight.Position("y", -@Position("y") + (window.innerHeight/2) + (@Rectangle.height / 4.5) )
 
 
 
