@@ -37,7 +37,9 @@
         this.Velocity("y", -this.VELOCITY);
       }
       this.Position("x", this.game.Mouse.x);
-      return this.Position("y", this.game.Mouse.y);
+      this.Position("y", this.game.Mouse.y);
+      this.internalLight.Position("x", this.Position("x"));
+      return this.internalLight.Position("y", -this.Position("y"));
     };
 
     return Player;

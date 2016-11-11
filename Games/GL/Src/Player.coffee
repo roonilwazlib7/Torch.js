@@ -23,8 +23,8 @@ class Player extends Torch.Sprite
         @Position("x", @game.Mouse.x)
         @Position("y", @game.Mouse.y)
 
-        # @internalLight.Position("x", @Position("x") - (window.innerWidth/2))
-        # @internalLight.Position("y", -@Position("y") + (window.innerHeight/2) + (@Rectangle.height / 4.5) )
+        @internalLight.Position("x", @Position("x"))
+        @internalLight.Position("y", -@Position("y"))
 
 
 

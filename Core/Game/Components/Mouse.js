@@ -13,8 +13,8 @@
     Mouse.prototype.SetMousePos = function(c, evt) {
       var rect;
       rect = c.getBoundingClientRect();
-      this.x = evt.pageX;
-      this.y = evt.pageY;
+      this.x = evt.clientX - rect.left;
+      this.y = evt.clientY - rect.top;
       if (this.game.gl_camera) {
         return this.SetThreePosition(evt);
       }
