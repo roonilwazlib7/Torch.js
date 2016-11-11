@@ -46,6 +46,7 @@
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
       this.canvasNode = this.gl_renderer.domElement;
+      this.canvasNode.style.border = "1px solid green";
       this.gl_rendererContainer.appendChild(this.canvasNode);
       return this.On("Resize", (function(_this) {
         return function(event) {

@@ -71,6 +71,7 @@ class CanvasGame
         @LastTimeStamp = null
 
         @spriteList = []
+        @threeList = []
         @taskList = []
         @animations = []
         @DrawStack = []

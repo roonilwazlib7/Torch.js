@@ -31,6 +31,7 @@ class WebGLGame extends Torch.CanvasGame
         @gl_renderer.setPixelRatio( window.devicePixelRatio )
 
         @canvasNode = @gl_renderer.domElement
+        @canvasNode.style.border = "1px solid green"
         @gl_rendererContainer.appendChild(@canvasNode)
 
         @On "Resize", ( event ) =>

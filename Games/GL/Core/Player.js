@@ -15,7 +15,7 @@
       this.InitSprite(game, 0, 0);
       this.Bind.WebGLTexture("player");
       this.internalLight = new Torch.PointLight(0xffffff, 2, 500);
-      this.game.Add(this.internalLight);
+      this.Attatch(this.internalLight);
     }
 
     Player.prototype.Update = function() {
@@ -34,10 +34,8 @@
         this.Velocity("y", this.VELOCITY);
       }
       if (keys.W.down) {
-        this.Velocity("y", -this.VELOCITY);
+        return this.Velocity("y", -this.VELOCITY);
       }
-      this.internalLight.Position("x", this.Position("x") - (window.innerWidth / 2));
-      return this.internalLight.Position("y", -this.Position("y") + (window.innerHeight / 2) + (this.Rectangle.height / 4.5));
     };
 
     return Player;

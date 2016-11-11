@@ -67,6 +67,7 @@
       this._torch_uid = "";
       this.events = {};
       this.tasks = {};
+      this.children = [];
       this.renderer = null;
       return game.Add(this);
     };
@@ -85,10 +86,18 @@
     };
 
     Sprite.prototype.UpdateSprite = function() {
+      var child, i, len, ref, results;
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
-      return this.UpdateHitBox();
+      this.UpdateHitBox();
+      ref = this.children;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        child = ref[i];
+        results.push(child.Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2) + (this.Rectangle.height / 4.5)));
+      }
+      return results;
     };
 
     Sprite.prototype.UpdateEvents = function() {
@@ -174,7 +183,7 @@
 
     Sprite.prototype.UpdateGLEntities = function() {
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2)).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", this.Position("x") - window.innerWidth / 1.45 + this.Width() / 2).Position("y", -this.Position("y") + window.innerHeight / 1.45 - this.Height() / 2).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 
@@ -373,6 +382,11 @@
 
     Sprite.prototype.CollidesWith = function(otherSprite) {
       return new Torch.Collider.CollisionDetector(this, otherSprite);
+    };
+
+    Sprite.prototype.Attatch = function(otherItem) {
+      this.children.push(otherItem);
+      return this.game.Add(otherItem);
     };
 
     return Sprite;

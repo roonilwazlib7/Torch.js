@@ -61,6 +61,7 @@ class Sprite
 
         @events = {}
         @tasks = {}
+        @children = []
         @renderer = null # new CanvasRenderer(@)
 
         game.Add(@)
@@ -80,6 +81,14 @@ class Sprite
         @UpdateEvents()
         @UpdateGLEntities()
         @UpdateHitBox()
+
+        for child in @children
+            child.Position("x", @Position("x") - (window.innerWidth/2) )
+                 .Position("y", -@Position("y") + (window.innerHeight / 2) + (@Rectangle.height / 4.5) )
+        # for child in @children
+
+        #     child.Position("x", @Position("x"))
+        #          .Position("y", @Position("y"))
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver
@@ -164,8 +173,8 @@ class Sprite
         # send all graphics-related information to
         # the corresponding three.js mesh being rendered
         if @GL and @gl_three_sprite
-            @Three().Position("x",  @Position("x") - (window.innerWidth / 2) )
-                    .Position("y", -@Position("y") + (window.innerHeight / 2) )
+            @Three().Position("x",  @Position("x") - window.innerWidth / 1.45 + @Width() / 2)
+                    .Position("y", -@Position("y") + window.innerHeight / 1.45 - @Height() / 2)
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
                     .DrawIndex(@drawIndex)
@@ -320,6 +329,10 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new Torch.Collider.CollisionDetector(@, otherSprite)
+
+    Attatch: (otherItem) ->
+        @children.push(otherItem)
+        @game.Add(otherItem)
 
 ###
     @class Torch.GhostSprite @extends Torch.Sprite

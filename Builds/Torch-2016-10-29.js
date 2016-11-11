@@ -2937,6 +2937,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this._torch_uid = "";
       this.events = {};
       this.tasks = {};
+      this.children = [];
       this.renderer = null;
       return game.Add(this);
     };
@@ -2955,10 +2956,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.UpdateSprite = function() {
+      var child, i, len, ref, results;
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
-      return this.UpdateHitBox();
+      this.UpdateHitBox();
+      ref = this.children;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        child = ref[i];
+        results.push(child.Position("x", this.Position("x")).Position("y", this.Position("y")));
+      }
+      return results;
     };
 
     Sprite.prototype.UpdateEvents = function() {
@@ -3243,6 +3252,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.CollidesWith = function(otherSprite) {
       return new Torch.Collider.CollisionDetector(this, otherSprite);
+    };
+
+    Sprite.prototype.Attatch = function(otherItem) {
+      return this.children.push(otherItem);
     };
 
     return Sprite;

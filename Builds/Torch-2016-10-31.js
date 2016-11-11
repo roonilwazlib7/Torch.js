@@ -2774,7 +2774,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
       this.canvasNode = this.gl_renderer.domElement;
-      this.canvasNode.style.border = "1px solid green";
       this.gl_rendererContainer.appendChild(this.canvasNode);
       return this.On("Resize", (function(_this) {
         return function(event) {
@@ -3055,7 +3054,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.UpdateGLEntities = function() {
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Position("x") - window.innerWidth / 1.45 + this.Width() / 2).Position("y", -this.Position("y") + window.innerHeight / 1.45 - this.Height() / 2).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", this.Position("x") - (window.innerWidth / 1.5)).Position("y", -this.Position("y") + (window.innerHeight / 1.5)).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 
@@ -4748,4 +4747,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 }).call(this);
 
 
-Torch.build='Torch-2016-11-10';Torch.version='0.0.1';
+Torch.build='Torch-2016-10-31';Torch.version='0.0.1';

@@ -11,6 +11,7 @@ function Load(game)
     //textures
     game.Load.Texture("ship.png", "player");
     game.Load.Texture("player.png", "black");
+    game.Load.Texture("enemy.png", "enemy");
 }
 function Init(game)
 {
@@ -18,9 +19,9 @@ function Init(game)
     game.Bounds();
     game.Clear("black");
 
-    var black = new Torch.Sprite(game, 0, 0);
-    black.Bind.WebGLTexture("black");
-    black.DrawIndex(2)
+    // var black = new Torch.Sprite(game, 0, 0);
+    // black.Bind.WebGLTexture("black");
+    // black.DrawIndex(2)
 
     game.player = new Player(game);
     game.player.DrawIndex(9);
@@ -28,7 +29,11 @@ function Init(game)
         alert("clicked!");
     });
 
-    //game.Add( new Torch.AmbientLight(0xffffff) );
+    game.origTest = new Torch.Sprite(game, 0, 0);
+    game.origTest.Bind.WebGLTexture("enemy");
+    game.origTest.DrawIndex(10);
+
+    game.Add( new Torch.AmbientLight(0xffffff) );
 }
 function Draw(game)
 {

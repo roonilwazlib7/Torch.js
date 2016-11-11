@@ -89,6 +89,7 @@
       this.time = null;
       this.LastTimeStamp = null;
       this.spriteList = [];
+      this.threeList = [];
       this.taskList = [];
       this.animations = [];
       this.DrawStack = [];
