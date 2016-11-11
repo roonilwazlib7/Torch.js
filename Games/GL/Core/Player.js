@@ -34,8 +34,10 @@
         this.Velocity("y", this.VELOCITY);
       }
       if (keys.W.down) {
-        return this.Velocity("y", -this.VELOCITY);
+        this.Velocity("y", -this.VELOCITY);
       }
+      this.Position("x", this.game.Mouse.x);
+      return this.Position("y", this.game.Mouse.y);
     };
 
     return Player;

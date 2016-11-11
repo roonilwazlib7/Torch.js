@@ -2137,8 +2137,24 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Mouse.prototype.SetMousePos = function(c, evt) {
       var rect;
       rect = c.getBoundingClientRect();
-      this.x = evt.clientX - rect.left;
-      return this.y = evt.clientY - rect.top;
+      this.x = evt.pageX;
+      this.y = evt.pageY;
+      if (this.game.gl_camera) {
+        return this.SetThreePosition(evt);
+      }
+    };
+
+    Mouse.prototype.SetThreePosition = function(evt) {
+      var camera, dir, distance, pos, vector;
+      vector = new THREE.Vector3();
+      camera = this.game.gl_camera;
+      vector.set((evt.clientX / window.innerWidth) * 2 - 1, -(evt.clientY / window.innerHeight) * 2 + 1, 0.5);
+      vector.unproject(camera);
+      dir = vector.sub(camera.position).normalize();
+      distance = -camera.position.z / dir.z;
+      pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      this.x = pos.x + window.innerWidth / 1.45;
+      return this.y = -pos.y + window.innerHeight / 1.45;
     };
 
     Mouse.prototype.GetRectangle = function() {
