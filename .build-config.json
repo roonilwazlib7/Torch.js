@@ -1,5 +1,12 @@
 {
-    "Version": "0.0.1",
+    "NeedsWork": [
+        "Torch.Particles.js"
+    ],
+    "Game": {
+        "Source": "Coffee",
+        "Name": "GL"
+    },
+    "Build": 6,
     "SourceMap": [
         "three/three.min.js",
         "pixl/pixl.js",
@@ -37,12 +44,5 @@
         "CanvasRenderer.js",
         "Geometry.js"
     ],
-    "Game": {
-        "Source": "Coffee",
-        "Name": "GL"
-    },
-    "NeedsWork": [
-        "Torch.Particles.js"
-    ],
-    "Build": 5
+    "Version": "0.0.1"
 }

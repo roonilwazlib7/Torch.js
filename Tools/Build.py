@@ -29,7 +29,7 @@ for path in config["SourceMap"]:
 
 COMBINED += "\n\nTorch.build='" + NAME + "';Torch.version='" + config["Version"] + "';"
 
-Write("Builds/" + NAME + ".js", COMBINED)
+# Write("Builds/" + NAME + ".js", COMBINED) 
 Write("Builds/Torch-latest.js", COMBINED)
 Write(".build-config.json", json.dumps(config, indent=4) )
 

@@ -13,7 +13,7 @@
         @param pixel, enum
 
     @description
-        Torch.CanvasGame dictates that WEBGL, through three.js, be used to render
+        Torch.WebGLGame dictates that WEBGL, through three.js, be used to render
         graphics.
  */
 
@@ -93,6 +93,10 @@
         }
       }
       return this.spriteList = cleanedSprites;
+    };
+
+    WebGLGame.prototype.GetThreeTransformedPoint = function(point) {
+      return new Torch.Point(point.x, point.y);
     };
 
     return WebGLGame;

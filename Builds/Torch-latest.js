@@ -2757,7 +2757,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         @param pixel, enum
 
     @description
-        Torch.CanvasGame dictates that WEBGL, through three.js, be used to render
+        Torch.WebGLGame dictates that WEBGL, through three.js, be used to render
         graphics.
  */
 
@@ -2837,6 +2837,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         }
       }
       return this.spriteList = cleanedSprites;
+    };
+
+    WebGLGame.prototype.GetThreeTransformedPoint = function(point) {
+      return new Torch.Point(point.x, point.y);
     };
 
     return WebGLGame;

@@ -11,20 +11,11 @@
 
     Player.prototype.VELOCITY = 1;
 
-    Player.prototype.currentDestination = null;
-
     function Player(game) {
       this.InitSprite(game, 0, 0);
       this.Bind.WebGLTexture("player");
       this.internalLight = new Torch.PointLight(0xffffff, 2, 500);
       this.Attatch(this.internalLight);
-      this.On("Click", (function(_this) {
-        return function() {
-          if (_this.currentDestination === null) {
-            return _this.currentDestination = new Torch.Point(_this.game.Mouse.x, _this.game.Mouse.y);
-          }
-        };
-      })(this));
     }
 
     Player.prototype.Update = function() {
