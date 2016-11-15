@@ -2956,7 +2956,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.events = {};
       this.tasks = {};
       this.children = [];
-      this.stateMachines = [];
       this.renderer = null;
       return game.Add(this);
     };
@@ -4765,4 +4764,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 }).call(this);
 
 
-Torch.build='Torch-2016-11-14';Torch.version='0.0.1';
+Torch.build='Torch-2016-11-11';Torch.version='0.0.1';

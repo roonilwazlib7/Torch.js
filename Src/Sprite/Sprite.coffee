@@ -62,6 +62,7 @@ class Sprite
         @events = {}
         @tasks = {}
         @children = []
+        @stateMachines = []
         @renderer = null # new CanvasRenderer(@)
 
         game.Add(@)

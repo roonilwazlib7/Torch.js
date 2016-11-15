@@ -11,7 +11,7 @@
         @param pixel, enum
 
     @description
-        Torch.CanvasGame dictates that WEBGL, through three.js, be used to render
+        Torch.WebGLGame dictates that WEBGL, through three.js, be used to render
         graphics.
 ###
 class WebGLGame extends Torch.CanvasGame
@@ -39,7 +39,6 @@ class WebGLGame extends Torch.CanvasGame
             @gl_camera.aspect = @Viewport.width / @Viewport.height
             @gl_camera.updateProjectionMatrix()
 
-
     DrawSprites: ->
         @spriteList.sort (a, b) ->
             return a.drawIndex - b.drawIndex
@@ -66,5 +65,7 @@ class WebGLGame extends Torch.CanvasGame
                 sprite.Emit("Trash")
         @spriteList = cleanedSprites
 
+    GetThreeTransformedPoint: (point) ->
+        return new Torch.Point(point.x, point.y)
 
 Torch.WebGLGame = WebGLGame

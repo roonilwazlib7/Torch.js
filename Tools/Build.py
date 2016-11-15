@@ -18,6 +18,7 @@ os.system("coffee --compile --output Core/ Src/")
 
 # grab the config file
 config = json.loads ( Read(".build-config.json") )
+config["Build"] += 1
 
 COMBINED = ""
 BUILD = str(datetime.date.today().year) + "-" + str(datetime.date.today().month) + "-" + str(datetime.date.today().day);
@@ -30,7 +31,7 @@ COMBINED += "\n\nTorch.build='" + NAME + "';Torch.version='" + config["Version"]
 
 Write("Builds/" + NAME + ".js", COMBINED)
 Write("Builds/Torch-latest.js", COMBINED)
-
+Write(".build-config.json", json.dumps(config, indent=4) )
 
 if config["Game"]["Source"] == "Coffee":
     os.system("coffee --compile --output Games/" + config["Game"]["Name"] + "/Core Games/" + config["Game"]["Name"] + "/Src")

@@ -68,6 +68,7 @@
       this.events = {};
       this.tasks = {};
       this.children = [];
+      this.stateMachines = [];
       this.renderer = null;
       return game.Add(this);
     };
