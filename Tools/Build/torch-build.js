@@ -4,8 +4,21 @@ var shell = require('shelljs');
 
 buildConfig = JSON.parse( fs.readFileSync(".build-config.json").toString() );
 buildConfig.Build += 1;
+
+if (buildConfig.Build >= 100)
+{
+    buildConfig.Build = 0;
+    buildConfig.BuildMinor += 1;
+}
+
+// save modified config
 fs.writeFileSync(".build-config.json", JSON.stringify(buildConfig, null, 4));
+
+// save version info
+fs.writeFileSync("Core/version.js", "Torch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "'");
+
 source = buildConfig.SourceMap;
+source.push("version.js");
 
 for (var i = 0; i < source.length; i++)
 {
