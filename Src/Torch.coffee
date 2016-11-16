@@ -59,6 +59,9 @@ class Event
         for key,value of @data
             @[key] = value
 
+class HtmlUtil
+
+
 class Torch
 
     CANVAS: 1
@@ -72,6 +75,7 @@ class Torch
         @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
+        @HtmlUtil = new HtmlUtil()
 
     Needs: (key) ->
         # make sure we have the peoper torch components
