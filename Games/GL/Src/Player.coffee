@@ -3,13 +3,16 @@ class Player extends Torch.Sprite
     VELOCITY: 1
 
     constructor: (game) ->
-        @InitSprite(game, 0, 0)
+        @InitSprite(game, 500, 0)
         @Bind.WebGLTexture("player")
 
         # internal light
         @internalLight = new Torch.PointLight( 0xffffff, 2, 500)
 
         @Attatch(@internalLight)
+
+        @On "Collision", (event) =>
+            @Position("x", 2)
 
     Update: ->
         super()

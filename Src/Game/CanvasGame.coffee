@@ -79,6 +79,7 @@ class CanvasGame
         @GamePads = []
 
         @events = {}
+        @filter = {}
 
     InitGraphics: ->
         @canvasNode = document.getElementById(@canvasId)
@@ -200,7 +201,7 @@ class CanvasGame
                           <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>")
         @RunGame = ->
         @Run = ->
-        @Emit "FatalError", new Torch.EventArgs @,
+        @Emit "FatalError", new Torch.Event @,
             error: error
         throw error
 
@@ -221,7 +222,7 @@ class CanvasGame
                 cleanedSprites.push(sprite)
             else
                 sprite.trashed = true
-                sprite.Emit "Trash", new Torch.EventArgs(@)
+                sprite.Emit "Trash", new Torch.Event(@)
         @spriteList = cleanedSprites
 
     DrawSprites: ->
@@ -290,19 +291,19 @@ class CanvasGame
             [
                 "mousemove", (e) =>
                     @Mouse.SetMousePos(@canvasNode, e)
-                    @Emit "MouseMove", new Torch.EventArgs @,
+                    @Emit "MouseMove", new Torch.Event @,
                         nativeEvent: e
             ],
             [
                 "mousedown", (e) =>
                     @Mouse.down = true
-                    @Emit "MouseDown", new Torch.EventArgs @,
+                    @Emit "MouseDown", new Torch.Event @,
                         nativeEvent: e
             ],
             [
                 "mouseup", (e) =>
                     @Mouse.down = false
-                    @Emit "MouseUp", new Torch.EventArgs @,
+                    @Emit "MouseUp", new Torch.Event @,
                         nativeEvent: e
             ],
             [
@@ -318,7 +319,7 @@ class CanvasGame
                 "click", (e) =>
                     e.preventDefault()
                     e.stopPropagation()
-                    @Emit "Click", new Torch.EventArgs @,
+                    @Emit "Click", new Torch.Event @,
                         nativeEvent: e
                     return false
             ]
@@ -396,7 +397,7 @@ class CanvasGame
         resize = (event) =>
             @Viewport.width = window.innerWidth
             @Viewport.height = window.innerHeight
-            @Emit "Resize", new Torch.EventArgs @,
+            @Emit "Resize", new Torch.Event @,
                 nativeEvent: event
 
         window.addEventListener( 'resize', resize, false )

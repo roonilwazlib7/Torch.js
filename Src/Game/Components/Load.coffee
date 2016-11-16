@@ -127,7 +127,7 @@ class Load
 
         # could potentially listen in to update some sort of loading
         # bar
-        @game.Emit "LoadProgressed", new Torch.EventArgs @game,
+        @game.Emit "LoadProgressed", new Torch.Event @game,
             progress: @progress
 
         if @finish_stack <= 0

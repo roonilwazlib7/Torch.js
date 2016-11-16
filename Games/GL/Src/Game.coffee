@@ -10,9 +10,10 @@ Load = (game) ->
     game.Load.Texture("Art/enemy.png", "enemy")
 
 Init = (game) ->
-    Torch.Scale = 6;
-    game.Bounds();
-    game.Clear("black");
+    Torch.Scale = 6
+    window._game = game
+    game.Bounds()
+    game.Clear("black")
 
     # var black = new Torch.Sprite(game, 0, 0);
     # black.Bind.WebGLTexture("black");

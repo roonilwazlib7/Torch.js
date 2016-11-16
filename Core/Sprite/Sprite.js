@@ -46,6 +46,7 @@
       }
       this.InitEventDispatch();
       this.Bind = new Torch.Bind(this);
+      this.Collisions = new Torch.CollisionManager(this);
       this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.Body = new Torch.Body();
       this.HitBox = new Torch.HitBox();
@@ -92,6 +93,7 @@
       this.UpdateEvents();
       this.UpdateGLEntities();
       this.UpdateHitBox();
+      this.Collisions.Update();
       ref = this.children;
       results = [];
       for (i = 0, len = ref.length; i < len; i++) {

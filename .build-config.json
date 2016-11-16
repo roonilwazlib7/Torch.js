@@ -1,12 +1,15 @@
 {
+    "Build": 50,
+    "BuildMinor": 0,
+    "BuildMajor": 0,
+    "Game": {
+        "Name": "GL",
+        "Source": "Coffee"
+    },
     "NeedsWork": [
         "Torch.Particles.js"
     ],
-    "Game": {
-        "Source": "Coffee",
-        "Name": "GL"
-    },
-    "Build": 6,
+    "Version": "0.0.1",
     "SourceMap": [
         "three/three.min.js",
         "pixl/pixl.js",
@@ -33,6 +36,7 @@
         "Sprite/Colliders/AABB.js",
         "Sprite/Colliders/Circle.js",
         "Sprite/Colliders/SAT.js",
+        "Sprite/Colliders/CollisionManager.js",
         "Plugins/Platformer.js",
         "Plugins/SideScroller.js",
         "Sound.js",
@@ -43,6 +47,5 @@
         "Electron.js",
         "CanvasRenderer.js",
         "Geometry.js"
-    ],
-    "Version": "0.0.1"
+    ]
 }

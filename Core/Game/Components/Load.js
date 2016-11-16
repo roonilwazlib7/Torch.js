@@ -146,7 +146,7 @@
       var timeToLoad;
       this.finish_stack--;
       this.progress = (this.totalLoad - this.finish_stack) / this.totalLoad;
-      this.game.Emit("LoadProgressed", new Torch.EventArgs(this.game, {
+      this.game.Emit("LoadProgressed", new Torch.Event(this.game, {
         progress: this.progress
       }));
       if (this.finish_stack <= 0) {

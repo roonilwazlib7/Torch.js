@@ -95,7 +95,8 @@
       this.DrawStack = [];
       this.AddStack = [];
       this.GamePads = [];
-      return this.events = {};
+      this.events = {};
+      return this.filter = {};
     };
 
     CanvasGame.prototype.InitGraphics = function() {
@@ -233,7 +234,7 @@
       $("body").prepend("<code style='color:#C9302Cmargin-left:15%font-size:24px'> " + error + " </code><br> <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>");
       this.RunGame = function() {};
       this.Run = function() {};
-      this.Emit("FatalError", new Torch.EventArgs(this, {
+      this.Emit("FatalError", new Torch.Event(this, {
         error: error
       }));
       throw error;
@@ -266,7 +267,7 @@
           cleanedSprites.push(sprite);
         } else {
           sprite.trashed = true;
-          sprite.Emit("Trash", new Torch.EventArgs(this));
+          sprite.Emit("Trash", new Torch.Event(this));
         }
       }
       return this.spriteList = cleanedSprites;
@@ -380,7 +381,7 @@
           "mousemove", (function(_this) {
             return function(e) {
               _this.Mouse.SetMousePos(_this.canvasNode, e);
-              return _this.Emit("MouseMove", new Torch.EventArgs(_this, {
+              return _this.Emit("MouseMove", new Torch.Event(_this, {
                 nativeEvent: e
               }));
             };
@@ -389,7 +390,7 @@
           "mousedown", (function(_this) {
             return function(e) {
               _this.Mouse.down = true;
-              return _this.Emit("MouseDown", new Torch.EventArgs(_this, {
+              return _this.Emit("MouseDown", new Torch.Event(_this, {
                 nativeEvent: e
               }));
             };
@@ -398,7 +399,7 @@
           "mouseup", (function(_this) {
             return function(e) {
               _this.Mouse.down = false;
-              return _this.Emit("MouseUp", new Torch.EventArgs(_this, {
+              return _this.Emit("MouseUp", new Torch.Event(_this, {
                 nativeEvent: e
               }));
             };
@@ -420,7 +421,7 @@
             return function(e) {
               e.preventDefault();
               e.stopPropagation();
-              _this.Emit("Click", new Torch.EventArgs(_this, {
+              _this.Emit("Click", new Torch.Event(_this, {
                 nativeEvent: e
               }));
               return false;
@@ -503,7 +504,7 @@
         return function(event) {
           _this.Viewport.width = window.innerWidth;
           _this.Viewport.height = window.innerHeight;
-          return _this.Emit("Resize", new Torch.EventArgs(_this, {
+          return _this.Emit("Resize", new Torch.Event(_this, {
             nativeEvent: event
           }));
         };

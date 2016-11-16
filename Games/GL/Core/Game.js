@@ -16,6 +16,7 @@
 
   Init = function(game) {
     Torch.Scale = 6;
+    window._game = game;
     game.Bounds();
     game.Clear("black");
     game.player = new Player(game);

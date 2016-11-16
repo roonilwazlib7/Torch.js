@@ -52,10 +52,12 @@ class AjaxLoader
 
         request.send()
 
-class EventArgs
+class Event
     constructor: (@game, @data) ->
         if @game isnt null
             @time = @game.time
+        for key,value of @data
+            @[key] = value
 
 class Torch
 
@@ -67,7 +69,7 @@ class Torch
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
         @AjaxLoader = AjaxLoader
-        @EventArgs = EventArgs
+        @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
 

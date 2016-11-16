@@ -12,10 +12,15 @@
     Player.prototype.VELOCITY = 1;
 
     function Player(game) {
-      this.InitSprite(game, 0, 0);
+      this.InitSprite(game, 500, 0);
       this.Bind.WebGLTexture("player");
       this.internalLight = new Torch.PointLight(0xffffff, 2, 500);
       this.Attatch(this.internalLight);
+      this.On("Collision", (function(_this) {
+        return function(event) {
+          return _this.Position("x", 2);
+        };
+      })(this));
     }
 
     Player.prototype.Update = function() {

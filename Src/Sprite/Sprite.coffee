@@ -34,6 +34,7 @@ class Sprite
         @InitEventDispatch()
 
         @Bind = new Torch.Bind(@)
+        @Collisions = new Torch.CollisionManager(@)
         @Rectangle = new Torch.Rectangle(x, y, 0, 0)
         @Body = new Torch.Body()
         @HitBox = new Torch.HitBox()
@@ -82,6 +83,7 @@ class Sprite
         @UpdateEvents()
         @UpdateGLEntities()
         @UpdateHitBox()
+        @Collisions.Update()
 
         for child in @children
             child.Position("x", @Position("x") - (window.innerWidth/2) )
