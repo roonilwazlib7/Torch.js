@@ -1,0 +1,16 @@
+{
+  "name": "torch-build",
+  "version": "1.0.0",
+  "description": "build Torch.js",
+  "main": "torch-build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "node-minify": "2.0.0",
+    "shelljs": "0.7.5",
+    "electron-prebuilt": "^0.35.2"
+  },
+  "author": "Alex",
+  "license": "ISC"
+}

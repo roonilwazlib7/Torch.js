@@ -830,6 +830,7 @@ return new ha(new Ib(a.geometry),new na({color:void 0!==b?b:16777215}))};h.Geome
 loadCompressedTextureCube:function(){console.error("THREE.ImageUtils.loadCompressedTextureCube has been removed. Use THREE.DDSLoader instead.")}};h.Projector=function(){console.error("THREE.Projector has been moved to /examples/js/renderers/Projector.js.");this.projectVector=function(a,b){console.warn("THREE.Projector: .projectVector() is now vector.project().");a.project(b)};this.unprojectVector=function(a,b){console.warn("THREE.Projector: .unprojectVector() is now vector.unproject().");a.unproject(b)};
 this.pickingRay=function(a,b){console.error("THREE.Projector: .pickingRay() is now raycaster.setFromCamera().")}};h.CanvasRenderer=function(){console.error("THREE.CanvasRenderer has been moved to /examples/js/renderers/CanvasRenderer.js");this.domElement=document.createElementNS("http://www.w3.org/1999/xhtml","canvas");this.clear=function(){};this.render=function(){};this.setClearColor=function(){};this.setSize=function(){}};Object.defineProperty(h,"__esModule",{value:!0})});
 
+
 var pixl = function(data, optionalColorPallette, optionalExportType)
 {
     if (!data) throw "pixl error! 'data' argument is required";
@@ -1193,6 +1194,7 @@ pixl.Text.prototype.ChangeText = function(text)
 
 
 }
+
 /**
  * math.js
  * https://github.com/josdejong/mathjs
@@ -1247,6 +1249,7 @@ return m(u(e),u(t)).valueOf()},"Array, Matrix":function(e,t){return m(u(e),t)},"
 if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatrix){var n=e.size();if(n.length>1)throw new Error("Only one dimensional matrices supported");return u(e.valueOf(),t,r)}return Array.isArray(e)?u(e,t,r):void 0}function u(e,t,r){if(t>=e.length)throw new Error("k out of bounds");for(var n=0,i=e.length-1;i>n;){for(var a=n,o=i,s=e[Math.floor(Math.random()*(i-n+1))+n];o>a;)if(r(e[a],s)>=0){var u=e[o];e[o]=e[a],e[a]=u,--o}else++a;r(e[a],s)>0&&--a,a>=t?i=a:n=a+1}return e[t]}var c=n(r(432));return a("partitionSelect",{"Array | Matrix, number":function(e,t){return s(e,t,c)},"Array | Matrix, number, string":function(e,t,r){if("asc"===r)return s(e,t,c);if("desc"===r)return s(e,t,o);throw new Error('Compare string must be "asc" or "desc"')},"Array | Matrix, number, function":s})}var i=r(6).isInteger;t.name="partitionSelect",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){var s=n(r(52)),u=n(r(61)),c=n(r(79)),f=n(r(63)),l=n(r(57)),p=n(r(58)),h=o("compare",{"boolean, boolean":function(e,t){return e===t?0:e>t?1:-1},"number, number":function(e,r){return e===r||i(e,r,t.epsilon)?0:e>r?1:-1},"BigNumber, BigNumber":function(r,n){return r.eq(n)||a(r,n,t.epsilon)?new e.BigNumber(0):new e.BigNumber(r.cmp(n))},"Fraction, Fraction":function(t,r){return new e.Fraction(t.compare(r))},"Complex, Complex":function(){throw new TypeError("No ordering relation is defined for complex numbers")},"Unit, Unit":function(e,t){if(!e.equalBase(t))throw new Error("Cannot compare units with different base");return h(e.value,t.value)},"string, string":function(e,t){return e===t?0:e>t?1:-1},"Matrix, Matrix":function(e,t){var r;switch(e.storage()){case"sparse":switch(t.storage()){case"sparse":r=c(e,t,h);break;default:r=u(t,e,h,!0)}break;default:switch(t.storage()){case"sparse":r=u(e,t,h,!1);break;default:r=l(e,t,h)}}return r},"Array, Array":function(e,t){return h(s(e),s(t)).valueOf()},"Array, Matrix":function(e,t){return h(s(e),t)},"Matrix, Array":function(e,t){return h(e,s(t))},"Matrix, any":function(e,t){var r;switch(e.storage()){case"sparse":r=f(e,t,h,!1);break;default:r=p(e,t,h,!1)}return r},"any, Matrix":function(e,t){var r;switch(t.storage()){case"sparse":r=f(t,e,h,!0);break;default:r=p(t,e,h,!0)}return r},"Array, any":function(e,t){return p(s(e),t,h,!1).valueOf()},"any, Array":function(e,t){return p(s(t),e,h,!0).valueOf()}});return h.toTex=void 0,h}var i=r(6).nearlyEqual,a=r(49);t.name="compare",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,f){function l(e,t,r){if(void 0!==r){if("string"!=typeof r||1!==r.length)throw new TypeError("Single character expected as defaultValue")}else r=" ";if(1!==t.length)throw new i(t.length,1);var n=t[0];if("number"!=typeof n||!o(n))throw new TypeError("Invalid size, must contain positive integers (size: "+s(t)+")");if(e.length>n)return e.substring(0,n);if(e.length<n){for(var a=e,u=0,c=n-e.length;c>u;u++)a+=r;return a}return e}var p=n(r(52)),h=function(e,r,n){if(2!=arguments.length&&3!=arguments.length)throw new a("resize",arguments.length,2,3);if(r&&r.isMatrix===!0&&(r=r.valueOf()),r.length&&r[0]&&r[0].isBigNumber===!0&&(r=r.map(function(e){return e&&e.isBigNumber===!0?e.toNumber():e})),e&&e.isMatrix===!0)return e.resize(r,n,!0);if("string"==typeof e)return l(e,r,n);var i=Array.isArray(e)?!1:"Array"!==t.matrix;if(0==r.length){for(;Array.isArray(e);)e=e[0];return u(e)}Array.isArray(e)||(e=[e]),e=u(e);var o=c.resize(e,r,n);return i?p(o):o};return h.toTex=void 0,h}var i=r(42),a=r(11),o=r(6).isInteger,s=r(23).format,u=r(3).clone,c=r(40);t.name="resize",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){var o=n(r(52)),s=a("size",{Matrix:function(e){return o(e.size())},Array:i.size,string:function(e){return"Array"===t.matrix?[e.length]:o([e.length])},"number | Complex | BigNumber | Unit | boolean | null":function(e){return"Array"===t.matrix?[]:o([])}});return s.toTex=void 0,s}var i=r(40);t.name="size",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){function o(e){if("asc"===e)return f;if("desc"===e)return l;throw new Error('String "asc" or "desc" expected')}function s(e){if(1!==i(e).length)throw new Error("One dimensional array expected")}function u(e){if(1!==e.size().length)throw new Error("One dimensional matrix expected")}var c=n(r(52)),f=n(r(432)),l=function(e,t){return-f(e,t)},p=a("sort",{Array:function(e){return s(e),e.sort(f)},Matrix:function(e){return u(e),c(e.toArray().sort(f),e.storage())},"Array, function":function(e,t){return s(e),e.sort(t)},"Matrix, function":function(e,t){return u(e),c(e.toArray().sort(t),e.storage())},"Array, string":function(e,t){return s(e),e.sort(o(t))},"Matrix, string":function(e,t){return u(e),c(e.toArray().sort(o(t)),e.storage())}});return p.toTex=void 0,p}var i=r(40).size;t.name="sort",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){var s=n(r(52)),u=o("squeeze",{Array:function(e){return a.squeeze(i.clone(e))},Matrix:function(e){var t=a.squeeze(e.toArray());return Array.isArray(t)?s(t):t},any:function(e){return i.clone(e)}});return u.toTex=void 0,u}var i=r(3),a=r(40);t.name="squeeze",t.factory=n},function(e,t,r){e.exports=[r(407),r(405),r(406),r(438),r(440),r(441),r(442),r(444),r(445)]},function(e,t,r){"use strict";function n(e,t,n,i){function a(e,t){var r=t.size().length,n=e.size().length;if(r>1)throw new Error("first object must be one dimensional");if(n>1)throw new Error("second object must be one dimensional");if(r!==n)throw new Error("Length of two vectors must be equal");var i=u(e);if(0===i)throw new Error("Sum of elements in first object must be non zero");var a=u(t);if(0===a)throw new Error("Sum of elements in second object must be non zero");var o=s(e,u(e)),h=s(t,u(t)),m=u(c(o,l(f(o,h))));return p(m)?m:Number.NaN}var o=n(r(52)),s=n(r(317)),u=n(r(439)),c=n(r(84)),f=n(r(359)),l=n(r(374)),p=n(r(88)),h=i("kldivergence",{"Array, Array":function(e,t){return a(o(e),o(t))},"Matrix, Array":function(e,t){return a(e,o(t))},"Array, Matrix":function(e,t){return a(o(e),t)},"Matrix, Matrix":function(e,t){return a(e,t)}});return h}t.name="kldivergence",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){function o(r){var n=void 0;if(i(r,function(e){n=void 0===n?e:s(n,e)}),void 0===n)switch(t.number){case"number":return 0;case"BigNumber":return new e.BigNumber(0);case"Fraction":return new e.Fraction(0);default:return 0}return n}var s=n(r(53)),u=a("sum",{"Array | Matrix":function(e){return o(e)},"Array | Matrix, number | BigNumber":function(){throw new Error("sum(A, dim) is not yet supported")},"...":function(e){return o(e)}});return u.toTex=void 0,u}var i=r(312);t.name="sum",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){var o=n(r(51)),s=n(r(84)),u=n(r(317)),c=n(r(405)),f=n(r(408)),l=n(r(370));return a("multinomial",{"Array | Matrix":function(e){var t=0,r=1;return i(e,function(e){if(!f(e)||!l(e))throw new TypeError("Positive integer value expected in function multinomial");t=o(t,e),r=s(r,c(e))}),u(c(t),r)}})}var i=r(312);t.name="multinomial",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){var s=n(r(405)),u=o("permutations",{"number | BigNumber":s,"number, number":function(e,t){var r,n;if(!a(e)||0>e)throw new TypeError("Positive integer value expected in function permutations");if(!a(t)||0>t)throw new TypeError("Positive integer value expected in function permutations");if(t>e)throw new TypeError("second argument k must be less than or equal to first argument n");for(r=1,n=e-t+1;e>=n;n++)r*=n;return r},"BigNumber, BigNumber":function(t,r){var n,a;if(!i(t)||!i(r))throw new TypeError("Positive integer value expected in function permutations");if(r.gt(t))throw new TypeError("second argument k must be less than or equal to first argument n");for(n=new e.BigNumber(1),a=t.minus(r).plus(1);a.lte(t);a=a.plus(1))n=n.times(a);return n}});return u.toTex=void 0,u}function i(e){return e.isInteger()&&e.gte(0)}var a=r(6).isInteger;t.name="permutations",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,i){var a=n(r(443)),o=a("uniform").pickRandom;return o.toTex=void 0,o}t.name="pickRandom",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){function s(e){if(!f.hasOwnProperty(e))throw new Error("Unknown distribution "+e);var t=Array.prototype.slice.call(arguments,1),r=f[e].apply(this,t);return function(e){var t={random:function(e,t,n){var s,c,f;if(arguments.length>3)throw new i("random",arguments.length,0,3);if(1===arguments.length?a(e)?s=e:f=e:2===arguments.length?a(e)?(s=e,f=t):(c=e,f=t):(s=e,c=t,f=n),void 0===f&&(f=1),void 0===c&&(c=0),void 0!==s){var l=o(s.valueOf(),c,f,r);return s&&s.isMatrix===!0?u(l):l}return r(c,f)},randomInt:function(e,t,r){var s,c,f;if(arguments.length>3||arguments.length<1)throw new i("randomInt",arguments.length,1,3);if(1===arguments.length?a(e)?s=e:f=e:2===arguments.length?a(e)?(s=e,f=t):(c=e,f=t):(s=e,c=t,f=r),void 0===c&&(c=0),void 0!==s){var l=o(s.valueOf(),c,f,n);return s&&s.isMatrix===!0?u(l):l}return n(c,f)},pickRandom:function(e){if(1!==arguments.length)throw new i("pickRandom",arguments.length,1);if(e&&e.isMatrix===!0)e=e.valueOf();else if(!Array.isArray(e))throw new TypeError("Unsupported type of value in function pickRandom");if(c.size(e).length>1)throw new Error("Only one dimensional vectors supported");return e[Math.floor(Math.random()*e.length)]}},r=function(t,r){return t+e()*(r-t)},n=function(t,r){return Math.floor(t+e()*(r-t))},o=function(e,t,r,n){var i,a,s=[];if(e=e.slice(0),e.length>1)for(a=0,i=e.shift();i>a;a++)s.push(o(e,t,r,n));else for(a=0,i=e.shift();i>a;a++)s.push(n(t,r));return s};return t}(r)}var u=n(r(52)),c=r(40),f={uniform:function(){return Math.random},normal:function(){return function(){for(var e,t,r=-1;0>r||r>1;)e=Math.random(),t=Math.random(),r=1/6*Math.pow(-2*Math.log(e),.5)*Math.cos(2*Math.PI*t)+.5;return r}}};return s.toTex=void 0,s}var i=r(11),a=r(310);t.name="distribution",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,i){var a=n(r(443)),o=a("uniform").random;return o.toTex=void 0,o}t.name="random",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,i){var a=n(r(443)),o=a("uniform").randomInt;return o.toTex=void 0,o}t.name="randomInt",t.factory=n},function(e,t,r){e.exports=[r(432),r(447),r(87),r(64),r(342),r(60),r(448),r(449)]},function(e,t,r){"use strict";function n(e,t,n,i){function a(e,t){if(Array.isArray(e)){if(Array.isArray(t)){var r=e.length;if(r!==t.length)return!1;for(var n=0;r>n;n++)if(!a(e[n],t[n]))return!1;return!0}return!1}return Array.isArray(t)?!1:o(e,t)}var o=n(r(87)),s=i("deepEqual",{"any, any":function(e,t){return a(e.valueOf(),t.valueOf())}});return s.toTex=void 0,s}t.name="deepEqual",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){var s=n(r(52)),u=n(r(61)),c=n(r(62)),f=n(r(63)),l=n(r(57)),p=n(r(58)),h=r(32),m=o("smallerEq",{"boolean, boolean":function(e,t){return t>=e},"number, number":function(e,r){return r>=e||i(e,r,t.epsilon)},"BigNumber, BigNumber":function(e,r){return e.lte(r)||a(e,r,t.epsilon)},"Fraction, Fraction":function(e,t){return 1!==e.compare(t)},"Complex, Complex":function(){throw new TypeError("No ordering relation is defined for complex numbers")},"Unit, Unit":function(e,t){if(!e.equalBase(t))throw new Error("Cannot compare units with different base");return m(e.value,t.value)},"string, string":function(e,t){return t>=e},"Matrix, Matrix":function(e,t){var r;switch(e.storage()){case"sparse":switch(t.storage()){case"sparse":r=c(e,t,m);break;default:r=u(t,e,m,!0)}break;default:switch(t.storage()){case"sparse":r=u(e,t,m,!1);break;default:r=l(e,t,m)}}return r},"Array, Array":function(e,t){return m(s(e),s(t)).valueOf()},"Array, Matrix":function(e,t){return m(s(e),t)},"Matrix, Array":function(e,t){return m(e,s(t))},"Matrix, any":function(e,t){var r;switch(e.storage()){case"sparse":r=f(e,t,m,!1);break;default:r=p(e,t,m,!1)}return r},"any, Matrix":function(e,t){var r;switch(t.storage()){case"sparse":r=f(t,e,m,!0);break;default:r=p(t,e,m,!0)}return r},"Array, any":function(e,t){return p(s(e),t,m,!1).valueOf()},"any, Array":function(e,t){return p(s(t),e,m,!0).valueOf()}});return m.toTex={2:"\\left(${args[0]}"+h.operators.smallerEq+"${args[1]}\\right)"},m}var i=r(6).nearlyEqual,a=r(49);t.name="smallerEq",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){var s=n(r(52)),u=n(r(61)),c=n(r(62)),f=n(r(63)),l=n(r(57)),p=n(r(58)),h=r(32),m=o("unequal",{"any, any":function(e,t){return null===e?null!==t:null===t?null!==e:void 0===e?void 0!==t:void 0===t?void 0!==e:d(e,t)},"Matrix, Matrix":function(e,t){var r;switch(e.storage()){case"sparse":switch(t.storage()){case"sparse":r=c(e,t,d);break;default:r=u(t,e,d,!0)}break;default:switch(t.storage()){case"sparse":r=u(e,t,d,!1);break;default:r=l(e,t,d)}}return r},"Array, Array":function(e,t){return m(s(e),s(t)).valueOf()},"Array, Matrix":function(e,t){return m(s(e),t)},"Matrix, Array":function(e,t){return m(e,s(t))},"Matrix, any":function(e,t){var r;switch(e.storage()){case"sparse":r=f(e,t,d,!1);break;default:r=p(e,t,d,!1)}return r},"any, Matrix":function(e,t){var r;switch(t.storage()){case"sparse":r=f(t,e,d,!0);break;default:r=p(t,e,d,!0)}return r},"Array, any":function(e,t){return p(s(e),t,d,!1).valueOf()},"any, Array":function(e,t){return p(s(t),e,d,!0).valueOf()}}),d=o("_unequal",{"boolean, boolean":function(e,t){return e!==t},"number, number":function(e,r){return!i(e,r,t.epsilon)},"BigNumber, BigNumber":function(e,r){return!a(e,r,t.epsilon)},"Fraction, Fraction":function(e,t){return!e.equals(t)},"Complex, Complex":function(e,t){return!e.equals(t)},"Unit, Unit":function(e,t){if(!e.equalBase(t))throw new Error("Cannot compare units with different base");return m(e.value,t.value)},"string, string":function(e,t){return e!==t}});return m.toTex={2:"\\left(${args[0]}"+h.operators.unequal+"${args[1]}\\right)"},m}var i=r(6).nearlyEqual,a=r(49);t.name="unequal",t.factory=n},function(e,t,r){e.exports=[r(311),r(316),r(451),r(321),r(452),r(453),r(454),r(455),r(439),r(456)]},function(e,t,r){"use strict";function n(e,t,n,o){function s(e){e=i(e.valueOf());var t=e.length;if(0==t)throw new Error("Cannot calculate median of an empty array");if(t%2==0){for(var r=t/2-1,n=l(e,r+1),a=e[r],o=0;r>o;++o)f(e[o],a)>0&&(a=e[o]);return m(a,n)}var s=l(e,(t-1)/2);return h(s)}var u=n(r(53)),c=n(r(81)),f=n(r(432)),l=n(r(431)),p=o("median",{"Array | Matrix":s,"Array | Matrix, number | BigNumber":function(e,t){throw new Error("median(A, dim) is not yet supported")},"...":function(e){if(a(e))throw new TypeError("Scalar values expected in function median");return s(e)}}),h=o({"number | BigNumber | Unit":function(e){return e}}),m=o({"number | BigNumber | Unit, number | BigNumber | Unit":function(e,t){return c(u(e,t),2)}});return p.toTex=void 0,p}var i=r(40).flatten,a=(r(313),r(314));t.name="median",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){function a(e){e=i(e.valueOf());var t=e.length;if(0==t)throw new Error("Cannot calculate mode of an empty array");var r={},n=[],a=0;for(var o in e)e[o]in r||(r[e[o]]=0),r[e[o]]++,r[e[o]]==a?n.push(e[o]):r[e[o]]>a&&(a=r[e[o]],n=[e[o]]);return n}var o=n("mode",{"Array | Matrix":a,"...":function(e){return a(e)}});return o}var i=r(40).flatten;t.name="mode",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){function o(e){var t=void 0;if(i(e,function(e){t=void 0===t?e:s(t,e)}),void 0===t)throw new Error("Cannot calculate prod of an empty array");return t}var s=n(r(80)),u=a("prod",{"Array | Matrix":o,"Array | Matrix, number | BigNumber":function(e,t){throw new Error("prod(A, dim) is not yet supported")},"...":function(e){return o(e)}});return u.toTex=void 0,u}var i=r(312);t.name="prod",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,u){function c(t,r,n){var o,u,c;if(arguments.length<2||arguments.length>3)throw new SyntaxError("Function quantileSeq requires two or three parameters");if(s(t)){if(n=n||!1,"boolean"==typeof n){if(u=t.valueOf(),a(r)){if(0>r)throw new Error("N/prob must be non-negative");if(1>=r)return f(u,r,n);if(r>1){if(!i(r))throw new Error("N must be a positive integer");var l=r+1;o=new Array(r);for(var p=0;r>p;)o[p]=f(u,++p/l,n);return o}}if(r&&r.isBigNumber){if(r.isNegative())throw new Error("N/prob must be non-negative");if(c=new r.constructor(1),r.lte(c))return f(u,r,n);if(r.gt(c)){if(!r.isInteger())throw new Error("N must be a positive integer");var h=r.toNumber();if(h>4294967295)throw new Error("N must be less than or equal to 2^32-1, as that is the maximum length of an Array");var l=new e.BigNumber(h+1);o=new Array(h);for(var p=0;h>p;)o[p]=f(u,new e.BigNumber(++p).div(l),n);return o}}if(Array.isArray(r)){o=new Array(r.length);for(var p=0;p<o.length;++p){var m=r[p];if(a(m)){if(0>m||m>1)throw new Error("Probability must be between 0 and 1, inclusive")}else{if(!m||!m.isBigNumber)throw new TypeError("Unexpected type of argument in function quantileSeq");if(c=new m.constructor(1),m.isNegative()||m.gt(c))throw new Error("Probability must be between 0 and 1, inclusive")}o[p]=f(u,m,n)}return o}throw new TypeError("Unexpected type of argument in function quantileSeq")}throw new TypeError("Unexpected type of argument in function quantileSeq")}throw new TypeError("Unexpected type of argument in function quantileSeq")}function f(e,t,r){var n=o(e),i=n.length;if(0===i)throw new Error("Cannot calculate quantile of an empty sequence");if(a(t)){var s=t*(i-1),u=s%1;if(0===u){var c=r?n[s]:h(n,s);return d(c),c}var f,g,v=Math.floor(s);if(r)f=n[v],g=n[v+1];else{g=h(n,v+1),f=n[v];for(var y=0;v>y;++y)m(n[y],f)>0&&(f=n[y])}return d(f),d(g),l(p(f,1-u),p(g,u))}var s=t.times(i-1);if(s.isInteger()){s=s.toNumber();var c=r?n[s]:h(n,s);return d(c),c}var f,g,v=s.floor(),u=s.minus(v),x=v.toNumber();if(r)f=n[x],g=n[x+1];else{g=h(n,x+1),f=n[x];for(var y=0;x>y;++y)m(n[y],f)>0&&(f=n[y])}d(f),d(g);var b=new u.constructor(1);return l(p(f,b.minus(u)),p(g,u))}var l=n(r(51)),p=n(r(84)),h=n(r(431)),m=n(r(432)),d=u({"number | BigNumber | Unit":function(e){return e}});return c}var i=r(6).isInteger,a=r(6).isNumber,o=r(40).flatten,s=r(310);t.name="quantileSeq",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,i){function a(e,t){if(0==e.length)throw new SyntaxError("Function std requires one or more parameters (0 provided)");return o(s.apply(null,arguments))}var o=n(r(369)),s=n(r(456)),u=i("std",{"Array | Matrix":a,"Array | Matrix, string":a,"...":function(e){return a(e)}});return u.toTex=void 0,u}t.name="std",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,o){function s(t,r){var n=0,i=0;if(0==t.length)throw new SyntaxError("Function var requires one or more parameters (0 provided)");if(a(t,function(e){n=u(n,e),i++}),0===i)throw new Error("Cannot calculate var of an empty array");var o=l(n,i);switch(n=0,a(t,function(e){var t=c(e,o);n=u(n,f(t,t))}),r){case"uncorrected":return l(n,i);case"biased":return l(n,i+1);case"unbiased":var s=n&&n.isBigNumber===!0?new e.BigNumber(0):0;return 1==i?s:l(n,i-1);default:throw new Error('Unknown normalization "'+r+'". Choose "unbiased" (default), "uncorrected", or "biased".')}}var u=n(r(53)),c=n(r(77)),f=n(r(80)),l=n(r(81)),p=o("variance",{"Array | Matrix":function(e){return s(e,i)},"Array | Matrix, string":s,"...":function(e){return s(e,i)}});return p.toTex="\\mathrm{Var}\\left(${args}\\right)",p}var i="unbiased",a=r(312);t.name="var",t.factory=n},function(e,t,r){e.exports=[r(89),r(458)]},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("print",{"string, Object":i,"string, Object, number":i});return a.toTex=void 0,a}function i(e,t,r){return e.replace(/\$([\w\.]+)/g,function(e,n){for(var i=n.split("."),s=t[i.shift()];i.length&&void 0!==s;){var u=i.shift();s=u?s[u]:s+"."}return void 0!==s?a(s)?s:o(s,r):e})}var a=r(23).isString,o=r(23).format;t.name="print",t.factory=n},function(e,t,r){e.exports=[r(460),r(461),r(462),r(463),r(464),r(465),r(466),r(467),r(468),r(469),r(470),r(471),r(472),r(473),r(474),r(475),r(476),r(477),r(478),r(479),r(480),r(481),r(482),r(483),r(484)]},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("acos",{number:function(r){return r>=-1&&1>=r||t.predictable?Math.acos(r):new e.Complex(r,0).acos()},Complex:function(e){return e.acos()},BigNumber:function(e){return e.acos()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\cos^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="acos",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("acosh",{number:function(r){return r>=1||t.predictable?a(r):-1>=r?new e.Complex(Math.log(Math.sqrt(r*r-1)-r),Math.PI):new e.Complex(r,0).acosh()},Complex:function(e){return e.acosh()},BigNumber:function(e){return e.acosh()},"Array | Matrix":function(e){return i(e,o)}});return o.toTex={1:"\\cosh^{-1}\\left(${args[0]}\\right)"},o}var i=r(19),a=Math.acosh||function(e){return Math.log(Math.sqrt(e*e-1)+e)};t.name="acosh",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("acot",{number:function(e){return Math.atan(1/e)},Complex:function(e){return e.acot()},BigNumber:function(t){return new e.BigNumber(1).div(t).atan()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\cot^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="acot",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("acoth",{number:function(r){return r>=1||-1>=r||t.predictable?isFinite(r)?(Math.log((r+1)/r)+Math.log(r/(r-1)))/2:0:new e.Complex(r,0).acoth()},Complex:function(e){return e.acoth()},BigNumber:function(t){return new e.BigNumber(1).div(t).atanh()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\coth^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="acoth",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("acsc",{number:function(r){return-1>=r||r>=1||t.predictable?Math.asin(1/r):new e.Complex(r,0).acsc()},Complex:function(e){return e.acsc()},BigNumber:function(t){return new e.BigNumber(1).div(t).asin()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\csc^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="acsc",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("acsch",{number:function(e){return e=1/e,Math.log(e+Math.sqrt(e*e+1))},Complex:function(e){return e.acsch()},BigNumber:function(t){return new e.BigNumber(1).div(t).asinh()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\mathrm{csch}^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="acsch",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("asec",{number:function(r){return-1>=r||r>=1||t.predictable?Math.acos(1/r):new e.Complex(r,0).asec()},Complex:function(e){return e.asec()},BigNumber:function(t){return new e.BigNumber(1).div(t).acos()},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\sec^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="asec",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,a){var o=(a.find(n(r(461)),["Complex"]),a("asech",{number:function(r){if(1>=r&&r>=-1||t.predictable){r=1/r;var n=Math.sqrt(r*r-1);return r>0||t.predictable?Math.log(n+r):new e.Complex(Math.log(n-r),Math.PI)}return new e.Complex(r,0).asech()},Complex:function(e){return e.asech()},BigNumber:function(t){return new e.BigNumber(1).div(t).acosh()},"Array | Matrix":function(e){return i(e,o)}}));return o.toTex={1:"\\mathrm{sech}^{-1}\\left(${args[0]}\\right)"},o}var i=r(19);t.name="asech",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("asin",{number:function(r){return r>=-1&&1>=r||t.predictable?Math.asin(r):new e.Complex(r,0).asin()},Complex:function(e){return e.asin()},BigNumber:function(e){return e.asin()},"Array | Matrix":function(e){return i(e,a,!0)}});return a.toTex={1:"\\sin^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="asin",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("asinh",{number:Math.asinh||function(e){return Math.log(Math.sqrt(e*e+1)+e)},Complex:function(e){return e.asinh()},BigNumber:function(e){return e.asinh()},"Array | Matrix":function(e){return i(e,a,!0)}});return a.toTex={1:"\\sinh^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="asinh",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("atan",{number:function(e){return Math.atan(e)},Complex:function(e){return e.atan()},BigNumber:function(e){return e.atan()},"Array | Matrix":function(e){return i(e,a,!0)}});return a.toTex={1:"\\tan^{-1}\\left(${args[0]}\\right)"},a}var i=r(19);t.name="atan",t.factory=n},function(e,t,r){"use strict";function n(e,t,n,i){var a=n(r(52)),o=n(r(360)),s=n(r(61)),u=n(r(362)),c=n(r(85)),f=n(r(63)),l=n(r(57)),p=n(r(58)),h=i("atan2",{"number, number":Math.atan2,"BigNumber, BigNumber":function(t,r){return e.BigNumber.atan2(t,r)},"Matrix, Matrix":function(e,t){var r;switch(e.storage()){case"sparse":switch(t.storage()){case"sparse":r=u(e,t,h,!1);break;default:r=o(t,e,h,!0)}break;default:switch(t.storage()){case"sparse":r=s(e,t,h,!1);break;default:r=l(e,t,h)}}return r},"Array, Array":function(e,t){return h(a(e),a(t)).valueOf()},"Array, Matrix":function(e,t){return h(a(e),t)},"Matrix, Array":function(e,t){return h(e,a(t))},"Matrix, number | BigNumber":function(e,t){var r;switch(e.storage()){case"sparse":r=c(e,t,h,!1);break;default:r=p(e,t,h,!1)}return r},"number | BigNumber, Matrix":function(e,t){var r;switch(t.storage()){case"sparse":r=f(t,e,h,!0);break;default:r=p(t,e,h,!0)}return r},"Array, number | BigNumber":function(e,t){return p(a(e),t,h,!1).valueOf()},"number | BigNumber, Array":function(e,t){return p(a(t),e,h,!0).valueOf()}});return h.toTex={2:"\\mathrm{atan2}\\left(${args}\\right)"},h}t.name="atan2",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("atanh",{number:function(r){return 1>=r&&r>=-1||t.predictable?a(r):new e.Complex(r,0).atanh()},Complex:function(e){return e.atanh()},BigNumber:function(e){return e.atanh()},"Array | Matrix":function(e){return i(e,o,!0)}});return o.toTex={1:"\\tanh^{-1}\\left(${args[0]}\\right)"},o}var i=r(19),a=Math.atanh||function(e){return Math.log((1+e)/(1-e))/2};t.name="atanh",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("cos",{number:Math.cos,Complex:function(e){return e.cos()},BigNumber:function(e){return e.cos()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function cos is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\cos\\left(${args[0]}\\right)"},a}var i=r(19);t.name="cos",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("cosh",{number:a,Complex:function(e){return e.cosh()},BigNumber:function(e){return e.cosh()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function cosh is no angle");return o(t.value)},"Array | Matrix":function(e){return i(e,o)}});return o.toTex={1:"\\cosh\\left(${args[0]}\\right)"},o}var i=r(19),a=Math.cosh||function(e){return(Math.exp(e)+Math.exp(-e))/2};t.name="cosh",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("cot",{number:function(e){return 1/Math.tan(e)},Complex:function(e){return e.cot()},BigNumber:function(t){return new e.BigNumber(1).div(t.tan())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function cot is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\cot\\left(${args[0]}\\right)"},a}var i=r(19);t.name="cot",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("coth",{number:i,Complex:function(e){return e.coth()},BigNumber:function(t){return new e.BigNumber(1).div(t.tanh())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function coth is no angle");return o(t.value)},"Array | Matrix":function(e){return a(e,o)}});return o.toTex={1:"\\coth\\left(${args[0]}\\right)"},o}function i(e){var t=Math.exp(2*e);return(t+1)/(t-1)}var a=r(19);t.name="coth",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("csc",{number:function(e){return 1/Math.sin(e)},Complex:function(e){return e.csc()},BigNumber:function(t){return new e.BigNumber(1).div(t.sin())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function csc is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\csc\\left(${args[0]}\\right)"},a}var i=r(19);t.name="csc",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("csch",{number:i,Complex:function(e){return e.csch()},BigNumber:function(t){return new e.BigNumber(1).div(t.sinh())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function csch is no angle");return o(t.value)},"Array | Matrix":function(e){return a(e,o)}});return o.toTex={1:"\\mathrm{csch}\\left(${args[0]}\\right)"},o}function i(e){return 0==e?Number.POSITIVE_INFINITY:Math.abs(2/(Math.exp(e)-Math.exp(-e)))*o(e)}var a=r(19),o=r(6).sign;t.name="csch",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("sec",{number:function(e){return 1/Math.cos(e)},Complex:function(e){return e.sec()},BigNumber:function(t){return new e.BigNumber(1).div(t.cos())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function sec is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a)}});return a.toTex={1:"\\sec\\left(${args[0]}\\right)"},a}var i=r(19);t.name="sec",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("sech",{number:i,Complex:function(e){return e.sech()},BigNumber:function(t){return new e.BigNumber(1).div(t.cosh())},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function sech is no angle");return o(t.value)},"Array | Matrix":function(e){return a(e,o)}});return o.toTex={1:"\\mathrm{sech}\\left(${args[0]}\\right)"},o}function i(e){return 2/(Math.exp(e)+Math.exp(-e))}var a=r(19);t.name="sech",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("sin",{number:Math.sin,Complex:function(e){return e.sin()},BigNumber:function(e){return e.sin()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function sin is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a,!0)}});return a.toTex={1:"\\sin\\left(${args[0]}\\right)"},a}var i=r(19);t.name="sin",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("sinh",{number:a,Complex:function(e){return e.sinh()},BigNumber:function(e){return e.sinh()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function sinh is no angle");return o(t.value)},"Array | Matrix":function(e){return i(e,o,!0)}});return o.toTex={1:"\\sinh\\left(${args[0]}\\right)"},o}var i=r(19),a=Math.sinh||function(e){return(Math.exp(e)-Math.exp(-e))/2};t.name="sinh",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("tan",{number:Math.tan,Complex:function(e){return e.tan()},BigNumber:function(e){return e.tan()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function tan is no angle");return a(t.value)},"Array | Matrix":function(e){return i(e,a,!0)}});return a.toTex={1:"\\tan\\left(${args[0]}\\right)"},a}var i=r(19);t.name="tan",t.factory=n},function(e,t,r){"use strict";function n(e,t,r,n){var o=n("tanh",{number:a,Complex:function(e){return e.tanh()},BigNumber:function(e){return e.tanh()},Unit:function(t){if(!t.hasBase(e.Unit.BASE_UNITS.ANGLE))throw new TypeError("Unit in function tanh is no angle");return o(t.value)},"Array | Matrix":function(e){return i(e,o,!0)}});return o.toTex={1:"\\tanh\\left(${args[0]}\\right)"},o}var i=r(19),a=Math.tanh||function(e){var t=Math.exp(2*e);return(t-1)/(t+1)};t.name="tanh",t.factory=n},function(e,t,r){e.exports=[r(486)]},function(e,t,r){"use strict";function n(e,t,n,i){var a=r(32),o=n(r(52)),s=n(r(57)),u=n(r(58)),c=i("to",{"Unit, Unit | string":function(e,t){return e.to(t)},"Matrix, Matrix":function(e,t){return s(e,t,c)},"Array, Array":function(e,t){return c(o(e),o(t)).valueOf();
 },"Array, Matrix":function(e,t){return c(o(e),t)},"Matrix, Array":function(e,t){return c(e,o(t))},"Matrix, any":function(e,t){return u(e,t,c,!1)},"any, Matrix":function(e,t){return u(t,e,c,!0)},"Array, any":function(e,t){return u(o(e),t,c,!1).valueOf()},"any, Array":function(e,t){return u(o(t),e,c,!0).valueOf()}});return c.toTex={2:"\\left(${args[0]}"+a.operators.to+"${args[1]}\\right)"},c}t.name="to",t.factory=n},function(e,t,r){e.exports=[r(488),r(408),r(356),r(88),r(370),r(422),r(90)]},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("clone",{any:i.clone});return a.toTex=void 0,a}var i=r(3);t.name="clone",t.factory=n},function(e,t,r){e.exports=[r(490)]},function(e,t){"use strict";function r(e,t,r,n){return function(t,r){var n=e[r&&r.mathjs];return n&&"function"==typeof n.fromJSON?n.fromJSON(r):r}}t.name="reviver",t.path="json",t.factory=r},function(e,t,r){"use strict";var n=r(11),i=r(42),a=r(43);e.exports=[{name:"ArgumentsError",path:"error",factory:function(){return n}},{name:"DimensionError",path:"error",factory:function(){return i}},{name:"IndexError",path:"error",factory:function(){return a}}]}])});
 //# sourceMappingURL=math.map
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var slice = [].slice;
@@ -1285,6 +1288,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   };
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var EventDispatcher, exports;
@@ -1349,6 +1353,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   exports.EventDispatcher = EventDispatcher;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Trashable, exports;
@@ -1372,6 +1377,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   exports.Trashable = Trashable;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var AjaxLoader, Event, Task, Torch, exports,
@@ -1578,6 +1584,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   exports.Torch = new Torch();
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var ThreeEntity, exports;
@@ -1618,6 +1625,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   exports.ThreeEntity = ThreeEntity;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var ThreeSprite,
@@ -1673,6 +1681,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.ThreeSprite = ThreeSprite;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var AmbientLight, DirectionalLight, ExtensionProperties, HemisphereLight, Light, PointLight, SpotLight,
@@ -1783,6 +1792,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.SpotLight = SpotLight;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Load;
@@ -2039,6 +2049,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Load = Load;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Viewport;
@@ -2072,6 +2083,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Viewport = Viewport;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var FutureEvent, Timer;
@@ -2128,6 +2140,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.FutureEvent = FutureEvent;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Mouse;
@@ -2174,6 +2187,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Mouse = Mouse;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Camera;
@@ -2211,6 +2225,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Camera = Camera;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 
 /*
@@ -2749,6 +2764,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.CanvasGame = CanvasGame;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 
 /*
@@ -2857,6 +2873,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.WebGLGame = WebGLGame;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 
 /*
@@ -2897,6 +2914,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Game = Game;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 
 /*
@@ -3326,6 +3344,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.GhostSprite = GhostSprite;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Text, measureCanvas,
@@ -3440,6 +3459,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Text = Text;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var SpriteGroup;
@@ -3546,6 +3566,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.SpriteGroup = SpriteGroup;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var CollisionDetector;
@@ -3577,6 +3598,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Collider.CollisionDetector = CollisionDetector;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var AABB;
@@ -3598,6 +3620,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Collider.AABB = AABB;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Circle;
@@ -3636,11 +3659,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Collider.Circle = Circle;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
 
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var CollisionManager;
@@ -3774,6 +3799,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.CollisionManager = CollisionManager;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Actor, Block, Fluid, SpawnItem, Spawner, exports,
@@ -4081,11 +4107,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Platformer.spawnItem = SpawnItem;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
 
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var PlayList,
@@ -4147,6 +4175,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   })(Torch.GhostSprite);
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var State, StateMachine;
@@ -4205,6 +4234,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.StateMachine.State = State;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Bind, CanvasBind, WebGLBind;
@@ -4396,6 +4426,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Bind = Bind;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Animation, StepAnimation, TexturePack, TextureSheet,
@@ -4585,6 +4616,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Animation.StepAnimation = StepAnimation;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Color;
@@ -4655,6 +4687,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Color = Color;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Electron;
@@ -4674,6 +4707,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Electron = new Electron();
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var CanvasRenderer, exports;
@@ -4754,6 +4788,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   exports.CanvasRenderer = CanvasRenderer;
 
 }).call(this);
+
 // Generated by CoffeeScript 1.10.0
 (function() {
   var Body, HitBox, Point, Rectangle, Vector;
@@ -4909,6 +4944,3 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Point = Point;
 
 }).call(this);
-
-
-Torch.build='Torch-2016-11-15';Torch.version='0.0.1';

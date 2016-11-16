@@ -1,10 +1,12 @@
 {
-    "Build": 50,
+    "Build": 58,
     "BuildMinor": 0,
     "BuildMajor": 0,
-    "Game": {
-        "Name": "GL",
-        "Source": "Coffee"
+    "TestGame": {
+        "Path": "GL",
+        "Source": "Coffee",
+        "run": true,
+        "Electron": true
     },
     "NeedsWork": [
         "Torch.Particles.js"
