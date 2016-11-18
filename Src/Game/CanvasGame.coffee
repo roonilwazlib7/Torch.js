@@ -40,6 +40,7 @@ class CanvasGame
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
         @Camera = new Torch.Camera(@)
+        @Layers = new Torch.Layers(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         _keys = {}
