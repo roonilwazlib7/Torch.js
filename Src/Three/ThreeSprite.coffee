@@ -4,8 +4,8 @@ class ThreeSprite extends ThreeEntity
         object = new THREE.Mesh(shape,material )
 
         object.position.z = @sprite.Rectangle.z # -10
-        object.position.x = @sprite.Rectangle.x
-        object.position.y = @sprite.Rectangle.y
+        object.position.x = @sprite.Rectangle.x - window.innerWidth / 1.45 + @sprite.Rectangle.width / 2
+        object.position.y = -@sprite.Rectangle.y + window.innerHeight / 1.45 - @sprite.Rectangle.height / 2
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)

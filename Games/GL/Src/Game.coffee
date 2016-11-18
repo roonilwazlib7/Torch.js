@@ -8,6 +8,7 @@ Load = (game) ->
     game.Load.Texture("Art/ship.png", "player")
     game.Load.Texture("Art/player.png", "black")
     game.Load.Texture("Art/enemy.png", "enemy")
+    game.Load.Texture("Art/bullet.png", "bullet")
 
 Init = (game) ->
     Torch.Scale = 6

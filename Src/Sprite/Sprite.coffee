@@ -181,6 +181,7 @@ class Sprite
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
                     .DrawIndex(@drawIndex)
+                    #.Opacity(@opacity)
 
     UpdateHitBox: ->
         shiftX = @Rectangle.width / 8

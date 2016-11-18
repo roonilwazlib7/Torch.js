@@ -14,12 +14,10 @@
     function Player(game) {
       this.InitSprite(game, 500, 0);
       this.Bind.WebGLTexture("player");
-      this.internalLight = new Torch.PointLight(0xffffff, 2, 500);
-      this.Attatch(this.internalLight);
+      this.bullets = new Torch.SpriteGroup(null, game).Factory(Bullet);
+      this.lock = false;
       this.On("Collision", (function(_this) {
-        return function(event) {
-          return _this.Position("x", 2);
-        };
+        return function(event) {};
       })(this));
     }
 
@@ -41,8 +39,18 @@
       if (keys.W.down) {
         this.Velocity("y", -this.VELOCITY);
       }
-      this.internalLight.Position("x", this.Position("x"));
-      return this.internalLight.Position("y", -this.Position("y"));
+      if (keys.Space.down) {
+        if (!this.lock) {
+          this.Shoot();
+          return this.lock = true;
+        }
+      } else {
+        return this.lock = false;
+      }
+    };
+
+    Player.prototype.Shoot = function() {
+      return this.bullets.Add(null, this.Position("x") + this.Width() / 2, this.Position("y") - this.Height() / 2, this);
     };
 
     return Player;

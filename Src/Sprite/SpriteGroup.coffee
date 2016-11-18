@@ -1,5 +1,5 @@
 class SpriteGroup
-    constructor: (@sprites, @game) ->
+    constructor: (@sprites = [], @game) ->
         for sprite in @sprites
             sprite.anchorX = sprite.Rectangle.x
         return @
@@ -8,9 +8,9 @@ class SpriteGroup
         @spriteFactory = spriteClass
         return @
 
-    Add: (sprites, x, y) ->
+    Add: (sprites, x, y, args...) ->
         if sprites is null or sprites is undefined and @spriteFactory isnt undefined
-            newSprite = new @spriteFactory(@game, x, y)
+            newSprite = new @spriteFactory(@game, x, y, args...)
             @sprites.push(newSprite)
             return newSprite
         else

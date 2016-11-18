@@ -5,14 +5,10 @@ class Player extends Torch.Sprite
     constructor: (game) ->
         @InitSprite(game, 500, 0)
         @Bind.WebGLTexture("player")
-
-        # internal light
-        @internalLight = new Torch.PointLight( 0xffffff, 2, 500)
-
-        @Attatch(@internalLight)
-
+        @bullets = new Torch.SpriteGroup(null, game).Factory(Bullet)
+        @lock = false
         @On "Collision", (event) =>
-            @Position("x", 2)
+            # @Position("x", 2)
 
     Update: ->
         super()
@@ -24,9 +20,13 @@ class Player extends Torch.Sprite
         @Velocity("y", @VELOCITY) if keys.S.down
         @Velocity("y", -@VELOCITY) if keys.W.down
 
-        @internalLight.Position("x", @Position("x"))
-        @internalLight.Position("y", -@Position("y"))
+        if keys.Space.down
+            if not @lock
+                @Shoot()
+                @lock = true
+        else @lock = false
 
-
+    Shoot: ->
+        @bullets.Add(null, @Position("x") + @Width() / 2, @Position("y") - @Height() / 2, @)
 
 exports.Player = Player

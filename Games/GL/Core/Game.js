@@ -11,7 +11,8 @@
   Load = function(game) {
     game.Load.Texture("Art/ship.png", "player");
     game.Load.Texture("Art/player.png", "black");
-    return game.Load.Texture("Art/enemy.png", "enemy");
+    game.Load.Texture("Art/enemy.png", "enemy");
+    return game.Load.Texture("Art/bullet.png", "bullet");
   };
 
   Init = function(game) {
