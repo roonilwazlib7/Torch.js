@@ -43,6 +43,8 @@ class CanvasGame
         @Layers = new Torch.Layers(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
+        Torch.Style()
+
         _keys = {}
         i = 0
         while i < 230

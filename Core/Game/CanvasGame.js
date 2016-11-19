@@ -54,6 +54,7 @@
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera(this);
       this.Layers = new Torch.Layers(this);
+      Torch.Style();
       _keys = {};
       i = 0;
       while (i < 230) {
@@ -219,7 +220,7 @@
     };
 
     CanvasGame.prototype.FatalError = function(error) {
-      var stack;
+      var errorHtml, stack;
       if (this.fatal) {
         return;
       }
@@ -229,10 +230,8 @@
       }
       this.Clear("#000");
       stack = error.stack.replace(/\n/g, "<br><br>");
-      $("body").empty();
-      $("body").prepend("<code style='color:#C9302Cfont-size:18px'>Time: " + this.time + "</code>");
-      $("body").prepend("<code style='color:#C9302Cfont-size:20px'>" + stack + "</code><br>");
-      $("body").prepend("<code style='color:#C9302Cmargin-left:15%font-size:24px'> " + error + " </code><br> <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>");
+      errorHtml = "<code style='color:#C9302Cmargin-left:15%font-size:24px'>" + error + "</code>\n<br>\n<code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code>\n<br>\n<code style='color:#C9302Cfont-size:20px'>" + stack + "</code>\n<br>\n<code style='color:#C9302Cfont-size:18px'>Time: " + this.time + "</code>";
+      document.body.innerHTML = errorHtml;
       this.RunGame = function() {};
       this.Run = function() {};
       this.Emit("FatalError", new Torch.Event(this, {

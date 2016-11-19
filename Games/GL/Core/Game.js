@@ -30,9 +30,7 @@
 
   Draw = function(game) {};
 
-  Update = function(game) {
-    return game.h.update();
-  };
+  Update = function(game) {};
 
   Game.Start(Load, Update, Draw, Init);
 
