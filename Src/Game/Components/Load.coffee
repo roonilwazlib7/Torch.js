@@ -132,7 +132,8 @@ class Load
 
         if @finish_stack <= 0
             # load has finished
-            $(".font-loader").remove()
+            document.getElementsByClassName("font-loader")[0].remove()
+
             @loadFinished()
 
             timeToLoad = (new Date().getTime() - @startTime) / 1000

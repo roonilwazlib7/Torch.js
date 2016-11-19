@@ -193,13 +193,17 @@ class CanvasGame
 
         @Clear("#000")
         stack = error.stack.replace(/\n/g, "<br><br>")
-        $("body").empty()
-        $("body").prepend("<code style='color:#C9302Cfont-size:18px'>Time: #{@time}</code>")
-        $("body").prepend("<code style='color:#C9302Cfont-size:20px'>#{stack}</code><br>")
-        $("body").prepend("<code style='color:#C9302Cmargin-left:15%font-size:24px'>
-                                #{error}
-                          </code><br>
-                          <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code><br>")
+        errorHtml = """
+        <code style='color:#C9302Cmargin-left:15%font-size:24px'>#{error}</code>
+        <br>
+        <code style='color:#C9302Cfont-size:20pxfont-weight:bold'>Stack Trace:</code>
+        <br>
+        <code style='color:#C9302Cfont-size:20px'>#{stack}</code>
+        <br>
+        <code style='color:#C9302Cfont-size:18px'>Time: #{@time}</code>
+        """
+        document.body.innerHTML = errorHtml
+
         @RunGame = ->
         @Run = ->
         @Emit "FatalError", new Torch.Event @,

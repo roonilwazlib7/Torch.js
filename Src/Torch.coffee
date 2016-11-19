@@ -59,9 +59,6 @@ class Event
         for key,value of @data
             @[key] = value
 
-class HtmlUtil
-
-
 class Torch
 
     CANVAS: 1
@@ -75,21 +72,11 @@ class Torch
         @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
-        @HtmlUtil = new HtmlUtil()
 
     Needs: (key) ->
         # make sure we have the peoper torch components
         if not Torch[key] then throw "Compenent #{key} is required"
         return @
-
-    Message: (message, color) ->
-        if $("#torch_message").length > 0
-            message = $("<p>" + message + "</p>")
-            message.css("font-weight", "bold")
-
-            if color then message.css("color", color)
-
-            $("#torch_message").append(message)
 
     FatalError: (error) ->
         return if @fatal
@@ -107,8 +94,7 @@ class Torch
         <code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>
         <code style='color:#C9302C;font-size:20px'>#{stack}</code><br>
         """
-        $("body").empty()
-        $("body").prepend(errorHtml)
+        document.body.innerHTML = errorHtml
         throw error
 
     StrictErrors: ->

@@ -150,7 +150,7 @@
         progress: this.progress
       }));
       if (this.finish_stack <= 0) {
-        $(".font-loader").remove();
+        document.getElementsByClassName("font-loader")[0].remove();
         this.loadFinished();
         timeToLoad = (new Date().getTime() - this.startTime) / 1000;
         return console.log("%c" + this.game.name + " loaded in " + timeToLoad + "s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px");
