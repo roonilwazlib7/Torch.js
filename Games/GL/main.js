@@ -14,6 +14,8 @@ function StartWindow()
         {
             app.quit();
         }
+
+        fs.unlinkSync("_tmp_index.html");
     });
 
     // This method will be called when Electron has finished
@@ -34,7 +36,7 @@ function StartWindow()
                 //mainWindow.setFullScreen(true); //fullScreen
 
                 // and load the index.html of the app.
-                mainWindow.loadURL('file://' + __dirname + '/' + "index.html");
+                mainWindow.loadURL('file://' + __dirname + '/' + "_tmp_index.html");
 
                 // Emitted when the window is closed.
                 mainWindow.on('closed', function() {

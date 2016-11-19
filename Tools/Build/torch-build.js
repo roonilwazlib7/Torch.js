@@ -53,6 +53,20 @@ compressor.minify({
 if (buildConfig.TestGame.run)
 {
     console.log("Running Test Game...");
+
+    // easy file includes...
+    index = fs.readFileSync("Games/" + buildConfig.TestGame.Path + "/index.html").toString();
+
+    index = index.replace(/\{([^}]+)\}/g, function(path){
+
+        var clean = path.replace("{", "").replace("}", "");
+
+        return "<script src = '" + clean + "' ></script>";
+
+    });
+
+    fs.writeFileSync("Games/" + buildConfig.TestGame.Path + "/_tmp_index.html", index);
+
     if (buildConfig.TestGame.Source == "Coffee")
     {
         console.log("Compiling Game Coffee...");
