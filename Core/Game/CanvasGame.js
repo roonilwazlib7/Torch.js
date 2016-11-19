@@ -53,6 +53,7 @@
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera(this);
+      this.Layers = new Torch.Layers(this);
       _keys = {};
       i = 0;
       while (i < 230) {
