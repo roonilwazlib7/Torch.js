@@ -23,18 +23,19 @@ Init = (game) ->
     game.player = new Player(game)
     game.player.DrawIndex(9)
 
-    game.origTest = new Torch.Sprite(game, 0, 0)
+    game.origTest = new Torch.Sprite(game, game.canvasNode.width, 0)
     game.origTest.Bind.WebGLTexture("enemy")
     game.origTest.DrawIndex(10)
 
     game.Add( new Torch.AmbientLight(0xffffff) )
 
-    game.text = new Torch.Text game, 100, 100,
+    game.text = new Torch.Text game, 0, 0,
         text: "Hello, World"
         color: "white"
         fontSize: 64
         font: "Impact"
 
+    game.text.Center()
     game.text.DrawIndex(10)
     game.text.On "Click", (event) ->
         alert("click")

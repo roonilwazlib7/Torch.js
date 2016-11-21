@@ -328,7 +328,7 @@ class Sprite
     Center: ->
         width = @game.canvasNode.width
         x = (width / 2) - (@Rectangle.width/2)
-        @Rectangle.x = x
+        @Position("x", x)
         return @
 
     CenterVertical: ->

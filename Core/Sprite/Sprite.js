@@ -104,14 +104,18 @@
     };
 
     Sprite.prototype.UpdateEvents = function() {
-      var ev, mouseRec, reComputedMouseRec;
+      var mouseRec, reComputedMouseRec;
       if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
         this.mouseOver = false;
-        this.Emit("MouseLeave", this);
+        this.Emit("MouseLeave", new Torch.Event(this.game, {
+          sprite: this
+        }));
       }
       if (this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle)) {
         if (!this.mouseOver) {
-          this.Emit("MouseOver", this);
+          this.Emit("MouseOver", new Torch.Event(this.game, {
+            sprite: this
+          }));
         }
         this.mouseOver = true;
       } else if (this.fixed) {
@@ -132,18 +136,18 @@
       }
       if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
         this.wasClicked = true;
-        ev = new Torch.Event(this.game, {
+        this.Emit("Click", new Torch.Event(this.game, {
           sprite: this
-        });
-        console.log(ev);
-        this.Emit("Click", ev);
+        }));
         this.clickTrigger = false;
       }
       if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
         this.clickTrigger = false;
       }
       if (!this.game.Mouse.down && !this.mouseOver && this.clickAwayTrigger) {
-        this.Emit("ClickAway", this);
+        this.Emit("ClickAway", new Torch.Event(this.game, {
+          sprite: this
+        }));
         this.wasClicked = false;
         this.clickAwayTrigger = false;
       } else if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
@@ -152,7 +156,9 @@
         this.clickAwayTrigger = true;
       }
       if (!this.Rectangle.Intersects(this.game.BoundRec)) {
-        return this.Emit("OutOfBounds", this);
+        return this.Emit("OutOfBounds", new Torch.Event(this.game, {
+          sprite: this
+        }));
       }
     };
 
@@ -383,7 +389,7 @@
       var width, x;
       width = this.game.canvasNode.width;
       x = (width / 2) - (this.Rectangle.width / 2);
-      this.Rectangle.x = x;
+      this.Position("x", x);
       return this;
     };
 

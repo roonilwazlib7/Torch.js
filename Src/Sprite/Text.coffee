@@ -38,7 +38,7 @@ class Text extends Torch.Sprite
         cnv = document.createElement("CANVAS")
         Text.measureCanvas.font = @fontSize + "px " + @font
         cnv.width = Torch.Text.measureCanvas.measureText(@text).width
-        cnv.height = @fontSize + 5
+        cnv.height = @fontSize
 
         if @buffHeight
             cnv.height += @buffHeight
@@ -62,7 +62,7 @@ class Text extends Torch.Sprite
                 @Bind.Texture(image)
 
         @Rectangle.width = cnv.width
-        @Rectangle.height = @fontSize + 5
+        @Rectangle.height = @fontSize
 
     Update: ->
         super()
@@ -70,6 +70,7 @@ class Text extends Torch.Sprite
 
     UpdateText: ->
         if @text isnt @lastText
+            console.log(@text + "," + @lastText)
             @Render()
             @lastText = @text
 

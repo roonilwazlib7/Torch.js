@@ -66,7 +66,7 @@
       cnv = document.createElement("CANVAS");
       Text.measureCanvas.font = this.fontSize + "px " + this.font;
       cnv.width = Torch.Text.measureCanvas.measureText(this.text).width;
-      cnv.height = this.fontSize + 5;
+      cnv.height = this.fontSize;
       if (this.buffHeight) {
         cnv.height += this.buffHeight;
       }
@@ -91,7 +91,7 @@
         };
       })(this);
       this.Rectangle.width = cnv.width;
-      return this.Rectangle.height = this.fontSize + 5;
+      return this.Rectangle.height = this.fontSize;
     };
 
     Text.prototype.Update = function() {
@@ -101,6 +101,7 @@
 
     Text.prototype.UpdateText = function() {
       if (this.text !== this.lastText) {
+        console.log(this.text + "," + this.lastText);
         this.Render();
         return this.lastText = this.text;
       }

@@ -47,7 +47,6 @@ class CanvasBind
         @sprite.gl_orig_height = height
         @sprite.Rectangle.width = width
         @sprite.Rectangle.height = height
-        console.log(width, height)
 
     Texture: -> (textureId, optionalParameters) ->
 

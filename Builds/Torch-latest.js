@@ -3135,14 +3135,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.UpdateEvents = function() {
-      var ev, mouseRec, reComputedMouseRec;
+      var mouseRec, reComputedMouseRec;
       if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
         this.mouseOver = false;
-        this.Emit("MouseLeave", this);
+        this.Emit("MouseLeave", new Torch.Event(this.game, {
+          sprite: this
+        }));
       }
       if (this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle)) {
         if (!this.mouseOver) {
-          this.Emit("MouseOver", this);
+          this.Emit("MouseOver", new Torch.Event(this.game, {
+            sprite: this
+          }));
         }
         this.mouseOver = true;
       } else if (this.fixed) {
@@ -3163,18 +3167,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
         this.wasClicked = true;
-        ev = new Torch.Event(this.game, {
+        this.Emit("Click", new Torch.Event(this.game, {
           sprite: this
-        });
-        console.log(ev);
-        this.Emit("Click", ev);
+        }));
         this.clickTrigger = false;
       }
       if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
         this.clickTrigger = false;
       }
       if (!this.game.Mouse.down && !this.mouseOver && this.clickAwayTrigger) {
-        this.Emit("ClickAway", this);
+        this.Emit("ClickAway", new Torch.Event(this.game, {
+          sprite: this
+        }));
         this.wasClicked = false;
         this.clickAwayTrigger = false;
       } else if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
@@ -3183,7 +3187,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         this.clickAwayTrigger = true;
       }
       if (!this.Rectangle.Intersects(this.game.BoundRec)) {
-        return this.Emit("OutOfBounds", this);
+        return this.Emit("OutOfBounds", new Torch.Event(this.game, {
+          sprite: this
+        }));
       }
     };
 
@@ -3414,7 +3420,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var width, x;
       width = this.game.canvasNode.width;
       x = (width / 2) - (this.Rectangle.width / 2);
-      this.Rectangle.x = x;
+      this.Position("x", x);
       return this;
     };
 
@@ -3539,7 +3545,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       cnv = document.createElement("CANVAS");
       Text.measureCanvas.font = this.fontSize + "px " + this.font;
       cnv.width = Torch.Text.measureCanvas.measureText(this.text).width;
-      cnv.height = this.fontSize + 5;
+      cnv.height = this.fontSize;
       if (this.buffHeight) {
         cnv.height += this.buffHeight;
       }
@@ -3564,7 +3570,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         };
       })(this);
       this.Rectangle.width = cnv.width;
-      return this.Rectangle.height = this.fontSize + 5;
+      return this.Rectangle.height = this.fontSize;
     };
 
     Text.prototype.Update = function() {
@@ -3574,6 +3580,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Text.prototype.UpdateText = function() {
       if (this.text !== this.lastText) {
+        console.log(this.text + "," + this.lastText);
         this.Render();
         return this.lastText = this.text;
       }
@@ -4431,8 +4438,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
       this.sprite.Rectangle.width = width;
-      this.sprite.Rectangle.height = height;
-      return console.log(width, height);
+      return this.sprite.Rectangle.height = height;
     };
 
     CanvasBind.prototype.Texture = function() {
@@ -5094,4 +5100,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.1.63'
+Torch.version = '0.1.74'

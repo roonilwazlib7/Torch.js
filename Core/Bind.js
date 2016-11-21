@@ -59,8 +59,7 @@
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
       this.sprite.Rectangle.width = width;
-      this.sprite.Rectangle.height = height;
-      return console.log(width, height);
+      return this.sprite.Rectangle.height = height;
     };
 
     CanvasBind.prototype.Texture = function() {
