@@ -195,8 +195,10 @@
     };
 
     Sprite.prototype.UpdateGLEntities = function() {
+      var transform;
+      transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Position("x") - window.innerWidth / 1.45 + this.Width() / 2).Position("y", -this.Position("y") + window.innerHeight / 1.45 - this.Height() / 2).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 
@@ -408,6 +410,10 @@
     Sprite.prototype.Attatch = function(otherItem) {
       this.children.push(otherItem);
       return this.game.Add(otherItem);
+    };
+
+    Sprite.prototype.GetThreeTransform = function() {
+      return this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
     };
 
     return Sprite;

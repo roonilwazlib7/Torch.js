@@ -8,7 +8,7 @@
       this.y = y1;
       this.width = width;
       this.height = height;
-      this.z = -10;
+      this.z = 0;
     }
 
     Rectangle.prototype.GetOffset = function(rectangle) {

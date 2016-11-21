@@ -12,10 +12,13 @@
     Player.prototype.VELOCITY = 1;
 
     function Player(game) {
-      this.InitSprite(game, 500, 0);
+      this.InitSprite(game, 0, 0);
       this.Bind.WebGLTexture("player");
       this.bullets = new Torch.SpriteGroup(null, game).Factory(Bullet);
       this.lock = false;
+      this.On("Click", function(event) {
+        return alert("click");
+      });
       this.On("Collision", (function(_this) {
         return function(event) {};
       })(this));
@@ -39,6 +42,8 @@
       if (keys.W.down) {
         this.Velocity("y", -this.VELOCITY);
       }
+      this.Position("x", this.game.Mouse.x);
+      this.Position("y", this.game.Mouse.y);
       if (keys.Space.down) {
         if (!this.lock) {
           this.Shoot();

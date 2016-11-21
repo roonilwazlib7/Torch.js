@@ -1628,8 +1628,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.sprite = sprite;
       object = new THREE.Mesh(shape, material);
       object.position.z = this.sprite.Rectangle.z;
-      object.position.x = this.sprite.Rectangle.x - window.innerWidth / 1.45 + this.sprite.Rectangle.width / 2;
-      object.position.y = -this.sprite.Rectangle.y + window.innerHeight / 1.45 - this.sprite.Rectangle.height / 2;
+      object.position.x = this.sprite.Rectangle.x - this.sprite.GetThreeTransform().x;
+      object.position.y = -this.sprite.Rectangle.y + this.sprite.GetThreeTransform().y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
       this.mesh = object;
@@ -2150,23 +2150,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var rect;
       rect = c.getBoundingClientRect();
       this.x = evt.clientX - rect.left;
-      this.y = evt.clientY - rect.top;
-      if (this.game.gl_camera) {
-        return this.SetThreePosition(evt);
-      }
-    };
-
-    Mouse.prototype.SetThreePosition = function(evt) {
-      var camera, dir, distance, pos, vector;
-      vector = new THREE.Vector3();
-      camera = this.game.gl_camera;
-      vector.set((evt.clientX / window.innerWidth) * 2 - 1, -(evt.clientY / window.innerHeight) * 2 + 1, 0.5);
-      vector.unproject(camera);
-      dir = vector.sub(camera.position).normalize();
-      distance = -camera.position.z / dir.z;
-      pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      this.x = pos.x + window.innerWidth / 1.45;
-      return this.y = -pos.y + window.innerHeight / 1.45;
+      return this.y = evt.clientY - rect.top;
     };
 
     Mouse.prototype.GetRectangle = function() {
@@ -2868,6 +2852,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return this;
     };
 
+    CanvasGame.prototype.GetThreeTransform = function(x, y) {
+      var camera, dir, distance, pos, vector;
+      vector = new THREE.Vector3();
+      camera = this.gl_camera;
+      vector.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1, 0.5);
+      vector.unproject(camera);
+      dir = vector.sub(camera.position).normalize();
+      distance = -camera.position.z / dir.z;
+      pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      return pos;
+    };
+
     return CanvasGame;
 
   })();
@@ -3226,8 +3222,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.UpdateGLEntities = function() {
+      var transform;
+      transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", this.Position("x") - window.innerWidth / 1.45 + this.Width() / 2).Position("y", -this.Position("y") + window.innerHeight / 1.45 - this.Height() / 2).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
       }
     };
 
@@ -3439,6 +3437,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Sprite.prototype.Attatch = function(otherItem) {
       this.children.push(otherItem);
       return this.game.Add(otherItem);
+    };
+
+    Sprite.prototype.GetThreeTransform = function() {
+      return this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
     };
 
     return Sprite;
@@ -4954,7 +4956,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.y = y1;
       this.width = width;
       this.height = height;
-      this.z = -10;
+      this.z = 0;
     }
 
     Rectangle.prototype.GetOffset = function(rectangle) {
@@ -5100,4 +5102,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.1.74'
+Torch.version = '0.2.27'

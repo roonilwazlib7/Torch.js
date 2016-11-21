@@ -1,6 +1,6 @@
 class Rectangle
     constructor: (@x, @y, @width, @height) ->
-        @z = -10
+        @z = 0
 
     GetOffset: (rectangle) ->
         vx = ( @x + ( @width / 2 ) ) - ( rectangle.x + ( rectangle.width / 2 ) )

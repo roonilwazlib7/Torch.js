@@ -175,9 +175,10 @@ class Sprite
     UpdateGLEntities: ->
         # send all graphics-related information to
         # the corresponding three.js mesh being rendered
+        transform = @GetThreeTransform()
         if @GL and @gl_three_sprite
-            @Three().Position("x",  @Position("x") - window.innerWidth / 1.45 + @Width() / 2)
-                    .Position("y", -@Position("y") + window.innerHeight / 1.45 - @Height() / 2)
+            @Three().Position("x",  transform.x )
+                    .Position("y", transform.y)
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
                     .DrawIndex(@drawIndex)
@@ -343,6 +344,9 @@ class Sprite
     Attatch: (otherItem) ->
         @children.push(otherItem)
         @game.Add(otherItem)
+
+    GetThreeTransform: () ->
+        return @game.GetThreeTransform( ( @Position("x") + @Width() / 2 ), ( @Position("y") + @Height() / 2) )
 
 ###
     @class Torch.GhostSprite @extends Torch.Sprite

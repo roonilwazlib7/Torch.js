@@ -12,8 +12,8 @@
       this.sprite = sprite;
       object = new THREE.Mesh(shape, material);
       object.position.z = this.sprite.Rectangle.z;
-      object.position.x = this.sprite.Rectangle.x - window.innerWidth / 1.45 + this.sprite.Rectangle.width / 2;
-      object.position.y = -this.sprite.Rectangle.y + window.innerHeight / 1.45 - this.sprite.Rectangle.height / 2;
+      object.position.x = this.sprite.Rectangle.x - this.sprite.GetThreeTransform().x;
+      object.position.y = -this.sprite.Rectangle.y + this.sprite.GetThreeTransform().y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
       this.mesh = object;
