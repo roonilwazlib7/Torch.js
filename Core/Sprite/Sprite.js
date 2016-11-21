@@ -104,7 +104,7 @@
     };
 
     Sprite.prototype.UpdateEvents = function() {
-      var mouseRec, reComputedMouseRec;
+      var ev, mouseRec, reComputedMouseRec;
       if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
         this.mouseOver = false;
         this.Emit("MouseLeave", this);
@@ -132,7 +132,11 @@
       }
       if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
         this.wasClicked = true;
-        this.Emit("Click", this);
+        ev = new Torch.Event(this.game, {
+          sprite: this
+        });
+        console.log(ev);
+        this.Emit("Click", ev);
         this.clickTrigger = false;
       }
       if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
@@ -343,6 +347,14 @@
         }
         this.drawIndex = drawIndex;
         return this;
+      }
+    };
+
+    Sprite.prototype.Scale = function(scale) {
+      if (scale === void 0) {
+        return this.scale;
+      } else {
+        return this.scale = scale;
       }
     };
 

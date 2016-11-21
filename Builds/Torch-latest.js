@@ -3135,7 +3135,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.UpdateEvents = function() {
-      var mouseRec, reComputedMouseRec;
+      var ev, mouseRec, reComputedMouseRec;
       if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
         this.mouseOver = false;
         this.Emit("MouseLeave", this);
@@ -3163,7 +3163,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
         this.wasClicked = true;
-        this.Emit("Click", this);
+        ev = new Torch.Event(this.game, {
+          sprite: this
+        });
+        console.log(ev);
+        this.Emit("Click", ev);
         this.clickTrigger = false;
       }
       if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
@@ -3377,6 +3381,14 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
     };
 
+    Sprite.prototype.Scale = function(scale) {
+      if (scale === void 0) {
+        return this.scale;
+      } else {
+        return this.scale = scale;
+      }
+    };
+
     Sprite.prototype.GetDirectionVector = function(otherSprite) {
       var vec;
       vec = new Torch.Vector(otherSprite.Rectangle.x - this.Rectangle.x, otherSprite.Rectangle.y - this.Rectangle.y);
@@ -3493,6 +3505,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.lastText = "";
       this.width = 100;
       this.height = 100;
+      this.Scale(1);
       return this.Init();
     };
 
@@ -4402,9 +4415,12 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         texture = this.sprite.game.Assets.Textures[textureId];
         map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       }
-      if (!this.sprite.scale) {
+      if (!this.sprite.Scale()) {
         width = texture.width * Torch.Scale;
         height = texture.height * Torch.Scale;
+      } else {
+        width = texture.width * this.sprite.Scale();
+        height = texture.height * this.sprite.Scale();
       }
       this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
       material = new THREE.MeshPhongMaterial({
@@ -5078,4 +5094,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.1.49'
+Torch.version = '0.1.63'

@@ -27,9 +27,16 @@
     game.origTest.DrawIndex(10);
     game.Add(new Torch.AmbientLight(0xffffff));
     game.text = new Torch.Text(game, 100, 100, {
-      text: "Hello, World"
+      text: "Hello, World",
+      color: "white",
+      fontSize: 64,
+      font: "Impact"
     });
-    return game.text.DrawIndex(10);
+    game.text.DrawIndex(10);
+    return game.text.On("Click", function(event) {
+      alert("click");
+      return event.sprite.Rotation(Math.PI / 2);
+    });
   };
 
   Draw = function(game) {};

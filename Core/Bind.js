@@ -43,9 +43,12 @@
         texture = this.sprite.game.Assets.Textures[textureId];
         map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       }
-      if (!this.sprite.scale) {
+      if (!this.sprite.Scale()) {
         width = texture.width * Torch.Scale;
         height = texture.height * Torch.Scale;
+      } else {
+        width = texture.width * this.sprite.Scale();
+        height = texture.height * this.sprite.Scale();
       }
       this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
       material = new THREE.MeshPhongMaterial({

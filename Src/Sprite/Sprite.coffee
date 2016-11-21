@@ -96,11 +96,11 @@ class Sprite
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver
             @mouseOver = false
-            @Emit("MouseLeave", @)
+            @Emit("MouseLeave", new Torch.Event(@game, {sprite: @}))
 
         if @game.Mouse.GetRectangle(@game).Intersects(@Rectangle)
             if not @mouseOver
-                @Emit("MouseOver", @)
+                @Emit("MouseOver", new Torch.Event(@game, {sprite: @}))
             @mouseOver = true
 
         else if @fixed
@@ -121,7 +121,7 @@ class Sprite
         if @clickTrigger and not @game.Mouse.down and @mouseOver
             @wasClicked = true
 
-            @Emit("Click", @)
+            @Emit("Click",new Torch.Event(@game, {sprite: @}))
 
             @clickTrigger = false
 
@@ -129,7 +129,7 @@ class Sprite
             @clickTrigger = false
 
         if not @game.Mouse.down and not @mouseOver and @clickAwayTrigger
-            @Emit("ClickAway", @)
+            @Emit("ClickAway", new Torch.Event(@game, {sprite: @}))
             @wasClicked = false
             @clickAwayTrigger = false
 
@@ -140,7 +140,7 @@ class Sprite
             @clickAwayTrigger = true
 
         if not @Rectangle.Intersects(@game.BoundRec)
-            @Emit("OutOfBounds", @)
+            @Emit("OutOfBounds", new Torch.Event(@game, {sprite: @}))
 
     UpdateBody: ->
         velX = @Body.x.velocity
@@ -303,6 +303,12 @@ class Sprite
                 @game.FatalError("DrawIndex values must be a number. Provided was '#{typeof(drawIndex)}'")
             @drawIndex = drawIndex
             return @
+
+    Scale: (scale) ->
+        if scale is undefined
+            return @scale
+        else
+            @scale = scale
 
     GetDirectionVector: (otherSprite) ->
         vec = new Torch.Vector( (otherSprite.Rectangle.x - @Rectangle.x), (otherSprite.Rectangle.y - @Rectangle.y) )

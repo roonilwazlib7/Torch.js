@@ -32,6 +32,7 @@
       this.lastText = "";
       this.width = 100;
       this.height = 100;
+      this.Scale(1);
       return this.Init();
     };
 

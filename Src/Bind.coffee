@@ -30,9 +30,12 @@ class CanvasBind
             texture = @sprite.game.Assets.Textures[textureId]
             map = @sprite.game.Assets.Textures[textureId].gl_texture
 
-        if not @sprite.scale
+        if not @sprite.Scale()
             width = texture.width * Torch.Scale
             height = texture.height * Torch.Scale
+        else
+            width = texture.width * @sprite.Scale()
+            height = texture.height * @sprite.Scale()
 
         @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
 
