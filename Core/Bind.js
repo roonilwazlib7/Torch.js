@@ -33,11 +33,21 @@
     };
 
     CanvasBind.prototype.WebGLTexture = function(textureId) {
-      var height, map, material, width;
-      width = this.sprite.game.Assets.Textures[textureId].width * Torch.Scale;
-      height = this.sprite.game.Assets.Textures[textureId].height * Torch.Scale;
+      var height, map, material, texture, width;
+      texture = null;
+      map = null;
+      if (textureId.gl_2d_canvas_generated_image) {
+        texture = textureId;
+        map = textureId.texture;
+      } else {
+        texture = this.sprite.game.Assets.Textures[textureId];
+        map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+      }
+      if (!this.sprite.scale) {
+        width = texture.width * Torch.Scale;
+        height = texture.height * Torch.Scale;
+      }
       this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
-      map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
       });
@@ -46,7 +56,8 @@
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
       this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
+      this.sprite.Rectangle.height = height;
+      return console.log(width, height);
     };
 
     CanvasBind.prototype.Texture = function() {

@@ -29,6 +29,9 @@ Init = (game) ->
 
     game.Add( new Torch.AmbientLight(0xffffff) )
 
+    game.text = new Torch.Text(game, 100, 100, {text: "Hello, World"})
+    game.text.DrawIndex(10)
+
 Draw = (game)->
 
 Update = (game) ->

@@ -25,7 +25,11 @@
     game.origTest = new Torch.Sprite(game, 0, 0);
     game.origTest.Bind.WebGLTexture("enemy");
     game.origTest.DrawIndex(10);
-    return game.Add(new Torch.AmbientLight(0xffffff));
+    game.Add(new Torch.AmbientLight(0xffffff));
+    game.text = new Torch.Text(game, 100, 100, {
+      text: "Hello, World"
+    });
+    return game.text.DrawIndex(10);
   };
 
   Draw = function(game) {};

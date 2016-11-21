@@ -36,7 +36,7 @@ class Text extends Torch.Sprite
     Render: ->
         cnv = document.createElement("CANVAS")
         Text.measureCanvas.font = @fontSize + "px " + @font
-        cnv.width = Torch.measureCanvas.measureText(@text).width
+        cnv.width = Torch.Text.measureCanvas.measureText(@text).width
         cnv.height = @fontSize + 5
 
         if @buffHeight
@@ -52,9 +52,11 @@ class Text extends Torch.Sprite
         image.src = cnv.toDataURL()
         image.onload = =>
             if @GL
-                @Bind.Texture
+                @Bind.WebGLTexture
                             gl_2d_canvas_generated_image: true
-                            image: image
+                            width: image.width
+                            height: image.height
+                            texture: new THREE.TextureLoader().load( image.src )
             else
                 @Bind.Texture(image)
 
@@ -62,10 +64,10 @@ class Text extends Torch.Sprite
         @Rectangle.height = @fontSize + 5
 
     Update: ->
+        super()
         @UpdateText()
 
     UpdateText: ->
-        super()
         if @text isnt @lastText
             @Render()
             @lastText = @text

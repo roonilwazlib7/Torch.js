@@ -3525,7 +3525,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var canvas, cnv, image;
       cnv = document.createElement("CANVAS");
       Text.measureCanvas.font = this.fontSize + "px " + this.font;
-      cnv.width = Torch.measureCanvas.measureText(this.text).width;
+      cnv.width = Torch.Text.measureCanvas.measureText(this.text).width;
       cnv.height = this.fontSize + 5;
       if (this.buffHeight) {
         cnv.height += this.buffHeight;
@@ -3539,9 +3539,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       image.onload = (function(_this) {
         return function() {
           if (_this.GL) {
-            return _this.Bind.Texture({
+            return _this.Bind.WebGLTexture({
               gl_2d_canvas_generated_image: true,
-              image: image
+              width: image.width,
+              height: image.height,
+              texture: new THREE.TextureLoader().load(image.src)
             });
           } else {
             return _this.Bind.Texture(image);
@@ -3553,11 +3555,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Text.prototype.Update = function() {
+      Text.__super__.Update.call(this);
       return this.UpdateText();
     };
 
     Text.prototype.UpdateText = function() {
-      Text.__super__.UpdateText.call(this);
       if (this.text !== this.lastText) {
         this.Render();
         return this.lastText = this.text;
@@ -4390,11 +4392,21 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     CanvasBind.prototype.WebGLTexture = function(textureId) {
-      var height, map, material, width;
-      width = this.sprite.game.Assets.Textures[textureId].width * Torch.Scale;
-      height = this.sprite.game.Assets.Textures[textureId].height * Torch.Scale;
+      var height, map, material, texture, width;
+      texture = null;
+      map = null;
+      if (textureId.gl_2d_canvas_generated_image) {
+        texture = textureId;
+        map = textureId.texture;
+      } else {
+        texture = this.sprite.game.Assets.Textures[textureId];
+        map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+      }
+      if (!this.sprite.scale) {
+        width = texture.width * Torch.Scale;
+        height = texture.height * Torch.Scale;
+      }
       this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
-      map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       material = new THREE.MeshPhongMaterial({
         map: map
       });
@@ -4403,7 +4415,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
       this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
+      this.sprite.Rectangle.height = height;
+      return console.log(width, height);
     };
 
     CanvasBind.prototype.Texture = function() {
@@ -5065,4 +5078,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.1.34'
+Torch.version = '0.1.49'

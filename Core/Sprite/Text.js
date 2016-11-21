@@ -64,7 +64,7 @@
       var canvas, cnv, image;
       cnv = document.createElement("CANVAS");
       Text.measureCanvas.font = this.fontSize + "px " + this.font;
-      cnv.width = Torch.measureCanvas.measureText(this.text).width;
+      cnv.width = Torch.Text.measureCanvas.measureText(this.text).width;
       cnv.height = this.fontSize + 5;
       if (this.buffHeight) {
         cnv.height += this.buffHeight;
@@ -78,9 +78,11 @@
       image.onload = (function(_this) {
         return function() {
           if (_this.GL) {
-            return _this.Bind.Texture({
+            return _this.Bind.WebGLTexture({
               gl_2d_canvas_generated_image: true,
-              image: image
+              width: image.width,
+              height: image.height,
+              texture: new THREE.TextureLoader().load(image.src)
             });
           } else {
             return _this.Bind.Texture(image);
@@ -92,11 +94,11 @@
     };
 
     Text.prototype.Update = function() {
+      Text.__super__.Update.call(this);
       return this.UpdateText();
     };
 
     Text.prototype.UpdateText = function() {
-      Text.__super__.UpdateText.call(this);
       if (this.text !== this.lastText) {
         this.Render();
         return this.lastText = this.text;

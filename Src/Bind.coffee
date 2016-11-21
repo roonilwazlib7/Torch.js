@@ -20,31 +20,31 @@ class CanvasBind
             @sprite.TexturePack = null
 
     WebGLTexture: (textureId) ->
-        width = @sprite.game.Assets.Textures[textureId].width * Torch.Scale
-        height = @sprite.game.Assets.Textures[textureId].height * Torch.Scale
+        texture = null
+        map = null
+
+        if textureId.gl_2d_canvas_generated_image
+            texture = textureId
+            map = textureId.texture
+        else
+            texture = @sprite.game.Assets.Textures[textureId]
+            map = @sprite.game.Assets.Textures[textureId].gl_texture
+
+        if not @sprite.scale
+            width = texture.width * Torch.Scale
+            height = texture.height * Torch.Scale
 
         @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
-
-        map = @sprite.game.Assets.Textures[textureId].gl_texture
 
         material = new THREE.MeshPhongMaterial({map: map})
         material.transparent = true
 
         @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, @sprite.gl_shape)
-
-        # object = new THREE.Mesh(@sprite.gl_shape , material )
-        #
-        # object.position.z = @sprite.Rectangle.z # -10
-        # object.position.x = @sprite.Rectangle.x
-        # object.position.y = @sprite.Rectangle.y
-        # object.name = @sprite._torch_uid
-        #
-        # @sprite.game.gl_scene.add(object)
-
         @sprite.gl_orig_width = width
         @sprite.gl_orig_height = height
         @sprite.Rectangle.width = width
         @sprite.Rectangle.height = height
+        console.log(width, height)
 
     Texture: -> (textureId, optionalParameters) ->
 
