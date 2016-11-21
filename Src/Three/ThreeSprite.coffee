@@ -2,10 +2,10 @@ class ThreeSprite extends ThreeEntity
 
     constructor: (@sprite, material, shape) ->
         object = new THREE.Mesh(shape,material )
-
+        transform = @sprite.GetThreeTransform("x")
         object.position.z = @sprite.Rectangle.z # -10
-        object.position.x = @sprite.Rectangle.x - @sprite.GetThreeTransform().x
-        object.position.y = -@sprite.Rectangle.y + @sprite.GetThreeTransform().y
+        object.position.x = transform.x
+        object.position.y = transform.y
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)

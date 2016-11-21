@@ -8,12 +8,13 @@
     extend(ThreeSprite, superClass);
 
     function ThreeSprite(sprite, material, shape) {
-      var object;
+      var object, transform;
       this.sprite = sprite;
       object = new THREE.Mesh(shape, material);
+      transform = this.sprite.GetThreeTransform("x");
       object.position.z = this.sprite.Rectangle.z;
-      object.position.x = this.sprite.Rectangle.x - this.sprite.GetThreeTransform().x;
-      object.position.y = -this.sprite.Rectangle.y + this.sprite.GetThreeTransform().y;
+      object.position.x = transform.x;
+      object.position.y = transform.y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
       this.mesh = object;

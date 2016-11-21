@@ -31,6 +31,8 @@
       return this;
     };
 
+    ThreeEntity.prototype.Update = function() {};
+
     return ThreeEntity;
 
   })();

@@ -175,6 +175,9 @@ class Sprite
     UpdateGLEntities: ->
         # send all graphics-related information to
         # the corresponding three.js mesh being rendered
+
+        # we should have something like this: @Three.Update()
+
         transform = @GetThreeTransform()
         if @GL and @gl_three_sprite
             @Three().Position("x",  transform.x )

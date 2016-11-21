@@ -19,4 +19,7 @@ class ThreeEntity
         @entity.position[plane] = value
         return @
 
+    Update: ->
+        # put the burden of tansforming here
+
 exports.ThreeEntity = ThreeEntity
