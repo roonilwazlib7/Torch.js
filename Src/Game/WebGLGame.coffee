@@ -46,6 +46,8 @@ class WebGLGame extends Torch.CanvasGame
         for sprite in @spriteList
             if sprite.draw and not sprite.trash and not sprite.GHOST_SPRITE
                 sprite.Draw()
+            if sprite.trash
+                sprite.Three().Remove()
 
         @gl_camera.lookAt( @gl_scene.position )
         @gl_renderer.render( @gl_scene, @gl_camera )

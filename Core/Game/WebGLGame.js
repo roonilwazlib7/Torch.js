@@ -68,6 +68,9 @@
         if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE) {
           sprite.Draw();
         }
+        if (sprite.trash) {
+          sprite.Three().Remove();
+        }
       }
       this.gl_camera.lookAt(this.gl_scene.position);
       return this.gl_renderer.render(this.gl_scene, this.gl_camera);

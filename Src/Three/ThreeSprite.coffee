@@ -9,6 +9,7 @@ class ThreeSprite extends ThreeEntity
         object.name = @sprite._torch_uid
 
         @sprite.game.gl_scene.add(object)
+        @mesh = object
         @Entity(object)
 
     Position: (plane, optionalArgument) ->
@@ -31,5 +32,8 @@ class ThreeSprite extends ThreeEntity
     DrawIndex: (arg) ->
         @entity.renderOrder = arg
         return @
+
+    Remove: ->
+        @sprite.game.gl_scene.remove(@mesh)
 
 Torch.ThreeSprite = ThreeSprite

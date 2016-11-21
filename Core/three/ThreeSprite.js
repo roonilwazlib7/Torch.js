@@ -16,6 +16,7 @@
       object.position.y = -this.sprite.Rectangle.y + window.innerHeight / 1.45 - this.sprite.Rectangle.height / 2;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
+      this.mesh = object;
       this.Entity(object);
     }
 
@@ -44,6 +45,10 @@
     ThreeSprite.prototype.DrawIndex = function(arg) {
       this.entity.renderOrder = arg;
       return this;
+    };
+
+    ThreeSprite.prototype.Remove = function() {
+      return this.sprite.game.gl_scene.remove(this.mesh);
     };
 
     return ThreeSprite;
