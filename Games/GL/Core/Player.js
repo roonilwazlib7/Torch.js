@@ -42,8 +42,6 @@
       if (keys.W.down) {
         this.Velocity("y", -this.VELOCITY);
       }
-      this.Position("x", this.game.Mouse.x);
-      this.Position("y", this.game.Mouse.y);
       if (keys.Space.down) {
         if (!this.lock) {
           this.Shoot();

@@ -53,6 +53,9 @@ class Text extends Torch.Sprite
         image.src = cnv.toDataURL()
         image.onload = =>
             if @GL
+                # we need to get rid of the old one
+                if @Three() then @Three().Remove()
+
                 @Bind.WebGLTexture
                             gl_2d_canvas_generated_image: true
                             width: image.width

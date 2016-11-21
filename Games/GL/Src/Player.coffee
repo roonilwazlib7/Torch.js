@@ -23,8 +23,8 @@ class Player extends Torch.Sprite
         @Velocity("y", @VELOCITY) if keys.S.down
         @Velocity("y", -@VELOCITY) if keys.W.down
 
-        @Position("x",@game.Mouse.x)
-        @Position("y",@game.Mouse.y)
+        # @Position("x",@game.Mouse.x)
+        # @Position("y",@game.Mouse.y)
 
         if keys.Space.down
             if not @lock

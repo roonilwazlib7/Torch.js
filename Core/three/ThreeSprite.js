@@ -17,7 +17,6 @@
       object.position.y = transform.y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
-      this.mesh = object;
       this.Entity(object);
     }
 
@@ -49,7 +48,7 @@
     };
 
     ThreeSprite.prototype.Remove = function() {
-      return this.sprite.game.gl_scene.remove(this.mesh);
+      return this.sprite.game.gl_scene.remove(this.entity);
     };
 
     return ThreeSprite;

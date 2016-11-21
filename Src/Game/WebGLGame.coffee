@@ -34,6 +34,7 @@ class WebGLGame extends Torch.CanvasGame
         @canvasNode.style.border = "1px solid green"
         @gl_rendererContainer.appendChild(@canvasNode)
 
+
         @On "Resize", ( event ) =>
             @gl_renderer.setSize( @Viewport.width, @Viewport.height )
             @gl_camera.aspect = @Viewport.width / @Viewport.height

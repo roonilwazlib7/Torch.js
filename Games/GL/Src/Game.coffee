@@ -22,7 +22,8 @@ Init = (game) ->
 
     game.player = new Player(game)
     game.player.DrawIndex(9)
-    #game.player.Center()
+    game.player.Center()
+    game.player.CenterVertical()
 
     game.origTest = new Torch.Sprite(game, game.canvasNode.width - 50, 0)
     game.origTest.Bind.WebGLTexture("enemy")
@@ -30,17 +31,20 @@ Init = (game) ->
 
     game.Add( new Torch.AmbientLight(0xffffff) )
 
-    # game.text = new Torch.Text game, 0, 0,
-    #     text: "Hello, World"
-    #     color: "white"
-    #     fontSize: 64
-    #     font: "Impact"
-    #
-    # game.text.Center()
-    # game.text.DrawIndex(10)
-    # game.text.On "Click", (event) ->
-    #     alert("click")
-    #     event.sprite.Rotation(Math.PI/2)
+    game.text = new Torch.Text game, 0, 0,
+        text: "0"
+        color: "white"
+        fontSize: 64
+        font: "Impact"
+
+    game.text.Center()
+    game.text.counter = 0
+
+    game.text.On "Collision", (event) ->
+        event.collider.Trash()
+        event.self.Center()
+        event.self.counter += 1
+        event.self.text = event.self.counter
 
 Draw = (game)->
 

@@ -79,6 +79,9 @@
       image.onload = (function(_this) {
         return function() {
           if (_this.GL) {
+            if (_this.Three()) {
+              _this.Three().Remove();
+            }
             return _this.Bind.WebGLTexture({
               gl_2d_canvas_generated_image: true,
               width: image.width,

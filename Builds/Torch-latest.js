@@ -1635,7 +1635,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       object.position.y = transform.y;
       object.name = this.sprite._torch_uid;
       this.sprite.game.gl_scene.add(object);
-      this.mesh = object;
       this.Entity(object);
     }
 
@@ -1667,7 +1666,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     ThreeSprite.prototype.Remove = function() {
-      return this.sprite.game.gl_scene.remove(this.mesh);
+      return this.sprite.game.gl_scene.remove(this.entity);
     };
 
     return ThreeSprite;
@@ -3563,6 +3562,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       image.onload = (function(_this) {
         return function() {
           if (_this.GL) {
+            if (_this.Three()) {
+              _this.Three().Remove();
+            }
             return _this.Bind.WebGLTexture({
               gl_2d_canvas_generated_image: true,
               width: image.width,
@@ -5105,4 +5107,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.2.31'
+Torch.version = '0.2.48'

@@ -22,10 +22,26 @@
     game.Clear("black");
     game.player = new Player(game);
     game.player.DrawIndex(9);
+    game.player.Center();
+    game.player.CenterVertical();
     game.origTest = new Torch.Sprite(game, game.canvasNode.width - 50, 0);
     game.origTest.Bind.WebGLTexture("enemy");
     game.origTest.DrawIndex(10);
-    return game.Add(new Torch.AmbientLight(0xffffff));
+    game.Add(new Torch.AmbientLight(0xffffff));
+    game.text = new Torch.Text(game, 0, 0, {
+      text: "0",
+      color: "white",
+      fontSize: 64,
+      font: "Impact"
+    });
+    game.text.Center();
+    game.text.counter = 0;
+    return game.text.On("Collision", function(event) {
+      event.collider.Trash();
+      event.self.Center();
+      event.self.counter += 1;
+      return event.self.text = event.self.counter;
+    });
   };
 
   Draw = function(game) {};
