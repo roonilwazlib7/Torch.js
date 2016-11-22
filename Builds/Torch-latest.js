@@ -2922,7 +2922,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
       this.canvasNode = this.gl_renderer.domElement;
-      this.canvasNode.style.border = "1px solid green";
       this.gl_rendererContainer.appendChild(this.canvasNode);
       return this.On("Resize", (function(_this) {
         return function(event) {
@@ -5107,4 +5106,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.2.49'
+Torch.version = '0.2.61'

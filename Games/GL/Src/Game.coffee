@@ -15,21 +15,41 @@ Init = (game) ->
     window._game = game
     game.Bounds()
     game.Clear("black")
+    game.Add( new Torch.AmbientLight(0xffffff) )
+    testFontSize = 24
 
-    # var black = new Torch.Sprite(game, 0, 0);
-    # black.Bind.WebGLTexture("black");
-    # black.DrawIndex(2)
+    tl = new Torch.Text game, 0, 0,
+        text: "TL"
+        color: "white"
+        fontSize: testFontSize
+        font: "Impact"
+    tr = new Torch.Text game, window.innerWidth - 32, 0,
+        text: "TR"
+        color: "white"
+        fontSize: testFontSize
+        font: "Impact"
+    bl = new Torch.Text game, 0, window.innerHeight - 32,
+        text: "BL"
+        color: "white"
+        fontSize: testFontSize
+        font: "Impact"
+    br = new Torch.Text game, window.innerWidth - 32, window.innerHeight - 32,
+        text: "BR"
+        color: "white"
+        fontSize: testFontSize
+        font: "Impact"
+    ce = new Torch.Text game, 0, 0,
+        text: "CENTER"
+        color: "white"
+        fontSize: testFontSize
+        font: "Impact"
+
+    ce.CenterVertical().Center()
 
     game.player = new Player(game)
     game.player.DrawIndex(9)
     game.player.Center()
     game.player.CenterVertical()
-
-    game.origTest = new Torch.Sprite(game, game.canvasNode.width - 50, 0)
-    game.origTest.Bind.WebGLTexture("enemy")
-    game.origTest.DrawIndex(10)
-
-    game.Add( new Torch.AmbientLight(0xffffff) )
 
     game.text = new Torch.Text game, 0, 0,
         text: "0"
