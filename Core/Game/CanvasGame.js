@@ -55,6 +55,7 @@
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera(this);
       this.Layers = new Torch.Layers(this);
+      this.Debug = new Torch.Debug(this);
       Torch.Style();
       _keys = {};
       i = 0;

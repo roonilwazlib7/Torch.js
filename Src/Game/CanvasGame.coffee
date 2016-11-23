@@ -42,6 +42,7 @@ class CanvasGame
         @Timer = new Torch.Timer(@)
         @Camera = new Torch.Camera(@)
         @Layers = new Torch.Layers(@)
+        @Debug = new Torch.Debug(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         Torch.Style()
