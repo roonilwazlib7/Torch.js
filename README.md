@@ -3,7 +3,7 @@ A sick HTML5 game development framework
 
 Can be used to create web games or standalone electron applications
 
-Team site: https://www.torchjs.slack.com
+Team site: http://www.torchjs.slack.com
 
 ## Source
 Torch.js is written in coffee script and can be found in the <b>Src/</b> folder
