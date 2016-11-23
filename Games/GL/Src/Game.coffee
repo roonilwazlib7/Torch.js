@@ -66,6 +66,12 @@ Init = (game) ->
         event.self.counter += 1
         event.self.text = event.self.counter
 
+    game.Keys.H.On "KeyDown", ->
+        alert("down")
+
+    game.Keys.J.On "KeyUp", ->
+        alert("up")
+
 Draw = (game)->
 
 Update = (game) ->

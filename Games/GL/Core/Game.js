@@ -66,11 +66,17 @@
     });
     game.text.Center();
     game.text.counter = 0;
-    return game.text.On("Collision", function(event) {
+    game.text.On("Collision", function(event) {
       event.collider.Trash();
       event.self.Center();
       event.self.counter += 1;
       return event.self.text = event.self.counter;
+    });
+    game.Keys.H.On("KeyDown", function() {
+      return alert("down");
+    });
+    return game.Keys.J.On("KeyUp", function() {
+      return alert("up");
     });
   };
 

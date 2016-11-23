@@ -41,7 +41,7 @@
     };
 
     CanvasGame.prototype.InitComponents = function() {
-      var _char, _keys, graphicsString, i, styleString;
+      var graphicsString, styleString;
       styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px";
       graphicsString = "WebGL";
       if (this.graphicsType === Torch.CANVAS) {
@@ -56,32 +56,8 @@
       this.Camera = new Torch.Camera(this);
       this.Layers = new Torch.Layers(this);
       this.Debug = new Torch.Debug(this);
+      this.Keys = new Torch.Keys(this);
       Torch.Style();
-      _keys = {};
-      i = 0;
-      while (i < 230) {
-        _char = String.fromCharCode(i).toUpperCase();
-        _keys[_char] = {
-          down: false
-        };
-        i++;
-      }
-      _keys["Space"] = {
-        down: false
-      };
-      _keys["LeftArrow"] = {
-        down: false
-      };
-      _keys["RightArrow"] = {
-        down: false
-      };
-      _keys["UpArrow"] = {
-        down: false
-      };
-      _keys["DownArrow"] = {
-        down: false
-      };
-      this.Keys = _keys;
       this.deltaTime = 0;
       this.fps = 0;
       this.averageFps = 0;
@@ -189,11 +165,11 @@
     };
 
     CanvasGame.prototype.FlushSprites = function() {
-      var j, len, ref, results, sprite;
+      var i, len, ref, results, sprite;
       ref = this.spriteList;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        sprite = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        sprite = ref[i];
         results.push(sprite.Trash());
       }
       return results;
@@ -221,11 +197,11 @@
     };
 
     CanvasGame.prototype.UpdateTasks = function() {
-      var cleanedTasks, j, len, ref, task;
+      var cleanedTasks, i, len, ref, task;
       cleanedTasks = [];
       ref = this.taskList;
-      for (j = 0, len = ref.length; j < len; j++) {
-        task = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        task = ref[i];
         task.Execute(this);
         if (!task.trash) {
           cleanedTasks.push(task);
@@ -235,11 +211,11 @@
     };
 
     CanvasGame.prototype.UpdateSprites = function() {
-      var cleanedSprites, j, len, ref, sprite;
+      var cleanedSprites, i, len, ref, sprite;
       cleanedSprites = [];
       ref = this.spriteList;
-      for (j = 0, len = ref.length; j < len; j++) {
-        sprite = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        sprite = ref[i];
         if (!sprite.trash) {
           if (!sprite.game.paused) {
             sprite.Update();
@@ -254,15 +230,15 @@
     };
 
     CanvasGame.prototype.DrawSprites = function() {
-      var j, len, ref, results, sprite;
+      var i, len, ref, results, sprite;
       this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
         return a.drawIndex - b.drawIndex;
       });
       ref = this.spriteList;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        sprite = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        sprite = ref[i];
         if (sprite.draw && !sprite.trash && !sprite.GHOST_SPRITE) {
           results.push(sprite.Draw());
         } else {
@@ -273,26 +249,26 @@
     };
 
     CanvasGame.prototype.UpdateAndDrawSprites = function() {
-      var j, len, o, ref;
+      var i, len, o, ref;
       if (this.loading) {
         return;
       }
       this.DrawSprites();
       this.UpdateSprites();
       ref = this.AddStack;
-      for (j = 0, len = ref.length; j < len; j++) {
-        o = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        o = ref[i];
         this.spriteList.push(o);
       }
       return this.AddStack = [];
     };
 
     CanvasGame.prototype.UpdateAnimations = function() {
-      var anim, j, len, ref, results;
+      var anim, i, len, ref, results;
       ref = this.animations;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        anim = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        anim = ref[i];
         results.push(anim.Run());
       }
       return results;
@@ -310,13 +286,13 @@
     };
 
     CanvasGame.prototype.UpdateGamePads = function() {
-      var j, len, pad, pads, results;
+      var i, len, pad, pads, results;
       if (navigator.getGamepads && typeof navigator.getGamepads) {
         this.GamePads = [];
         pads = navigator.getGamepads();
         results = [];
-        for (j = 0, len = pads.length; j < len; j++) {
-          pad = pads[j];
+        for (i = 0, len = pads.length; i < len; i++) {
+          pad = pads[i];
           if (pad) {
             results.push(this.GamePads.push(new Torch.GamePad(pad)));
           } else {
@@ -421,17 +397,35 @@
               var c;
               c = e.keyCode;
               if (c === 32) {
-                return _this.Keys.Space.down = true;
+                _this.Keys.Space.down = true;
+                return _this.Keys.Space.Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 37) {
-                return _this.Keys.LeftArrow.down = true;
+                _this.Keys.LeftArrow.down = true;
+                return _this.Keys.LeftArrow.Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 38) {
-                return _this.Keys.UpArrow.down = true;
+                _this.Keys.UpArrow.down = true;
+                return _this.Keys.UpArrow.Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 39) {
-                return _this.Keys.RightArrow.down = true;
+                _this.Keys.RightArrow.down = true;
+                return _this.Keys.RightArrow.Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 40) {
-                return _this.Keys.DownArrow.down = true;
+                _this.Keys.DownArrow.down = true;
+                return _this.Keys.DownArrow.Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else {
-                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+                _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
+                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyDown", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               }
             };
           })(this)
@@ -441,17 +435,35 @@
               var c;
               c = e.keyCode;
               if (c === 32) {
-                return _this.Keys.Space.down = false;
+                _this.Keys.Space.down = false;
+                return _this.Keys.Space.Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 37) {
-                return _this.Keys.LeftArrow.down = false;
+                _this.Keys.LeftArrow.down = false;
+                return _this.Keys.LeftArrow.Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 38) {
-                return _this.Keys.UpArrow.down = false;
+                _this.Keys.UpArrow.down = false;
+                return _this.Keys.UpArrow.Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 39) {
-                return _this.Keys.RightArrow.down = false;
+                _this.Keys.RightArrow.down = false;
+                return _this.Keys.RightArrow.Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else if (c === 40) {
-                return _this.Keys.DownArrow.down = false;
+                _this.Keys.DownArrow.down = false;
+                return _this.Keys.DownArrow.Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               } else {
-                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+                _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
+                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyUp", new Torch.Event(_this, {
+                  nativeEvent: e
+                }));
               }
             };
           })(this)
@@ -461,15 +473,15 @@
     };
 
     CanvasGame.prototype.WireUpEvents = function() {
-      var eventItem, j, k, len, len1, pads, ref, ref1, resize;
+      var eventItem, i, j, len, len1, pads, ref, ref1, resize;
       ref = this.getCanvasEvents();
-      for (j = 0, len = ref.length; j < len; j++) {
-        eventItem = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        eventItem = ref[i];
         this.canvasNode.addEventListener(eventItem[0], eventItem[1], false);
       }
       ref1 = this.getBodyEvents();
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        eventItem = ref1[k];
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        eventItem = ref1[j];
         document.body.addEventListener(eventItem[0], eventItem[1], false);
       }
       window.addEventListener("gamepadconnected", (function(_this) {

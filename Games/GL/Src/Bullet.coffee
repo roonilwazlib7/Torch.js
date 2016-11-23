@@ -11,7 +11,6 @@ class Bullet extends Torch.Sprite
                 # @Trash()
         @On "OutOfBounds", (event) =>
             # @Trash()
-            console.log("out of bounds")
 
     Update: ->
         super()

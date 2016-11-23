@@ -19,9 +19,7 @@
         return function(event) {};
       })(this));
       this.On("OutOfBounds", (function(_this) {
-        return function(event) {
-          return console.log("out of bounds");
-        };
+        return function(event) {};
       })(this));
     }
 

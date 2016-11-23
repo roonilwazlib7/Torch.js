@@ -1,5 +1,5 @@
 {
-    "Build": 66,
+    "Build": 85,
     "BuildMinor": 2,
     "BuildMajor": 0,
     "TestGame": {
@@ -32,6 +32,7 @@
         "Game/Components/Layers.js",
         "Game/Components/Style.js",
         "Game/Components/Debug.js",
+        "Game/Components/Keys.js",
         "Game/CanvasGame.js",
         "Game/WebGLGame.js",
         "Game/Game.js",

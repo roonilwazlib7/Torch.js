@@ -43,24 +43,10 @@ class CanvasGame
         @Camera = new Torch.Camera(@)
         @Layers = new Torch.Layers(@)
         @Debug = new Torch.Debug(@)
+        @Keys = new Torch.Keys(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         Torch.Style()
-
-        _keys = {}
-        i = 0
-        while i < 230
-            _char = String.fromCharCode(i).toUpperCase()
-            _keys[_char] = {down:false}
-            i++
-
-        _keys["Space"] = {down:false}
-        _keys["LeftArrow"] = {down:false}
-        _keys["RightArrow"] = {down:false}
-        _keys["UpArrow"] = {down:false}
-        _keys["DownArrow"] = {down:false}
-
-        @Keys = _keys
 
         @deltaTime = 0
         @fps = 0
@@ -324,21 +310,27 @@ class CanvasGame
                     c = e.keyCode
                     if c is 32
                         @Keys.Space.down = true
+                        @Keys.Space.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 37
                         @Keys.LeftArrow.down = true
+                        @Keys.LeftArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 38
                         @Keys.UpArrow.down = true
+                        @Keys.UpArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 39
                         @Keys.RightArrow.down = true
+                        @Keys.RightArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 40
                         @Keys.DownArrow.down = true
+                        @Keys.DownArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
                     else
                         @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true
+                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
 
             ],
@@ -347,21 +339,27 @@ class CanvasGame
                     c = e.keyCode
                     if c is 32
                         @Keys.Space.down = false
+                        @Keys.Space.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 37
                         @Keys.LeftArrow.down = false
+                        @Keys.LeftArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 38
                         @Keys.UpArrow.down = false
+                        @Keys.UpArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 39
                         @Keys.RightArrow.down = false
+                        @Keys.RightArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
 
                     else if c is 40
                         @Keys.DownArrow.down = false
+                        @Keys.DownArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
 
                     else
                         @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false
+                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
             ]
         ]
         return bodyEvents
