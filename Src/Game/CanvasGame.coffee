@@ -35,6 +35,7 @@ class CanvasGame
 
         console.log("%c Torch v#{Torch.version} |#{graphicsString}| - #{@name}", styleString)
 
+        @Loop = new Torch.Loop(@)
         @Load = new Torch.Load(@)
         @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
@@ -158,28 +159,8 @@ class CanvasGame
         @taskList.push(task)
         return @
 
-    RunGame: (timestamp) ->
-        if @time is undefined
-            @time = timestamp
-
-        @deltaTime = Math.round(timestamp - @time)
-        @time = timestamp
-
-        @draw(@)
-        @update(@)
-        @Camera.Update()
-        @Timer.Update()
-        @UpdateAndDrawSprites()
-        @UpdateAnimations()
-        @UpdateTimeInfo()
-        @UpdateTasks()
-        @UpdateGamePads()
-
-        window.requestAnimationFrame (timestamp) =>
-            @RunGame(timestamp)
-
     Run: (timestamp) ->
-        @RunGame(0)
+        @Loop.Run(0)
 
     FlushSprites: ->
         for sprite in @spriteList then sprite.Trash()

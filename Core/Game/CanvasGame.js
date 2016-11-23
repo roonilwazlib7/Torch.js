@@ -48,6 +48,7 @@
         graphicsString = "Canvas";
       }
       console.log("%c Torch v" + Torch.version + " |" + graphicsString + "| - " + this.name, styleString);
+      this.Loop = new Torch.Loop(this);
       this.Load = new Torch.Load(this);
       this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
@@ -182,30 +183,8 @@
       return this;
     };
 
-    CanvasGame.prototype.RunGame = function(timestamp) {
-      if (this.time === void 0) {
-        this.time = timestamp;
-      }
-      this.deltaTime = Math.round(timestamp - this.time);
-      this.time = timestamp;
-      this.draw(this);
-      this.update(this);
-      this.Camera.Update();
-      this.Timer.Update();
-      this.UpdateAndDrawSprites();
-      this.UpdateAnimations();
-      this.UpdateTimeInfo();
-      this.UpdateTasks();
-      this.UpdateGamePads();
-      return window.requestAnimationFrame((function(_this) {
-        return function(timestamp) {
-          return _this.RunGame(timestamp);
-        };
-      })(this));
-    };
-
     CanvasGame.prototype.Run = function(timestamp) {
-      return this.RunGame(0);
+      return this.Loop.Run(0);
     };
 
     CanvasGame.prototype.FlushSprites = function() {

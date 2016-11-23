@@ -1,5 +1,5 @@
 {
-    "Build": 62,
+    "Build": 64,
     "BuildMinor": 2,
     "BuildMajor": 0,
     "TestGame": {
@@ -23,6 +23,7 @@
         "Three/ThreeEntity.js",
         "Three/ThreeSprite.js",
         "Three/Lights.js",
+        "Game/Components/Loop.js",
         "Game/Components/Load.js",
         "Game/Components/Viewport.js",
         "Game/Components/Timer.js",
