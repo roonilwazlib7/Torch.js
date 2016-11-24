@@ -18,6 +18,7 @@ Init = (game) ->
     game.Bounds()
     game.Clear("black")
     game.Add( new Torch.AmbientLight(0xffffff) )
+    #game.Add( new Torch.PointLight(0xff00ff, 0.5, 100, 10) )
 
     logo = new Torch.Sprite(game, 0, 0)
     logo.Bind.WebGLTexture("logo")

@@ -8,7 +8,7 @@ console.log("Building Torch -- " + process.platform)
 buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
 
-if (buildConfig.Build >= 100)
+if (buildConfig.Build >= 500)
 {
     buildConfig.Build = 0;
     buildConfig.BuildMinor += 1;
