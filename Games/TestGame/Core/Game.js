@@ -12,16 +12,20 @@
     game.Load.Texture("Art/ship.png", "player");
     game.Load.Texture("Art/player.png", "black");
     game.Load.Texture("Art/enemy.png", "enemy");
-    return game.Load.Texture("Art/bullet.png", "bullet");
+    game.Load.Texture("Art/bullet.png", "bullet");
+    return game.Load.Texture("Art/logo.png", "logo");
   };
 
   Init = function(game) {
-    var bl, br, ce, testFontSize, tl, tr;
+    var bl, br, ce, logo, testFontSize, tl, tr;
     Torch.Scale = 6;
     window._game = game;
     game.Bounds();
     game.Clear("black");
     game.Add(new Torch.AmbientLight(0xffffff));
+    logo = new Torch.Sprite(game, 0, 0);
+    logo.Bind.WebGLTexture("logo");
+    logo.Center().CenterVertical();
     testFontSize = 24;
     tl = new Torch.Text(game, 0, 0, {
       text: "TL",

@@ -9,6 +9,7 @@ Load = (game) ->
     game.Load.Texture("Art/player.png", "black")
     game.Load.Texture("Art/enemy.png", "enemy")
     game.Load.Texture("Art/bullet.png", "bullet")
+    game.Load.Texture("Art/logo.png", "logo")
 
 Init = (game) ->
     Torch.Scale = 6
@@ -16,6 +17,11 @@ Init = (game) ->
     game.Bounds()
     game.Clear("black")
     game.Add( new Torch.AmbientLight(0xffffff) )
+
+    logo = new Torch.Sprite(game, 0, 0)
+    logo.Bind.WebGLTexture("logo")
+    logo.Center().CenterVertical()
+
     testFontSize = 24
 
     tl = new Torch.Text game, 0, 0,

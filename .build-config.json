@@ -1,9 +1,9 @@
 {
-    "Build": 85,
+    "Build": 90,
     "BuildMinor": 2,
     "BuildMajor": 0,
     "TestGame": {
-        "Path": "GL",
+        "Path": "TestGame",
         "Source": "Coffee",
         "run": true,
         "Electron": true
