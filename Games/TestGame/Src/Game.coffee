@@ -44,14 +44,7 @@ Init = (game) ->
         color: "white"
         fontSize: testFontSize
         font: "Impact"
-    ce = new Torch.Text game, 0, 0,
-        text: "CENTER"
-        color: "white"
-        fontSize: testFontSize
-        font: "Impact"
-
-    ce.CenterVertical().Center()
-
+        
     game.player = new Player(game)
     game.player.DrawIndex(9)
     game.player.Center()

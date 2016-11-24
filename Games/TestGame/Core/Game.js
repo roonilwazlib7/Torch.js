@@ -17,7 +17,7 @@
   };
 
   Init = function(game) {
-    var bl, br, ce, logo, testFontSize, tl, tr;
+    var bl, br, logo, testFontSize, tl, tr;
     Torch.Scale = 6;
     window._game = game;
     game.Bounds();
@@ -51,13 +51,6 @@
       fontSize: testFontSize,
       font: "Impact"
     });
-    ce = new Torch.Text(game, 0, 0, {
-      text: "CENTER",
-      color: "white",
-      fontSize: testFontSize,
-      font: "Impact"
-    });
-    ce.CenterVertical().Center();
     game.player = new Player(game);
     game.player.DrawIndex(9);
     game.player.Center();

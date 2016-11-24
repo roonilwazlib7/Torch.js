@@ -1,4 +1,0 @@
-{
-    "name": "Torch.js Build",
-    "cmd": "node Tools/Build/torch-build.js"
-}

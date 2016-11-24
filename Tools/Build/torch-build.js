@@ -1,8 +1,9 @@
 var fs = require("fs");
 var compressor = require('node-minify');
 var shell = require('shelljs');
+var CSON = require('cson');
 
-buildConfig = JSON.parse( fs.readFileSync(".build-config.json").toString() );
+buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
 
 if (buildConfig.Build >= 100)
@@ -12,7 +13,7 @@ if (buildConfig.Build >= 100)
 }
 
 // save modified config
-fs.writeFileSync(".build-config.json", JSON.stringify(buildConfig, null, 4));
+fs.writeFileSync(".build-config.cson", CSON.stringify(buildConfig, null, 4));
 
 // save version info
 fs.writeFileSync("Core/version.js", "Torch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "'");
