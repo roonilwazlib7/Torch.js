@@ -40,6 +40,8 @@ class Sprite
         @HitBox = new Torch.HitBox()
         @game = game
 
+        @position = new Torch.Point(x,y)
+
         @GL = @game.graphicsType is Torch.WEBGL
 
         @DrawTexture = null
@@ -88,6 +90,10 @@ class Sprite
         for child in @children
             child.Position("x", @Position("x") - (window.innerWidth/2) )
                  .Position("y", -@Position("y") + (window.innerHeight / 2) + (@Rectangle.height / 4.5) )
+
+        @Rectangle.x = @position.x
+        @Rectangle.y = @position.y
+
         # for child in @children
 
         #     child.Position("x", @Position("x"))
@@ -164,13 +170,13 @@ class Sprite
             velY += @Body.y.aTime * @Body.y.acceleration
 
         if Math.abs(velX) < Math.abs(@Body.x.maxVelocity)
-            @Rectangle.x += velX * deltaTime
+            @position.x += velX * deltaTime
 
         else
             dir = velX < 0 ? -1 : 1
-            @Rectangle.x += dir * @Body.x.maxVelocity * deltaTime
+            @position.x += dir * @Body.x.maxVelocity * deltaTime
 
-        @Rectangle.y += velY * deltaTime
+        @position.y += velY * deltaTime
 
     UpdateGLEntities: ->
         # send all graphics-related information to
@@ -185,7 +191,7 @@ class Sprite
                     .Position("z", @Rectangle.z)
                     .Rotation(@rotation)
                     .DrawIndex(@drawIndex)
-                    #.Opacity(@opacity)
+                    .Opacity(@opacity)
 
     UpdateHitBox: ->
         shiftX = @Rectangle.width / 8
@@ -239,10 +245,11 @@ class Sprite
 
     Position: (plane, optionalArgument) ->
         if optionalArgument is null or optionalArgument is undefined
-            return @Rectangle[plane]
+            return @position[plane]
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set position. Expected number, got: #{typeof(optionalArgument)}")
+            @position[plane] = optionalArgument
             @Rectangle[plane] = optionalArgument
             return @
 
@@ -338,7 +345,7 @@ class Sprite
     CenterVertical: ->
         height = @game.canvasNode.height
         y = (height / 2) - (@Rectangle.height/2)
-        @Rectangle.y = y
+        @Position("y", y)
         return @
 
     CollidesWith: (otherSprite) ->

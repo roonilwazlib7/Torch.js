@@ -25,7 +25,7 @@ class ThreeSprite extends ThreeEntity
         return @
 
     Opacity: (arg) ->
-        @entity.materials[0].opacity = arg
+        @entity.material.opacity = arg
         return @
 
     DrawIndex: (arg) ->

@@ -155,6 +155,10 @@
       return this.STRICT_ERRORS = true;
     };
 
+    Torch.prototype.DisableConsoleWarnings = function() {
+      return console.warn = function() {};
+    };
+
     Torch.prototype.Enum = function() {
       var i, j, len, obj, part, parts;
       parts = 1 <= arguments.length ? slice.call(arguments, 0) : [];

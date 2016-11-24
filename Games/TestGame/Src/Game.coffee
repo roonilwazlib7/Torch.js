@@ -1,4 +1,5 @@
 Torch.StrictErrors()
+Torch.DisableConsoleWarnings()
 
 Game = new Torch.Game("container", "fill", "fill", "Void", Torch.WEBGL)
 
@@ -20,7 +21,7 @@ Init = (game) ->
 
     logo = new Torch.Sprite(game, 0, 0)
     logo.Bind.WebGLTexture("logo")
-    logo.Center().CenterVertical()
+    logo.Center().CenterVertical().Opacity(0.55)
 
     testFontSize = 24
 
@@ -44,7 +45,7 @@ Init = (game) ->
         color: "white"
         fontSize: testFontSize
         font: "Impact"
-        
+
     game.player = new Player(game)
     game.player.DrawIndex(9)
     game.player.Center()

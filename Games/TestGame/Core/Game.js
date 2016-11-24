@@ -4,6 +4,8 @@
 
   Torch.StrictErrors();
 
+  Torch.DisableConsoleWarnings();
+
   Game = new Torch.Game("container", "fill", "fill", "Void", Torch.WEBGL);
 
   blueLightMover = 0;
@@ -25,7 +27,7 @@
     game.Add(new Torch.AmbientLight(0xffffff));
     logo = new Torch.Sprite(game, 0, 0);
     logo.Bind.WebGLTexture("logo");
-    logo.Center().CenterVertical();
+    logo.Center().CenterVertical().Opacity(0.55);
     testFontSize = 24;
     tl = new Torch.Text(game, 0, 0, {
       text: "TL",

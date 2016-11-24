@@ -104,7 +104,6 @@
 
     Text.prototype.UpdateText = function() {
       if (this.text !== this.lastText) {
-        console.log(this.text + "," + this.lastText);
         this.Render();
         return this.lastText = this.text;
       }

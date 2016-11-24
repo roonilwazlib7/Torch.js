@@ -73,7 +73,6 @@ class Text extends Torch.Sprite
 
     UpdateText: ->
         if @text isnt @lastText
-            console.log(@text + "," + @lastText)
             @Render()
             @lastText = @text
 

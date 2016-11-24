@@ -133,9 +133,10 @@
   })();
 
   Point = (function() {
-    function Point(x1, y1) {
+    function Point(x1, y1, z) {
       this.x = x1;
       this.y = y1;
+      this.z = z != null ? z : 0;
     }
 
     return Point;

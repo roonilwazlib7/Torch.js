@@ -100,6 +100,9 @@ class Torch
     StrictErrors: ->
         @STRICT_ERRORS = true
 
+    DisableConsoleWarnings: ->
+        console.warn = ->
+
     Enum: (parts...) ->
         obj = {}
 

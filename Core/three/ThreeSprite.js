@@ -38,7 +38,7 @@
     };
 
     ThreeSprite.prototype.Opacity = function(arg) {
-      this.entity.materials[0].opacity = arg;
+      this.entity.material.opacity = arg;
       return this;
     };
 

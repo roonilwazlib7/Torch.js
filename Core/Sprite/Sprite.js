@@ -51,6 +51,7 @@
       this.Body = new Torch.Body();
       this.HitBox = new Torch.HitBox();
       this.game = game;
+      this.position = new Torch.Point(x, y);
       this.GL = this.game.graphicsType === Torch.WEBGL;
       this.DrawTexture = null;
       this.TexturePack = null;
@@ -88,19 +89,19 @@
     };
 
     Sprite.prototype.UpdateSprite = function() {
-      var child, i, len, ref, results;
+      var child, i, len, ref;
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
       this.UpdateHitBox();
       this.Collisions.Update();
       ref = this.children;
-      results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         child = ref[i];
-        results.push(child.Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2) + (this.Rectangle.height / 4.5)));
+        child.Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2) + (this.Rectangle.height / 4.5));
       }
-      return results;
+      this.Rectangle.x = this.position.x;
+      return this.Rectangle.y = this.position.y;
     };
 
     Sprite.prototype.UpdateEvents = function() {
@@ -184,21 +185,21 @@
         velY += this.Body.y.aTime * this.Body.y.acceleration;
       }
       if (Math.abs(velX) < Math.abs(this.Body.x.maxVelocity)) {
-        this.Rectangle.x += velX * deltaTime;
+        this.position.x += velX * deltaTime;
       } else {
         dir = (ref = velX < 0) != null ? ref : -{
           1: 1
         };
-        this.Rectangle.x += dir * this.Body.x.maxVelocity * deltaTime;
+        this.position.x += dir * this.Body.x.maxVelocity * deltaTime;
       }
-      return this.Rectangle.y += velY * deltaTime;
+      return this.position.y += velY * deltaTime;
     };
 
     Sprite.prototype.UpdateGLEntities = function() {
       var transform;
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex);
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity);
       }
     };
 
@@ -268,11 +269,12 @@
 
     Sprite.prototype.Position = function(plane, optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Rectangle[plane];
+        return this.position[plane];
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
         }
+        this.position[plane] = optionalArgument;
         this.Rectangle[plane] = optionalArgument;
         return this;
       }
@@ -399,7 +401,7 @@
       var height, y;
       height = this.game.canvasNode.height;
       y = (height / 2) - (this.Rectangle.height / 2);
-      this.Rectangle.y = y;
+      this.Position("y", y);
       return this;
     };
 

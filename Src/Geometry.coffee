@@ -91,7 +91,7 @@ class HitBox
         @height = 0
 
 class Point
-    constructor: (@x, @y) ->
+    constructor: (@x, @y, @z = 0) ->
 
 Torch.Rectangle = Rectangle
 Torch.Vector = Vector
