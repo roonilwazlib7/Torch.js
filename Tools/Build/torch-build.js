@@ -3,6 +3,8 @@ var compressor = require('node-minify');
 var shell = require('shelljs');
 var CSON = require('cson');
 
+console.log("Building Torch -- " + process.platform)
+
 buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
 
@@ -54,6 +56,19 @@ compressor.minify({
 if (buildConfig.TestGame.run)
 {
     console.log("Running Test Game...");
+    var windows_script = "cd Games\\" + buildConfig.TestGame.Path;
+        windows_script += "\nnpm start";
+    var linux_script = "cd Games/" + buildConfig.TestGame.Path;
+        linux_script += "\nnpm start";
+
+    if (process.platform == "win32")
+    {
+        fs.writeFileSync("_tmp.bat", windows_script);
+    }
+    else
+    {
+        fs.writeFileSync("_tmp.sh", linux_script);
+    }
 
     // easy file includes...
     index = fs.readFileSync("Games/" + buildConfig.TestGame.Path + "/index.html").toString();
@@ -78,7 +93,16 @@ if (buildConfig.TestGame.run)
         console.log("Starting Electron...");
         //this won't work for some reason...
         //shell.exec("electron " + "Games/" + buildConfig.TestGame.Path + "/main.js");
-        shell.exec("_tmp.bat");
+        if (process.platform == "win32")
+        {
+            shell.exec("_tmp.bat");
+            fs.unlinkSync("_tmp.bat");
+        }
+        else
+        {
+            shell.exec("_tmp.sh");
+            fs.unlinkSync("_tmp.sh");
+        }
     }
     else
     {
