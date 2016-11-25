@@ -29,3 +29,13 @@ A node app that can be used to set up a new Torch.js project
         * electron
         * shelljs
 * coffeescript
+
+### basically, follow these commands: (linux)
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+npm install -g coffee-script
+
+(switch to Tools/Build) npm install
+
+(switch to current game) npm install
