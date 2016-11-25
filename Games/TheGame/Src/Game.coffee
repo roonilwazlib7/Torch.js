@@ -1,14 +1,12 @@
 Torch.StrictErrors()
 Torch.DisableConsoleWarnings()
 
-Game = new Torch.Game("container", "fill", "fill", "Void", Torch.WEBGL)
+Game = new Torch.Game("container", "fill", "fill", "TheGame", Torch.WEBGL)
 
-blueLightMover = 0
 
 Load = (game) ->
 
 Init = (game) ->
-
 
 Draw = (game)->
 

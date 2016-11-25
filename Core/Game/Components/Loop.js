@@ -13,6 +13,7 @@
       this.game.update(this);
       this.game.Camera.Update();
       this.game.Timer.Update();
+      this.game.Debug.Update();
       this.game.UpdateAndDrawSprites();
       this.game.UpdateAnimations();
       this.game.UpdateTimeInfo();

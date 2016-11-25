@@ -5,7 +5,23 @@
   Debug = (function() {
     function Debug(game) {
       this.game = game;
+      this.text = "";
+      this.CreateHtmlDisplay();
     }
+
+    Debug.prototype.CreateHtmlDisplay = function() {
+      var display;
+      display = document.createElement("DIV");
+      display.style.position = "absolute";
+      display.style.display = "block";
+      display.style.color = "white";
+      display.style.font = "monospace";
+      display.style.top = 0;
+      document.body.appendChild(display);
+      return this.display = display;
+    };
+
+    Debug.prototype.Update = function() {};
 
     return Debug;
 

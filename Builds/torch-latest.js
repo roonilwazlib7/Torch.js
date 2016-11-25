@@ -1768,6 +1768,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.game.update(this);
       this.game.Camera.Update();
       this.game.Timer.Update();
+      this.game.Debug.Update();
       this.game.UpdateAndDrawSprites();
       this.game.UpdateAnimations();
       this.game.UpdateTimeInfo();
@@ -2345,7 +2346,23 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Debug = (function() {
     function Debug(game) {
       this.game = game;
+      this.text = "";
+      this.CreateHtmlDisplay();
     }
+
+    Debug.prototype.CreateHtmlDisplay = function() {
+      var display;
+      display = document.createElement("DIV");
+      display.style.position = "absolute";
+      display.style.display = "block";
+      display.style.color = "white";
+      display.style.font = "monospace";
+      display.style.top = 0;
+      document.body.appendChild(display);
+      return this.display = display;
+    };
+
+    Debug.prototype.Update = function() {};
 
     return Debug;
 
@@ -5187,4 +5204,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.71'
+Torch.version = '0.3.93'

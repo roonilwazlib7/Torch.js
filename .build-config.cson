@@ -1,8 +1,8 @@
-Build: 71
+Build: 93
 BuildMinor: 3
 BuildMajor: 0
 TestGame:
-    Path: "TheGame"
+    Path: "TestGame"
     Source: "Coffee"
     run: true
     Electron: true

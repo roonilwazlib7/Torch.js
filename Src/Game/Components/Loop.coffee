@@ -8,7 +8,8 @@ class Loop
 
         @game.Camera.Update()
         @game.Timer.Update()
-        
+        @game.Debug.Update()
+
         @game.UpdateAndDrawSprites()
         @game.UpdateAnimations()
         @game.UpdateTimeInfo()
