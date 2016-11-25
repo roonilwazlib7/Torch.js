@@ -100,8 +100,8 @@ if (buildConfig.TestGame.run)
         }
         else
         {
-            shell.exec("_tmp.sh");
-            fs.unlinkSync("_tmp.sh");
+            shell.exec("bash _tmp.sh");
+            //fs.unlinkSync("_tmp.sh");
         }
     }
     else

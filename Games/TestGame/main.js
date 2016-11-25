@@ -14,8 +14,12 @@ function StartWindow()
         {
             app.quit();
         }
+        try
+        {
+            fs.unlinkSync("_tmp_index.html");
+        }
+        catch (e) {}
 
-        fs.unlinkSync("_tmp_index.html");
     });
 
     // This method will be called when Electron has finished
