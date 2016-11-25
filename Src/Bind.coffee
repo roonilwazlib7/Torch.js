@@ -140,29 +140,29 @@ class WebGLBind
     constructor: (@sprite) ->
 
     Texture: (textureId) ->
-        textureAsset = null
+        texture = null
+        map = null
+
         if textureId.gl_2d_canvas_generated_image
-            # same as in Load, should consolidate the two
-            texture = new THREE.TextureLoader().load(this.src)
-            texture.magFilter = THREE.NearestFilter
-            texture.minFilter = THREE.LinearMipMapLinearFilter
-
-            textureAsset =
-                width: textureId.image.width
-                height: textureId.image.height
-                gl_texture: texture
+            texture = textureId
+            map = textureId.texture
         else
-            textureAsset = @sprite.game.Assets.Textures[textureId]
+            texture = @sprite.game.Assets.Textures[textureId]
+            map = @sprite.game.Assets.Textures[textureId].gl_texture
 
-        width = textureAsset.width * Torch.Scale
-        height = textureAsset.height * Torch.Scale
-        map = textureAsset.gl_texture
+        if not @sprite.Scale()
+            width = texture.width * Torch.Scale
+            height = texture.height * Torch.Scale
+        else
+            width = texture.width * @sprite.Scale()
+            height = texture.height * @sprite.Scale()
 
-        shape = new THREE.PlaneGeometry(width, height, 8, 8)
-        material = new THREE.MeshPhongMaterial({map: map, transparent: true})
+        @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
 
-        @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, shape)
+        material = new THREE.MeshPhongMaterial({map: map})
+        material.transparent = true
 
+        @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, @sprite.gl_shape)
         @sprite.gl_orig_width = width
         @sprite.gl_orig_height = height
         @sprite.Rectangle.width = width

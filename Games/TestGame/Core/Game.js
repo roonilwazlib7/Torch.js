@@ -26,7 +26,7 @@
     game.Clear("black");
     game.Add(new Torch.AmbientLight(0xffffff));
     logo = new Torch.Sprite(game, 0, 0);
-    logo.Bind.WebGLTexture("logo");
+    logo.Bind.Texture("logo");
     logo.Center().CenterVertical().Opacity(0.55);
     testFontSize = 24;
     tl = new Torch.Text(game, 0, 0, {

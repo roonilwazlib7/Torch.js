@@ -4627,29 +4627,29 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     }
 
     WebGLBind.prototype.Texture = function(textureId) {
-      var height, map, material, shape, texture, textureAsset, width;
-      textureAsset = null;
+      var height, map, material, texture, width;
+      texture = null;
+      map = null;
       if (textureId.gl_2d_canvas_generated_image) {
-        texture = new THREE.TextureLoader().load(this.src);
-        texture.magFilter = THREE.NearestFilter;
-        texture.minFilter = THREE.LinearMipMapLinearFilter;
-        textureAsset = {
-          width: textureId.image.width,
-          height: textureId.image.height,
-          gl_texture: texture
-        };
+        texture = textureId;
+        map = textureId.texture;
       } else {
-        textureAsset = this.sprite.game.Assets.Textures[textureId];
+        texture = this.sprite.game.Assets.Textures[textureId];
+        map = this.sprite.game.Assets.Textures[textureId].gl_texture;
       }
-      width = textureAsset.width * Torch.Scale;
-      height = textureAsset.height * Torch.Scale;
-      map = textureAsset.gl_texture;
-      shape = new THREE.PlaneGeometry(width, height, 8, 8);
+      if (!this.sprite.Scale()) {
+        width = texture.width * Torch.Scale;
+        height = texture.height * Torch.Scale;
+      } else {
+        width = texture.width * this.sprite.Scale();
+        height = texture.height * this.sprite.Scale();
+      }
+      this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
       material = new THREE.MeshPhongMaterial({
-        map: map,
-        transparent: true
+        map: map
       });
-      this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, shape);
+      material.transparent = true;
+      this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
       this.sprite.Rectangle.width = width;
@@ -5183,4 +5183,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.36'
+Torch.version = '0.3.41'

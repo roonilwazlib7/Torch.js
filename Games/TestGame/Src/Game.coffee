@@ -21,7 +21,7 @@ Init = (game) ->
     #game.Add( new Torch.PointLight(0xff00ff, 0.5, 100, 10) )
 
     logo = new Torch.Sprite(game, 0, 0)
-    logo.Bind.WebGLTexture("logo")
+    logo.Bind.Texture("logo")
     logo.Center().CenterVertical().Opacity(0.55)
 
     testFontSize = 24
