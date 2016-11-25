@@ -44,13 +44,13 @@ compressor.minify({
 
 console.log("Writing compressed...");
 //write the compressed js version
-compressor.minify({
-    compressor: 'yui-js',
-    input: 'Builds/torch-latest.js',
-    output: 'Builds/torch-latest.min.js',
-    sync: true,
-    callback: function (err, min) {}
-});
+// compressor.minify({
+//     compressor: 'yui-js',
+//     input: 'Builds/torch-latest.js',
+//     output: 'Builds/torch-latest.min.js',
+//     sync: true,
+//     callback: function (err, min) {}
+// });
 
 // run the test game, if its there
 if (buildConfig.TestGame.run)

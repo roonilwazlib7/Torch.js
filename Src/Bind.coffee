@@ -136,7 +136,7 @@ class CanvasBind
         @sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale
         return anim
 
-class WebGLBind
+class WebGLBind extends CanvasBind
     constructor: (@sprite) ->
 
     Texture: (textureId) ->

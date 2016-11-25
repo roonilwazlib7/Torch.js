@@ -28,13 +28,15 @@ function StartWindow()
 
 
                 // Create the browser window.
-                mainWindow = new BrowserWindow({width: 1000, height: 625, title: "Knackered", icon: "icon.png"});
+                mainWindow = new BrowserWindow({width: 1000, height: 625, title: "TestGame", icon: "icon.png"});
 
                 //for development
                 mainWindow.setMenuBarVisibility(false);
                 mainWindow.setAutoHideMenuBar(true);
                 //for release
                 //mainWindow.setMenu(null);
+
+                //mainWindow.webContents.openDevTools();
 
                 mainWindow.maximize();
                 //mainWindow.setFullScreen(true); //fullScreen
@@ -55,7 +57,7 @@ function StartWindow()
 
 
 
-
-var app = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var electron = require('electron');
+var app = electron.app;  // Module to control application life.
+var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 StartWindow();

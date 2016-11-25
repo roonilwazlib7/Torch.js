@@ -45,14 +45,14 @@
         Torch.FatalError("Unable to initialize sprite without game");
       }
       this.InitEventDispatch();
+      this.game = game;
+      this.GL = this.game.graphicsType === Torch.WEBGL;
       this.Bind = new Torch.Bind(this);
       this.Collisions = new Torch.CollisionManager(this);
       this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.Body = new Torch.Body();
       this.HitBox = new Torch.HitBox();
-      this.game = game;
       this.position = new Torch.Point(x, y);
-      this.GL = this.game.graphicsType === Torch.WEBGL;
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;

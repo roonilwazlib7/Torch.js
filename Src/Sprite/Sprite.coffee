@@ -32,17 +32,16 @@ class Sprite
             Torch.FatalError("Unable to initialize sprite without game")
 
         @InitEventDispatch()
+        @game = game
+        @GL = @game.graphicsType is Torch.WEBGL
 
         @Bind = new Torch.Bind(@)
         @Collisions = new Torch.CollisionManager(@)
         @Rectangle = new Torch.Rectangle(x, y, 0, 0)
         @Body = new Torch.Body()
         @HitBox = new Torch.HitBox()
-        @game = game
 
         @position = new Torch.Point(x,y)
-
-        @GL = @game.graphicsType is Torch.WEBGL
 
         @DrawTexture = null
         @TexturePack = null

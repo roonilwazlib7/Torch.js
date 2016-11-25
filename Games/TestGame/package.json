@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "main.js",
   "devDependencies": {
-    "electron-prebuilt": "^0.35.2"
+    "electron": "1.4.8"
   },
   "scripts": {
     "start": "electron main.js"
