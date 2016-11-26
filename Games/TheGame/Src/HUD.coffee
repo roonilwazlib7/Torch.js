@@ -11,7 +11,7 @@ class HUD
         @hud_background.Scale(1)
         @hud_background.Bind.Texture("hud_background")
         @hud_background.DrawIndex(100)
-        @hud_background.Width(window.innerWidth)
+        @hud_background.Width(window.innerWidth - @Width(36))
         # @hud_background.Center()
         # @hud_background.On "Click", -> alert("click")
 

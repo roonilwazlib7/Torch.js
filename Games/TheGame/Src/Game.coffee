@@ -15,7 +15,7 @@ Load = (game) ->
     game.Load.Texture("Art/hud_slot_1_background.png", "hud_slot_1_background")
     game.Load.Texture("Art/hud_slot_2_background.png", "hud_slot_2_background")
 Init = (game) ->
-    game.Clear("#fcd8a8")
+    game.Clear("#b3ffb3")
     game.PixelScale()
     Torch.Scale = 4
     window._game = game

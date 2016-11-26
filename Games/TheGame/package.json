@@ -10,5 +10,9 @@
   },
   "author": "AlexGames",
   "license": "ISC",
-  "description": ""
+  "description": "",
+
+  "GameConfig": {
+      "Map": false
+  }
 }

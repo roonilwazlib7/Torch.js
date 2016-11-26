@@ -1,5 +1,8 @@
 var fs = require('fs');
 
+//open up the package.json for some configuration
+var config = JSON.parse( fs.readFileSync("package.json").toString() ).GameConfig;
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
@@ -42,7 +45,14 @@ function StartWindow()
                 //mainWindow.setFullScreen(true); //fullScreen
 
                 // and load the index.html of the app.
-                mainWindow.loadURL('file://' + __dirname + '/' + "_tmp_index.html");
+                if (!config.Map)
+                {
+                    mainWindow.loadURL('file://' + __dirname + '/' + "_tmp_index.html");
+                }
+                else
+                {
+                    mainWindow.loadURL('file://' + __dirname + '/' + "MapMaker/index.html");
+                }
 
                 // Emitted when the window is closed.
                 mainWindow.on('closed', function() {
