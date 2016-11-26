@@ -49,13 +49,37 @@
       this.hud_stress_bar = new Torch.Sprite(this.game, this.Width(1.2), this.Height(5.5));
       this.hud_stress_bar.Bind.Texture("hud_stress_bar");
       this.hud_stress_bar.DrawIndex(101);
-      this.hud_slot_1_background = new Torch.Sprite(this.game, this.Width(2), this.Height(25));
+      this.hud_slot_1_background = new Torch.Sprite(this.game, this.Width(2.5), this.Height(25));
       this.hud_slot_1_background.Bind.Texture("hud_slot_1_background");
       this.hud_slot_1_background.DrawIndex(101);
-      this.hud_slot_2_background = new Torch.Sprite(this.game, this.Width(2.5), this.Height(25));
+      this.hud_slot_2_background = new Torch.Sprite(this.game, this.Width(2), this.Height(25));
       this.hud_slot_2_background.Bind.Texture("hud_slot_2_background");
       this.hud_slot_2_background.DrawIndex(101);
+      this.BindEvents();
     }
+
+    HUD.prototype.BindEvents = function() {
+      this.game.Keys.E.On("KeyDown", (function(_this) {
+        return function() {
+          return _this.hud_slot_1_background.Opacity(0.5);
+        };
+      })(this));
+      this.game.Keys.E.On("KeyUp", (function(_this) {
+        return function() {
+          return _this.hud_slot_1_background.Opacity(1);
+        };
+      })(this));
+      this.game.Keys.R.On("KeyDown", (function(_this) {
+        return function() {
+          return _this.hud_slot_2_background.Opacity(0.5);
+        };
+      })(this));
+      return this.game.Keys.R.On("KeyUp", (function(_this) {
+        return function() {
+          return _this.hud_slot_2_background.Opacity(1);
+        };
+      })(this));
+    };
 
     return HUD;
 

@@ -42,12 +42,21 @@ class HUD
         @hud_stress_bar.Bind.Texture("hud_stress_bar")
         @hud_stress_bar.DrawIndex(101)
 
-        @hud_slot_1_background = new Torch.Sprite(@game, @Width(2), @Height(25) )
+        @hud_slot_1_background = new Torch.Sprite(@game, @Width(2.5), @Height(25) )
         @hud_slot_1_background.Bind.Texture("hud_slot_1_background")
         @hud_slot_1_background.DrawIndex(101)
 
-        @hud_slot_2_background = new Torch.Sprite(@game, @Width(2.5), @Height(25) )
+        @hud_slot_2_background = new Torch.Sprite(@game, @Width(2), @Height(25) )
         @hud_slot_2_background.Bind.Texture("hud_slot_2_background")
         @hud_slot_2_background.DrawIndex(101)
+
+        @BindEvents()
+
+    BindEvents: ->
+        @game.Keys.E.On "KeyDown", => @hud_slot_1_background.Opacity(0.5)
+        @game.Keys.E.On "KeyUp", => @hud_slot_1_background.Opacity(1)
+
+        @game.Keys.R.On "KeyDown", => @hud_slot_2_background.Opacity(0.5)
+        @game.Keys.R.On "KeyUp", => @hud_slot_2_background.Opacity(1)
 
 exports.HUD = HUD
