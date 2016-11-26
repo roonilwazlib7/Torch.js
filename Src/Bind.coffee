@@ -20,7 +20,6 @@ class CanvasBind
             @sprite.TexturePack = null
 
     Texture: (textureId, optionalParameters) ->
-        console.log(textureId, optionalParameters)
         tex = null
         if typeof(textureId) is "string"
             tex = @sprite.game.Assets.Textures[textureId]
@@ -43,8 +42,6 @@ class CanvasBind
 
         @sprite.Rectangle.width = tex.width * scale
         @sprite.Rectangle.height = tex.height * scale
-
-        console.log(@sprite.DrawTexture)
 
         return @sprite.DrawTexture
 

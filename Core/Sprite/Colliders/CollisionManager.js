@@ -131,7 +131,6 @@
       if (sink == null) {
         sink = 1;
       }
-      sink *= 0.5;
       offset = event.collisionData;
       if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
         if (offset.x < offset.y) {

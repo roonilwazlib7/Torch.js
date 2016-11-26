@@ -36,7 +36,6 @@
 
     CanvasBind.prototype.Texture = function(textureId, optionalParameters) {
       var scale, tex;
-      console.log(textureId, optionalParameters);
       tex = null;
       if (typeof textureId === "string") {
         tex = this.sprite.game.Assets.Textures[textureId];
@@ -60,7 +59,6 @@
       }
       this.sprite.Rectangle.width = tex.width * scale;
       this.sprite.Rectangle.height = tex.height * scale;
-      console.log(this.sprite.DrawTexture);
       return this.sprite.DrawTexture;
     };
 

@@ -84,7 +84,6 @@ class CollisionManager
                     @sprite.Emit("Collision", new Torch.Event(@game, {collisionData: collisionData}))
 
     SimpleCollisionHandle: (event, sink = 1) ->
-        sink *= 0.5
         offset = event.collisionData
         if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
             if offset.x < offset.y

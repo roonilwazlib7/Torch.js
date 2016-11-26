@@ -5,8 +5,56 @@
   exports = this;
 
   HUD = (function() {
+    HUD.prototype.Width = function(scale) {
+      if (scale == null) {
+        scale = 1;
+      }
+      return window.innerWidth / scale;
+    };
+
+    HUD.prototype.Height = function(scale) {
+      if (scale == null) {
+        scale = 1;
+      }
+      return window.innerHeight / scale;
+    };
+
     function HUD(game) {
       this.game = game;
+      this.hud_background = new Torch.Sprite(this.game, 0, 0);
+      this.hud_background.Scale(1);
+      this.hud_background.Bind.Texture("hud_background");
+      this.hud_background.DrawIndex(100);
+      this.hud_background.Width(window.innerWidth);
+      this.hud_minimap_background = new Torch.Sprite(this.game, window.innerWidth / 20, window.innerHeight / 20);
+      this.hud_minimap_background.Bind.Texture("hud_minimap_background");
+      this.hud_minimap_background.DrawIndex(101);
+      this.hud_life_text = new Torch.Text(this.game, this.Width(1.2), this.Height(50), {
+        text: "LIFE",
+        color: "green",
+        fontSize: 36,
+        font: "Impact"
+      });
+      this.hud_life_text.DrawIndex(101);
+      this.hud_stress_text = new Torch.Text(this.game, this.Width(1.2), this.Height(7), {
+        text: "STRESS",
+        color: "purple",
+        fontSize: 36,
+        font: "Impact"
+      });
+      this.hud_stress_text.DrawIndex(101);
+      this.hud_life_bar = new Torch.Sprite(this.game, this.Width(1.2), this.Height(15));
+      this.hud_life_bar.Bind.Texture("hud_life_bar");
+      this.hud_life_bar.DrawIndex(101);
+      this.hud_stress_bar = new Torch.Sprite(this.game, this.Width(1.2), this.Height(5.5));
+      this.hud_stress_bar.Bind.Texture("hud_stress_bar");
+      this.hud_stress_bar.DrawIndex(101);
+      this.hud_slot_1_background = new Torch.Sprite(this.game, this.Width(2), this.Height(25));
+      this.hud_slot_1_background.Bind.Texture("hud_slot_1_background");
+      this.hud_slot_1_background.DrawIndex(101);
+      this.hud_slot_2_background = new Torch.Sprite(this.game, this.Width(2.5), this.Height(25));
+      this.hud_slot_2_background.Bind.Texture("hud_slot_2_background");
+      this.hud_slot_2_background.DrawIndex(101);
     }
 
     return HUD;

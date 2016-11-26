@@ -4097,7 +4097,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       if (sink == null) {
         sink = 1;
       }
-      sink *= 0.5;
       offset = event.collisionData;
       if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
         if (offset.x < offset.y) {
@@ -4597,7 +4596,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     CanvasBind.prototype.Texture = function(textureId, optionalParameters) {
       var scale, tex;
-      console.log(textureId, optionalParameters);
       tex = null;
       if (typeof textureId === "string") {
         tex = this.sprite.game.Assets.Textures[textureId];
@@ -4621,7 +4619,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       this.sprite.Rectangle.width = tex.width * scale;
       this.sprite.Rectangle.height = tex.height * scale;
-      console.log(this.sprite.DrawTexture);
       return this.sprite.DrawTexture;
     };
 
@@ -5253,4 +5250,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.256'
+Torch.version = '0.3.322'
