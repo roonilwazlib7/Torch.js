@@ -17,18 +17,16 @@
           offset = event.collisionData;
           if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
             if (offset.x < offset.y) {
-              _this.Velocity("y", 0);
               if (offset.vx > 0) {
-                return _this.Move("x", offset.x);
+                return _this.Move("x", offset.x / 2);
               } else if (offset.vx < 0) {
-                return _this.Move("x", -offset.x);
+                return _this.Move("x", -offset.x / 2);
               }
             } else if (offset.x > offset.y) {
               if (offset.vy > 0) {
-                _this.Move("y", offset.y);
-                return _this.Velocity("y", 0);
+                return _this.Move("y", offset.y / 2);
               } else if (offset.vy < 0) {
-                return _this.Move("y", -offset.y);
+                return _this.Move("y", -offset.y / 2);
               }
             }
           }
