@@ -831,6 +831,370 @@ loadCompressedTextureCube:function(){console.error("THREE.ImageUtils.loadCompres
 this.pickingRay=function(a,b){console.error("THREE.Projector: .pickingRay() is now raycaster.setFromCamera().")}};h.CanvasRenderer=function(){console.error("THREE.CanvasRenderer has been moved to /examples/js/renderers/CanvasRenderer.js");this.domElement=document.createElementNS("http://www.w3.org/1999/xhtml","canvas");this.clear=function(){};this.render=function(){};this.setClearColor=function(){};this.setSize=function(){}};Object.defineProperty(h,"__esModule",{value:!0})});
 
 
+var pixl = function(data, optionalColorPallette, optionalExportType)
+{
+    if (!data) throw "pixl error! 'data' argument is required";
+    var colorPallette, //object that contains colors which correspond to data
+        canvas, //html canvas element
+        renderingCanvas, //canvas rendering context
+        renderPixel, //function to draw each pixel
+        renderRow, //function to draw a row of pixels
+        render, //function that draws all the pixels
+        findWidth, //function to find the max width of the data
+        exportImage, //image data that is exported
+        exportImageObject,
+        exportType, //type of image (image/png, image/jpeg, image/gif, etc.)
+        exportObject, //the returned object
+        exportTime; //time to export
+
+    var PIXEL_WIDTH = pixl.pixelSize == "default" ? 4 : pixl.pixelSize; //the dimensions of each drawn pixel
+                                                                        //default is 4
+    var EXPLODING = false;
+    if (!optionalColorPallette || optionalColorPallette == "default")
+    {
+        colorPallette = { //default color pallette
+            "1": "red",
+            "2": "blue",
+            "3": "yellow",
+            "4": "green",
+            "5": "violet",
+            "6": "orange",
+            "7": "pink",
+            "8": "purple",
+            "9": "black"
+        }
+    }
+    else
+    {
+        colorPallette = optionalColorPallette
+    }
+    if (!optionalExportType || optionalExportType == "default")
+    {
+        exportType = "image/png"; //default image type
+    }
+    else
+    {
+        exportType = optionalExportType;
+    }
+
+    findWidth = function()
+    {
+        var max = 0;
+        for (var i = 0; i < data.length; i++)
+        {
+            if (data[i].length > max) max = data[i].length;
+        }
+        return max;
+    }
+    renderPixel = function(pixel, drawPoint)
+    {
+        if (pixel == "." || pixel == "" || pixel == "*") return; //period means that nothing is there
+        if (!colorPallette[pixel]) throw "pixl error! invalid pixel color: " + pixel;
+        renderingCanvas.fillStyle = colorPallette[pixel]; //change the color
+        renderingCanvas.fillRect(drawPoint.x, drawPoint.y, PIXEL_WIDTH, PIXEL_WIDTH); //draw the pixel
+    }
+    renderRow = function(pixelRow, y)
+    {
+        var drawPoint = {x: 0, y: y};
+        var row;
+        if (pixl.higherBits)
+        {
+            row = pixelRow.split("~");
+        }
+        else
+        {
+            row = pixelRow
+        }
+        for (var i = 0; i < row.length; i++)
+        {
+            renderPixel(row[i], drawPoint);
+            if (row[i] != "*")
+            {
+                drawPoint.x += PIXEL_WIDTH;
+            }
+            else
+            {
+                drawPoint.x += 1;
+                EXPLODING = true;
+            }
+        }
+    }
+    render = function()
+    {
+        var y = 0;
+        var start = new Date().getTime(); //keep track of how long it takes
+
+        for (var i = 0; i < data.length; i++)
+        {
+            renderRow(data[i], y);
+            if (!EXPLODING) y += PIXEL_WIDTH;
+            else y += 1;
+        }
+
+        exportImage = canvas.toDataURL(exportType); //export it
+
+        var end = new Date().getTime();
+        exportTime = end - start;
+    }
+
+    //get to it...
+    canvas = document.createElement("CANVAS"); //create the canvas
+    canvas.width = findWidth() * PIXEL_WIDTH; //set the dimensions
+    canvas.height = data.length * PIXEL_WIDTH;
+    renderingCanvas = canvas.getContext("2d"); //get that rendering context
+    render();
+
+
+    //export it
+    exportObject = {
+        src : exportImage,
+        time: exportTime,
+    };
+
+    return exportObject;
+}
+pixl.mode = "default"; //default, squares
+pixl.pixelSize = "default"; //default(4), [integer]
+
+pixl.HigherBits = function() //allow for more than 9-color pallette
+{
+    pixl.higherBits = true;
+}
+pixl.LowerBits = function()
+{
+    pixl.higherBits = false;
+}
+
+
+
+//TODO
+//Add some operations that modify data (i.e explode, cut, fill, etc)
+
+pixl.util = {};
+pixl.util.DecomposeImage = function(image)
+{
+    var canvas = document.createElement("CANVAS");
+    var imageData;
+    canvas.width = image.width;
+    canvas.height = image.height;
+    cnv = canvas.getContext("2d");
+    cnv.drawImage(image, 0, 0);
+    imageData = cnv.getImageData(0,0,canvas.width,canvas.height);
+    return imageData;
+}
+pixl.util.FillPixels = function(data, lineStart, lineEnd, pixel)
+{
+        var newData = [];
+        var thisData = pixl.higherBits ? data.split("~") : data;
+        var width = data[0].length;
+        for (var i = 0; i < thisData.length; i++)
+        {
+            newData.push(data[i]);
+            if (i == lineStart)
+            {
+                for (var j = 0; j < lineEnd; j++)
+                {
+                    var row = "";
+                    for (var z = 0; z < width; z++)
+                    {
+                        if (pixl.higherBits)
+                        {
+                            row += pixl + "~";
+                        }
+                        else
+                        {
+                            row += pixel;
+                        }
+                    }
+                    newData.push(row);
+                }
+            }
+
+        }
+        return newData;
+}
+pixl.util.ReplacePixels = function(data, pixelToReplace, newPixel)
+{
+    var newData = [];
+    var thisData = pixl.higherBits ? data.split("~") : data;
+    var addOn = pixl.higherBits ? "~" : "";
+    for (var i = 0; i < thisData.length; i++)
+    {
+        var row = "";
+        for (var j = 0; j < thisData[i].length; j++)
+        {
+            if (thisData[i][j] == pixelToReplace)
+            {
+                row += newPixel + addOn;
+            }
+            else
+            {
+                row += thisData[i][j] + addOn;
+            }
+        }
+        newData.push(row);
+    }
+    return newData;
+}
+pixl.util.SpacePixels = function(data, pixelSpacer)
+{
+    var newData = [];
+    var thisData = pixl.higherBits ? data.split("~") : data;
+    var width = thisData[0].length * 2;
+    var spaceRow = "";
+    for (var z = 0; z < width; z++)
+    {
+        if (pixl.higherBits)
+        {
+            spaceRow += pixelSpacer + "~";
+        }
+        else
+        {
+            spaceRow += pixelSpacer;
+        }
+    }
+    for (var i = 0; i < thisData.length; i++)
+    {
+        var row = "";
+        for (var j = 0; j < thisData[i].length; j++)
+        {
+            if (j + 1 == thisData[i].length) break;
+            if (pixl.higherBits)
+            {
+                row += thisData[i][j] + "~" + pixelSpacer + "~";
+            }
+            else
+            {
+                row += thisData[i][j] + pixelSpacer;
+            }
+        }
+        newData.push(row);
+        if (i + 1 != thisData.length)
+        {
+            newData.push(spaceRow);
+        }
+    }
+    return newData;
+}
+pixl.util.ExplodePixels = function(data, depth)
+{
+    var newData = data;
+    for (var i = 0; i < depth; i++)
+    {
+        newData = pixl.util.SpacePixels(newData, "*");
+    }
+    return newData;
+}
+pixl.util.VerticalMerge = function(data1, data2)
+{
+    var newData = data1.concat(data2);
+    return newData;
+}
+pixl.util.HorizontalMerge = function(data1, data2)
+{
+    var newData = [];
+    var thisData, otherData;
+    if (data1.length > data2.length)
+    {
+        thisData = data1;
+        otherData = data2;
+    }
+    else {
+        thisData = data2;
+        otherData = data1;
+    }
+    for (var i = 0; i < thisData.length; i++)
+    {
+        var addString = thisData[i];
+        if (otherData[i]) addString += otherData[i];
+        newData.push(addString);
+    }
+    return newData;
+}
+pixl.util.Blend = function(bottom, top, keepBottom) //does not support higher bits! bottom must be larger or equal to top
+{
+    var newData = [];
+    for (var i = 0; i < bottom.length; i++)
+    {
+        var addString = "";
+        for (var j = 0; j < bottom[i].length; j++)
+        {
+            var bPix = bottom[i][j];
+            if (!top[i] || !top[i][j])
+            {
+                addString += bPix;
+            }
+            else if (top[i][j] && top[i][j] != "." && !keepBottom)
+            {
+                addString += top[i][j];
+            }
+            else
+            {
+                if (bPix == "." && top[i] && top[i][j] && top[i][j] != ".")
+                {
+                    addString += top[i][j];
+                }
+                else
+                {
+                    addString += bPix;
+                }
+            }
+
+        }
+        newData.push(addString);
+    }
+    return newData;
+}
+pixl.util.Mix = function(pal1, pal2)
+{
+
+}
+
+//TODO
+//Add some default pallettes
+pixl.pal = {};
+
+//TODO
+//Add text stuff
+//canvas.fillText is incredibly slow, faster to convert it to an image
+pixl.Text = function(text)
+{
+    this.text = text;
+    this.font = "arcade";
+    this.fontSize = 30;
+    this.color = "red";
+    this.DrawText = null;
+    this.ChangeText(text);
+};
+pixl.Text.prototype.Font = function (font)
+{
+    var that = this;
+    that.font = font;
+    that.ChangeText(that.text);
+};
+pixl.Text.prototype.ChangeText = function(text)
+{
+    var that = this;
+    var canvas,
+        renderingCanvas,
+        exportImage;
+    that.text = text;
+    canvas = document.createElement("CANVAS");
+    canvas.width = text.length * (that.fontSize / 2);
+    canvas.height = 100;
+    renderingCanvas = canvas.getContext("2d");
+    renderingCanvas.fillStyle = that.color;
+    renderingCanvas.font = that.fontSize + "px " + that.font//"30px Arial";
+    renderingCanvas.fillText(text,0,that.fontSize);
+    exportImage = new Image();
+    exportImage.src = canvas.toDataURL();
+
+
+    that.DrawText = exportImage;
+
+
+}
+
 /**
  * math.js
  * https://github.com/josdejong/mathjs
@@ -886,7 +1250,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 },"Array, Matrix":function(e,t){return c(o(e),t)},"Matrix, Array":function(e,t){return c(e,o(t))},"Matrix, any":function(e,t){return u(e,t,c,!1)},"any, Matrix":function(e,t){return u(t,e,c,!0)},"Array, any":function(e,t){return u(o(e),t,c,!1).valueOf()},"any, Array":function(e,t){return u(o(t),e,c,!0).valueOf()}});return c.toTex={2:"\\left(${args[0]}"+a.operators.to+"${args[1]}\\right)"},c}t.name="to",t.factory=n},function(e,t,r){e.exports=[r(488),r(408),r(356),r(88),r(370),r(422),r(90)]},function(e,t,r){"use strict";function n(e,t,r,n){var a=n("clone",{any:i.clone});return a.toTex=void 0,a}var i=r(3);t.name="clone",t.factory=n},function(e,t,r){e.exports=[r(490)]},function(e,t){"use strict";function r(e,t,r,n){return function(t,r){var n=e[r&&r.mathjs];return n&&"function"==typeof n.fromJSON?n.fromJSON(r):r}}t.name="reviver",t.path="json",t.factory=r},function(e,t,r){"use strict";var n=r(11),i=r(42),a=r(43);e.exports=[{name:"ArgumentsError",path:"error",factory:function(){return n}},{name:"DimensionError",path:"error",factory:function(){return i}},{name:"IndexError",path:"error",factory:function(){return a}}]}])});
 //# sourceMappingURL=math.map
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var slice = [].slice;
 
@@ -925,7 +1289,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var EventDispatcher, exports;
 
@@ -990,7 +1354,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Trashable, exports;
 
@@ -1014,7 +1378,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var AjaxLoader, Event, Task, Torch, exports,
     slice = [].slice;
@@ -1213,7 +1577,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var ThreeEntity, exports;
 
@@ -1256,7 +1620,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var ThreeSprite,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -1317,7 +1681,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var AmbientLight, DirectionalLight, ExtensionProperties, HemisphereLight, Light, PointLight, SpotLight,
     slice = [].slice,
@@ -1428,7 +1792,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Loop;
 
@@ -1477,7 +1841,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Load;
 
@@ -1637,7 +2001,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Load.prototype.Load = function(finishFunction) {
-      var aud, e, im, k, len, loader, ref, results, stackItem, textureLoader;
+      var aud, e, error, im, k, len, loader, ref, results, stackItem, textureLoader;
       textureLoader = new THREE.TextureLoader();
       this.loadFinished = finishFunction;
       this.totalLoad = this.finish_stack;
@@ -1734,7 +2098,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Viewport;
 
@@ -1768,7 +2132,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var FutureEvent, Timer;
 
@@ -1825,7 +2189,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Mouse;
 
@@ -1856,7 +2220,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Camera;
 
@@ -1894,7 +2258,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Layer, Layers;
 
@@ -1999,7 +2363,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   Torch.Style = function() {
     var body, canvas;
@@ -2014,7 +2378,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Debug;
 
@@ -2047,7 +2411,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Key, Keys, exports;
 
@@ -2098,7 +2462,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 
 /*
     @class Torch.Game
@@ -2376,7 +2740,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     CanvasGame.prototype.UpdateTimeInfo = function() {
       this.fps = Math.round(1000 / this.deltaTime);
-      if (this.fps === 2e308) {
+      if (this.fps === Infinity) {
         this.allFPS += 0;
       } else {
         this.allFPS += Math.round(1000 / this.deltaTime);
@@ -2641,7 +3005,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 
 /*
     @class Torch.WebGLGame @extends Torch.CanvasGame
@@ -2752,7 +3116,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 
 /*
     @class Torch.Game
@@ -2793,7 +3157,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 
 /*
     @class Torch.Sprite
@@ -3249,7 +3613,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Text, measureCanvas,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -3370,7 +3734,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var SpriteGroup,
     slice = [].slice;
@@ -3483,7 +3847,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var CollisionDetector;
 
@@ -3515,7 +3879,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var AABB;
 
@@ -3537,7 +3901,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Circle;
 
@@ -3576,13 +3940,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
 
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var CollisionManager;
 
@@ -3697,7 +4061,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
           if (collisionDetected) {
             collisionData.self = this.sprite;
             collisionData.collider = otherSprite;
-            results.push(this.sprite.Emit("Collision", new Torch.Event(this.game, collisionData)));
+            results.push(this.sprite.Emit("Collision", new Torch.Event(this.game, {
+              collisionData: collisionData
+            })));
           } else {
             results.push(void 0);
           }
@@ -3716,7 +4082,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Actor, Block, Fluid, SpawnItem, Spawner, exports,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -4024,13 +4390,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
 
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var PlayList,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -4092,7 +4458,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var State, StateMachine;
 
@@ -4151,7 +4517,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Bind, CanvasBind, WebGLBind,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -4360,7 +4726,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Animation, StepAnimation, TexturePack, TextureSheet,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -4550,7 +4916,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Color;
 
@@ -4621,7 +4987,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Electron;
 
@@ -4641,7 +5007,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var CanvasRenderer, exports;
 
@@ -4722,7 +5088,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-// Generated by CoffeeScript 1.11.1
+// Generated by CoffeeScript 1.10.0
 (function() {
   var Body, HitBox, Point, Rectangle, Vector;
 
@@ -4879,4 +5245,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.118'
+Torch.version = '0.3.157'

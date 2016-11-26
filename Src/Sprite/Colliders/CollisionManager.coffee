@@ -63,7 +63,7 @@ class CollisionManager
 
     Mode: (_mode) ->
         mode = _mode
-        
+
     Update: ->
         return if not @sprite.game
         @game = @sprite.game
@@ -81,6 +81,6 @@ class CollisionManager
                     collisionData.self = @sprite
                     collisionData.collider = otherSprite
 
-                    @sprite.Emit("Collision", new Torch.Event(@game, collisionData))
+                    @sprite.Emit("Collision", new Torch.Event(@game, {collisionData: collisionData}))
 
 Torch.CollisionManager = CollisionManager
