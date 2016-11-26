@@ -8,9 +8,17 @@
 
   Game = new Torch.Game("container", "fill", "fill", "TheGame", Torch.WEBGL);
 
-  Load = function(game) {};
+  Load = function(game) {
+    game.Bounds();
+    return game.Load.Texture("Art/player.png", "player");
+  };
 
-  Init = function(game) {};
+  Init = function(game) {
+    var player;
+    Torch.Scale = 6;
+    game.Add(new Torch.AmbientLight(0xffffff));
+    return player = new Player(game);
+  };
 
   Draw = function(game) {};
 
