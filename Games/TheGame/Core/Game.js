@@ -11,16 +11,18 @@
   Load = function(game) {
     game.Bounds();
     game.Load.Texture("Art/player.png", "player");
-    return game.Load.Texture("Art/map/bush.png", "bush");
+    game.Load.Texture("Art/map/bush.png", "bush");
+    return game.Load.Texture("Art/hud_background.png", "hud_background");
   };
 
   Init = function(game) {
-    var player, test;
+    var hud, player, test;
     window._game = game;
     Torch.Scale = 6;
     game.Add(new Torch.AmbientLight(0xffffff));
     player = new Player(game);
-    return test = new MapPieces.Bush(game, ["ff", "ff"]);
+    hud = new HUD(game);
+    return test = new MapPieces.Bush(game, ["0", "0"]);
   };
 
   Draw = function(game) {};

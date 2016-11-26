@@ -47,6 +47,16 @@
       return this;
     };
 
+    ThreeSprite.prototype.Width = function(arg) {
+      this.entity.scale.x = arg / this.sprite.gl_orig_width;
+      return this;
+    };
+
+    ThreeSprite.prototype.Height = function(arg) {
+      this.entity.scale.y = arg / this.sprite.gl_orig_height;
+      return this;
+    };
+
     ThreeSprite.prototype.Remove = function() {
       return this.sprite.game.gl_scene.remove(this.entity);
     };

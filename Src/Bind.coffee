@@ -157,6 +157,7 @@ class WebGLBind extends CanvasBind
             width = texture.width * @sprite.Scale()
             height = texture.height * @sprite.Scale()
 
+
         @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
 
         material = new THREE.MeshPhongMaterial({map: map})

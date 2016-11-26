@@ -199,7 +199,7 @@
       var transform;
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity);
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
       }
     };
 

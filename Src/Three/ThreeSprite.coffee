@@ -32,6 +32,14 @@ class ThreeSprite extends ThreeEntity
         @entity.renderOrder = arg
         return @
 
+    Width: (arg) ->
+        @entity.scale.x = arg / @sprite.gl_orig_width
+        return @
+
+    Height: (arg) ->
+        @entity.scale.y = arg / @sprite.gl_orig_height
+        return @
+
     Remove: ->
         @sprite.game.gl_scene.remove(@entity)
 

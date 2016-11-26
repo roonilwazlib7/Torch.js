@@ -97,8 +97,16 @@
       return this.spriteList = cleanedSprites;
     };
 
-    WebGLGame.prototype.GetThreeTransformedPoint = function(point) {
-      return new Torch.Point(point.x, point.y);
+    WebGLGame.prototype.GetThreeTransform = function(x, y) {
+      var camera, dir, distance, pos, vector;
+      vector = new THREE.Vector3();
+      camera = this.gl_camera;
+      vector.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1, 1);
+      vector.unproject(camera);
+      dir = vector.sub(camera.position).normalize();
+      distance = -camera.position.z / dir.z;
+      pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      return pos;
     };
 
     return WebGLGame;

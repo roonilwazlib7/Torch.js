@@ -1669,6 +1669,16 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return this;
     };
 
+    ThreeSprite.prototype.Width = function(arg) {
+      this.entity.scale.x = arg / this.sprite.gl_orig_width;
+      return this;
+    };
+
+    ThreeSprite.prototype.Height = function(arg) {
+      this.entity.scale.y = arg / this.sprite.gl_orig_height;
+      return this;
+    };
+
     ThreeSprite.prototype.Remove = function() {
       return this.sprite.game.gl_scene.remove(this.entity);
     };
@@ -2985,18 +2995,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return this;
     };
 
-    CanvasGame.prototype.GetThreeTransform = function(x, y) {
-      var camera, dir, distance, pos, vector;
-      vector = new THREE.Vector3();
-      camera = this.gl_camera;
-      vector.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1, 0.5);
-      vector.unproject(camera);
-      dir = vector.sub(camera.position).normalize();
-      distance = -camera.position.z / dir.z;
-      pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      return pos;
-    };
-
     return CanvasGame;
 
   })();
@@ -3104,8 +3102,16 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return this.spriteList = cleanedSprites;
     };
 
-    WebGLGame.prototype.GetThreeTransformedPoint = function(point) {
-      return new Torch.Point(point.x, point.y);
+    WebGLGame.prototype.GetThreeTransform = function(x, y) {
+      var camera, dir, distance, pos, vector;
+      vector = new THREE.Vector3();
+      camera = this.gl_camera;
+      vector.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1, 1);
+      vector.unproject(camera);
+      dir = vector.sub(camera.position).normalize();
+      distance = -camera.position.z / dir.z;
+      pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      return pos;
     };
 
     return WebGLGame;
@@ -3358,7 +3364,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var transform;
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity);
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
       }
     };
 
@@ -5245,4 +5251,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.165'
+Torch.version = '0.3.199'
