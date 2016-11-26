@@ -4080,6 +4080,30 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return results;
     };
 
+    CollisionManager.prototype.SimpleCollisionHandle = function(event, sink) {
+      var offset;
+      if (sink == null) {
+        sink = 1;
+      }
+      sink *= 0.5;
+      offset = event.collisionData;
+      if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
+        if (offset.x < offset.y) {
+          if (offset.vx > 0) {
+            return event.collisionData.self.Move("x", offset.x * sink);
+          } else if (offset.vx < 0) {
+            return event.collisionData.self.Move("x", -offset.x * sink);
+          }
+        } else if (offset.x > offset.y) {
+          if (offset.vy > 0) {
+            return event.collisionData.self.Move("y", offset.y * sink);
+          } else if (offset.vy < 0) {
+            return event.collisionData.self.Move("y", -offset.y * sink);
+          }
+        }
+      }
+    };
+
     return CollisionManager;
 
   })();
@@ -5251,4 +5275,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.202'
+Torch.version = '0.3.206'

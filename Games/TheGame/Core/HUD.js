@@ -7,15 +7,6 @@
   HUD = (function() {
     function HUD(game) {
       this.game = game;
-      this.hud_background = new Torch.Sprite(this.game, 0, 0);
-      this.hud_background.Bind.Texture("hud_background");
-      this.hud_background.Width(800);
-      this.hud_background.Height(300);
-      this.hud_background.DrawIndex(100);
-      this.hud_background.Center();
-      this.hud_background.On("Click", function() {
-        return alert("click");
-      });
     }
 
     return HUD;

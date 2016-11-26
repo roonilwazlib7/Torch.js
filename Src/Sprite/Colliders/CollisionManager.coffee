@@ -83,4 +83,27 @@ class CollisionManager
 
                     @sprite.Emit("Collision", new Torch.Event(@game, {collisionData: collisionData}))
 
+    SimpleCollisionHandle: (event, sink = 1) ->
+        sink *= 0.5
+        offset = event.collisionData
+        if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
+            if offset.x < offset.y
+
+                if offset.vx > 0
+                    event.collisionData.self.Move("x", offset.x * sink)
+                    #colDir = "l"
+                else if offset.vx < 0
+                    #colDir = "r"
+                    event.collisionData.self.Move("x", -offset.x * sink)
+
+            else if offset.x > offset.y
+
+                if offset.vy > 0
+                    #colDir = "t"
+                    event.collisionData.self.Move("y", offset.y * sink)
+
+                else if  offset.vy < 0
+                    #colDir = "b"
+                    event.collisionData.self.Move("y", -offset.y * sink)
+
 Torch.CollisionManager = CollisionManager

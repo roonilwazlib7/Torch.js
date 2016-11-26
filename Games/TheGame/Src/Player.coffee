@@ -5,27 +5,28 @@ class Player extends Torch.Sprite
     @Center().CenterVertical()
 
     @On "Collision", (event) =>
+        @Collisions.SimpleCollisionHandle(event)
         # @Velocity("x", 0).Velocity("y", 0)
-        offset = event.collisionData
-        if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
-            if offset.x < offset.y
-
-                if offset.vx > 0
-                    @Move("x", offset.x/2)
-                    #colDir = "l"
-                else if offset.vx < 0
-                    #colDir = "r"
-                    @Move("x", -offset.x/2)
-
-            else if offset.x > offset.y
-
-                if offset.vy > 0
-                    #colDir = "t"
-                    @Move("y", offset.y/2)
-
-                else if  offset.vy < 0
-                    #colDir = "b"
-                    @Move("y", -offset.y/2)
+        # offset = event.collisionData
+        # if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
+        #     if offset.x < offset.y
+        #
+        #         if offset.vx > 0
+        #             @Move("x", offset.x/2)
+        #             #colDir = "l"
+        #         else if offset.vx < 0
+        #             #colDir = "r"
+        #             @Move("x", -offset.x/2)
+        #
+        #     else if offset.x > offset.y
+        #
+        #         if offset.vy > 0
+        #             #colDir = "t"
+        #             @Move("y", offset.y/2)
+        #
+        #         else if  offset.vy < 0
+        #             #colDir = "b"
+        #             @Move("y", -offset.y/2)
 
   Update: ->
     super()

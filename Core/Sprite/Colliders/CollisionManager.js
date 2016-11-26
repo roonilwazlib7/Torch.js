@@ -126,6 +126,30 @@
       return results;
     };
 
+    CollisionManager.prototype.SimpleCollisionHandle = function(event, sink) {
+      var offset;
+      if (sink == null) {
+        sink = 1;
+      }
+      sink *= 0.5;
+      offset = event.collisionData;
+      if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
+        if (offset.x < offset.y) {
+          if (offset.vx > 0) {
+            return event.collisionData.self.Move("x", offset.x * sink);
+          } else if (offset.vx < 0) {
+            return event.collisionData.self.Move("x", -offset.x * sink);
+          }
+        } else if (offset.x > offset.y) {
+          if (offset.vy > 0) {
+            return event.collisionData.self.Move("y", offset.y * sink);
+          } else if (offset.vy < 0) {
+            return event.collisionData.self.Move("y", -offset.y * sink);
+          }
+        }
+      }
+    };
+
     return CollisionManager;
 
   })();

@@ -13,23 +13,7 @@
       this.Center().CenterVertical();
       this.On("Collision", (function(_this) {
         return function(event) {
-          var offset;
-          offset = event.collisionData;
-          if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
-            if (offset.x < offset.y) {
-              if (offset.vx > 0) {
-                return _this.Move("x", offset.x / 2);
-              } else if (offset.vx < 0) {
-                return _this.Move("x", -offset.x / 2);
-              }
-            } else if (offset.x > offset.y) {
-              if (offset.vy > 0) {
-                return _this.Move("y", offset.y / 2);
-              } else if (offset.vy < 0) {
-                return _this.Move("y", -offset.y / 2);
-              }
-            }
-          }
+          return _this.Collisions.SimpleCollisionHandle(event);
         };
       })(this));
     }
