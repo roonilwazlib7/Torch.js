@@ -80,7 +80,10 @@
     };
 
     CanvasGame.prototype.InitGraphics = function() {
-      this.canvasNode = document.getElementById(this.canvasId);
+      this.canvasNode = document.createElement("CANVAS");
+      this.canvasNode.width = window.innerWidth;
+      this.canvasNode.height = window.innerHeight;
+      document.getElementById(this.canvasId).appendChild(this.canvasNode);
       this.canvas = this.canvasNode.getContext("2d");
       return this.Clear("#cc5200");
     };

@@ -11,10 +11,10 @@ Load = (game) ->
     game.Load.Texture("Art/hud_background.png", "hud_background")
 Init = (game) ->
     game.Clear("#fcd8a8")
+    game.PixelScale()
     window._game = game
     Torch.Scale = 6
-    game.Add( new Torch.AmbientLight(0xffffff) )
-    player = new Player(game)
+    game.player = new Player(game)
     hud = new HUD(game)
 
     test = new MapPieces.Bush(game, ["0", "0"])

@@ -65,7 +65,7 @@ class Sprite
         @tasks = {}
         @children = []
         @stateMachines = []
-        @renderer = null # new CanvasRenderer(@)
+        if not @GL then @renderer = new CanvasRenderer(@)
 
         game.Add(@)
 
@@ -178,6 +178,7 @@ class Sprite
         @position.y += velY * deltaTime
 
     UpdateGLEntities: ->
+        return if not @GL
         # send all graphics-related information to
         # the corresponding three.js mesh being rendered
 
@@ -218,7 +219,8 @@ class Sprite
             return @DrawTexture
 
     Draw: ->
-        if @renderer isnt null then @renderer.Draw()
+        if @renderer isnt null
+            @renderer.Draw()
 
     Hide: ->
         @draw = false

@@ -2380,7 +2380,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     body = document.body;
     body.style.backgroundColor = "black";
     body.style.overflow = "hidden";
-    body.style.margin = 0;
     canvas = document.getElementsByTagName("CANVAS")[0];
     canvas.style.border = "1px solid orange";
     return canvas.style.cursor = "pointer";
@@ -2554,7 +2553,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     CanvasGame.prototype.InitGraphics = function() {
-      this.canvasNode = document.getElementById(this.canvasId);
+      this.canvasNode = document.createElement("CANVAS");
+      this.canvasNode.width = window.innerWidth;
+      this.canvasNode.height = window.innerHeight;
+      document.getElementById(this.canvasId).appendChild(this.canvasNode);
       this.canvas = this.canvasNode.getContext("2d");
       return this.Clear("#cc5200");
     };
@@ -3238,7 +3240,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.tasks = {};
       this.children = [];
       this.stateMachines = [];
-      this.renderer = null;
+      if (!this.GL) {
+        this.renderer = new CanvasRenderer(this);
+      }
       return game.Add(this);
     };
 
@@ -3364,6 +3368,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.UpdateGLEntities = function() {
       var transform;
+      if (!this.GL) {
+        return;
+      }
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
         return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
@@ -4588,68 +4595,34 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
     };
 
-    CanvasBind.prototype.WebGLTexture = function(textureId) {
-      var height, map, material, texture, width;
-      texture = null;
-      map = null;
-      if (textureId.gl_2d_canvas_generated_image) {
-        texture = textureId;
-        map = textureId.texture;
+    CanvasBind.prototype.Texture = function(textureId, optionalParameters) {
+      var scale, tex;
+      console.log(textureId, optionalParameters);
+      tex = null;
+      if (typeof textureId === "string") {
+        tex = this.sprite.game.Assets.Textures[textureId];
+        if (!tex) {
+          this.sprite.game.FatalError("Sprite.Bind.Texture given textureId '" + textureId + "' was not found");
+        }
       } else {
-        texture = this.sprite.game.Assets.Textures[textureId];
-        map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+        tex = textureId;
       }
-      if (!this.sprite.Scale()) {
-        width = texture.width * Torch.Scale;
-        height = texture.height * Torch.Scale;
+      scale = 1;
+      this.Reset();
+      if (Torch.Scale && !this.sprite.TEXT) {
+        scale = Torch.Scale;
+      }
+      if (typeof textureId === "string") {
+        this.sprite.DrawTexture = tex;
       } else {
-        width = texture.width * this.sprite.Scale();
-        height = texture.height * this.sprite.Scale();
+        this.sprite.DrawTexture = {
+          image: textureId
+        };
       }
-      this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
-      material = new THREE.MeshPhongMaterial({
-        map: map
-      });
-      material.transparent = true;
-      this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
-      this.sprite.gl_orig_width = width;
-      this.sprite.gl_orig_height = height;
-      this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
-    };
-
-    CanvasBind.prototype.Texture = function() {
-      return function(textureId, optionalParameters) {
-        var scale, tex;
-        if (this.sprite.GL) {
-          this.WebGLTexture(textureId);
-          return;
-        }
-        tex = null;
-        if (typeof textureId === "string") {
-          tex = this.sprite.game.Assets.Textures[textureId];
-          if (!tex) {
-            this.sprite.game.FatalError("Sprite.Bind.Texture given textureId '" + textureId + "' was not found");
-          }
-        } else {
-          tex = textureId;
-        }
-        scale = 1;
-        this.Reset();
-        if (Torch.Scale && !this.sprite.TEXT) {
-          scale = Torch.Scale;
-        }
-        if (typeof textureId === "string") {
-          this.sprite.DrawTexture = tex;
-        } else {
-          this.sprite.DrawTexture = {
-            image: textureId
-          };
-        }
-        this.sprite.Rectangle.width = tex.width * scale;
-        this.sprite.Rectangle.height = tex.height * scale;
-        return this.sprite.DrawTexture;
-      };
+      this.sprite.Rectangle.width = tex.width * scale;
+      this.sprite.Rectangle.height = tex.height * scale;
+      console.log(this.sprite.DrawTexture);
+      return this.sprite.DrawTexture;
     };
 
     CanvasBind.prototype.TexturePack = function() {
@@ -5062,7 +5035,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         DrawRec.y -= this.sprite.game.Viewport.y;
       }
       if (this.sprite.TexturePack) {
-        return this.sprite.game.Draw(this.sprite.GetCurrentDraw(), DrawRec, this.sprite.DrawParams);
+        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, this.sprite.DrawParams);
       } else if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
         drawParams = (ref = this.sprite.DrawParams) != null ? ref : {};
@@ -5074,13 +5047,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         params.IsTextureSheet = true;
         params.rotation = this.sprite.rotation;
         params.alpha = this.sprite.opacity;
-        return this.sprite.game.Render(this.sprite.DrawTexture, DrawRec, params);
+        return this.Render(this.sprite.DrawTexture, DrawRec, params);
       } else if (this.sprite.DrawTexture) {
         DrawParams = {
           alpha: this.sprite.opacity,
           rotation: this.sprite.rotation
         };
-        return this.sprite.game.Render(this.sprite.GetCurrentDraw(), DrawRec, DrawParams);
+        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, DrawParams);
       }
     };
 
@@ -5280,4 +5253,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.236'
+Torch.version = '0.3.256'

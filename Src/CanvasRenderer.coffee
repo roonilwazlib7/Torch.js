@@ -11,7 +11,7 @@ class CanvasRenderer
             DrawRec.y -= @sprite.game.Viewport.y
 
         if @sprite.TexturePack
-            @sprite.game.Draw(@sprite.GetCurrentDraw(), DrawRec, @sprite.DrawParams)
+            @Render(@sprite.GetCurrentDraw(), DrawRec, @sprite.DrawParams)
 
         else if @sprite.TextureSheet
             frame = @sprite.GetCurrentDraw()
@@ -26,14 +26,14 @@ class CanvasRenderer
             params.rotation = @sprite.rotation
             params.alpha = @sprite.opacity
 
-            @sprite.game.Render(@sprite.DrawTexture, DrawRec, params)
+            @Render(@sprite.DrawTexture, DrawRec, params)
 
         else if @sprite.DrawTexture
             DrawParams =
                 alpha: @sprite.opacity,
                 rotation: @sprite.rotation
 
-            @sprite.game.Render(@sprite.GetCurrentDraw(), DrawRec, DrawParams)
+            @Render(@sprite.GetCurrentDraw(), DrawRec, DrawParams)
 
     Render: (texture, rectangle, params = {}) ->
         canvas = @game.canvas

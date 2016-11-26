@@ -73,7 +73,12 @@ class CanvasGame
         @filter = {}
 
     InitGraphics: ->
-        @canvasNode = document.getElementById(@canvasId)
+        @canvasNode = document.createElement("CANVAS")
+        @canvasNode.width = window.innerWidth
+        @canvasNode.height = window.innerHeight
+
+        document.getElementById(@canvasId).appendChild(@canvasNode)
+
         @canvas = @canvasNode.getContext("2d")
         @Clear("#cc5200")
 

@@ -18,7 +18,7 @@
         DrawRec.y -= this.sprite.game.Viewport.y;
       }
       if (this.sprite.TexturePack) {
-        return this.sprite.game.Draw(this.sprite.GetCurrentDraw(), DrawRec, this.sprite.DrawParams);
+        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, this.sprite.DrawParams);
       } else if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
         drawParams = (ref = this.sprite.DrawParams) != null ? ref : {};
@@ -30,13 +30,13 @@
         params.IsTextureSheet = true;
         params.rotation = this.sprite.rotation;
         params.alpha = this.sprite.opacity;
-        return this.sprite.game.Render(this.sprite.DrawTexture, DrawRec, params);
+        return this.Render(this.sprite.DrawTexture, DrawRec, params);
       } else if (this.sprite.DrawTexture) {
         DrawParams = {
           alpha: this.sprite.opacity,
           rotation: this.sprite.rotation
         };
-        return this.sprite.game.Render(this.sprite.GetCurrentDraw(), DrawRec, DrawParams);
+        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, DrawParams);
       }
     };
 

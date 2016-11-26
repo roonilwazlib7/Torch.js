@@ -19,41 +19,8 @@ class CanvasBind
             @sprite.anim = null
             @sprite.TexturePack = null
 
-    WebGLTexture: (textureId) ->
-        texture = null
-        map = null
-
-        if textureId.gl_2d_canvas_generated_image
-            texture = textureId
-            map = textureId.texture
-        else
-            texture = @sprite.game.Assets.Textures[textureId]
-            map = @sprite.game.Assets.Textures[textureId].gl_texture
-
-        if not @sprite.Scale()
-            width = texture.width * Torch.Scale
-            height = texture.height * Torch.Scale
-        else
-            width = texture.width * @sprite.Scale()
-            height = texture.height * @sprite.Scale()
-
-        @sprite.gl_shape = new THREE.PlaneGeometry( width, height, 8, 8 )
-
-        material = new THREE.MeshPhongMaterial({map: map})
-        material.transparent = true
-
-        @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, @sprite.gl_shape)
-        @sprite.gl_orig_width = width
-        @sprite.gl_orig_height = height
-        @sprite.Rectangle.width = width
-        @sprite.Rectangle.height = height
-
-    Texture: -> (textureId, optionalParameters) ->
-
-        if @sprite.GL
-            @WebGLTexture(textureId)
-            return
-
+    Texture: (textureId, optionalParameters) ->
+        console.log(textureId, optionalParameters)
         tex = null
         if typeof(textureId) is "string"
             tex = @sprite.game.Assets.Textures[textureId]
@@ -76,6 +43,8 @@ class CanvasBind
 
         @sprite.Rectangle.width = tex.width * scale
         @sprite.Rectangle.height = tex.height * scale
+
+        console.log(@sprite.DrawTexture)
 
         return @sprite.DrawTexture
 

@@ -16,12 +16,12 @@
   };
 
   Init = function(game) {
-    var hud, player, test;
+    var hud, test;
     game.Clear("#fcd8a8");
+    game.PixelScale();
     window._game = game;
     Torch.Scale = 6;
-    game.Add(new Torch.AmbientLight(0xffffff));
-    player = new Player(game);
+    game.player = new Player(game);
     hud = new HUD(game);
     return test = new MapPieces.Bush(game, ["0", "0"]);
   };

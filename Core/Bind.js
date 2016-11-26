@@ -34,68 +34,34 @@
       }
     };
 
-    CanvasBind.prototype.WebGLTexture = function(textureId) {
-      var height, map, material, texture, width;
-      texture = null;
-      map = null;
-      if (textureId.gl_2d_canvas_generated_image) {
-        texture = textureId;
-        map = textureId.texture;
+    CanvasBind.prototype.Texture = function(textureId, optionalParameters) {
+      var scale, tex;
+      console.log(textureId, optionalParameters);
+      tex = null;
+      if (typeof textureId === "string") {
+        tex = this.sprite.game.Assets.Textures[textureId];
+        if (!tex) {
+          this.sprite.game.FatalError("Sprite.Bind.Texture given textureId '" + textureId + "' was not found");
+        }
       } else {
-        texture = this.sprite.game.Assets.Textures[textureId];
-        map = this.sprite.game.Assets.Textures[textureId].gl_texture;
+        tex = textureId;
       }
-      if (!this.sprite.Scale()) {
-        width = texture.width * Torch.Scale;
-        height = texture.height * Torch.Scale;
+      scale = 1;
+      this.Reset();
+      if (Torch.Scale && !this.sprite.TEXT) {
+        scale = Torch.Scale;
+      }
+      if (typeof textureId === "string") {
+        this.sprite.DrawTexture = tex;
       } else {
-        width = texture.width * this.sprite.Scale();
-        height = texture.height * this.sprite.Scale();
+        this.sprite.DrawTexture = {
+          image: textureId
+        };
       }
-      this.sprite.gl_shape = new THREE.PlaneGeometry(width, height, 8, 8);
-      material = new THREE.MeshPhongMaterial({
-        map: map
-      });
-      material.transparent = true;
-      this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
-      this.sprite.gl_orig_width = width;
-      this.sprite.gl_orig_height = height;
-      this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
-    };
-
-    CanvasBind.prototype.Texture = function() {
-      return function(textureId, optionalParameters) {
-        var scale, tex;
-        if (this.sprite.GL) {
-          this.WebGLTexture(textureId);
-          return;
-        }
-        tex = null;
-        if (typeof textureId === "string") {
-          tex = this.sprite.game.Assets.Textures[textureId];
-          if (!tex) {
-            this.sprite.game.FatalError("Sprite.Bind.Texture given textureId '" + textureId + "' was not found");
-          }
-        } else {
-          tex = textureId;
-        }
-        scale = 1;
-        this.Reset();
-        if (Torch.Scale && !this.sprite.TEXT) {
-          scale = Torch.Scale;
-        }
-        if (typeof textureId === "string") {
-          this.sprite.DrawTexture = tex;
-        } else {
-          this.sprite.DrawTexture = {
-            image: textureId
-          };
-        }
-        this.sprite.Rectangle.width = tex.width * scale;
-        this.sprite.Rectangle.height = tex.height * scale;
-        return this.sprite.DrawTexture;
-      };
+      this.sprite.Rectangle.width = tex.width * scale;
+      this.sprite.Rectangle.height = tex.height * scale;
+      console.log(this.sprite.DrawTexture);
+      return this.sprite.DrawTexture;
     };
 
     CanvasBind.prototype.TexturePack = function() {
