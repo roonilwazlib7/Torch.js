@@ -38,10 +38,12 @@
     WebGLGame.prototype.InitGraphics = function() {
       this.gl_rendererContainer = document.getElementById(this.canvasId);
       this.gl_scene = new THREE.Scene();
+      this.gl_scene.add(new THREE.AxisHelper(100));
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
       this.gl_camera.position.z = 600;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: this.pixel !== Torch.PIXEL
+        antialias: this.pixel !== Torch.PIXEL,
+        alpha: true
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);

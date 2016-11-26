@@ -3043,10 +3043,12 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     WebGLGame.prototype.InitGraphics = function() {
       this.gl_rendererContainer = document.getElementById(this.canvasId);
       this.gl_scene = new THREE.Scene();
+      this.gl_scene.add(new THREE.AxisHelper(100));
       this.gl_camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
       this.gl_camera.position.z = 600;
       this.gl_renderer = new THREE.WebGLRenderer({
-        antialias: this.pixel !== Torch.PIXEL
+        antialias: this.pixel !== Torch.PIXEL,
+        alpha: true
       });
       this.gl_renderer.setSize(window.innerWidth, window.innerHeight);
       this.gl_renderer.setPixelRatio(window.devicePixelRatio);
@@ -3580,7 +3582,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     Sprite.prototype.GetThreeTransform = function() {
-      return this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
+      var point;
+      point = this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
+      point.x -= this.Width() / 4;
+      return point;
     };
 
     return Sprite;
@@ -5275,4 +5280,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.206'
+Torch.version = '0.3.236'

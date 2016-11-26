@@ -415,7 +415,10 @@
     };
 
     Sprite.prototype.GetThreeTransform = function() {
-      return this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
+      var point;
+      point = this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
+      point.x -= this.Width() / 4;
+      return point;
     };
 
     return Sprite;

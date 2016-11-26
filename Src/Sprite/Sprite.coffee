@@ -357,8 +357,9 @@ class Sprite
         @game.Add(otherItem)
 
     GetThreeTransform: () ->
-        return @game.GetThreeTransform( ( @Position("x") + @Width() / 2 ), ( @Position("y") + @Height() / 2) )
-
+        point = @game.GetThreeTransform( ( @Position("x") + @Width() / 2 ), ( @Position("y") + @Height() / 2) )
+        point.x -= @Width() / 4
+        return point
 ###
     @class Torch.GhostSprite @extends Torch.Sprite
     @author roonilwazlib

@@ -22,11 +22,12 @@ class WebGLGame extends Torch.CanvasGame
         @gl_rendererContainer = document.getElementById(@canvasId)
 
         @gl_scene = new THREE.Scene()
+        @gl_scene.add(new THREE.AxisHelper(100))
 
         @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 1000 )
         @gl_camera.position.z = 600
 
-        @gl_renderer = new THREE.WebGLRenderer( {antialias: @pixel isnt Torch.PIXEL} )
+        @gl_renderer = new THREE.WebGLRenderer( {antialias: @pixel isnt Torch.PIXEL, alpha: true} )
         @gl_renderer.setSize( window.innerWidth, window.innerHeight )
         @gl_renderer.setPixelRatio( window.devicePixelRatio )
 

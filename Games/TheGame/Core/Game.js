@@ -6,7 +6,7 @@
 
   Torch.DisableConsoleWarnings();
 
-  Game = new Torch.Game("container", "fill", "fill", "TheGame", Torch.WEBGL);
+  Game = new Torch.Game("container", "fill", "fill", "TheGame", Torch.CANVAS);
 
   Load = function(game) {
     game.Bounds();
@@ -17,6 +17,7 @@
 
   Init = function(game) {
     var hud, player, test;
+    game.Clear("#fcd8a8");
     window._game = game;
     Torch.Scale = 6;
     game.Add(new Torch.AmbientLight(0xffffff));
