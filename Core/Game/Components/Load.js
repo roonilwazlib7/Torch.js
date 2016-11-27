@@ -214,9 +214,9 @@
               break;
             case "file":
               if (!Torch.ELECTRON) {
-                loader = new Torch.AjaxLoader(this.audio[stackItem.id].url, Torch.AjaxData.Text);
+                loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.Text);
                 loader.Finish((function(_this) {
-                  return function() {
+                  return function(data) {
                     _this.LoadItemFinished();
                     return _this.game.Files[stackItem.id] = data;
                   };

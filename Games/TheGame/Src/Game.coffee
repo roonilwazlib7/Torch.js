@@ -14,6 +14,8 @@ Load = (game) ->
     game.Load.Texture("Art/stress_bar.png", "hud_stress_bar")
     game.Load.Texture("Art/hud_slot_1_background.png", "hud_slot_1_background")
     game.Load.Texture("Art/hud_slot_2_background.png", "hud_slot_2_background")
+
+    game.Load.File("Maps/test-map.map", "map");
 Init = (game) ->
     game.Clear("#fcd8a8")
     game.PixelScale()

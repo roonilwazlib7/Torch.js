@@ -198,8 +198,8 @@ class Load
                         if not Torch.ELECTRON
                             # @game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)))
                             # load with ajax instead
-                            loader = new Torch.AjaxLoader(@audio[stackItem.id].url, Torch.AjaxData.Text)
-                            loader.Finish =>
+                            loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.Text)
+                            loader.Finish (data) =>
                                 @LoadItemFinished()
                                 @game.Files[stackItem.id] = data
                             loader.Load()

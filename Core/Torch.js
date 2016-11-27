@@ -43,7 +43,7 @@
 
     function AjaxLoader(url, responseType) {
       if (responseType == null) {
-        responseType = Torch.AjaxData.DOMString;
+        responseType = window.Torch.AjaxData.Text;
       }
       this.url = url;
       this.responseType = this.GetResponseTypeString(responseType);
@@ -51,35 +51,33 @@
 
     AjaxLoader.prototype.GetResponseTypeString = function(responseType) {
       switch (responseType) {
-        case Torch.AjaxData.DOMString:
+        case window.Torch.AjaxData.DOMString:
           return "";
-        case Torch.AjaxData.ArrayBuffer:
+        case window.Torch.AjaxData.ArrayBuffer:
           return "arraybuffer";
-        case Torch.AjaxData.Blob:
+        case window.Torch.AjaxData.Blob:
           return "blob";
-        case Torch.AjaxData.Document:
+        case window.Torch.AjaxData.Document:
           return "document";
-        case Torch.AjaxData.Json:
+        case window.Torch.AjaxData.Json:
           return "json";
-        case Torch.AjaxData.Text:
+        case window.Torch.AjaxData.Text:
           return "text";
       }
     };
 
     AjaxLoader.prototype.Error = function(func) {
-      var onError;
-      return onError = func;
+      return this.onError = func;
     };
 
     AjaxLoader.prototype.Finish = function(func) {
-      var onFinish;
-      return onFinish = func;
+      return this.onFinish = func;
     };
 
     AjaxLoader.prototype.Load = function() {
       var request;
       request = new XMLHttpRequest();
-      request.open('GET', url, true);
+      request.open('GET', this.url, true);
       request.responseType = this.responseType;
       request.onload = (function(_this) {
         return function() {

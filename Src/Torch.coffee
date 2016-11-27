@@ -25,26 +25,26 @@ class AjaxLoader
     onFinish: ->
     onError: ->
 
-    constructor: (url, responseType = Torch.AjaxData.DOMString) ->
+    constructor: (url, responseType = window.Torch.AjaxData.Text) ->
         @url = url
         @responseType = @GetResponseTypeString(responseType)
 
     GetResponseTypeString: (responseType) ->
         switch responseType
-            when Torch.AjaxData.DOMString then      return ""
-            when Torch.AjaxData.ArrayBuffer then    return "arraybuffer"
-            when Torch.AjaxData.Blob then           return "blob"
-            when Torch.AjaxData.Document then       return "document"
-            when Torch.AjaxData.Json then           return "json"
-            when Torch.AjaxData.Text then           return "text"
+            when window.Torch.AjaxData.DOMString then      return ""
+            when window.Torch.AjaxData.ArrayBuffer then    return "arraybuffer"
+            when window.Torch.AjaxData.Blob then           return "blob"
+            when window.Torch.AjaxData.Document then       return "document"
+            when window.Torch.AjaxData.Json then           return "json"
+            when window.Torch.AjaxData.Text then           return "text"
 
-    Error: (func) -> onError = func
+    Error: (func) -> @onError = func
 
-    Finish: (func) -> onFinish = func
+    Finish: (func) -> @onFinish = func
 
     Load: ->
         request = new XMLHttpRequest()
-        request.open('GET', url, true)
+        request.open('GET', @url, true)
         request.responseType = @responseType
 
         request.onload = =>
