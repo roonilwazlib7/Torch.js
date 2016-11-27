@@ -13,6 +13,10 @@ $(document).ready(function(){
         }
     }
 
+    $("#map-export").click(function(){
+        ExportMap();
+    });
+
 })
 
 function GenerateCell(x,y)
@@ -28,4 +32,27 @@ function GenerateCell(x,y)
     });
 
     $("#grid").append(cell);
+
+    cell.click(function(){
+        HandleCellClick($(this));
+    });
+}
+
+function HandleCellClick()
+{
+
+}
+
+function ExportMap()
+{
+    var map = new MAP();
+
+    var mapString = "[name:{name}];[author:{author}];[generated:{generated}]\n{data}";
+
+    mapString = mapString.replace("{name}", map.name);
+    mapString = mapString.replace("{author}", map.author);
+    mapString = mapString.replace("{generated}", map.generated);
+    mapString = mapString.replace("{data}", map.data);
+
+    alert(mapString);
 }

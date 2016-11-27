@@ -6,7 +6,7 @@
         <script src = "main.js"></script>
         <script>if (window.module) module = window.module;</script>
 
-        <link rel = "stylesheet" href = "boostrap.min.css" />
+        <link rel = "stylesheet" href = "bootstrap.min.css" />
         <link rel = "stylesheet" href = "main.css" />
     </head>
 
@@ -14,9 +14,33 @@
         <div id="grid"></div>
 
         <div id = "menu">
+
             <div class="row">
-                <h1>Menu</h1>
+                <div class="col-sm-12">
+                    <h1>Menu</h1>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label> Map Name </label><br>
+                    <input id = "map-name" class="form-control"/>
+                </div>
+                <div class="col-sm-6">
+                    <label> Author </label><br>
+                    <input id = "map-author" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 2%">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-primary center-block" id = "map-export"> Export Map </button>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-primary center-block"> Import Map </button>
+                </div>
+            </div>
+
         </div>
     </body>
 </html>
