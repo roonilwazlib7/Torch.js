@@ -18,6 +18,10 @@ class MapPiece extends Torch.Sprite
 class Bush extends MapPiece
     textureId: "bush"
 
+class PlayerStart extends MapPiece
+    textureId: "player-start"
+
 exports.MapPieces = {
+    PlayerStart: PlayerStart,
     Bush: Bush
 }

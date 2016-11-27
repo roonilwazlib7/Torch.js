@@ -20,7 +20,11 @@ $(document).ready(function(){
     LoadMapOptions();
 })
 
-var SELECTED_PIECE = null;
+var fs = require("fs");
+
+var SELECTED_PIECE = null,
+    SCALE = 4,
+    BASE = 16;
 
 
 function GenerateCell(x,y)
@@ -29,10 +33,13 @@ function GenerateCell(x,y)
 
     cell.attr("id", "cell-" + x + y);
 
+    cell.data("x", x);
+    cell.data("y", y);
+
     cell.css({
         position: "absolute",
-        left: x * 64,
-        top: y * 64
+        left: x * BASE * SCALE,
+        top: y * BASE * SCALE
     });
 
     $("#grid").append(cell);
@@ -47,6 +54,9 @@ function HandleCellClick(cell)
     if (SELECTED_PIECE == null) return;
     cell.empty();
     var im = $("<img src='../Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
+    im.data("x", cell.data("x"));
+    im.data("y", cell.data("y"));
+    im.data("identifier", MapPieces[SELECTED_PIECE].prototype.identifier);
     cell.append(im);
 }
 
@@ -61,7 +71,7 @@ function ExportMap()
     mapString = mapString.replace("{generated}", map.generated);
     mapString = mapString.replace("{data}", map.data);
 
-    alert(mapString);
+    fs.writeFileSync("Maps/" + map.name + ".map", mapString);
 }
 
 function LoadMapOptions()
@@ -82,7 +92,7 @@ function LoadMapOptions()
 
         option.click(function(){
 
-            $("option").css("background-color", "transparent");
+            $(".option").css("background-color", "");
 
             $(this).animate({
                 "background-color": "green"
@@ -100,6 +110,18 @@ function MAP()
     that.name = $("#map-name").val();
     that.author = $("#map-author").val();
     that.generated = new Date().toString();
-    that.data = ";;"
+
+    that.data = "";
+
+    $(".placed-peice").each(function(){
+        var p = $(this);
+        that.data += parseInt(p.data("identifier").toString(16)) + ",";
+        that.data += parseInt(p.data("x")).toString(16) + ",";
+        that.data += parseInt(p.data("y")).toString(16);
+        that.data += ";";
+    });
+
+    if (that.name == "") that.name = "New Map";
+    if (that.author == "") that.author = "Team";
 }
 MAP.prototype = {}

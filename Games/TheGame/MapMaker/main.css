@@ -23,6 +23,7 @@
     border: 1px solid black;
     cursor: pointer;
     padding: 1%;
+    display: inline-block;
 }
 .option img, .placed-peice{
     width: 64px;
