@@ -18,17 +18,18 @@
     MapPiece.prototype.data = null;
 
     function MapPiece(game, rawData) {
-      this.data = this.GetData(rawData);
+      this.data = this.GetData(rawData, game);
       this.InitSprite(game, this.data.position.x, this.data.position.y);
       this.Bind.Texture(this.textureId);
     }
 
-    MapPiece.prototype.GetData = function(rawData) {
-      var data;
+    MapPiece.prototype.GetData = function(rawData, game) {
+      var SCALE, data;
+      SCALE = 64;
       data = {};
       data.position = {
-        x: parseInt(rawData[0], 16),
-        y: parseInt(rawData[1], 16)
+        x: parseInt(rawData[0], 16) * SCALE,
+        y: parseInt(rawData[1], 16) * SCALE + game.hud.hud_background.Height()
       };
       return data;
     };

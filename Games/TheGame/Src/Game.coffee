@@ -15,16 +15,19 @@ Load = (game) ->
     game.Load.Texture("Art/hud_slot_1_background.png", "hud_slot_1_background")
     game.Load.Texture("Art/hud_slot_2_background.png", "hud_slot_2_background")
 
-    game.Load.File("Maps/test-map.map", "map");
+    game.Load.File("Maps/test-map.map", "map")
+
 Init = (game) ->
     game.Clear("#fcd8a8")
     game.PixelScale()
     Torch.Scale = 4
     window._game = game
     game.player = new Player(game)
-    hud = new HUD(game)
+    game.mapManager = new MapManager(game)
+    game.hud = new HUD(game)
 
-    test = new MapPieces.Bush(game, ["ff", "1f4"])
+    game.mapManager.LoadMap("map")
+
 Draw = (game)->
 
 Update = (game) ->

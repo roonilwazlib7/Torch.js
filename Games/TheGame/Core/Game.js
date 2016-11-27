@@ -22,14 +22,14 @@
   };
 
   Init = function(game) {
-    var hud, test;
     game.Clear("#fcd8a8");
     game.PixelScale();
     Torch.Scale = 4;
     window._game = game;
     game.player = new Player(game);
-    hud = new HUD(game);
-    return test = new MapPieces.Bush(game, ["ff", "1f4"]);
+    game.mapManager = new MapManager(game);
+    game.hud = new HUD(game);
+    return game.mapManager.LoadMap("map");
   };
 
   Draw = function(game) {};

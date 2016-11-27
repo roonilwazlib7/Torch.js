@@ -5,13 +5,17 @@ class MapPiece extends Torch.Sprite
     textureId: ""
     data: null
     constructor: (game, rawData) ->
-        @data = @GetData(rawData)
+        @data = @GetData(rawData, game)
         @InitSprite(game, @data.position.x, @data.position.y )
         @Bind.Texture(@textureId)
 
-    GetData: (rawData) ->
+    GetData: (rawData, game) ->
+        SCALE = 64
         data = {}
-        data.position = {x: parseInt(rawData[0], 16), y: parseInt(rawData[1], 16)}
+        data.position =
+            x: parseInt(rawData[0], 16) * SCALE
+            y: parseInt(rawData[1], 16) * SCALE + game.hud.hud_background.Height()
+
         return data
 
 

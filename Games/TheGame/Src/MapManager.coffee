@@ -1,9 +1,17 @@
+exports = this
 class MapManager
     constructor: (@game) ->
-        @Parts = {}
+        @Parts = []
+        @pieces = []
+
+        for key,piece of MapPieces
+            @Parts[piece::identifier] = piece
 
     LoadMap: (fileId) ->
         mapString = @game.File(fileId)
+        sp = mapString.split("\n");
+        metaData = sp[0];
+        mapString = sp[1];
 
         segments = mapString.split(";")
 
@@ -14,9 +22,13 @@ class MapManager
         # the first number is the identifier
 
         for segment in segments
+            break if segment is ""
             identifier = segment.split(",")[0]
             segs = []
-            for seg,index in segments.split(",")
-                segs.push(seg) if index isnt 0
-                
-            pieces.push( new @Parts[identifier](segs) )
+
+            for seg,index in segment.split(",")
+                segs.push(seg) if index isnt 0 and seg isnt ""
+
+            pieces.push( new @Parts[identifier](@game, segs) )
+
+exports.MapManager = MapManager
