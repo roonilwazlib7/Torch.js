@@ -3,6 +3,10 @@
         <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
         <script src = "jquery-3.1.1.min.js"></script>
         <script src = "jquery-ui.min.js"></script>
+
+        <script src = "../../../Builds/torch-latest.js"></script>
+        <script src = "../Core/MapPieces/MapPiece.js"></script>
+
         <script src = "main.js"></script>
         <script>if (window.module) module = window.module;</script>
 
@@ -24,12 +28,16 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label> Map Name </label><br>
-                    <input id = "map-name" class="form-control"/>
+                    <input id = "map-name" class="form-control" placeholder="New Map"/>
                 </div>
                 <div class="col-sm-6">
                     <label> Author </label><br>
-                    <input id = "map-author" class="form-control"/>
+                    <input id = "map-author" class="form-control" placeholder="Crew"/>
                 </div>
+            </div>
+
+            <div class="row" id = "map-options" style="margin-top: 2%">
+                <h1> Map Pieces </h1>
             </div>
 
             <div class="row" style="margin-top: 2%">
