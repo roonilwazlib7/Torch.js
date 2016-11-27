@@ -25,7 +25,7 @@
       this.hud_background.Scale(1);
       this.hud_background.Bind.Texture("hud_background");
       this.hud_background.DrawIndex(100);
-      this.hud_background.Width(window.innerWidth - this.Width(36));
+      this.hud_background.Width(window.innerWidth - this.Width(36.5));
       this.hud_minimap_background = new Torch.Sprite(this.game, window.innerWidth / 20, window.innerHeight / 20);
       this.hud_minimap_background.Bind.Texture("hud_minimap_background");
       this.hud_minimap_background.DrawIndex(101);

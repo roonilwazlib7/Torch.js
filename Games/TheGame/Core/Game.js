@@ -22,7 +22,7 @@
 
   Init = function(game) {
     var hud, test;
-    game.Clear("#b3ffb3");
+    game.Clear("#fcd8a8");
     game.PixelScale();
     Torch.Scale = 4;
     window._game = game;

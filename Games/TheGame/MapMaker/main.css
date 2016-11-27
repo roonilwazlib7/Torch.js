@@ -1,0 +1,18 @@
+.cell{
+    border: 1px solid black;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
+.cell:hover{
+    background-color: green;
+}
+
+#menu{
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border: 1px solid;
+    position: absolute;
+    top: 0;
+}

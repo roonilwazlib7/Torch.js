@@ -13,7 +13,8 @@
       this.Center().CenterVertical();
       this.On("Collision", (function(_this) {
         return function(event) {
-          return _this.Collisions.SimpleCollisionHandle(event);
+          _this.Collisions.SimpleCollisionHandle(event);
+          return _this.Velocity("x", 0).Velocity("y", 0);
         };
       })(this));
     }
