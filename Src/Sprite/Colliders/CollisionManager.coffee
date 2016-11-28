@@ -89,24 +89,31 @@ class CollisionManager
 
     SimpleCollisionHandle: (event, sink = 1) ->
         offset = event.collisionData
+        touching = {left: false, right: false, top: false, bottom: false}
         if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
             if offset.x < offset.y
 
                 if offset.vx > 0
                     event.collisionData.self.Move("x", offset.x * sink)
+                    touching.left = true
                     #colDir = "l"
                 else if offset.vx < 0
                     #colDir = "r"
                     event.collisionData.self.Move("x", -offset.x * sink)
+                    touching.right = true
 
             else if offset.x > offset.y
 
                 if offset.vy > 0
                     #colDir = "t"
                     event.collisionData.self.Move("y", offset.y * sink)
+                    touching.top = true
 
                 else if  offset.vy < 0
                     #colDir = "b"
                     event.collisionData.self.Move("y", -offset.y * sink)
+                    touching.bottom = true
+
+        return touching
 
 Torch.CollisionManager = CollisionManager

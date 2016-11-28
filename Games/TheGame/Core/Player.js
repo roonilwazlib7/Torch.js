@@ -9,34 +9,52 @@
 
     Player.prototype.VELOCITY = 0.4;
 
+    Player.prototype.stoppped = false;
+
+    Player.prototype.touching = null;
+
     function Player(game) {
+      this.touching = {};
       this.InitSprite(game, 0, 0);
       this.Bind.Texture("player");
       this.Center().CenterVertical();
+      this.Position("y", window.innerHeight - 100);
       this.On("Collision", (function(_this) {
         return function(event) {
-          _this.Collisions.SimpleCollisionHandle(event);
+          _this.touching = _this.Collisions.SimpleCollisionHandle(event, 1.5);
           return _this.Velocity("x", 0).Velocity("y", 0);
         };
       })(this));
     }
 
     Player.prototype.Update = function() {
-      var keys;
       Player.__super__.Update.call(this);
+      return this.Move();
+    };
+
+    Player.prototype.Move = function() {
+      var keys;
       keys = this.game.Keys;
       this.Velocity("x", 0).Velocity("y", 0);
-      if (keys.D.down) {
+      if (keys.D.down && this.touching && !this.touching.right) {
         this.Velocity("x", this.VELOCITY);
+      } else {
+        this.touching.right = false;
       }
-      if (keys.A.down) {
+      if (keys.A.down && this.touching && !this.touching.left) {
         this.Velocity("x", -this.VELOCITY);
+      } else {
+        this.touching.left = false;
       }
-      if (keys.S.down) {
+      if (keys.S.down && this.touching && !this.touching.bottom) {
         this.Velocity("y", this.VELOCITY);
+      } else {
+        this.touching.bottom = false;
       }
-      if (keys.W.down) {
+      if (keys.W.down && this.touching && !this.touching.top) {
         return this.Velocity("y", -this.VELOCITY);
+      } else {
+        return this.touching.top = false;
       }
     };
 

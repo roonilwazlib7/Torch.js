@@ -4088,26 +4088,37 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     CollisionManager.prototype.SimpleCollisionHandle = function(event, sink) {
-      var offset;
+      var offset, touching;
       if (sink == null) {
         sink = 1;
       }
       offset = event.collisionData;
+      touching = {
+        left: false,
+        right: false,
+        top: false,
+        bottom: false
+      };
       if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
         if (offset.x < offset.y) {
           if (offset.vx > 0) {
-            return event.collisionData.self.Move("x", offset.x * sink);
+            event.collisionData.self.Move("x", offset.x * sink);
+            touching.left = true;
           } else if (offset.vx < 0) {
-            return event.collisionData.self.Move("x", -offset.x * sink);
+            event.collisionData.self.Move("x", -offset.x * sink);
+            touching.right = true;
           }
         } else if (offset.x > offset.y) {
           if (offset.vy > 0) {
-            return event.collisionData.self.Move("y", offset.y * sink);
+            event.collisionData.self.Move("y", offset.y * sink);
+            touching.top = true;
           } else if (offset.vy < 0) {
-            return event.collisionData.self.Move("y", -offset.y * sink);
+            event.collisionData.self.Move("y", -offset.y * sink);
+            touching.bottom = true;
           }
         }
       }
+      return touching;
     };
 
     return CollisionManager;
@@ -5245,4 +5256,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.474'
+Torch.version = '0.3.495'
