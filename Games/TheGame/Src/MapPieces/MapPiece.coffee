@@ -8,6 +8,7 @@ class MapPiece extends Torch.Sprite
         @data = @GetData(rawData, game)
         @InitSprite(game, @data.position.x, @data.position.y )
         @Bind.Texture(@textureId)
+        @DrawIndex(10)
 
     GetData: (rawData, game) ->
         SCALE = 64
@@ -25,7 +26,11 @@ class Bush extends MapPiece
 class PlayerStart extends MapPiece
     textureId: "player-start"
 
+class Water extends MapPiece
+    textureId: "water"
+    identifier: 1
+
 exports.MapPieces = {
-    PlayerStart: PlayerStart,
-    Bush: Bush
+    Bush: Bush,
+    Water: Water
 }

@@ -4057,13 +4057,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     };
 
     CollisionManager.prototype.Update = function() {
-      var collisionData, collisionDetected, i, len, otherSprite, ref, results;
+      var anyCollisions, collisionData, collisionDetected, i, len, otherSprite, ref;
       if (!this.sprite.game) {
         return;
       }
       this.game = this.sprite.game;
+      anyCollisions = false;
       ref = this.game.spriteList;
-      results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         otherSprite = ref[i];
         if (this.sprite.NotSelf(otherSprite) && this.Valid(otherSprite)) {
@@ -4077,17 +4077,14 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
           if (collisionDetected) {
             collisionData.self = this.sprite;
             collisionData.collider = otherSprite;
-            results.push(this.sprite.Emit("Collision", new Torch.Event(this.game, {
+            anyCollisions === true;
+            this.sprite.Emit("Collision", new Torch.Event(this.game, {
               collisionData: collisionData
-            })));
-          } else {
-            results.push(void 0);
+            }));
           }
-        } else {
-          results.push(void 0);
         }
       }
-      return results;
+      return this.sprite.Emit("NoCollision", new Torch.Event(this.game, {}));
     };
 
     CollisionManager.prototype.SimpleCollisionHandle = function(event, sink) {
@@ -5248,4 +5245,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.3.451'
+Torch.version = '0.3.474'

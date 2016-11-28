@@ -1,23 +1,26 @@
 class Player extends Torch.Sprite
-  constructor: (game) ->
-    @InitSprite(game, 0, 0)
-    @Bind.Texture("player")
+    VELOCITY: 0.4
+    constructor: (game) ->
+        @InitSprite(game, 0, 0)
+        @Bind.Texture("player")
 
-    @Center().CenterVertical()
+        @Center().CenterVertical()
 
-    @On "Collision", (event) =>
-        @Collisions.SimpleCollisionHandle(event)
+        @On "Collision", (event) =>
+            @Collisions.SimpleCollisionHandle(event)
+            @Velocity("x", 0).Velocity("y", 0)
+
+    Update: ->
+        super()
+
+        keys = @game.Keys
+
         @Velocity("x", 0).Velocity("y", 0)
-  Update: ->
-    super()
 
-    keys = @game.Keys
+        @Velocity("x", @VELOCITY) if keys.D.down
+        @Velocity("x", -@VELOCITY) if keys.A.down
+        @Velocity("y", @VELOCITY) if keys.S.down
+        @Velocity("y", -@VELOCITY) if keys.W.down
 
-    @Velocity("x", 0).Velocity("y", 0)
-
-    @Velocity("x", 1) if keys.D.down
-    @Velocity("x", -1) if keys.A.down
-    @Velocity("y", 1) if keys.S.down
-    @Velocity("y", -1) if keys.W.down
 
 window.Player = Player

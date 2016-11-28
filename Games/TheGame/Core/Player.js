@@ -7,6 +7,8 @@
   Player = (function(superClass) {
     extend(Player, superClass);
 
+    Player.prototype.VELOCITY = 0.4;
+
     function Player(game) {
       this.InitSprite(game, 0, 0);
       this.Bind.Texture("player");
@@ -25,16 +27,16 @@
       keys = this.game.Keys;
       this.Velocity("x", 0).Velocity("y", 0);
       if (keys.D.down) {
-        this.Velocity("x", 1);
+        this.Velocity("x", this.VELOCITY);
       }
       if (keys.A.down) {
-        this.Velocity("x", -1);
+        this.Velocity("x", -this.VELOCITY);
       }
       if (keys.S.down) {
-        this.Velocity("y", 1);
+        this.Velocity("y", this.VELOCITY);
       }
       if (keys.W.down) {
-        return this.Velocity("y", -1);
+        return this.Velocity("y", -this.VELOCITY);
       }
     };
 

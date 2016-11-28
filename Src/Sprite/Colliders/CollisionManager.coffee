@@ -67,6 +67,7 @@ class CollisionManager
     Update: ->
         return if not @sprite.game
         @game = @sprite.game
+        anyCollisions = false
 
         for otherSprite in @game.spriteList
             if @sprite.NotSelf(otherSprite) and @Valid(otherSprite)
@@ -80,8 +81,11 @@ class CollisionManager
                 if collisionDetected
                     collisionData.self = @sprite
                     collisionData.collider = otherSprite
-
+                    anyCollisions == true
                     @sprite.Emit("Collision", new Torch.Event(@game, {collisionData: collisionData}))
+
+        @sprite.Emit("NoCollision", new Torch.Event(@game, {}))
+
 
     SimpleCollisionHandle: (event, sink = 1) ->
         offset = event.collisionData
