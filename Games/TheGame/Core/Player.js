@@ -19,6 +19,7 @@
       this.Bind.Texture("player");
       this.Center().CenterVertical();
       this.Position("y", window.innerHeight - 100);
+      this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {
           _this.touching = _this.Collisions.SimpleCollisionHandle(event, 2);

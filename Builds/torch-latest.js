@@ -3981,11 +3981,17 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     CollisionManager.prototype.limit = null;
 
+    CollisionManager.prototype.enabled = false;
+
     function CollisionManager(sprite1) {
       this.sprite = sprite1;
       this.filter = {};
       this.game = this.sprite.game;
     }
+
+    CollisionManager.prototype.Monitor = function() {
+      return this.enabled = true;
+    };
 
     CollisionManager.prototype.NotFiltered = function(sprite) {
       var key, ref, ref1, value;
@@ -4058,7 +4064,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     CollisionManager.prototype.Update = function() {
       var anyCollisions, collisionData, collisionDetected, i, len, otherSprite, ref;
-      if (!this.sprite.game) {
+      if (!this.sprite.game || !this.enabled) {
         return;
       }
       this.game = this.sprite.game;
@@ -5256,4 +5262,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.23'
+Torch.version = '0.4.25'

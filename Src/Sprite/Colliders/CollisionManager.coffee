@@ -8,10 +8,14 @@ class CollisionManager
     sprite: null
     filter: null
     limit: null
+    enabled: false
 
     constructor: (@sprite) ->
         @filter = {}
         @game = @sprite.game
+
+    Monitor: ->
+        @enabled = true
 
     NotFiltered: (sprite) ->
         # evaluate the sprite to see if it is filtered out
@@ -65,7 +69,7 @@ class CollisionManager
         mode = _mode
 
     Update: ->
-        return if not @sprite.game
+        return if not @sprite.game or not @enabled
         @game = @sprite.game
         anyCollisions = false
 

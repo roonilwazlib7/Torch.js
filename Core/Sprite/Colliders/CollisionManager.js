@@ -17,11 +17,17 @@
 
     CollisionManager.prototype.limit = null;
 
+    CollisionManager.prototype.enabled = false;
+
     function CollisionManager(sprite1) {
       this.sprite = sprite1;
       this.filter = {};
       this.game = this.sprite.game;
     }
+
+    CollisionManager.prototype.Monitor = function() {
+      return this.enabled = true;
+    };
 
     CollisionManager.prototype.NotFiltered = function(sprite) {
       var key, ref, ref1, value;
@@ -94,7 +100,7 @@
 
     CollisionManager.prototype.Update = function() {
       var anyCollisions, collisionData, collisionDetected, i, len, otherSprite, ref;
-      if (!this.sprite.game) {
+      if (!this.sprite.game || !this.enabled) {
         return;
       }
       this.game = this.sprite.game;
