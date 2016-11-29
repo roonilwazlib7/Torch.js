@@ -3,6 +3,7 @@ class MapManager
     constructor: (@game) ->
         @Parts = []
         @pieces = []
+        @IdentifierMap = []
 
         for key,piece of MapPieces
             @Parts[piece::identifier] = piece

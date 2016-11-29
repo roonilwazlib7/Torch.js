@@ -11,7 +11,7 @@ class Player extends Torch.Sprite
         @Position("y", window.innerHeight - 100)
 
         @On "Collision", (event) =>
-            @touching = @Collisions.SimpleCollisionHandle(event, 1.5)
+            @touching = @Collisions.SimpleCollisionHandle(event, 2)
             @Velocity("x", 0).Velocity("y", 0)
 
 

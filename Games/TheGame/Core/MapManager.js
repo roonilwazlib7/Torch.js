@@ -10,6 +10,7 @@
       this.game = game;
       this.Parts = [];
       this.pieces = [];
+      this.IdentifierMap = [];
       for (key in MapPieces) {
         piece = MapPieces[key];
         this.Parts[piece.prototype.identifier] = piece;

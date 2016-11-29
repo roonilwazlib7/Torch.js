@@ -21,7 +21,7 @@
       this.Position("y", window.innerHeight - 100);
       this.On("Collision", (function(_this) {
         return function(event) {
-          _this.touching = _this.Collisions.SimpleCollisionHandle(event, 1.5);
+          _this.touching = _this.Collisions.SimpleCollisionHandle(event, 2);
           return _this.Velocity("x", 0).Velocity("y", 0);
         };
       })(this));

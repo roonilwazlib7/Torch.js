@@ -16,6 +16,9 @@ $(document).ready(function(){
     $("#map-export").click(function(){
         ExportMap();
     });
+    $("#map-import").click(function(){
+        ImportMap();
+    });
 
     LoadMapOptions();
 })
@@ -30,6 +33,8 @@ var SELECTED_PIECE = null,
 function GenerateCell(x,y)
 {
     var cell = $("<div class = 'cell'></div>");
+    var MOUSE_DOWN = false,
+        SHIFT_DOWN = false;
 
     cell.attr("id", "cell-" + x + y);
 
@@ -46,6 +51,35 @@ function GenerateCell(x,y)
 
     cell.click(function(){
         HandleCellClick($(this));
+    });
+
+    cell.mouseenter(function(){
+        var cell = $(this);
+        if (MOUSE_DOWN && SHIFT_DOWN)
+        {
+            HandleCellClick(cell);
+        }
+        return false;
+    });
+
+    $(document).keydown(function(e){
+        if (e.keyCode == 16)
+        {
+            SHIFT_DOWN = true;
+        }
+    });
+    $(document).keyup(function(e){
+        if (e.keyCode == 16)
+        {
+            SHIFT_DOWN = false;
+        }
+    });
+
+    $(document).mousedown(function(){
+        MOUSE_DOWN = true;
+    });
+    $(document).mouseup(function(){
+        MOUSE_DOWN = false;
     });
 }
 
@@ -72,6 +106,45 @@ function ExportMap()
     mapString = mapString.replace("{data}", map.data);
 
     fs.writeFileSync("Maps/" + map.name + ".map", mapString);
+}
+
+function ImportMap()
+{
+    var m = new MAP(),
+        mm = new MapManager(),
+        mapString = fs.readFileSync("Maps/" + m.name + ".map").toString(),
+        pieces = [];
+
+    var sp = mapString.split("\n");
+
+    var metaData = sp[0],
+        mapString = sp[1];
+
+    var segments = mapString.split(";");
+
+    $(".cell").empty();
+
+    for (var i = 0; i < segments.length; i++)
+    {
+        var segment = segments[i];
+        if (segment == "") break;
+
+
+
+        var identifier = segment.split(",")[0]
+        var segs = []
+
+        var segs = segment.split(",")
+
+        var im = $("<img src='../Art/map/" + mm.Parts[identifier].prototype.textureId + ".png' class = 'placed-peice'/>");
+        var cell = $("#cell-" + parseInt(segs[1], 16) + parseInt(segs[2], 16));
+        cell.empty();
+
+        im.data("x", cell.data("x"));
+        im.data("y", cell.data("y"));
+        im.data("identifier", mm.Parts[identifier].prototype.identifier);
+        cell.append(im);
+    }
 }
 
 function LoadMapOptions()
