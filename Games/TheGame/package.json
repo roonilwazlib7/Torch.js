@@ -11,6 +11,6 @@
   "description": "",
 
   "GameConfig": {
-      "Map": false
+      "Map": true
   }
 }

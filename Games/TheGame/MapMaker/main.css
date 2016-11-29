@@ -24,6 +24,7 @@
     cursor: pointer;
     padding: 1%;
     display: inline-block;
+    margin-left: 1%;
 }
 .option img, .placed-peice{
     width: 64px;
