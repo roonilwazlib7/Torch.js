@@ -91,19 +91,13 @@
     };
 
     Sprite.prototype.UpdateSprite = function() {
-      var child, i, len, ref;
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
       this.UpdateHitBox();
-      this.Collisions.Update();
-      ref = this.children;
-      for (i = 0, len = ref.length; i < len; i++) {
-        child = ref[i];
-        child.Position("x", this.Position("x") - (window.innerWidth / 2)).Position("y", -this.Position("y") + (window.innerHeight / 2) + (this.Rectangle.height / 4.5));
-      }
       this.Rectangle.x = this.position.x;
-      return this.Rectangle.y = this.position.y;
+      this.Rectangle.y = this.position.y;
+      return this.Collisions.Update();
     };
 
     Sprite.prototype.UpdateEvents = function() {

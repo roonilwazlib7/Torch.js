@@ -84,15 +84,11 @@ class Sprite
         @UpdateEvents()
         @UpdateGLEntities()
         @UpdateHitBox()
-        @Collisions.Update()
-
-        for child in @children
-            child.Position("x", @Position("x") - (window.innerWidth/2) )
-                 .Position("y", -@Position("y") + (window.innerHeight / 2) + (@Rectangle.height / 4.5) )
 
         @Rectangle.x = @position.x
         @Rectangle.y = @position.y
 
+        @Collisions.Update()
         # for child in @children
 
         #     child.Position("x", @Position("x"))
