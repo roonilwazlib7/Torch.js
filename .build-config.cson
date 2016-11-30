@@ -1,8 +1,8 @@
-Build: 61
+Build: 62
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
-    Path: "TheGame"
+    Path: "Zeldroid"
     Source: "Coffee"
     run: true
     Electron: true
