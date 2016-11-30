@@ -39,7 +39,6 @@ class Sprite
         @Collisions = new Torch.CollisionManager(@)
         @Rectangle = new Torch.Rectangle(x, y, 0, 0)
         @Body = new Torch.Body()
-        @HitBox = new Torch.HitBox()
 
         @position = new Torch.Point(x,y)
 
@@ -83,7 +82,6 @@ class Sprite
         @UpdateBody()
         @UpdateEvents()
         @UpdateGLEntities()
-        @UpdateHitBox()
 
         @Rectangle.x = @position.x
         @Rectangle.y = @position.y
@@ -190,16 +188,6 @@ class Sprite
                     .Opacity(@opacity)
                     .Width( @Width() )
                     .Height( @Height() )
-
-    UpdateHitBox: ->
-        shiftX = @Rectangle.width / 8
-        shiftY = @Rectangle.height / 8
-
-        @HitBox =
-            x: @Rectangle.x + shiftX
-            y: @Rectangle.y + shiftY
-            width: @Rectangle.width - (2 * shiftX)
-            height: @Rectangle.height - (2 * shiftY)
 
     Update: ->
         @UpdateSprite()

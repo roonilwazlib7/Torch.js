@@ -61,44 +61,9 @@ class Vector
         raw = Math.pow(otherVector.x - @x, 2) + Math.pow(otherVector.y - @y, 2)
         return Math.sqrt(raw)
 
-# move into sprite components
-class Body
-    constructor: ->
-        # this is iffy...
-        Plane = ->
-            this.velocity = 0
-            this.acceleration = 0
-            this.lv = 0
-            this.la = 0
-            this.aTime = 0
-            this.maxVelocity = 100
-
-        @x = new Plane()
-        @y = new Plane()
-
-    Velocity: (plane, velocity) ->
-        @[plane].velocity = velocity
-        return @
-
-    Acceleration: (plane, acceleration) ->
-        @[plane].acceleration = acceleration
-        return @
-
-    Debug: (turnOn = true) ->
-        @DEBUG = turnOn
-        
-class HitBox
-    constructor: ->
-        @x = 0
-        @y = 0
-        @width = 0
-        @height = 0
-
 class Point
     constructor: (@x, @y, @z = 0) ->
 
 Torch.Rectangle = Rectangle
 Torch.Vector = Vector
-Torch.Body = Body
-Torch.HitBox = HitBox
 Torch.Point = Point

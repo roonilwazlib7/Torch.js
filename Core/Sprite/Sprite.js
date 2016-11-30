@@ -51,7 +51,6 @@
       this.Collisions = new Torch.CollisionManager(this);
       this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.Body = new Torch.Body();
-      this.HitBox = new Torch.HitBox();
       this.position = new Torch.Point(x, y);
       this.DrawTexture = null;
       this.TexturePack = null;
@@ -94,7 +93,6 @@
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
-      this.UpdateHitBox();
       this.Rectangle.x = this.position.x;
       this.Rectangle.y = this.position.y;
       return this.Collisions.Update();
@@ -200,18 +198,6 @@
       if (this.GL && this.gl_three_sprite) {
         return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
       }
-    };
-
-    Sprite.prototype.UpdateHitBox = function() {
-      var shiftX, shiftY;
-      shiftX = this.Rectangle.width / 8;
-      shiftY = this.Rectangle.height / 8;
-      return this.HitBox = {
-        x: this.Rectangle.x + shiftX,
-        y: this.Rectangle.y + shiftY,
-        width: this.Rectangle.width - (2 * shiftX),
-        height: this.Rectangle.height - (2 * shiftY)
-      };
     };
 
     Sprite.prototype.Update = function() {

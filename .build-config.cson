@@ -1,4 +1,4 @@
-Build: 69
+Build: 73
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -33,6 +33,7 @@ SourceMap: [
     "Game/CanvasGame.js"
     "Game/WebGLGame.js"
     "Game/Game.js"
+    "Sprite/Components/Body.js"
     "Sprite/Sprite.js"
     "Sprite/Text.js"
     "Sprite/SpriteGroup.js"

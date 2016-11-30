@@ -111,6 +111,10 @@ class Torch
 
         return obj
 
+    Assert: (expression, errorTag = "Assertation Failed") ->
+        if not expression
+            Torch.FatalError(errorTag)
+
     ExtendProperties: (Class, properties...) ->
         for prop in properties
             keyProp = prop.unCapitalize()

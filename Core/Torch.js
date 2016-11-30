@@ -168,6 +168,15 @@
       return obj;
     };
 
+    Torch.prototype.Assert = function(expression, errorTag) {
+      if (errorTag == null) {
+        errorTag = "Assertation Failed";
+      }
+      if (!expression) {
+        return Torch.FatalError(errorTag);
+      }
+    };
+
     Torch.prototype.ExtendProperties = function() {
       var Class, func, j, keyProp, len, prop, properties, results;
       Class = arguments[0], properties = 2 <= arguments.length ? slice.call(arguments, 1) : [];
