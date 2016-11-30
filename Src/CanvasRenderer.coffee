@@ -5,68 +5,46 @@ class CanvasRenderer
         @game = @sprite.game
 
     Draw: ->
-        DrawRec = new Torch.Rectangle(@sprite.Rectangle.x, @sprite.Rectangle.y, @sprite.Rectangle.width, @sprite.Rectangle.height)
-        if @sprite.fixed
-            DrawRec.x -= @sprite.game.Viewport.x
-            DrawRec.y -= @sprite.game.Viewport.y
+        drawRec = new Torch.Rectangle(@sprite.Position("x"), @sprite.Position("y"), @sprite.Width(), @sprite.Height())
 
-        if @sprite.TexturePack
-            @Render(@sprite.GetCurrentDraw(), DrawRec, @sprite.DrawParams)
+        cameraTransform = new Torch.Point(0,0) # @game.Camera.Position()
 
-        else if @sprite.TextureSheet
+        drawRec.x += cameraTransform.x
+        drawRec.y += cameraTransform.y
+
+        if @sprite.TextureSheet
             frame = @sprite.GetCurrentDraw()
-            drawParams = @sprite.DrawParams ? {}
 
-            params = Object.create(drawParams)
-            params.clipX = frame.clipX
-            params.clipY = frame.clipY
-            params.clipWidth = frame.clipWidth
-            params.clipHeight = frame.clipHeight
-            params.IsTextureSheet = true
-            params.rotation = @sprite.rotation
-            params.alpha = @sprite.opacity
+            @PreRender(drawRec)
 
-            @Render(@sprite.DrawTexture, DrawRec, params)
+            canvas.drawImage(@sprite.DrawTexture.image, frame.clipX, frame.clipY,
+            frame.clipWidth, frame.clipHeight,
+            -drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+
+            @PostRender()
 
         else if @sprite.DrawTexture
-            DrawParams =
-                alpha: @sprite.opacity,
-                rotation: @sprite.rotation
 
-            @Render(@sprite.GetCurrentDraw(), DrawRec, DrawParams)
+            @PreRender(drawRec)
 
-    Render: (texture, rectangle, params = {}) ->
+            @game.canvas.drawImage(@sprite.DrawTexture.image, -drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+            if @sprite.Body.DEBUG
+                @game.canvas.fillStyle = "green"
+                @game.canvas.globalAlpha = 0.5
+                @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+
+            @PostRender()
+
+    PreRender: (drawRec)->
         canvas = @game.canvas
-        viewport = @game.Viewport
-        viewRect = viewport.GetViewRectangle()
-
-        if not rectangle.Intersects(viewRect)
-            return
-
         canvas.save()
+        canvas.globalAlpha = @sprite.Opacity()
+        canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2)
+        canvas.rotate(@sprite.Rotation())
 
-        x = Math.round(rectangle.x + viewport.x)
-        y = Math.round(rectangle.y + viewport.y)
-        width = rectangle.width
-        height = rectangle.height
-
-        rotation = params.rotation ? 0
-        rotation += viewport.rotation
-
-        canvas.globalAlpha = params.alpha ? canvas.globalAlpha
-
-        canvas.translate(x + width / 2, y + height / 2)
-
-        canvas.rotate(rotation)
-
-        if params.IsTextureSheet
-            canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width/2, -height/2, rectangle.width, rectangle.height)
-        else
-            canvas.drawImage(texture.image, -width/2, -height/2, rectangle.width, rectangle.height)
-
-        canvas.rotate(0)
-        canvas.globalAlpha = 1
-
+    PostRender: ->
+        canvas = @game.canvas
         canvas.restore()
+
 
 exports.CanvasRenderer = CanvasRenderer

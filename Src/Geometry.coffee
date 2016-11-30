@@ -61,6 +61,7 @@ class Vector
         raw = Math.pow(otherVector.x - @x, 2) + Math.pow(otherVector.y - @y, 2)
         return Math.sqrt(raw)
 
+# move into sprite components
 class Body
     constructor: ->
         # this is iffy...
@@ -83,6 +84,9 @@ class Body
         @[plane].acceleration = acceleration
         return @
 
+    Debug: (turnOn = true) ->
+        @DEBUG = turnOn
+        
 class HitBox
     constructor: ->
         @x = 0

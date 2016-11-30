@@ -16,6 +16,7 @@
     function Player(game) {
       this.touching = {};
       this.InitSprite(game, 0, 0);
+      this.Body.Debug();
       this.Bind.Texture("player");
       this.Center().CenterVertical();
       this.Position("y", window.innerHeight - 100);

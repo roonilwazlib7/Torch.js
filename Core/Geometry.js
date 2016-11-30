@@ -116,6 +116,13 @@
       return this;
     };
 
+    Body.prototype.Debug = function(turnOn) {
+      if (turnOn == null) {
+        turnOn = true;
+      }
+      return this.DEBUG = turnOn;
+    };
+
     return Body;
 
   })();

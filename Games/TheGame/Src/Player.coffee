@@ -5,6 +5,7 @@ class Player extends Torch.Sprite
     constructor: (game) ->
         @touching = {}
         @InitSprite(game, 0, 0)
+        @Body.Debug()
         @Bind.Texture("player")
 
         @Center().CenterVertical()

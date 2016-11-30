@@ -11,63 +11,40 @@
     }
 
     CanvasRenderer.prototype.Draw = function() {
-      var DrawParams, DrawRec, drawParams, frame, params, ref;
-      DrawRec = new Torch.Rectangle(this.sprite.Rectangle.x, this.sprite.Rectangle.y, this.sprite.Rectangle.width, this.sprite.Rectangle.height);
-      if (this.sprite.fixed) {
-        DrawRec.x -= this.sprite.game.Viewport.x;
-        DrawRec.y -= this.sprite.game.Viewport.y;
-      }
-      if (this.sprite.TexturePack) {
-        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, this.sprite.DrawParams);
-      } else if (this.sprite.TextureSheet) {
+      var cameraTransform, drawRec, frame;
+      drawRec = new Torch.Rectangle(this.sprite.Position("x"), this.sprite.Position("y"), this.sprite.Width(), this.sprite.Height());
+      cameraTransform = new Torch.Point(0, 0);
+      drawRec.x += cameraTransform.x;
+      drawRec.y += cameraTransform.y;
+      if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
-        drawParams = (ref = this.sprite.DrawParams) != null ? ref : {};
-        params = Object.create(drawParams);
-        params.clipX = frame.clipX;
-        params.clipY = frame.clipY;
-        params.clipWidth = frame.clipWidth;
-        params.clipHeight = frame.clipHeight;
-        params.IsTextureSheet = true;
-        params.rotation = this.sprite.rotation;
-        params.alpha = this.sprite.opacity;
-        return this.Render(this.sprite.DrawTexture, DrawRec, params);
+        this.PreRender(drawRec);
+        canvas.drawImage(this.sprite.DrawTexture.image, frame.clipX, frame.clipY, frame.clipWidth, frame.clipHeight, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+        return this.PostRender();
       } else if (this.sprite.DrawTexture) {
-        DrawParams = {
-          alpha: this.sprite.opacity,
-          rotation: this.sprite.rotation
-        };
-        return this.Render(this.sprite.GetCurrentDraw(), DrawRec, DrawParams);
+        this.PreRender(drawRec);
+        this.game.canvas.drawImage(this.sprite.DrawTexture.image, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+        if (this.sprite.Body.DEBUG) {
+          this.game.canvas.fillStyle = "green";
+          this.game.canvas.globalAlpha = 0.5;
+          this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+        }
+        return this.PostRender();
       }
     };
 
-    CanvasRenderer.prototype.Render = function(texture, rectangle, params) {
-      var canvas, height, ref, ref1, rotation, viewRect, viewport, width, x, y;
-      if (params == null) {
-        params = {};
-      }
+    CanvasRenderer.prototype.PreRender = function(drawRec) {
+      var canvas;
       canvas = this.game.canvas;
-      viewport = this.game.Viewport;
-      viewRect = viewport.GetViewRectangle();
-      if (!rectangle.Intersects(viewRect)) {
-        return;
-      }
       canvas.save();
-      x = Math.round(rectangle.x + viewport.x);
-      y = Math.round(rectangle.y + viewport.y);
-      width = rectangle.width;
-      height = rectangle.height;
-      rotation = (ref = params.rotation) != null ? ref : 0;
-      rotation += viewport.rotation;
-      canvas.globalAlpha = (ref1 = params.alpha) != null ? ref1 : canvas.globalAlpha;
-      canvas.translate(x + width / 2, y + height / 2);
-      canvas.rotate(rotation);
-      if (params.IsTextureSheet) {
-        canvas.drawImage(texture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -width / 2, -height / 2, rectangle.width, rectangle.height);
-      } else {
-        canvas.drawImage(texture.image, -width / 2, -height / 2, rectangle.width, rectangle.height);
-      }
-      canvas.rotate(0);
-      canvas.globalAlpha = 1;
+      canvas.globalAlpha = this.sprite.Opacity();
+      canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2);
+      return canvas.rotate(this.sprite.Rotation());
+    };
+
+    CanvasRenderer.prototype.PostRender = function() {
+      var canvas;
+      canvas = this.game.canvas;
       return canvas.restore();
     };
 
