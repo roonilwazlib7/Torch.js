@@ -1,7 +1,13 @@
 var fs = require('fs');
 
 //open up the package.json for some configuration
-var config = JSON.parse( fs.readFileSync("package.json").toString() ).GameConfig;
+var packageJSON = fs.readFileSync("package.json").toString()
+var packageConfig = JSON.parse( packageJSON );
+var config = packageConfig.GameConfig;
+
+packageConfig.GameConfig.Build++;
+
+fs.writeFileSync("package.json", JSON.stringify(packageConfig, null, 4));
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

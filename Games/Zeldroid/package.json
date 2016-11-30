@@ -1,16 +1,17 @@
 {
-  "name": "Zeldriod",
-  "version": "0.0.0",
-  "main": "main.js",
-
-  "scripts": {
-    "start": "electron main.js"
-  },
-  "author": "AlexGames",
-  "license": "ISC",
-  "description": "",
-
-  "GameConfig": {
-      "Map": false
-  }
+    "name": "Zeldriod",
+    "version": "0.0.0",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron main.js"
+    },
+    "author": "AlexGames",
+    "license": "ISC",
+    "description": "",
+    "GameConfig": {
+        "Map": false,
+        "Build": 1,
+        "BuildMinor": 0,
+        "BuildMajor": 0
+    }
 }
