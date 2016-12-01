@@ -222,59 +222,10 @@ class Sprite
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
-    Velocity: (plane, optionalArgument) ->
-        if optionalArgument is null or optionalArgument is undefined
-            return @Body.Velocity(plane)
-        else
-            if (typeof(optionalArgument) isnt "number")
-                @game.FatalError("Cannot set velocity. Expected number, got: #{typeof(optionalArgument)}")
-            @Body.Velocity(plane, optionalArgument)
-            return @
-
-    Position: (plane, optionalArgument) ->
-        if optionalArgument is null or optionalArgument is undefined
-            return @position[plane]
-        else
-            if typeof(optionalArgument) isnt "number"
-                @game.FatalError("Cannot set position. Expected number, got: #{typeof(optionalArgument)}")
-            @position[plane] = optionalArgument
-            @rectangle[plane] = optionalArgument
-            return @
-
-    Width: (optionalArgument) ->
-        if optionalArgument is null or optionalArgument is undefined
-            return @rectangle.width
-        else
-            if typeof(optionalArgument) isnt "number"
-                @game.FatalError("Cannot set width. Expected number, got: #{typeof(optionalArgument)}")
-
-                if @GL
-                    scale = optionalArgument / @gl_orig_width
-                    @gl_scene_object.scale.x = scale
-
-            @rectangle.width = optionalArgument
-            return @
-
-    Height: (optionalArgument) ->
-        if optionalArgument is null or optionalArgument is undefined
-            return @rectangle.height
-        else
-            if typeof(optionalArgument) isnt "number"
-                @game.FatalError("Cannot set height. Expected number, got: #{typeof(optionalArgument)}")
-            @rectangle.height = optionalArgument
-            return @
-
     Three: ->
         throw "Unable to access three.js object" if not @GL
 
         return @gl_three_sprite
-
-    Move: (plane, argument) ->
-        if typeof(argument) isnt "number"
-            @game.FatalError("Cannot move position. Expected number, got: #{typeof(argument)}")
-
-        @Position(plane, @Position(plane) + argument)
-        return @
 
     Rotation: (rotation) ->
         if (rotation is undefined)
@@ -327,13 +278,13 @@ class Sprite
     Center: ->
         width = @game.canvasNode.width
         x = (width / 2) - (@rectangle.width/2)
-        @Position("x", x)
+        @position.x = x
         return @
 
     CenterVertical: ->
         height = @game.canvasNode.height
         y = (height / 2) - (@rectangle.height/2)
-        @Position("y", y)
+        @position.y = y
         return @
 
     CollidesWith: (otherSprite) ->

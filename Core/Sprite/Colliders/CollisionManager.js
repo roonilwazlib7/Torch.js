@@ -144,18 +144,18 @@
       if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
         if (offset.x < offset.y) {
           if (offset.vx > 0) {
-            event.collisionData.self.Move("x", offset.x * sink);
+            event.collisionData.self.position.x += offset.x * sink;
             touching.left = true;
           } else if (offset.vx < 0) {
-            event.collisionData.self.Move("x", -offset.x * sink);
+            event.collisionData.self.position.x -= offset.x * sink;
             touching.right = true;
           }
         } else if (offset.x > offset.y) {
           if (offset.vy > 0) {
-            event.collisionData.self.Move("y", offset.y * sink);
+            event.collisionData.self.position.y += offset.y * sink;
             touching.top = true;
           } else if (offset.vy < 0) {
-            event.collisionData.self.Move("y", -offset.y * sink);
+            event.collisionData.self.position.y -= offset.y * sink;
             touching.bottom = true;
           }
         }

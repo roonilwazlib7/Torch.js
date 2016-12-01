@@ -3509,32 +3509,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return otherSprite._torch_uid !== this._torch_uid;
     };
 
-    Sprite.prototype.Position = function(plane, optionalArgument) {
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.position[plane];
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
-        }
-        this.position[plane] = optionalArgument;
-        this.rectangle[plane] = optionalArgument;
-        return this;
-      }
-    };
-
     Sprite.prototype.Three = function() {
       if (!this.GL) {
         throw "Unable to access three.js object";
       }
       return this.gl_three_sprite;
-    };
-
-    Sprite.prototype.Move = function(plane, argument) {
-      if (typeof argument !== "number") {
-        this.game.FatalError("Cannot move position. Expected number, got: " + (typeof argument));
-      }
-      this.Position(plane, this.Position(plane) + argument);
-      return this;
     };
 
     Sprite.prototype.Rotation = function(rotation) {
@@ -3606,7 +3585,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var width, x;
       width = this.game.canvasNode.width;
       x = (width / 2) - (this.rectangle.width / 2);
-      this.Position("x", x);
+      this.position.x = x;
       return this;
     };
 
@@ -3614,7 +3593,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var height, y;
       height = this.game.canvasNode.height;
       y = (height / 2) - (this.rectangle.height / 2);
-      this.Position("y", y);
+      this.position.y = y;
       return this;
     };
 
@@ -4149,18 +4128,18 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       if (offset.vx < offset.halfWidths && offset.vy < offset.halfHeights) {
         if (offset.x < offset.y) {
           if (offset.vx > 0) {
-            event.collisionData.self.Move("x", offset.x * sink);
+            event.collisionData.self.position.x += offset.x * sink;
             touching.left = true;
           } else if (offset.vx < 0) {
-            event.collisionData.self.Move("x", -offset.x * sink);
+            event.collisionData.self.position.x -= offset.x * sink;
             touching.right = true;
           }
         } else if (offset.x > offset.y) {
           if (offset.vy > 0) {
-            event.collisionData.self.Move("y", offset.y * sink);
+            event.collisionData.self.position.y += offset.y * sink;
             touching.top = true;
           } else if (offset.vy < 0) {
-            event.collisionData.self.Move("y", -offset.y * sink);
+            event.collisionData.self.position.y -= offset.y * sink;
             touching.bottom = true;
           }
         }
@@ -5234,4 +5213,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.103'
+Torch.version = '0.4.116'
