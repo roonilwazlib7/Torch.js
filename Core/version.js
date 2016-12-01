@@ -1,1 +1,1 @@
-Torch.version = '0.4.121'
+Torch.version = '0.4.127'

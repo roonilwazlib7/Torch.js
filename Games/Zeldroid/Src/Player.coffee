@@ -13,7 +13,7 @@ class Player extends Torch.Sprite
 
         @Collisions.Monitor()
         @On "Collision", (event) =>
-            @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
+            @touching = @Collisions.SimpleCollisionHandle(event, 0.35)
             @Body.Velocity("x", 0)
             @Body.Velocity("y", 0)
 

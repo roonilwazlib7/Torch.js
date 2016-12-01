@@ -23,7 +23,7 @@
       this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {
-          _this.touching = _this.Collisions.SimpleCollisionHandle(event, 0.5);
+          _this.touching = _this.Collisions.SimpleCollisionHandle(event, 0.35);
           _this.Body.Velocity("x", 0);
           return _this.Body.Velocity("y", 0);
         };
