@@ -24,7 +24,7 @@
       } else if (this.sprite.DrawTexture) {
         this.PreRender(drawRec);
         this.game.canvas.drawImage(this.sprite.DrawTexture.image, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
-        if (this.sprite.Body.DEBUG) {
+        if (this.sprite.Body.DEBUG && false) {
           this.game.canvas.fillStyle = "green";
           this.game.canvas.globalAlpha = 0.5;
           this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
@@ -37,8 +37,14 @@
       var canvas;
       canvas = this.game.canvas;
       canvas.save();
-      canvas.globalAlpha = this.sprite.Opacity();
       canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2);
+      if (this.sprite.tint) {
+        this.game.canvas.fillStyle = "red";
+        this.game.canvas.globalAlpha = 0.5;
+        this.game.canvas.globalCompositeOperation = "destination-atop";
+        this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+      }
+      canvas.globalAlpha = this.sprite.Opacity();
       return canvas.rotate(this.sprite.Rotation());
     };
 

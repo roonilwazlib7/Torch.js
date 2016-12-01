@@ -3445,10 +3445,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Sprite.prototype.UpdateSprite = function() {
       this.UpdateBody();
       this.Size.Update();
-      this.Collisions.Update();
       this.Events.Update();
       this.rectangle.x = this.position.x;
-      return this.rectangle.y = this.position.y;
+      this.rectangle.y = this.position.y;
+      return this.Collisions.Update();
     };
 
     Sprite.prototype.UpdateEvents = function() {
@@ -5153,7 +5153,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       } else if (this.sprite.DrawTexture) {
         this.PreRender(drawRec);
         this.game.canvas.drawImage(this.sprite.DrawTexture.image, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
-        if (this.sprite.Body.DEBUG) {
+        if (this.sprite.Body.DEBUG && false) {
           this.game.canvas.fillStyle = "green";
           this.game.canvas.globalAlpha = 0.5;
           this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
@@ -5166,8 +5166,14 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var canvas;
       canvas = this.game.canvas;
       canvas.save();
-      canvas.globalAlpha = this.sprite.Opacity();
       canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2);
+      if (this.sprite.tint) {
+        this.game.canvas.fillStyle = "red";
+        this.game.canvas.globalAlpha = 0.5;
+        this.game.canvas.globalCompositeOperation = "destination-atop";
+        this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+      }
+      canvas.globalAlpha = this.sprite.Opacity();
       return canvas.rotate(this.sprite.Rotation());
     };
 
@@ -5297,4 +5303,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.127'
+Torch.version = '0.4.138'

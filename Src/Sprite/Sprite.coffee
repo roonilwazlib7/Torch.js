@@ -79,11 +79,12 @@ class Sprite
     UpdateSprite: ->
         @UpdateBody()
         @Size.Update()
-        @Collisions.Update()
         @Events.Update()
 
         @rectangle.x = @position.x
         @rectangle.y = @position.y
+
+        @Collisions.Update() # this needs to be after the rectangle thing, God knows why
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@rectangle) and @mouseOver

@@ -3,6 +3,7 @@ class Player extends Torch.Sprite
     stoppped: false
     touching: null
     constructor: (game) ->
+        @tint = true
         @touching = {}
         @InitSprite(game, 0, 0)
         @Body.Debug()
@@ -13,7 +14,7 @@ class Player extends Torch.Sprite
 
         @Collisions.Monitor()
         @On "Collision", (event) =>
-            @touching = @Collisions.SimpleCollisionHandle(event, 0.35)
+            @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
             @Body.Velocity("x", 0)
             @Body.Velocity("y", 0)
 

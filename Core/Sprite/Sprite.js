@@ -90,10 +90,10 @@
     Sprite.prototype.UpdateSprite = function() {
       this.UpdateBody();
       this.Size.Update();
-      this.Collisions.Update();
       this.Events.Update();
       this.rectangle.x = this.position.x;
-      return this.rectangle.y = this.position.y;
+      this.rectangle.y = this.position.y;
+      return this.Collisions.Update();
     };
 
     Sprite.prototype.UpdateEvents = function() {
