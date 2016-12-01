@@ -5,7 +5,7 @@ class CanvasRenderer
         @game = @sprite.game
 
     Draw: ->
-        drawRec = new Torch.Rectangle(@sprite.Position("x"), @sprite.Position("y"), @sprite.Width(), @sprite.Height())
+        drawRec = new Torch.Rectangle(@sprite.position.x, @sprite.position.y, @sprite.rectangle.width, @sprite.rectangle.height)
 
         cameraTransform = new Torch.Point(0,0) # @game.Camera.Position()
 

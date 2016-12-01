@@ -3509,18 +3509,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return otherSprite._torch_uid !== this._torch_uid;
     };
 
-    Sprite.prototype.Velocity = function(plane, optionalArgument) {
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Body.Velocity(plane);
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set velocity. Expected number, got: " + (typeof optionalArgument));
-        }
-        this.Body.Velocity(plane, optionalArgument);
-        return this;
-      }
-    };
-
     Sprite.prototype.Position = function(plane, optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
         return this.position[plane];
@@ -3530,35 +3518,6 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         }
         this.position[plane] = optionalArgument;
         this.rectangle[plane] = optionalArgument;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Width = function(optionalArgument) {
-      var scale;
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.rectangle.width;
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
-          if (this.GL) {
-            scale = optionalArgument / this.gl_orig_width;
-            this.gl_scene_object.scale.x = scale;
-          }
-        }
-        this.rectangle.width = optionalArgument;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Height = function(optionalArgument) {
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.rectangle.height;
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
-        }
-        this.rectangle.height = optionalArgument;
         return this;
       }
     };
@@ -5119,7 +5078,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     CanvasRenderer.prototype.Draw = function() {
       var cameraTransform, drawRec, frame;
-      drawRec = new Torch.Rectangle(this.sprite.Position("x"), this.sprite.Position("y"), this.sprite.Width(), this.sprite.Height());
+      drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       cameraTransform = new Torch.Point(0, 0);
       drawRec.x += cameraTransform.x;
       drawRec.y += cameraTransform.y;
@@ -5275,4 +5234,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.96'
+Torch.version = '0.4.103'

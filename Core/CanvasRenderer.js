@@ -12,7 +12,7 @@
 
     CanvasRenderer.prototype.Draw = function() {
       var cameraTransform, drawRec, frame;
-      drawRec = new Torch.Rectangle(this.sprite.Position("x"), this.sprite.Position("y"), this.sprite.Width(), this.sprite.Height());
+      drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       cameraTransform = new Torch.Point(0, 0);
       drawRec.x += cameraTransform.x;
       drawRec.y += cameraTransform.y;

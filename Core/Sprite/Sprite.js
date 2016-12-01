@@ -241,18 +241,6 @@
       return otherSprite._torch_uid !== this._torch_uid;
     };
 
-    Sprite.prototype.Velocity = function(plane, optionalArgument) {
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Body.Velocity(plane);
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set velocity. Expected number, got: " + (typeof optionalArgument));
-        }
-        this.Body.Velocity(plane, optionalArgument);
-        return this;
-      }
-    };
-
     Sprite.prototype.Position = function(plane, optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
         return this.position[plane];
@@ -262,35 +250,6 @@
         }
         this.position[plane] = optionalArgument;
         this.rectangle[plane] = optionalArgument;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Width = function(optionalArgument) {
-      var scale;
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.rectangle.width;
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
-          if (this.GL) {
-            scale = optionalArgument / this.gl_orig_width;
-            this.gl_scene_object.scale.x = scale;
-          }
-        }
-        this.rectangle.width = optionalArgument;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Height = function(optionalArgument) {
-      if (optionalArgument === null || optionalArgument === void 0) {
-        return this.rectangle.height;
-      } else {
-        if (typeof optionalArgument !== "number") {
-          this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
-        }
-        this.rectangle.height = optionalArgument;
         return this;
       }
     };
