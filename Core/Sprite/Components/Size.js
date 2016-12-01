@@ -13,10 +13,35 @@
       var rect;
       this.sprite = sprite;
       rect = this.sprite.rectangle;
+      this.width = rect.width;
+      this.height = rect.height;
+      this.scale = {
+        width: 1,
+        height: 1
+      };
     }
+
+    Size.prototype.Update = function() {
+      var rect;
+      rect = this.sprite.rectangle;
+      rect.width = this.width * this.scale.width;
+      return rect.height = this.height * this.scale.height;
+    };
+
+    Size.prototype.Set = function(width, height) {
+      this.width = width;
+      return this.height = height;
+    };
+
+    Size.prototype.Scale = function(widthScale, heightScale) {
+      this.scale.width = widthScale;
+      return this.scale.height = heightScale;
+    };
 
     return Size;
 
   })();
+
+  Torch.Size = Size;
 
 }).call(this);

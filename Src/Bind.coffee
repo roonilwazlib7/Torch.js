@@ -33,15 +33,16 @@ class CanvasBind
         @Reset()
 
         if Torch.Scale and not @sprite.TEXT
-            scale = Torch.Scale
+            @sprite.Size.Scale(Torch.Scale, Torch.Scale)
 
         if typeof(textureId) is "string"
             @sprite.DrawTexture = tex
         else
             @sprite.DrawTexture = {image:textureId}
 
-        @sprite.rectangle.width = tex.width * scale
-        @sprite.rectangle.height = tex.height * scale
+        @sprite.Size.Set(tex.width, tex.height)
+        # @sprite.rectangle.width = tex.width * scale
+        # @sprite.rectangle.height = tex.height * scale
 
         return @sprite.DrawTexture
 

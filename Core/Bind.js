@@ -48,7 +48,7 @@
       scale = 1;
       this.Reset();
       if (Torch.Scale && !this.sprite.TEXT) {
-        scale = Torch.Scale;
+        this.sprite.Size.Scale(Torch.Scale, Torch.Scale);
       }
       if (typeof textureId === "string") {
         this.sprite.DrawTexture = tex;
@@ -57,8 +57,7 @@
           image: textureId
         };
       }
-      this.sprite.rectangle.width = tex.width * scale;
-      this.sprite.rectangle.height = tex.height * scale;
+      this.sprite.Size.Set(tex.width, tex.height);
       return this.sprite.DrawTexture;
     };
 

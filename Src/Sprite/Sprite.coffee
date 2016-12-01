@@ -35,12 +35,13 @@ class Sprite
         @game = game
         @GL = @game.graphicsType is Torch.WEBGL
 
+        @rectangle = new Torch.Rectangle(x, y, 0, 0)
+        @position = new Torch.Point(x,y)
+
         @Bind = new Torch.Bind(@)
         @Collisions = new Torch.CollisionManager(@)
         @Body = new Torch.Body()
-
-        @rectangle = new Torch.Rectangle(x, y, 0, 0)
-        @position = new Torch.Point(x,y)
+        @Size = new Torch.Size(@)
 
         @DrawTexture = null
         @TexturePack = null
@@ -81,7 +82,7 @@ class Sprite
     UpdateSprite: ->
         @UpdateBody()
         @UpdateEvents()
-        @UpdateGLEntities()
+        @Size.Update()
 
         @rectangle.x = @position.x
         @rectangle.y = @position.y

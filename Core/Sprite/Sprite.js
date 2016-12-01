@@ -47,11 +47,12 @@
       this.InitEventDispatch();
       this.game = game;
       this.GL = this.game.graphicsType === Torch.WEBGL;
+      this.rectangle = new Torch.Rectangle(x, y, 0, 0);
+      this.position = new Torch.Point(x, y);
       this.Bind = new Torch.Bind(this);
       this.Collisions = new Torch.CollisionManager(this);
       this.Body = new Torch.Body();
-      this.rectangle = new Torch.Rectangle(x, y, 0, 0);
-      this.position = new Torch.Point(x, y);
+      this.Size = new Torch.Size(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
@@ -92,7 +93,7 @@
     Sprite.prototype.UpdateSprite = function() {
       this.UpdateBody();
       this.UpdateEvents();
-      this.UpdateGLEntities();
+      this.Size.Update();
       this.rectangle.x = this.position.x;
       this.rectangle.y = this.position.y;
       return this.Collisions.Update();
