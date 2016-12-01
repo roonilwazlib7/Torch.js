@@ -51,17 +51,14 @@
       this.position = new Torch.Point(x, y);
       this.Bind = new Torch.Bind(this);
       this.Collisions = new Torch.CollisionManager(this);
-      this.Body = new Torch.Body();
+      this.Body = new Torch.Body(this);
       this.Size = new Torch.Size(this);
+      this.Events = new Torch.EventManager(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
-      this.mouseOver = false;
-      this.clickTrigger = false;
-      this.clickAwayTrigger = false;
-      this.draw = true;
-      this.wasClicked = false;
       this.fixed = false;
+      this.draw = true;
       this.drawIndex = 0;
       this.rotation = 0;
       this.opacity = 1;
@@ -92,11 +89,11 @@
 
     Sprite.prototype.UpdateSprite = function() {
       this.UpdateBody();
-      this.UpdateEvents();
       this.Size.Update();
+      this.Collisions.Update();
+      this.Events.Update();
       this.rectangle.x = this.position.x;
-      this.rectangle.y = this.position.y;
-      return this.Collisions.Update();
+      return this.rectangle.y = this.position.y;
     };
 
     Sprite.prototype.UpdateEvents = function() {

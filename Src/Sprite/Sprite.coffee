@@ -40,19 +40,16 @@ class Sprite
 
         @Bind = new Torch.Bind(@)
         @Collisions = new Torch.CollisionManager(@)
-        @Body = new Torch.Body()
+        @Body = new Torch.Body(@)
         @Size = new Torch.Size(@)
+        @Events = new Torch.EventManager(@)
 
         @DrawTexture = null
         @TexturePack = null
         @TextureSheet = null
 
-        @mouseOver = false
-        @clickTrigger = false
-        @clickAwayTrigger = false
-        @draw = true
-        @wasClicked = false
         @fixed = false
+        @draw = true
 
         @drawIndex = 0
         @rotation = 0
@@ -81,17 +78,12 @@ class Sprite
 
     UpdateSprite: ->
         @UpdateBody()
-        @UpdateEvents()
         @Size.Update()
+        @Collisions.Update()
+        @Events.Update()
 
         @rectangle.x = @position.x
         @rectangle.y = @position.y
-
-        @Collisions.Update()
-        # for child in @children
-
-        #     child.Position("x", @Position("x"))
-        #          .Position("y", @Position("y"))
 
     UpdateEvents: ->
         if not @game.Mouse.GetRectangle(@game).Intersects(@rectangle) and @mouseOver
