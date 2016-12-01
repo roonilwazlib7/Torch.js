@@ -8,8 +8,8 @@ class Player extends Torch.Sprite
         @Body.Debug()
         @Bind.Texture("player")
 
-        @Center().CenterVertical()
-        @Position("y", window.innerHeight - 100)
+        @Center()
+        @position.y = window.innerHeight - 100
 
         @Collisions.Monitor()
         @On "Collision", (event) =>

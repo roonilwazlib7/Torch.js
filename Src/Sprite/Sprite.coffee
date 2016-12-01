@@ -261,7 +261,7 @@ class Sprite
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set height. Expected number, got: #{typeof(optionalArgument)}")
-            @Rectangle.height = optionalArgument
+            @rectangle.height = optionalArgument
             return @
 
     Three: ->

@@ -8,10 +8,11 @@ class HUD
 
     constructor: (@game) ->
         @hud_background = new Torch.Sprite(@game, 0, 0)
-        @hud_background.Scale(1)
         @hud_background.Bind.Texture("hud_background")
+        @hud_background.Size.Scale(1,1)
         @hud_background.DrawIndex(100)
-        @hud_background.Width(window.innerWidth)
+        @hud_background.Size.width = window.innerWidth
+        @hud_background.Size.height = @Height(4)
 
         @hud_minimap_background = new Torch.Sprite(@game, window.innerWidth / 20, window.innerHeight / 20)
         @hud_minimap_background.Bind.Texture("hud_minimap_background")

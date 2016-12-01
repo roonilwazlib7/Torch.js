@@ -15,7 +15,7 @@ class MapPiece extends Torch.Sprite
         data = {}
         data.position =
             x: parseInt(rawData[0], 16) * SCALE
-            y: parseInt(rawData[1], 16) * SCALE + game.hud.hud_background.Height()
+            y: parseInt(rawData[1], 16) * SCALE + game.hud.hud_background.Size.height
 
         return data
 

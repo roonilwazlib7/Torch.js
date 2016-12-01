@@ -3558,7 +3558,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
         }
-        this.Rectangle.height = optionalArgument;
+        this.rectangle.height = optionalArgument;
         return this;
       }
     };
@@ -5275,4 +5275,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.83'
+Torch.version = '0.4.96'

@@ -22,10 +22,11 @@
     function HUD(game) {
       this.game = game;
       this.hud_background = new Torch.Sprite(this.game, 0, 0);
-      this.hud_background.Scale(1);
       this.hud_background.Bind.Texture("hud_background");
+      this.hud_background.Size.Scale(1, 1);
       this.hud_background.DrawIndex(100);
-      this.hud_background.Width(window.innerWidth);
+      this.hud_background.Size.width = window.innerWidth;
+      this.hud_background.Size.height = this.Height(4);
       this.hud_minimap_background = new Torch.Sprite(this.game, window.innerWidth / 20, window.innerHeight / 20);
       this.hud_minimap_background.Bind.Texture("hud_minimap_background");
       this.hud_minimap_background.DrawIndex(101);

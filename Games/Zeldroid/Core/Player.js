@@ -18,8 +18,8 @@
       this.InitSprite(game, 0, 0);
       this.Body.Debug();
       this.Bind.Texture("player");
-      this.Center().CenterVertical();
-      this.Position("y", window.innerHeight - 100);
+      this.Center();
+      this.position.y = window.innerHeight - 100;
       this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {

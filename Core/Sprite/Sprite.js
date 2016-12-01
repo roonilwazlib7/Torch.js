@@ -290,7 +290,7 @@
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
         }
-        this.Rectangle.height = optionalArgument;
+        this.rectangle.height = optionalArgument;
         return this;
       }
     };
