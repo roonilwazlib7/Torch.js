@@ -37,9 +37,9 @@ class Sprite
 
         @Bind = new Torch.Bind(@)
         @Collisions = new Torch.CollisionManager(@)
-        @Rectangle = new Torch.Rectangle(x, y, 0, 0)
         @Body = new Torch.Body()
 
+        @rectangle = new Torch.Rectangle(x, y, 0, 0)
         @position = new Torch.Point(x,y)
 
         @DrawTexture = null
@@ -83,8 +83,8 @@ class Sprite
         @UpdateEvents()
         @UpdateGLEntities()
 
-        @Rectangle.x = @position.x
-        @Rectangle.y = @position.y
+        @rectangle.x = @position.x
+        @rectangle.y = @position.y
 
         @Collisions.Update()
         # for child in @children
@@ -93,11 +93,11 @@ class Sprite
         #          .Position("y", @Position("y"))
 
     UpdateEvents: ->
-        if not @game.Mouse.GetRectangle(@game).Intersects(@Rectangle) and @mouseOver
+        if not @game.Mouse.GetRectangle(@game).Intersects(@rectangle) and @mouseOver
             @mouseOver = false
             @Emit("MouseLeave", new Torch.Event(@game, {sprite: @}))
 
-        if @game.Mouse.GetRectangle(@game).Intersects(@Rectangle)
+        if @game.Mouse.GetRectangle(@game).Intersects(@rectangle)
             if not @mouseOver
                 @Emit("MouseOver", new Torch.Event(@game, {sprite: @}))
             @mouseOver = true
@@ -107,7 +107,7 @@ class Sprite
             reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
             reComputedMouseRec.x += @game.Viewport.x
             reComputedMouseRec.y += @game.Viewport.y
-            if reComputedMouseRec.Intersects(@Rectangle)
+            if reComputedMouseRec.Intersects(@rectangle)
                 @mouseOver = true
             else
                 @mouseOver = false
@@ -138,7 +138,7 @@ class Sprite
         else if @game.Mouse.down and not @mouseOver
             @clickAwayTrigger = true
 
-        if not @Rectangle.Intersects(@game.BoundRec)
+        if not @rectangle.Intersects(@game.BoundRec)
             @Emit("OutOfBounds", new Torch.Event(@game, {sprite: @}))
 
     UpdateBody: ->
@@ -182,7 +182,7 @@ class Sprite
         if @GL and @gl_three_sprite
             @Three().Position("x",  transform.x )
                     .Position("y", transform.y)
-                    .Position("z", @Rectangle.z)
+                    .Position("z", @rectangle.z)
                     .Rotation(@rotation)
                     .DrawIndex(@drawIndex)
                     .Opacity(@opacity)
@@ -237,12 +237,12 @@ class Sprite
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set position. Expected number, got: #{typeof(optionalArgument)}")
             @position[plane] = optionalArgument
-            @Rectangle[plane] = optionalArgument
+            @rectangle[plane] = optionalArgument
             return @
 
     Width: (optionalArgument) ->
         if optionalArgument is null or optionalArgument is undefined
-            return @Rectangle.width
+            return @rectangle.width
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set width. Expected number, got: #{typeof(optionalArgument)}")
@@ -251,12 +251,12 @@ class Sprite
                     scale = optionalArgument / @gl_orig_width
                     @gl_scene_object.scale.x = scale
 
-            @Rectangle.width = optionalArgument
+            @rectangle.width = optionalArgument
             return @
 
     Height: (optionalArgument) ->
         if optionalArgument is null or optionalArgument is undefined
-            return @Rectangle.height
+            return @rectangle.height
         else
             if typeof(optionalArgument) isnt "number"
                 @game.FatalError("Cannot set height. Expected number, got: #{typeof(optionalArgument)}")
@@ -309,13 +309,13 @@ class Sprite
             @scale = scale
 
     GetDirectionVector: (otherSprite) ->
-        vec = new Torch.Vector( (otherSprite.Rectangle.x - @Rectangle.x), (otherSprite.Rectangle.y - @Rectangle.y) )
+        vec = new Torch.Vector( (otherSprite.Rectangle.x - @position.x), (otherSprite.Rectangle.y - @position.y) )
         vec.Normalize()
         return vec
 
     GetDistance: (otherSprite) ->
-        thisVec = new Torch.Vector(@Rectangle.x, @Rectangle.y)
-        otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y)
+        thisVec = new Torch.Vector(@position.x, @position.y)
+        otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y)
         return thisVec.GetDistance(otherVec)
 
     GetAngle: (otherSprite) ->
@@ -325,13 +325,13 @@ class Sprite
 
     Center: ->
         width = @game.canvasNode.width
-        x = (width / 2) - (@Rectangle.width/2)
+        x = (width / 2) - (@rectangle.width/2)
         @Position("x", x)
         return @
 
     CenterVertical: ->
         height = @game.canvasNode.height
-        y = (height / 2) - (@Rectangle.height/2)
+        y = (height / 2) - (@rectangle.height/2)
         @Position("y", y)
         return @
 

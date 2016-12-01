@@ -57,8 +57,8 @@
           image: textureId
         };
       }
-      this.sprite.Rectangle.width = tex.width * scale;
-      this.sprite.Rectangle.height = tex.height * scale;
+      this.sprite.rectangle.width = tex.width * scale;
+      this.sprite.rectangle.height = tex.height * scale;
       return this.sprite.DrawTexture;
     };
 
@@ -117,8 +117,8 @@
       }
       anim.Start();
       this.sprite.TextureSheetAnimation = anim;
-      this.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
-      this.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
+      this.sprite.rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
+      this.sprite.rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
       return anim;
     };
 
@@ -159,8 +159,8 @@
       this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
-      this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
+      this.sprite.rectangle.width = width;
+      return this.sprite.rectangle.height = height;
     };
 
     return WebGLBind;

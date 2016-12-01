@@ -3269,8 +3269,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.GL = this.game.graphicsType === Torch.WEBGL;
       this.Bind = new Torch.Bind(this);
       this.Collisions = new Torch.CollisionManager(this);
-      this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.Body = new Torch.Body();
+      this.rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.position = new Torch.Point(x, y);
       this.DrawTexture = null;
       this.TexturePack = null;
@@ -3313,20 +3313,20 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
-      this.Rectangle.x = this.position.x;
-      this.Rectangle.y = this.position.y;
+      this.rectangle.x = this.position.x;
+      this.rectangle.y = this.position.y;
       return this.Collisions.Update();
     };
 
     Sprite.prototype.UpdateEvents = function() {
       var mouseRec, reComputedMouseRec;
-      if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
+      if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle) && this.mouseOver) {
         this.mouseOver = false;
         this.Emit("MouseLeave", new Torch.Event(this.game, {
           sprite: this
         }));
       }
-      if (this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle)) {
+      if (this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle)) {
         if (!this.mouseOver) {
           this.Emit("MouseOver", new Torch.Event(this.game, {
             sprite: this
@@ -3338,7 +3338,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
         reComputedMouseRec.x += this.game.Viewport.x;
         reComputedMouseRec.y += this.game.Viewport.y;
-        if (reComputedMouseRec.Intersects(this.Rectangle)) {
+        if (reComputedMouseRec.Intersects(this.rectangle)) {
           this.mouseOver = true;
         } else {
           this.mouseOver = false;
@@ -3370,7 +3370,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       } else if (this.game.Mouse.down && !this.mouseOver) {
         this.clickAwayTrigger = true;
       }
-      if (!this.Rectangle.Intersects(this.game.BoundRec)) {
+      if (!this.rectangle.Intersects(this.game.BoundRec)) {
         return this.Emit("OutOfBounds", new Torch.Event(this.game, {
           sprite: this
         }));
@@ -3416,7 +3416,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
       }
     };
 
@@ -3480,7 +3480,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
           this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
         }
         this.position[plane] = optionalArgument;
-        this.Rectangle[plane] = optionalArgument;
+        this.rectangle[plane] = optionalArgument;
         return this;
       }
     };
@@ -3488,7 +3488,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Sprite.prototype.Width = function(optionalArgument) {
       var scale;
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Rectangle.width;
+        return this.rectangle.width;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
@@ -3497,14 +3497,14 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
             this.gl_scene_object.scale.x = scale;
           }
         }
-        this.Rectangle.width = optionalArgument;
+        this.rectangle.width = optionalArgument;
         return this;
       }
     };
 
     Sprite.prototype.Height = function(optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Rectangle.height;
+        return this.rectangle.height;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
@@ -3575,15 +3575,15 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
     Sprite.prototype.GetDirectionVector = function(otherSprite) {
       var vec;
-      vec = new Torch.Vector(otherSprite.Rectangle.x - this.Rectangle.x, otherSprite.Rectangle.y - this.Rectangle.y);
+      vec = new Torch.Vector(otherSprite.Rectangle.x - this.position.x, otherSprite.Rectangle.y - this.position.y);
       vec.Normalize();
       return vec;
     };
 
     Sprite.prototype.GetDistance = function(otherSprite) {
       var otherVec, thisVec;
-      thisVec = new Torch.Vector(this.Rectangle.x, this.Rectangle.y);
-      otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
+      thisVec = new Torch.Vector(this.position.x, this.position.y);
+      otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y);
       return thisVec.GetDistance(otherVec);
     };
 
@@ -3597,7 +3597,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Sprite.prototype.Center = function() {
       var width, x;
       width = this.game.canvasNode.width;
-      x = (width / 2) - (this.Rectangle.width / 2);
+      x = (width / 2) - (this.rectangle.width / 2);
       this.Position("x", x);
       return this;
     };
@@ -3605,7 +3605,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     Sprite.prototype.CenterVertical = function() {
       var height, y;
       height = this.game.canvasNode.height;
-      y = (height / 2) - (this.Rectangle.height / 2);
+      y = (height / 2) - (this.rectangle.height / 2);
       this.Position("y", y);
       return this;
     };
@@ -3717,7 +3717,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
         this.text = this.data.text;
       }
       if (this.data.rectangle) {
-        this.Rectangle = this.data.rectangle;
+        this.rectangle = this.data.rectangle;
       }
       if (this.data.buffHeight) {
         this.buffHeight = this.data.buffHeight;
@@ -3757,8 +3757,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
           }
         };
       })(this);
-      this.Rectangle.width = cnv.width;
-      return this.Rectangle.height = this.fontSize;
+      this.rectangle.width = cnv.width;
+      return this.rectangle.height = this.fontSize;
     };
 
     Text.prototype.Update = function() {
@@ -3939,7 +3939,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     }
 
     AABB.prototype.Execute = function() {
-      return this.sprite.Rectangle.Intersects(this.otherSprite.Rectangle);
+      return this.sprite.rectangle.Intersects(this.otherSprite.rectangle);
     };
 
     return AABB;
@@ -4662,8 +4662,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
           image: textureId
         };
       }
-      this.sprite.Rectangle.width = tex.width * scale;
-      this.sprite.Rectangle.height = tex.height * scale;
+      this.sprite.rectangle.width = tex.width * scale;
+      this.sprite.rectangle.height = tex.height * scale;
       return this.sprite.DrawTexture;
     };
 
@@ -4722,8 +4722,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       anim.Start();
       this.sprite.TextureSheetAnimation = anim;
-      this.sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
-      this.sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
+      this.sprite.rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale;
+      this.sprite.rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale;
       return anim;
     };
 
@@ -4764,8 +4764,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.sprite.gl_three_sprite = new Torch.ThreeSprite(this.sprite, material, this.sprite.gl_shape);
       this.sprite.gl_orig_width = width;
       this.sprite.gl_orig_height = height;
-      this.sprite.Rectangle.width = width;
-      return this.sprite.Rectangle.height = height;
+      this.sprite.rectangle.width = width;
+      return this.sprite.rectangle.height = height;
     };
 
     return WebGLBind;
@@ -5227,4 +5227,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.74'
+Torch.version = '0.4.77'

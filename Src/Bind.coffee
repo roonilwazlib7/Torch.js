@@ -40,8 +40,8 @@ class CanvasBind
         else
             @sprite.DrawTexture = {image:textureId}
 
-        @sprite.Rectangle.width = tex.width * scale
-        @sprite.Rectangle.height = tex.height * scale
+        @sprite.rectangle.width = tex.width * scale
+        @sprite.rectangle.height = tex.height * scale
 
         return @sprite.DrawTexture
 
@@ -98,8 +98,8 @@ class CanvasBind
         anim.Start()
         @sprite.TextureSheetAnimation = anim
 
-        @sprite.Rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale
-        @sprite.Rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale
+        @sprite.rectangle.width = anim.GetCurrentFrame().clipWidth * Torch.Scale
+        @sprite.rectangle.height = anim.GetCurrentFrame().clipHeight * Torch.Scale
         return anim
 
 class WebGLBind extends CanvasBind
@@ -132,8 +132,8 @@ class WebGLBind extends CanvasBind
         @sprite.gl_three_sprite = new Torch.ThreeSprite(@sprite, material, @sprite.gl_shape)
         @sprite.gl_orig_width = width
         @sprite.gl_orig_height = height
-        @sprite.Rectangle.width = width
-        @sprite.Rectangle.height = height
+        @sprite.rectangle.width = width
+        @sprite.rectangle.height = height
 
 #expose to Torch
 Torch.Bind = Bind

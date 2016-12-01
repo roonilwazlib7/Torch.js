@@ -49,8 +49,8 @@
       this.GL = this.game.graphicsType === Torch.WEBGL;
       this.Bind = new Torch.Bind(this);
       this.Collisions = new Torch.CollisionManager(this);
-      this.Rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.Body = new Torch.Body();
+      this.rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.position = new Torch.Point(x, y);
       this.DrawTexture = null;
       this.TexturePack = null;
@@ -93,20 +93,20 @@
       this.UpdateBody();
       this.UpdateEvents();
       this.UpdateGLEntities();
-      this.Rectangle.x = this.position.x;
-      this.Rectangle.y = this.position.y;
+      this.rectangle.x = this.position.x;
+      this.rectangle.y = this.position.y;
       return this.Collisions.Update();
     };
 
     Sprite.prototype.UpdateEvents = function() {
       var mouseRec, reComputedMouseRec;
-      if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle) && this.mouseOver) {
+      if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle) && this.mouseOver) {
         this.mouseOver = false;
         this.Emit("MouseLeave", new Torch.Event(this.game, {
           sprite: this
         }));
       }
-      if (this.game.Mouse.GetRectangle(this.game).Intersects(this.Rectangle)) {
+      if (this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle)) {
         if (!this.mouseOver) {
           this.Emit("MouseOver", new Torch.Event(this.game, {
             sprite: this
@@ -118,7 +118,7 @@
         reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
         reComputedMouseRec.x += this.game.Viewport.x;
         reComputedMouseRec.y += this.game.Viewport.y;
-        if (reComputedMouseRec.Intersects(this.Rectangle)) {
+        if (reComputedMouseRec.Intersects(this.rectangle)) {
           this.mouseOver = true;
         } else {
           this.mouseOver = false;
@@ -150,7 +150,7 @@
       } else if (this.game.Mouse.down && !this.mouseOver) {
         this.clickAwayTrigger = true;
       }
-      if (!this.Rectangle.Intersects(this.game.BoundRec)) {
+      if (!this.rectangle.Intersects(this.game.BoundRec)) {
         return this.Emit("OutOfBounds", new Torch.Event(this.game, {
           sprite: this
         }));
@@ -196,7 +196,7 @@
       }
       transform = this.GetThreeTransform();
       if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.Rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
+        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
       }
     };
 
@@ -260,7 +260,7 @@
           this.game.FatalError("Cannot set position. Expected number, got: " + (typeof optionalArgument));
         }
         this.position[plane] = optionalArgument;
-        this.Rectangle[plane] = optionalArgument;
+        this.rectangle[plane] = optionalArgument;
         return this;
       }
     };
@@ -268,7 +268,7 @@
     Sprite.prototype.Width = function(optionalArgument) {
       var scale;
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Rectangle.width;
+        return this.rectangle.width;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set width. Expected number, got: " + (typeof optionalArgument));
@@ -277,14 +277,14 @@
             this.gl_scene_object.scale.x = scale;
           }
         }
-        this.Rectangle.width = optionalArgument;
+        this.rectangle.width = optionalArgument;
         return this;
       }
     };
 
     Sprite.prototype.Height = function(optionalArgument) {
       if (optionalArgument === null || optionalArgument === void 0) {
-        return this.Rectangle.height;
+        return this.rectangle.height;
       } else {
         if (typeof optionalArgument !== "number") {
           this.game.FatalError("Cannot set height. Expected number, got: " + (typeof optionalArgument));
@@ -355,15 +355,15 @@
 
     Sprite.prototype.GetDirectionVector = function(otherSprite) {
       var vec;
-      vec = new Torch.Vector(otherSprite.Rectangle.x - this.Rectangle.x, otherSprite.Rectangle.y - this.Rectangle.y);
+      vec = new Torch.Vector(otherSprite.Rectangle.x - this.position.x, otherSprite.Rectangle.y - this.position.y);
       vec.Normalize();
       return vec;
     };
 
     Sprite.prototype.GetDistance = function(otherSprite) {
       var otherVec, thisVec;
-      thisVec = new Torch.Vector(this.Rectangle.x, this.Rectangle.y);
-      otherVec = new Torch.Vector(otherSprite.Rectangle.x, otherSprite.Rectangle.y);
+      thisVec = new Torch.Vector(this.position.x, this.position.y);
+      otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y);
       return thisVec.GetDistance(otherVec);
     };
 
@@ -377,7 +377,7 @@
     Sprite.prototype.Center = function() {
       var width, x;
       width = this.game.canvasNode.width;
-      x = (width / 2) - (this.Rectangle.width / 2);
+      x = (width / 2) - (this.rectangle.width / 2);
       this.Position("x", x);
       return this;
     };
@@ -385,7 +385,7 @@
     Sprite.prototype.CenterVertical = function() {
       var height, y;
       height = this.game.canvasNode.height;
-      y = (height / 2) - (this.Rectangle.height / 2);
+      y = (height / 2) - (this.rectangle.height / 2);
       this.Position("y", y);
       return this;
     };

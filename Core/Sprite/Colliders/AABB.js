@@ -9,7 +9,7 @@
     }
 
     AABB.prototype.Execute = function() {
-      return this.sprite.Rectangle.Intersects(this.otherSprite.Rectangle);
+      return this.sprite.rectangle.Intersects(this.otherSprite.rectangle);
     };
 
     return AABB;

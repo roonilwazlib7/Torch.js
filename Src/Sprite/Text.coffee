@@ -29,7 +29,7 @@ class Text extends Torch.Sprite
         if @data.fontWeight      then @fontWeight =     @data.fontWeight
         if @data.color           then @color =          @data.color
         if @data.text            then @text =           @data.text
-        if @data.rectangle       then @Rectangle =      @data.rectangle
+        if @data.rectangle       then @rectangle =      @data.rectangle
         if @data.buffHeight      then @buffHeight =     @data.buffHeight
 
         @Render()
@@ -64,8 +64,8 @@ class Text extends Torch.Sprite
             else
                 @Bind.Texture(image)
 
-        @Rectangle.width = cnv.width
-        @Rectangle.height = @fontSize
+        @rectangle.width = cnv.width
+        @rectangle.height = @fontSize
 
     Update: ->
         super()

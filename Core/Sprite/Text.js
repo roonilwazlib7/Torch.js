@@ -53,7 +53,7 @@
         this.text = this.data.text;
       }
       if (this.data.rectangle) {
-        this.Rectangle = this.data.rectangle;
+        this.rectangle = this.data.rectangle;
       }
       if (this.data.buffHeight) {
         this.buffHeight = this.data.buffHeight;
@@ -93,8 +93,8 @@
           }
         };
       })(this);
-      this.Rectangle.width = cnv.width;
-      return this.Rectangle.height = this.fontSize;
+      this.rectangle.width = cnv.width;
+      return this.rectangle.height = this.fontSize;
     };
 
     Text.prototype.Update = function() {
