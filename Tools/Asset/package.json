@@ -1,0 +1,16 @@
+{
+  "name": "torch-asset",
+  "version": "1.0.0",
+  "description": "build torch asset packs",
+  "main": "torch-asset.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "shelljs": "0.7.5",
+    "cson": "4.0.0",
+    "commander": "2.9.0"
+  },
+  "author": "Alex",
+  "license": "ISC"
+}
