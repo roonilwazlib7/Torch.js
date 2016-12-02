@@ -30,6 +30,7 @@ Init = (game) ->
     game.hud = new HUD(game)
 
     game.mapManager.LoadMap("map")
+    game.debugCondole = new Torch.DebugConsole(game)
 
 Draw = (game)->
 

@@ -30,7 +30,8 @@
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
-    return game.mapManager.LoadMap("map");
+    game.mapManager.LoadMap("map");
+    return game.debugCondole = new Torch.DebugConsole(game);
   };
 
   Draw = function(game) {};

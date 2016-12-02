@@ -1,4 +1,4 @@
-Build: 138
+Build: 207
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -17,6 +17,7 @@ SourceMap: [
     "Mixins/EventDispatcher.js"
     "Mixins/Trashable.js"
     "Torch.js"
+    "DebugConsole.js"
     "Three/ThreeEntity.js"
     "Three/ThreeSprite.js"
     "Three/Lights.js"
