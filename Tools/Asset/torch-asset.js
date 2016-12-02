@@ -12,6 +12,7 @@ function GetBase64(filePath)
 program
     .version('1.0.0')
     .option('-f, --file [source]', "Asset CSON file to package")
+    .option('-o, --output [path]', "Reulting path of the .tpk file")
     .parse(process.argv);
 
 console.log( "Packaging: " + program.file );
@@ -34,6 +35,6 @@ for (var i = 0; i < assetPackage.assets.length; i++)
 var exportString = JSON.stringify(exportPackage, null, 4);
 var baseString = new Buffer(exportString).toString("base64");
 
-fs.writeFileSync("export.tpk", baseString);
+fs.writeFileSync(program.output, baseString);
 
 console.log("done");
