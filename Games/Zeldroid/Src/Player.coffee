@@ -3,11 +3,11 @@ class Player extends Torch.Sprite
     stoppped: false
     touching: null
     constructor: (game) ->
-        @tint = true
-        @touching = {}
         @InitSprite(game, 0, 0)
+        @touching = {}
         @Body.Debug()
         @Bind.Texture("player")
+        @Effects.tint.color = "red"
 
         @Center()
         @position.y = window.innerHeight - 100

@@ -14,11 +14,11 @@
     Player.prototype.touching = null;
 
     function Player(game) {
-      this.tint = true;
-      this.touching = {};
       this.InitSprite(game, 0, 0);
+      this.touching = {};
       this.Body.Debug();
       this.Bind.Texture("player");
+      this.Effects.tint.color = "red";
       this.Center();
       this.position.y = window.innerHeight - 100;
       this.Collisions.Monitor();
@@ -33,6 +33,9 @@
 
     Player.prototype.Update = function() {
       Player.__super__.Update.call(this);
+      if (this.Effects.tint.opacity < 1) {
+        this.Effects.tint.opacity += this.game.deltaTime * 0.0001;
+      }
       return this.Movement();
     };
 

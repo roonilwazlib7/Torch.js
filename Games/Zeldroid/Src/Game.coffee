@@ -31,6 +31,8 @@ Init = (game) ->
 
     game.mapManager.LoadMap("map")
     game.debugCondole = new Torch.DebugConsole(game)
+    game.debugCondole.AddCommand "SPAWN", (tConsole, x, y) ->
+        # ...
 
 Draw = (game)->
 

@@ -54,6 +54,7 @@
       this.Body = new Torch.Body(this);
       this.Size = new Torch.Size(this);
       this.Events = new Torch.EventManager(this);
+      this.Effects = new Torch.EffectManager(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;

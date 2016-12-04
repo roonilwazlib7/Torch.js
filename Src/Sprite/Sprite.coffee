@@ -43,6 +43,7 @@ class Sprite
         @Body = new Torch.Body(@)
         @Size = new Torch.Size(@)
         @Events = new Torch.EventManager(@)
+        @Effects = new Torch.EffectManager(@)
 
         @DrawTexture = null
         @TexturePack = null

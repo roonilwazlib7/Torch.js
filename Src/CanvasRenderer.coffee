@@ -28,6 +28,10 @@ class CanvasRenderer
             @PreRender(drawRec)
 
             @game.canvas.drawImage(@sprite.DrawTexture.image, -drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+
+            # if @sprite.Effects.mask.texture isnt null
+            #     # ...
+
             if @sprite.Body.DEBUG and false
                 @game.canvas.fillStyle = "green"
                 @game.canvas.globalAlpha = 0.5
@@ -40,9 +44,9 @@ class CanvasRenderer
         canvas.save()
         canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2)
 
-        if @sprite.tint
-            @game.canvas.fillStyle = "red"
-            @game.canvas.globalAlpha = 0.5
+        if @sprite.Effects.tint.color isnt null
+            @game.canvas.fillStyle = @sprite.Effects.tint.color
+            @game.canvas.globalAlpha = @sprite.Effects.tint.opacity
             @game.canvas.globalCompositeOperation = "destination-atop"
             @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
 

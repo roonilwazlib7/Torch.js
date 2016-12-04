@@ -38,9 +38,9 @@
       canvas = this.game.canvas;
       canvas.save();
       canvas.translate(drawRec.x + drawRec.width / 2, drawRec.y + drawRec.height / 2);
-      if (this.sprite.tint) {
-        this.game.canvas.fillStyle = "red";
-        this.game.canvas.globalAlpha = 0.5;
+      if (this.sprite.Effects.tint.color !== null) {
+        this.game.canvas.fillStyle = this.sprite.Effects.tint.color;
+        this.game.canvas.globalAlpha = this.sprite.Effects.tint.opacity;
         this.game.canvas.globalCompositeOperation = "destination-atop";
         this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
       }

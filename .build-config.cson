@@ -1,4 +1,4 @@
-Build: 211
+Build: 225
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -37,6 +37,7 @@ SourceMap: [
     "Sprite/Components/Body.js"
     "Sprite/Components/Size.js"
     "Sprite/Components/EventManager.js"
+    "Sprite/Components/EffectManager.js"
     "Sprite/Sprite.js"
     "Sprite/Text.js"
     "Sprite/SpriteGroup.js"

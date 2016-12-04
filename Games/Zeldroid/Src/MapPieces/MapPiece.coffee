@@ -4,6 +4,8 @@ class MapPiece extends Torch.Sprite
     identifier: 0
     textureId: ""
     data: null
+    scaleWidth: 1
+    scaleHeight: 1
     constructor: (game, rawData) ->
         @data = @GetData(rawData, game)
         @InitSprite(game, @data.position.x, @data.position.y )

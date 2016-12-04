@@ -17,6 +17,10 @@
 
     MapPiece.prototype.data = null;
 
+    MapPiece.prototype.scaleWidth = 1;
+
+    MapPiece.prototype.scaleHeight = 1;
+
     function MapPiece(game, rawData) {
       this.data = this.GetData(rawData, game);
       this.InitSprite(game, this.data.position.x, this.data.position.y);
