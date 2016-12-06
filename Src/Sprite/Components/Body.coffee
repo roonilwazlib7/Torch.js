@@ -1,23 +1,22 @@
 class Body
-    constructor: ->
-        # this is iffy...
-        Plane = ->
-            this.velocity = 0
-            this.acceleration = 0
-            this.lv = 0
-            this.la = 0
-            this.aTime = 0
-            this.maxVelocity = 100
+    constructor: (@sprite)->
+        @game = @sprite.game
+        @velocity = new Torch.Vector(0,0)
+        @acceleration = new Torch.Vector(0,0)
 
-        @x = new Plane()
-        @y = new Plane()
+    Update: ->
+        @sprite.position.x += @velocity.x * @game.deltaTime
+        @sprite.position.y += @velocity.y * @game.deltaTime
+
+        @velocity.x += @acceleration.x * @game.deltaTime
+        @velocity.y += @acceleration.y * @game.deltaTime
 
     Velocity: (plane, velocity) ->
-        @[plane].velocity = velocity
+        @velocity[plane] = velocity
         return @
 
     Acceleration: (plane, acceleration) ->
-        @[plane].acceleration = acceleration
+        @acceleration[plane] = acceleration
         return @
 
     Debug: (turnOn = true) ->

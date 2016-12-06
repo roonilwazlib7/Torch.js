@@ -14,8 +14,8 @@
       var cameraTransform, drawRec, frame;
       drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       cameraTransform = new Torch.Point(0, 0);
-      drawRec.x += cameraTransform.x;
-      drawRec.y += cameraTransform.y;
+      drawRec.x += this.game.Camera.position.x;
+      drawRec.y += this.game.Camera.position.y;
       if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
         this.PreRender(drawRec);

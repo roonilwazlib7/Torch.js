@@ -3,30 +3,14 @@
   var Camera;
 
   Camera = (function() {
-    function Camera() {}
+    Camera.prototype.position = null;
 
-    Camera.prototype.Update = function() {
-      return this.update_Track();
-    };
+    function Camera(game) {
+      this.game = game;
+      this.position = new Torch.Point(0, 0);
+    }
 
-    Camera.prototype.Track = function(sprite) {
-      var game, x;
-      this.track = true;
-      this.trackSprite = sprite;
-      this.lastTrackX = sprite.Rectangle.x;
-      game = this.trackSprite.game;
-      x = this.trackSprite.Rectangle.x + (game.Viewport.width / 2) + (this.trackSprite.Rectangle.width / 2);
-      return game.Viewport.x = x;
-    };
-
-    Camera.prototype.update_Track = function() {
-      if (this.track) {
-        if (this.trackSprite.Rectangle.x !== this.lastTrackX) {
-          this.trackSprite.game.Viewport.x -= this.trackSprite.Rectangle.x - this.lastTrackX;
-          return this.lastTrackX = this.trackSprite.Rectangle.x;
-        }
-      }
-    };
+    Camera.prototype.Update = function() {};
 
     return Camera;
 

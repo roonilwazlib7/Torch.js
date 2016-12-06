@@ -33,9 +33,6 @@
 
     Player.prototype.Update = function() {
       Player.__super__.Update.call(this);
-      if (this.Effects.tint.opacity < 1) {
-        this.Effects.tint.opacity += this.game.deltaTime * 0.0001;
-      }
       return this.Movement();
     };
 

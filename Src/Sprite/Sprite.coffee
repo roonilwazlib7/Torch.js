@@ -1,24 +1,3 @@
-###
-    @class Torch.Sprite
-    @author roonilwazlib
-
-    @constructor
-        @param game, Torch.Game, REQUIRED
-        @param x, number, REQUIRED
-        @param y, number, REQUIRED
-
-    @description
-        Torch.Sprite defines practically everything that can be in the game.
-        Think anything that moves or performs any action, anything that you
-        can see. Torch.Sprite is semi-abstract, it can be inherited or used on
-        its own.
-    @usage
-        CoffeeScript:
-            sprite = new Torch.Sprite(game, 0, 0)
-
-        JavaScript:
-            var sprite = new Torch.Sprite(game, 0, 0)
-###
 class Sprite
 
     constructor: (game, x, y)->
@@ -78,7 +57,7 @@ class Sprite
         return @
 
     UpdateSprite: ->
-        @UpdateBody()
+        @Body.Update()
         @Size.Update()
         @Events.Update()
 
@@ -135,36 +114,6 @@ class Sprite
 
         if not @rectangle.Intersects(@game.BoundRec)
             @Emit("OutOfBounds", new Torch.Event(@game, {sprite: @}))
-
-    UpdateBody: ->
-        velX = @Body.x.velocity
-        velY = @Body.y.velocity
-        deltaTime = @game.deltaTime
-
-        if @Body.x.acceleration isnt @Body.x.la
-            @Body.x.la = @Body.x.acceleration
-            @Body.x.aTime = 0
-
-        if @Body.x.acceleration isnt 0
-            @Body.x.aTime += deltaTime
-            velX += @Body.x.aTime * @Body.x.acceleration
-
-        if @Body.y.acceleration isnt @Body.y.la
-            @Body.y.la = @Body.y.acceleration
-            @Body.y.aTime = 0
-
-        if @Body.y.acceleration isnt 0
-            @Body.y.aTime += deltaTime
-            velY += @Body.y.aTime * @Body.y.acceleration
-
-        if Math.abs(velX) < Math.abs(@Body.x.maxVelocity)
-            @position.x += velX * deltaTime
-
-        else
-            dir = velX < 0 ? -1 : 1
-            @position.x += dir * @Body.x.maxVelocity * deltaTime
-
-        @position.y += velY * deltaTime
 
     UpdateGLEntities: ->
         return if not @GL

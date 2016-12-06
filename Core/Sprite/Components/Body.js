@@ -3,27 +3,27 @@
   var Body;
 
   Body = (function() {
-    function Body() {
-      var Plane;
-      Plane = function() {
-        this.velocity = 0;
-        this.acceleration = 0;
-        this.lv = 0;
-        this.la = 0;
-        this.aTime = 0;
-        return this.maxVelocity = 100;
-      };
-      this.x = new Plane();
-      this.y = new Plane();
+    function Body(sprite) {
+      this.sprite = sprite;
+      this.game = this.sprite.game;
+      this.velocity = new Torch.Vector(0, 0);
+      this.acceleration = new Torch.Vector(0, 0);
     }
 
+    Body.prototype.Update = function() {
+      this.sprite.position.x += this.velocity.x * this.game.deltaTime;
+      this.sprite.position.y += this.velocity.y * this.game.deltaTime;
+      this.velocity.x += this.acceleration.x * this.game.deltaTime;
+      return this.velocity.y += this.acceleration.y * this.game.deltaTime;
+    };
+
     Body.prototype.Velocity = function(plane, velocity) {
-      this[plane].velocity = velocity;
+      this.velocity[plane] = velocity;
       return this;
     };
 
     Body.prototype.Acceleration = function(plane, acceleration) {
-      this[plane].acceleration = acceleration;
+      this.acceleration[plane] = acceleration;
       return this;
     };
 
