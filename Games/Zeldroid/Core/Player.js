@@ -39,29 +39,29 @@
     Player.prototype.Movement = function() {
       var keys;
       keys = this.game.Keys;
-      this.Body.Velocity("x", 0);
-      this.Body.Velocity("y", 0);
+      this.Body.velocity.x = 0;
+      this.Body.velocity.y = 0;
       if (!keys.A.down && !keys.S.down && !keys.W.down) {
         if (keys.D.down && this.touching && !this.touching.right) {
-          return this.Body.Velocity("x", this.VELOCITY);
+          return this.Body.velocity.x = this.VELOCITY;
         } else {
           return this.touching.right = false;
         }
       } else if (!keys.D.down && !keys.S.down && !keys.W.down) {
         if (keys.A.down && this.touching && !this.touching.left) {
-          return this.Body.Velocity("x", -this.VELOCITY);
+          return this.Body.velocity.x = -this.VELOCITY;
         } else {
           return this.touching.left = false;
         }
       } else if (!keys.A.down && !keys.D.down && !keys.W.down) {
         if (keys.S.down && this.touching && !this.touching.bottom) {
-          return this.Body.Velocity("y", this.VELOCITY);
+          return this.Body.velocity.y = this.VELOCITY;
         } else {
           return this.touching.bottom = false;
         }
       } else if (!keys.A.down && !keys.S.down && !keys.D.down) {
         if (keys.W.down && this.touching && !this.touching.top) {
-          return this.Body.Velocity("y", -this.VELOCITY);
+          return this.Body.velocity.y = -this.VELOCITY;
         } else {
           return this.touching.top = false;
         }

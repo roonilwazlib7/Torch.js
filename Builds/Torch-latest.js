@@ -5400,25 +5400,79 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   })();
 
   Vector = (function() {
+    Vector.prototype.x = null;
+
+    Vector.prototype.y = null;
+
+    Vector.prototype.angle = null;
+
+    Vector.prototype.magnitude = null;
+
     function Vector(x1, y1) {
       this.x = x1;
       this.y = y1;
+      this.ResolveVectorProperties();
     }
 
-    Vector.prototype.Normalize = function() {
-      var r, x, y;
-      r = (this.x * this.x) + (this.y * this.y);
-      r = Math.sqrt(r);
-      x = this.x;
-      y = this.y;
-      this.x = x / r;
-      return this.y = y / r;
+    Vector.prototype.ResolveVectorProperties = function() {
+      this.magnitude = Math.sqrt(this.x * this.x + this.y * this.y);
+      return this.angle = Math.atan2(this.x, this.y);
     };
 
-    Vector.prototype.GetDistance = function(otherVector) {
-      var raw;
-      raw = Math.pow(otherVector.x - this.x, 2) + Math.pow(otherVector.y - this.y, 2);
-      return Math.sqrt(raw);
+    Vector.prototype.Clone = function() {
+      return new Torch.Vector(this.x, this.y);
+    };
+
+    Vector.prototype.Set = function(x, y) {
+      this.x = x;
+      this.y = y;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.AddScalar = function(n) {
+      this.x += n;
+      this.y += n;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.MultiplyScalar = function(n) {
+      this.x *= n;
+      this.y *= n;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.DivideScalar = function(n) {
+      this.x /= n;
+      this.y /= n;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.SubtractVector = function(v) {
+      this.x -= v.x;
+      this.y -= v.y;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.AddVector = function(v) {
+      this.x += v.x;
+      this.y += v.y;
+      return this.ResolveVectorProperties();
+    };
+
+    Vector.prototype.Normalize = function() {
+      return this.DivideScalar(this.magnitude);
+    };
+
+    Vector.prototype.DotProduct = function(v) {
+      return this.x * v.x + this.y * v.y;
+    };
+
+    Vector.prototype.IsPerpendicular = function(v) {
+      return this.DotProduct(v) === 0;
+    };
+
+    Vector.prototype.IsSameDirection = function(v) {
+      return this.DotProduct(v) > 0;
     };
 
     return Vector;
@@ -5444,4 +5498,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.237'
+Torch.version = '0.4.242'

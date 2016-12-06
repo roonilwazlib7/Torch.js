@@ -26,27 +26,27 @@ class Player extends Torch.Sprite
 
     Movement: ->
         keys = @game.Keys
-        @Body.Velocity("x", 0)
-        @Body.Velocity("y", 0)
+        @Body.velocity.x = 0
+        @Body.velocity.y = 0
 
         if not keys.A.down and not keys.S.down and not keys.W.down
             if keys.D.down and @touching and not @touching.right
-                @Body.Velocity("x", @VELOCITY)
+                @Body.velocity.x = @VELOCITY
             else @touching.right = false
 
         else if not keys.D.down and not keys.S.down and not keys.W.down
             if keys.A.down and @touching and not @touching.left
-                @Body.Velocity("x", -@VELOCITY)
+                @Body.velocity.x = -@VELOCITY
             else @touching.left = false
 
         else if not keys.A.down and not keys.D.down and not keys.W.down
             if keys.S.down and @touching and not @touching.bottom
-                @Body.Velocity("y", @VELOCITY)
+                @Body.velocity.y = @VELOCITY
             else @touching.bottom = false
 
         else if not keys.A.down and not keys.S.down and not keys.D.down
             if keys.W.down and @touching and not @touching.top
-                @Body.Velocity("y", -@VELOCITY)
+                @Body.velocity.y = -@VELOCITY
             else @touching.top = false
 
 

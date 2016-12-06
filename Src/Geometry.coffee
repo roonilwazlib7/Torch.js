@@ -45,21 +45,64 @@ class Rectangle
         @y = y
 
 class Vector
+    #__torch__: Torch.Types.Vector
+    x: null
+    y: null
+    angle: null
+    magnitude: null
+
     constructor: (@x, @y) ->
+        @ResolveVectorProperties()
+
+    ResolveVectorProperties: ->
+        @magnitude = Math.sqrt( @x * @x + @y * @y )
+        @angle = Math.atan2(@x, @y)
+
+    Clone: ->
+        return new Torch.Vector(@x, @y)
+
+    Set: (x,y) ->
+        @x = x
+        @y = y
+        @ResolveVectorProperties()
+
+    AddScalar: (n) ->
+        @x += n
+        @y += n
+        @ResolveVectorProperties()
+
+    MultiplyScalar: (n) ->
+        @x *= n
+        @y *= n
+        @ResolveVectorProperties()
+
+    DivideScalar: (n) ->
+        @x /= n
+        @y /= n
+        @ResolveVectorProperties()
+
+    SubtractVector: (v) ->
+        @x -= v.x
+        @y -= v.y
+        @ResolveVectorProperties()
+
+    AddVector: (v) ->
+        @x += v.x
+        @y += v.y
+        @ResolveVectorProperties()
 
     Normalize: ->
-        r = (@x * @x) + (@y * @y)
-        r = Math.sqrt(r)
+        @DivideScalar(@magnitude)
 
-        x = @x
-        y = @y
+    DotProduct: (v) ->
+        return @x * v.x + @y * v.y
 
-        @x = x / r
-        @y = y / r
+    IsPerpendicular: (v) ->
+        return @DotProduct(v) is 0
 
-    GetDistance: (otherVector) ->
-        raw = Math.pow(otherVector.x - @x, 2) + Math.pow(otherVector.y - @y, 2)
-        return Math.sqrt(raw)
+    IsSameDirection: (v) ->
+        return @DotProduct(v) > 0
+
 
 class Point
     constructor: (@x, @y, @z = 0) ->
