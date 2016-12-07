@@ -1,6 +1,6 @@
 class Loop
     constructor: (@game) ->
-        @fps = 30
+        @fps = 50
         @frameTime = 1000/@fps
         @lag = 0
         @updateDelta = 0

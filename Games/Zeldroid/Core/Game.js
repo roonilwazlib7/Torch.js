@@ -30,7 +30,11 @@
 
   Draw = function(game) {};
 
-  Update = function(game) {};
+  Update = function(game) {
+    if (game.deltaTime > 1000 / 50) {
+      return alert("FPS Dipped! " + game.deltaTime);
+    }
+  };
 
   zeldroid.Start(Load, Update, Draw, Init);
 

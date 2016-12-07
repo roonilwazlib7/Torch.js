@@ -30,6 +30,7 @@ Init = (game) ->
 Draw = (game)->
 
 Update = (game) ->
+    if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
 
 zeldroid.Start(Load, Update, Draw, Init)
 window.zeldroid = zeldroid

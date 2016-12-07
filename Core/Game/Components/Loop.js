@@ -5,7 +5,7 @@
   Loop = (function() {
     function Loop(game) {
       this.game = game;
-      this.fps = 30;
+      this.fps = 50;
       this.frameTime = 1000 / this.fps;
       this.lag = 0;
       this.updateDelta = 0;
