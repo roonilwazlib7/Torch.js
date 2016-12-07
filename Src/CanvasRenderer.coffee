@@ -3,9 +3,13 @@ exports = this
 class CanvasRenderer
     constructor: (@sprite) ->
         @game = @sprite.game
-
+        @previousPosition = new Torch.Point(@sprite.position.x, @sprite.position.y)
     Draw: ->
         drawRec = new Torch.Rectangle(@sprite.position.x, @sprite.position.y, @sprite.rectangle.width, @sprite.rectangle.height)
+
+        drawRec.x = ( @sprite.position.x - @previousPosition.x ) * @game.Loop.lagOffset + @previousPosition.x
+        drawRec.y = ( @sprite.position.y - @previousPosition.y ) * @game.Loop.lagOffset + @previousPosition.y
+        @previousPosition = new Torch.Point(@sprite.position.x, @sprite.position.y)
 
         cameraTransform = new Torch.Point(0,0) # @game.Camera.Position()
 

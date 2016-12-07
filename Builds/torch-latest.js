@@ -2034,6 +2034,11 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     function Loop(game) {
       this.game = game;
       this.fps = 60;
+      this.frameTime = 1000 / this.fps;
+      this.lag = 0;
+      this.updateDelta = 0;
+      this.drawDelta = 0;
+      this.lagOffset;
     }
 
     Loop.prototype.Update = function() {
@@ -2053,18 +2058,26 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       return this.game.DrawSprites();
     };
 
-    Loop.prototype.RunGame = function() {
-      this.Update();
-      return this.Draw();
-    };
-
     Loop.prototype.AdvanceFrame = function(timestamp) {
+      var elapsed;
       if (this.game.time === void 0) {
         this.game.time = timestamp;
       }
       this.game.deltaTime = Math.round(timestamp - this.game.time);
       this.game.time = timestamp;
-      this.RunGame();
+      elapsed = this.game.deltaTime;
+      this.drawDelta = elapsed;
+      this.updateDelta = this.frameTime;
+      if (elapsed > 1000) {
+        elapsed = this.frameTime;
+      }
+      this.lag += elapsed;
+      while (this.lag >= this.frameTime) {
+        this.Update();
+        this.lag -= this.frameTime;
+      }
+      this.lagOffset = this.lag / this.frameTime;
+      this.Draw();
       return window.requestAnimationFrame((function(_this) {
         return function(timestamp) {
           return _this.AdvanceFrame(timestamp);
@@ -5316,11 +5329,15 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     function CanvasRenderer(sprite) {
       this.sprite = sprite;
       this.game = this.sprite.game;
+      this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
     }
 
     CanvasRenderer.prototype.Draw = function() {
       var cameraTransform, drawRec, frame;
       drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
+      drawRec.x = (this.sprite.position.x - this.previousPosition.x) * this.game.Loop.lagOffset + this.previousPosition.x;
+      drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
+      this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
       cameraTransform = new Torch.Point(0, 0);
       drawRec.x += this.game.Camera.position.x;
       drawRec.y += this.game.Camera.position.y;
@@ -5536,4 +5553,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.259'
+Torch.version = '0.4.265'

@@ -6,6 +6,11 @@
     function Loop(game) {
       this.game = game;
       this.fps = 60;
+      this.frameTime = 1000 / this.fps;
+      this.lag = 0;
+      this.updateDelta = 0;
+      this.drawDelta = 0;
+      this.lagOffset;
     }
 
     Loop.prototype.Update = function() {
@@ -25,18 +30,26 @@
       return this.game.DrawSprites();
     };
 
-    Loop.prototype.RunGame = function() {
-      this.Update();
-      return this.Draw();
-    };
-
     Loop.prototype.AdvanceFrame = function(timestamp) {
+      var elapsed;
       if (this.game.time === void 0) {
         this.game.time = timestamp;
       }
       this.game.deltaTime = Math.round(timestamp - this.game.time);
       this.game.time = timestamp;
-      this.RunGame();
+      elapsed = this.game.deltaTime;
+      this.drawDelta = elapsed;
+      this.updateDelta = this.frameTime;
+      if (elapsed > 1000) {
+        elapsed = this.frameTime;
+      }
+      this.lag += elapsed;
+      while (this.lag >= this.frameTime) {
+        this.Update();
+        this.lag -= this.frameTime;
+      }
+      this.lagOffset = this.lag / this.frameTime;
+      this.Draw();
       return window.requestAnimationFrame((function(_this) {
         return function(timestamp) {
           return _this.AdvanceFrame(timestamp);

@@ -1,7 +1,11 @@
 class Loop
     constructor: (@game) ->
         @fps = 60
-
+        @frameTime = 1000/@fps
+        @lag = 0
+        @updateDelta = 0
+        @drawDelta = 0
+        @lagOffset
     Update: ->
         @game.update(@)
 
@@ -20,10 +24,6 @@ class Loop
         @game.draw(@)
         @game.DrawSprites()
 
-    RunGame: ->
-        @Update()
-        @Draw()
-
 
     AdvanceFrame: (timestamp) ->
         if @game.time is undefined
@@ -31,8 +31,23 @@ class Loop
 
         @game.deltaTime = Math.round(timestamp - @game.time)
         @game.time = timestamp
+        elapsed = @game.deltaTime
+        @drawDelta = elapsed
+        @updateDelta = @frameTime
 
-        @RunGame()
+        if elapsed > 1000
+            elapsed = @frameTime
+
+        @lag += elapsed
+
+        while @lag >= @frameTime
+            @Update()
+
+            @lag -= @frameTime
+
+        @lagOffset = @lag / @frameTime
+
+        @Draw()
 
         window.requestAnimationFrame (timestamp) =>
             @AdvanceFrame(timestamp)
