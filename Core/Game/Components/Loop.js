@@ -8,17 +8,26 @@
       this.fps = 60;
     }
 
-    Loop.prototype.RunGame = function() {
-      this.game.draw(this);
+    Loop.prototype.Update = function() {
       this.game.update(this);
       this.game.Camera.Update();
       this.game.Timer.Update();
       this.game.Debug.Update();
-      this.game.UpdateAndDrawSprites();
       this.game.UpdateAnimations();
       this.game.UpdateTimeInfo();
       this.game.UpdateTasks();
-      return this.game.UpdateGamePads();
+      this.game.UpdateGamePads();
+      return this.game.UpdateSprites();
+    };
+
+    Loop.prototype.Draw = function() {
+      this.game.draw(this);
+      return this.game.DrawSprites();
+    };
+
+    Loop.prototype.RunGame = function() {
+      this.Update();
+      return this.Draw();
     };
 
     Loop.prototype.AdvanceFrame = function(timestamp) {

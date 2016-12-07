@@ -205,6 +205,9 @@ class CanvasGame
                 sprite.Emit "Trash", new Torch.Event(@)
         @spriteList = cleanedSprites
 
+        for o in @AddStack then @spriteList.push(o)
+        @AddStack = []
+
     DrawSprites: ->
         @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
 
@@ -214,16 +217,6 @@ class CanvasGame
         for sprite in @spriteList
             if sprite.draw and not sprite.trash and not sprite.GHOST_SPRITE
                 sprite.Draw()
-
-    UpdateAndDrawSprites: ->
-        if @loading
-            return
-
-        @DrawSprites()
-        @UpdateSprites()
-
-        for o in @AddStack then @spriteList.push(o)
-        @AddStack = []
 
     UpdateAnimations: ->
         for anim in @animations then anim.Run()

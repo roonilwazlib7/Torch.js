@@ -214,7 +214,7 @@
     };
 
     CanvasGame.prototype.UpdateSprites = function() {
-      var cleanedSprites, i, len, ref, sprite;
+      var cleanedSprites, i, j, len, len1, o, ref, ref1, sprite;
       cleanedSprites = [];
       ref = this.spriteList;
       for (i = 0, len = ref.length; i < len; i++) {
@@ -229,7 +229,13 @@
           sprite.Emit("Trash", new Torch.Event(this));
         }
       }
-      return this.spriteList = cleanedSprites;
+      this.spriteList = cleanedSprites;
+      ref1 = this.AddStack;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        o = ref1[j];
+        this.spriteList.push(o);
+      }
+      return this.AddStack = [];
     };
 
     CanvasGame.prototype.DrawSprites = function() {
@@ -249,21 +255,6 @@
         }
       }
       return results;
-    };
-
-    CanvasGame.prototype.UpdateAndDrawSprites = function() {
-      var i, len, o, ref;
-      if (this.loading) {
-        return;
-      }
-      this.DrawSprites();
-      this.UpdateSprites();
-      ref = this.AddStack;
-      for (i = 0, len = ref.length; i < len; i++) {
-        o = ref[i];
-        this.spriteList.push(o);
-      }
-      return this.AddStack = [];
     };
 
     CanvasGame.prototype.UpdateAnimations = function() {

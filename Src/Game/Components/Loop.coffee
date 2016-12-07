@@ -2,19 +2,28 @@ class Loop
     constructor: (@game) ->
         @fps = 60
 
-    RunGame: ->
-        @game.draw(@)
+    Update: ->
         @game.update(@)
 
         @game.Camera.Update()
         @game.Timer.Update()
         @game.Debug.Update()
 
-        @game.UpdateAndDrawSprites()
         @game.UpdateAnimations()
         @game.UpdateTimeInfo()
         @game.UpdateTasks()
         @game.UpdateGamePads()
+
+        @game.UpdateSprites()
+
+    Draw: ->
+        @game.draw(@)
+        @game.DrawSprites()
+
+    RunGame: ->
+        @Update()
+        @Draw()
+
 
     AdvanceFrame: (timestamp) ->
         if @game.time is undefined
