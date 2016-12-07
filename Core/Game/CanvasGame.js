@@ -72,6 +72,7 @@
       this.threeList = [];
       this.taskList = [];
       this.animations = [];
+      this.tweens = [];
       this.DrawStack = [];
       this.AddStack = [];
       this.GamePads = [];
@@ -199,6 +200,10 @@
       throw error;
     };
 
+    CanvasGame.prototype.Tween = function(object, timeTweenShouldTake) {
+      return new Torch.TweenSetup(this, object, timeTweenShouldTake);
+    };
+
     CanvasGame.prototype.UpdateTasks = function() {
       var cleanedTasks, i, len, ref, task;
       cleanedTasks = [];
@@ -295,6 +300,23 @@
         }
         return results;
       }
+    };
+
+    CanvasGame.prototype.UpdateTweens = function() {
+      var cleanedTweens, i, len, ref, results, tween;
+      cleanedTweens = [];
+      ref = this.tweens;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        tween = ref[i];
+        if (!tween.trash) {
+          cleanedTweens.push(tween);
+          results.push(tween.Update());
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
     };
 
     CanvasGame.prototype.Clear = function(color) {

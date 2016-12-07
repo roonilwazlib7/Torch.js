@@ -1,4 +1,4 @@
-Build: 267
+Build: 287
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -31,6 +31,7 @@ SourceMap: [
     "Game/Components/Style.js"
     "Game/Components/Debug.js"
     "Game/Components/Keys.js"
+    "Game/Components/Tween.js"
     "Game/CanvasGame.js"
     "Game/WebGLGame.js"
     "Game/Game.js"

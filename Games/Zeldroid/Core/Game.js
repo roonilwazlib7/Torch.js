@@ -24,7 +24,6 @@
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
-    game.mapManager.LoadMap("map");
     game.debugCondole = new Torch.DebugConsole(game);
     return game.debugCondole.AddCommand("SPAWN", function(tConsole, x, y) {});
   };
@@ -34,5 +33,7 @@
   Update = function(game) {};
 
   zeldroid.Start(Load, Update, Draw, Init);
+
+  window.zeldroid = zeldroid;
 
 }).call(this);

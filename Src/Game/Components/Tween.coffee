@@ -1,45 +1,82 @@
-TweenTypes = new Torch.Enum("Linear", "Quad", "Cube")
-class TweenManager
-    constructor(@game) ->
-        @tweens = []
-
-    Tween: (objectToTween, tweenProperties, startTime, currentTime, speed) ->
-        @tweens.Add( new Tween(@game, objectToTween, tweenProperties, startTime, currentTime, speed) )
-
-    Update: ->
-        cleanedTweens = []
-        for tween in @tweens
-            if not tween.trash
-                tween.Update()
-                cleanedTweens.push(tween)
-
-        @tweens = cleanedTweens
-
+Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 class Tween
-    Tween.MixIn(Torch.Trashable)
-    constructor: (@game, @objectToTween, @tweenProperties, @tweenType, @speed) ->
-        @startTime = @game.time
-        @lastTime = @game.time
+    @MixIn Torch.Trashable
+    objectToTween: null
+    tweenProperties: null
+    originalObjectValues: null
+    elapsedTime: 0
+    timeTweenShouldTake: 0
+    easing: null
 
-    LinearTween = (objectToTween, tweenProperties, startTime, currentTime, speed) ->
-        elapsedTime = currentTime - startTime
+    constructor: (@game, @objectToTween, @tweenProperties, @timeTweenShouldTake, @easing) ->
+        @game.tweens.push(@)
 
-        for key,value of tweenProperties
-            distance = value - objectToTween[key]
-            velocity = distance / ( speed - elapsedTime )
-            delta = velocity * ( currentTime - @lastTime )
-            objectToTween[key] += delta
-
-        @lastTime = currentTime
-
-        return objectToTween
-
+        if typeof @objectToTween is "object"
+            @originalObjectValues = {}
+            for key,value of @tweenProperties
+                @originalObjectValues[key] = @objectToTween[key]
+        else
+            @originalObjectValues = @objectToTween
     Update: ->
-        @Tweens[@tweenType](@objectToTween, @tweenProperties, @startTime, @game.time, @speed)
+        normalizedTime = @elapsedTime / @timeTweenShouldTake
+        easedTime = @Ease(normalizedTime)
 
+        if typeof @objectToTween is "object"
+            for key,value of @tweenProperties
+                @objectToTween[key] = (@tweenProperties[key] * easedTime) + (@originalObjectValues[key] * (1 - easedTime))
+        else
+            @objectToTween = (@tweenProperties * easedTime) + (@originalObjectValues * (1 - easedTime))
 
-# usage...
+        @elapsedTime += @game.Loop.updateDelta
+        if @elapsedTime >= @timeTweenShouldTake
+            @Trash()
 
-spr = new Torch.Sprite(game, 0, 0)
+    Ease: (normalizedTime) ->
+        switch @easing
+            when Torch.Easing.Linear
+                return normalizedTime
 
-game.Tween(spr.position, Torch.Tweens.Linear).To( {x: 100, y: 100}, -> alert("done!") )
+            when Torch.Easing.Square
+                return Math.pow(normalizedTime, 2)
+
+            when Torch.Easing.Cube
+                return Math.pow(normalizedTime, 3)
+
+            when Torch.Easing.InverseSquare
+                return 1 - Math.pow(1 - normalizedTime, 2)
+
+            when Torch.Easing.InverseCube
+                return 1 - Math.pow(1 - normalizedTime, 3)
+
+            when Torch.Easing.Smooth
+                return normalizedTime * normalizedTime * (3 - 2 * normalizedTime)
+
+            when Torch.Easing.SmoothSquare
+                return Math.pow( ( normalizedTime * normalizedTime * ( (3 - 2 * normalizedTime) ) ), 2 )
+
+            when Torch.Easing.SmoothCube
+                return Math.pow( ( normalizedTime * normalizedTime * ( (3 - 2 * normalizedTime) ) ), 3 )
+
+            when Torch.Easing.Sine
+                return Math.sin(normalizedTime * Math.PI / 2)
+
+            when Torch.Easing.InverseSine
+                return 1 - Math.sin( (1 - normalizedTime) * Math.PI / 2 )
+
+class TweenSetup
+    constructor: (@game, @object, @timeTweenShouldTake, @easing = Torch.Easing.Smooth) ->
+
+    To: (tweenProperties) ->
+        return new Tween(@game, @object, tweenProperties, @timeTweenShouldTake, @easing)
+
+    From: (setProperties) ->
+        for key,value of setProperties
+            @object[key] = value
+        return @
+
+Torch.TweenSetup = TweenSetup
+
+# # objects or primitives
+# game.Tween(sprite.position, 500).To({x: 500, y: 500})
+# # or set the properties before tweening
+# game.Tween.(sprite.opacity, 500).From(0).To(1)

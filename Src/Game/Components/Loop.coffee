@@ -17,6 +17,7 @@ class Loop
         @game.UpdateTimeInfo()
         @game.UpdateTasks()
         @game.UpdateGamePads()
+        @game.UpdateTweens()
 
         @game.UpdateSprites()
 

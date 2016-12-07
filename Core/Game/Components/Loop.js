@@ -22,6 +22,7 @@
       this.game.UpdateTimeInfo();
       this.game.UpdateTasks();
       this.game.UpdateGamePads();
+      this.game.UpdateTweens();
       return this.game.UpdateSprites();
     };
 
