@@ -1,10 +1,11 @@
 class Sprite
+    Sprite.MixIn(Torch.EventDispatcher)
+          .MixIn(Torch.Trashable)
+
+    __torch__: Torch.Types.Sprite
 
     constructor: (game, x, y)->
         @InitSprite(game, x, y)
-
-    Sprite.MixIn(Torch.EventDispatcher)
-          .MixIn(Torch.Trashable)
 
     InitSprite: (game, x = 0, y = 0)->
         if game is null or game is undefined

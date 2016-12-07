@@ -111,6 +111,8 @@
   })();
 
   Torch = (function() {
+    var Is;
+
     Torch.prototype.CANVAS = 1;
 
     Torch.prototype.WEBGL = 2;
@@ -120,6 +122,7 @@
     function Torch() {
       this.GamePads = this.Enum("Pad1", "Pad2", "Pad3", "Pad4");
       this.AjaxData = this.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text");
+      this.Types = this.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null");
       this.AjaxLoader = AjaxLoader;
       this.Event = Event;
       this.EventDispatcher = EventDispatcher;
@@ -175,6 +178,39 @@
       if (!expression) {
         return Torch.FatalError(errorTag);
       }
+    };
+
+    Torch.prototype.TypeOf = function(obj) {
+      var objTypes, typeString;
+      objTypes = [];
+      if (obj.__torch__ !== void 0) {
+        objTypes.push(obj.__torch__);
+      }
+      typeString = {}.toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+      switch (typeString) {
+        case "string":
+          objTypes.push(Torch.Types.String);
+          break;
+        case "number":
+          objTypes.push(Torch.Types.Number);
+          break;
+        case "object":
+          objTypes.push(Torch.Types.Object);
+          break;
+        case "array":
+          objTypes.push(Torch.Types.Array);
+          break;
+        case "function":
+          objTypes.push(Torch.Types.Function);
+          break;
+        default:
+          objTypes.push(Torch.Types.Null);
+      }
+      return objTypes;
+    };
+
+    Is = function(obj, torchType) {
+      return Torch.TypeOf(obj).indexOf(torchType) !== -1;
     };
 
     Torch.prototype.ExtendProperties = function() {

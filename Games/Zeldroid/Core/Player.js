@@ -31,6 +31,10 @@
       })(this));
     }
 
+    Player.Load = function(game) {
+      return game.Load.Texture("Assets/Art/player.png", "player");
+    };
+
     Player.prototype.Update = function() {
       Player.__super__.Update.call(this);
       return this.Movement();

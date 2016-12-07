@@ -1,11 +1,5 @@
 exports = this
 class HUD
-    Width: (scale = 1) ->
-        return window.innerWidth / scale
-
-    Height: (scale = 1) ->
-        return window.innerHeight / scale
-
     constructor: (@game) ->
         @hud_background = new Torch.Sprite(@game, 0, 0)
         @hud_background.Bind.Texture("hud_background")
@@ -51,11 +45,26 @@ class HUD
 
         @BindEvents()
 
+    @Load: (game) ->
+        game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
+        game.Load.Texture("Assets/Art/hud_minimap_background.png", "hud_minimap_background")
+        game.Load.Texture("Assets/Art/health_bar.png", "hud_life_bar")
+        game.Load.Texture("Assets/Art/stress_bar.png", "hud_stress_bar")
+        game.Load.Texture("Assets/Art/hud_slot_1_background.png", "hud_slot_1_background")
+        game.Load.Texture("Assets/Art/hud_slot_2_background.png", "hud_slot_2_background")
+
     BindEvents: ->
         @game.Keys.E.On "KeyDown", => @hud_slot_1_background.Opacity(0.5)
         @game.Keys.E.On "KeyUp", => @hud_slot_1_background.Opacity(1)
 
         @game.Keys.R.On "KeyDown", => @hud_slot_2_background.Opacity(0.5)
         @game.Keys.R.On "KeyUp", => @hud_slot_2_background.Opacity(1)
+
+    Width: (scale = 1) ->
+        return window.innerWidth / scale
+
+    Height: (scale = 1) ->
+        return window.innerHeight / scale
+
 
 exports.HUD = HUD

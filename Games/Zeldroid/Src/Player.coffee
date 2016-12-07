@@ -18,6 +18,8 @@ class Player extends Torch.Sprite
             @Body.Velocity("x", 0)
             @Body.Velocity("y", 0)
 
+    @Load: (game) ->
+        game.Load.Texture("Assets/Art/player.png", "player")
 
     Update: ->
         super()

@@ -1491,6 +1491,8 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   })();
 
   Torch = (function() {
+    var Is;
+
     Torch.prototype.CANVAS = 1;
 
     Torch.prototype.WEBGL = 2;
@@ -1500,6 +1502,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     function Torch() {
       this.GamePads = this.Enum("Pad1", "Pad2", "Pad3", "Pad4");
       this.AjaxData = this.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text");
+      this.Types = this.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null");
       this.AjaxLoader = AjaxLoader;
       this.Event = Event;
       this.EventDispatcher = EventDispatcher;
@@ -1555,6 +1558,39 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       if (!expression) {
         return Torch.FatalError(errorTag);
       }
+    };
+
+    Torch.prototype.TypeOf = function(obj) {
+      var objTypes, typeString;
+      objTypes = [];
+      if (obj.__torch__ !== void 0) {
+        objTypes.push(obj.__torch__);
+      }
+      typeString = {}.toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+      switch (typeString) {
+        case "string":
+          objTypes.push(Torch.Types.String);
+          break;
+        case "number":
+          objTypes.push(Torch.Types.Number);
+          break;
+        case "object":
+          objTypes.push(Torch.Types.Object);
+          break;
+        case "array":
+          objTypes.push(Torch.Types.Array);
+          break;
+        case "function":
+          objTypes.push(Torch.Types.Function);
+          break;
+        default:
+          objTypes.push(Torch.Types.Null);
+      }
+      return objTypes;
+    };
+
+    Is = function(obj, torchType) {
+      return Torch.TypeOf(obj).indexOf(torchType) !== -1;
     };
 
     Torch.prototype.ExtendProperties = function() {
@@ -3555,11 +3591,13 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     hasProp = {}.hasOwnProperty;
 
   Sprite = (function() {
+    Sprite.MixIn(Torch.EventDispatcher).MixIn(Torch.Trashable);
+
+    Sprite.prototype.__torch__ = Torch.Types.Sprite;
+
     function Sprite(game, x, y) {
       this.InitSprite(game, x, y);
     }
-
-    Sprite.MixIn(Torch.EventDispatcher).MixIn(Torch.Trashable);
 
     Sprite.prototype.InitSprite = function(game, x, y) {
       if (x == null) {
@@ -5498,4 +5536,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.242'
+Torch.version = '0.4.252'

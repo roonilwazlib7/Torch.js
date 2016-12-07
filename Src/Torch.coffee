@@ -68,6 +68,7 @@ class Torch
     constructor: ->
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
+        @Types = @Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
         @AjaxLoader = AjaxLoader
         @Event = Event
         @EventDispatcher = EventDispatcher
@@ -114,6 +115,34 @@ class Torch
     Assert: (expression, errorTag = "Assertation Failed") ->
         if not expression
             Torch.FatalError(errorTag)
+
+    TypeOf: (obj) ->
+
+        objTypes = []
+
+        objTypes.push(obj.__torch__) if obj.__torch__ isnt undefined
+
+
+        typeString = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+
+        switch typeString
+            when "string"
+                objTypes.push(Torch.Types.String)
+            when "number"
+                objTypes.push(Torch.Types.Number)
+            when "object"
+                objTypes.push(Torch.Types.Object)
+            when "array"
+                objTypes.push(Torch.Types.Array)
+            when "function"
+                objTypes.push(Torch.Types.Function)
+            else
+                objTypes.push(Torch.Types.Null)
+
+        return objTypes
+
+    Is = (obj, torchType) ->
+        return Torch.TypeOf(obj).indexOf(torchType) isnt -1
 
     ExtendProperties: (Class, properties...) ->
         for prop in properties
