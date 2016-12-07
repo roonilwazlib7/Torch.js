@@ -12,13 +12,12 @@ class Loop
         @game.Camera.Update()
         @game.Timer.Update()
         @game.Debug.Update()
+        @game.Tweens.Update()
 
         @game.UpdateAnimations()
         @game.UpdateTimeInfo()
         @game.UpdateTasks()
         @game.UpdateGamePads()
-        @game.UpdateTweens()
-
         @game.UpdateSprites()
 
     Draw: ->

@@ -9,23 +9,17 @@ class Tween
     easing: null
 
     constructor: (@game, @objectToTween, @tweenProperties, @timeTweenShouldTake, @easing) ->
-        @game.tweens.push(@)
+        @game.Tweens.tweens.push(@)
+        @originalObjectValues = {}
 
-        if typeof @objectToTween is "object"
-            @originalObjectValues = {}
-            for key,value of @tweenProperties
-                @originalObjectValues[key] = @objectToTween[key]
-        else
-            @originalObjectValues = @objectToTween
+        for key,value of @tweenProperties
+            @originalObjectValues[key] = @objectToTween[key]
     Update: ->
         normalizedTime = @elapsedTime / @timeTweenShouldTake
         easedTime = @Ease(normalizedTime)
 
-        if typeof @objectToTween is "object"
-            for key,value of @tweenProperties
-                @objectToTween[key] = (@tweenProperties[key] * easedTime) + (@originalObjectValues[key] * (1 - easedTime))
-        else
-            @objectToTween = (@tweenProperties * easedTime) + (@originalObjectValues * (1 - easedTime))
+        for key,value of @tweenProperties
+            @objectToTween[key] = (@tweenProperties[key] * easedTime) + (@originalObjectValues[key] * (1 - easedTime))
 
         @elapsedTime += @game.Loop.updateDelta
         if @elapsedTime >= @timeTweenShouldTake
@@ -74,7 +68,26 @@ class TweenSetup
             @object[key] = value
         return @
 
-Torch.TweenSetup = TweenSetup
+class TweenManager
+    constructor: (@game) ->
+        @tweens = []
+
+    Update: ->
+        cleanedTweens = []
+        for tween in @tweens
+            if not tween.trash
+                cleanedTweens.push(tween)
+                tween.Update()
+
+    Add: (object, timeTweenShouldTake) ->
+        return new TweenSetup(@game, object, timeTweenShouldTake)
+
+    All: (callback) ->
+        for tween in @game.tweens
+            callback(tween)
+
+
+Torch.TweenManager = TweenManager
 
 # # objects or primitives
 # game.Tween(sprite.position, 500).To({x: 500, y: 500})

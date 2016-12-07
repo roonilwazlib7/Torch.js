@@ -57,6 +57,7 @@
       this.Layers = new Torch.Layers(this);
       this.Debug = new Torch.Debug(this);
       this.Keys = new Torch.Keys(this);
+      this.Tweens = new Torch.TweenManager(this);
       Torch.Style();
       this.deltaTime = 0;
       this.fps = 0;
@@ -200,10 +201,6 @@
       throw error;
     };
 
-    CanvasGame.prototype.Tween = function(object, timeTweenShouldTake) {
-      return new Torch.TweenSetup(this, object, timeTweenShouldTake);
-    };
-
     CanvasGame.prototype.UpdateTasks = function() {
       var cleanedTasks, i, len, ref, task;
       cleanedTasks = [];
@@ -300,23 +297,6 @@
         }
         return results;
       }
-    };
-
-    CanvasGame.prototype.UpdateTweens = function() {
-      var cleanedTweens, i, len, ref, results, tween;
-      cleanedTweens = [];
-      ref = this.tweens;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        tween = ref[i];
-        if (!tween.trash) {
-          cleanedTweens.push(tween);
-          results.push(tween.Update());
-        } else {
-          results.push(void 0);
-        }
-      }
-      return results;
     };
 
     CanvasGame.prototype.Clear = function(color) {

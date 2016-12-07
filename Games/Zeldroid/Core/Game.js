@@ -24,6 +24,34 @@
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
+    game.Keys.L.On("KeyDown", function() {
+      return game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth).From({
+        opacity: 1
+      }).To({
+        opacity: 0
+      });
+    });
+    game.Keys.P.On("KeyDown", function() {
+      return game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth).From({
+        rotation: 0
+      }).To({
+        rotation: 2 * Math.PI
+      });
+    });
+    game.Keys.K.On("KeyDown", function() {
+      return game.Tweens.Add(game.player.Size.scale, 1000, Torch.Easing.Smooth).From({
+        width: 1,
+        height: 1
+      }).To({
+        width: 4,
+        height: 4
+      });
+    });
+    game.Keys.I.On("KeyDown", function() {
+      return game.Tweens.All(function(t) {
+        return t.Trash();
+      });
+    });
     game.debugCondole = new Torch.DebugConsole(game);
     return game.debugCondole.AddCommand("SPAWN", function(tConsole, x, y) {});
   };

@@ -18,11 +18,11 @@
       this.game.Camera.Update();
       this.game.Timer.Update();
       this.game.Debug.Update();
+      this.game.Tweens.Update();
       this.game.UpdateAnimations();
       this.game.UpdateTimeInfo();
       this.game.UpdateTasks();
       this.game.UpdateGamePads();
-      this.game.UpdateTweens();
       return this.game.UpdateSprites();
     };
 

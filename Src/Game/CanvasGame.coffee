@@ -44,6 +44,7 @@ class CanvasGame
         @Layers = new Torch.Layers(@)
         @Debug = new Torch.Debug(@)
         @Keys = new Torch.Keys(@)
+        @Tweens = new Torch.TweenManager(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         Torch.Style()
@@ -186,9 +187,6 @@ class CanvasGame
             error: error
         throw error
 
-    Tween: (object, timeTweenShouldTake) ->
-        return new Torch.TweenSetup(@, object, timeTweenShouldTake)
-
     UpdateTasks: ->
         cleanedTasks = []
         for task in @taskList
@@ -241,13 +239,6 @@ class CanvasGame
             for pad in pads
                 if (pad)
                     @GamePads.push(new Torch.GamePad(pad))
-
-    UpdateTweens: ->
-        cleanedTweens = []
-        for tween in @tweens
-            if not tween.trash
-                cleanedTweens.push(tween)
-                tween.Update()
 
     Clear: (color) ->
         if color is undefined
