@@ -2709,7 +2709,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine");
 
   Tween = (function() {
-    Tween.MixIn(Torch.Trashable);
+    Tween.MixIn(Trashable);
+
+    Tween.MixIn(EventDispatcher);
 
     Tween.prototype.objectToTween = null;
 
@@ -2730,6 +2732,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       this.tweenProperties = tweenProperties1;
       this.timeTweenShouldTake = timeTweenShouldTake1;
       this.easing = easing;
+      this.InitEventDispatch();
       this.game.Tweens.tweens.push(this);
       this.originalObjectValues = {};
       ref = this.tweenProperties;
@@ -2750,6 +2753,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       this.elapsedTime += this.game.Loop.updateDelta;
       if (this.elapsedTime >= this.timeTweenShouldTake) {
+        this.Emit("Finish", new Torch.Event(this.game, {
+          tween: this
+        }));
         return this.Trash();
       }
     };
@@ -5708,4 +5714,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.312'
+Torch.version = '0.4.316'

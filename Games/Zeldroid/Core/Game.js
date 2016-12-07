@@ -29,6 +29,8 @@
         opacity: 1
       }).To({
         opacity: 0
+      }).On("Finish", function(event) {
+        return alert("done");
       });
     });
     game.Keys.P.On("KeyDown", function() {

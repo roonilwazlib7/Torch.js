@@ -23,13 +23,20 @@ Init = (game) ->
     game.hud = new HUD(game)
 
     game.Keys.L.On "KeyDown", ->
-        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth).From({opacity: 1}).To({opacity: 0})
+        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth)
+            .From({opacity: 1})
+            .To({opacity: 0})
+            .On "Finish", (event) -> alert("done")
 
     game.Keys.P.On "KeyDown", ->
-        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth).From({rotation: 0}).To({rotation: 2 * Math.PI})
+        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth)
+            .From({rotation: 0})
+            .To({rotation: 2 * Math.PI})
 
     game.Keys.K.On "KeyDown", ->
-        game.Tweens.Add(game.player.Size.scale, 1000, Torch.Easing.Smooth).From({width: 1, height: 1}).To({width: 4, height: 4})
+        game.Tweens.Add(game.player.Size.scale, 1000, Torch.Easing.Smooth)
+            .From({width: 1, height: 1})
+            .To({width: 4, height: 4})
 
     game.Keys.I.On "KeyDown", ->
         game.Tweens.All (t) -> t.Trash()

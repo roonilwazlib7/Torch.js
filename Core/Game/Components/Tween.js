@@ -5,7 +5,9 @@
   Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine");
 
   Tween = (function() {
-    Tween.MixIn(Torch.Trashable);
+    Tween.MixIn(Trashable);
+
+    Tween.MixIn(EventDispatcher);
 
     Tween.prototype.objectToTween = null;
 
@@ -26,6 +28,7 @@
       this.tweenProperties = tweenProperties1;
       this.timeTweenShouldTake = timeTweenShouldTake1;
       this.easing = easing;
+      this.InitEventDispatch();
       this.game.Tweens.tweens.push(this);
       this.originalObjectValues = {};
       ref = this.tweenProperties;
@@ -46,6 +49,9 @@
       }
       this.elapsedTime += this.game.Loop.updateDelta;
       if (this.elapsedTime >= this.timeTweenShouldTake) {
+        this.Emit("Finish", new Torch.Event(this.game, {
+          tween: this
+        }));
         return this.Trash();
       }
     };

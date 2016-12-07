@@ -1,6 +1,7 @@
 Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 class Tween
-    @MixIn Torch.Trashable
+    @MixIn Trashable
+    @MixIn EventDispatcher
     objectToTween: null
     tweenProperties: null
     originalObjectValues: null
@@ -9,6 +10,7 @@ class Tween
     easing: null
 
     constructor: (@game, @objectToTween, @tweenProperties, @timeTweenShouldTake, @easing) ->
+        @InitEventDispatch()
         @game.Tweens.tweens.push(@)
         @originalObjectValues = {}
 
@@ -23,6 +25,7 @@ class Tween
 
         @elapsedTime += @game.Loop.updateDelta
         if @elapsedTime >= @timeTweenShouldTake
+            @Emit "Finish", new Torch.Event(@game, {tween: @})
             @Trash()
 
     Ease: (normalizedTime) ->
