@@ -11,10 +11,10 @@
     }
 
     Body.prototype.Update = function() {
-      this.sprite.position.x += this.velocity.x * this.game.deltaTime;
-      this.sprite.position.y += this.velocity.y * this.game.deltaTime;
-      this.velocity.x += this.acceleration.x * this.game.deltaTime;
-      return this.velocity.y += this.acceleration.y * this.game.deltaTime;
+      this.sprite.position.x += this.velocity.x * this.game.Loop.updateDelta;
+      this.sprite.position.y += this.velocity.y * this.game.Loop.updateDelta;
+      this.velocity.x += this.acceleration.x * this.game.Loop.updateDelta;
+      return this.velocity.y += this.acceleration.y * this.game.Loop.updateDelta;
     };
 
     Body.prototype.Velocity = function(plane, velocity) {

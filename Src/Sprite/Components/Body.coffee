@@ -5,11 +5,11 @@ class Body
         @acceleration = new Torch.Vector(0,0)
 
     Update: ->
-        @sprite.position.x += @velocity.x * @game.deltaTime
-        @sprite.position.y += @velocity.y * @game.deltaTime
+        @sprite.position.x += @velocity.x * @game.Loop.updateDelta
+        @sprite.position.y += @velocity.y * @game.Loop.updateDelta
 
-        @velocity.x += @acceleration.x * @game.deltaTime
-        @velocity.y += @acceleration.y * @game.deltaTime
+        @velocity.x += @acceleration.x * @game.Loop.updateDelta
+        @velocity.y += @acceleration.y * @game.Loop.updateDelta
 
     Velocity: (plane, velocity) ->
         @velocity[plane] = velocity

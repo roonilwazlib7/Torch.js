@@ -3401,10 +3401,10 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
     }
 
     Body.prototype.Update = function() {
-      this.sprite.position.x += this.velocity.x * this.game.deltaTime;
-      this.sprite.position.y += this.velocity.y * this.game.deltaTime;
-      this.velocity.x += this.acceleration.x * this.game.deltaTime;
-      return this.velocity.y += this.acceleration.y * this.game.deltaTime;
+      this.sprite.position.x += this.velocity.x * this.game.Loop.updateDelta;
+      this.sprite.position.y += this.velocity.y * this.game.Loop.updateDelta;
+      this.velocity.x += this.acceleration.x * this.game.Loop.updateDelta;
+      return this.velocity.y += this.acceleration.y * this.game.Loop.updateDelta;
     };
 
     Body.prototype.Velocity = function(plane, velocity) {
@@ -5553,4 +5553,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.265'
+Torch.version = '0.4.267'
