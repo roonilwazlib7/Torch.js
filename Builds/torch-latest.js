@@ -2033,7 +2033,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
   Loop = (function() {
     function Loop(game) {
       this.game = game;
-      this.fps = 60;
+      this.fps = 30;
       this.frameTime = 1000 / this.fps;
       this.lag = 0;
       this.updateDelta = 0;
@@ -5694,4 +5694,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.287'
+Torch.version = '0.4.289'
