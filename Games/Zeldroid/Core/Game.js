@@ -52,6 +52,7 @@
         return t.Trash();
       });
     });
+    game.mapManager.LoadMap("map");
     game.debugCondole = new Torch.DebugConsole(game);
     return game.debugCondole.AddCommand("SPAWN", function(tConsole, x, y) {});
   };

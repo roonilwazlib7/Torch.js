@@ -34,7 +34,7 @@ Init = (game) ->
     game.Keys.I.On "KeyDown", ->
         game.Tweens.All (t) -> t.Trash()
 
-    #game.mapManager.LoadMap("map")
+    game.mapManager.LoadMap("map")
     game.debugCondole = new Torch.DebugConsole(game)
     game.debugCondole.AddCommand "SPAWN", (tConsole, x, y) ->
         # ...
