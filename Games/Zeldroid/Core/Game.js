@@ -67,12 +67,12 @@
         maxAngle: Math.PI * 2,
         minScale: 1,
         maxScale: 2,
-        minVelocity: 0.2,
+        minVelocity: 0.3,
         maxVelocity: 0.3,
         minAlphaDecay: 1000,
         maxAlphaDecay: 1500,
-        minOmega: 1,
-        maxOmega: 2
+        minOmega: 0.001,
+        maxOmega: 0.002
       });
     });
     game.mapManager.LoadMap("map");
