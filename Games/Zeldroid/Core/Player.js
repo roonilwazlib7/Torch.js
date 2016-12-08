@@ -18,12 +18,15 @@
       this.touching = {};
       this.Body.Debug();
       this.Bind.Texture("player");
-      this.Effects.tint.color = "red";
+      this.drawIndex = 11;
       this.Center();
       this.position.y = window.innerHeight - 100;
       this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {
+          if (!event.collisionData.collider.hardBlock) {
+            return;
+          }
           _this.touching = _this.Collisions.SimpleCollisionHandle(event, 0.5);
           _this.Body.Velocity("x", 0);
           return _this.Body.Velocity("y", 0);

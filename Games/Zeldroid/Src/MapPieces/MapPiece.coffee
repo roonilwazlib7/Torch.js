@@ -6,6 +6,7 @@ class MapPiece extends Torch.Sprite
     data: null
     scaleWidth: 1
     scaleHeight: 1
+    hardBlock: true
     constructor: (game, rawData) ->
         @data = @GetData(rawData, game)
         @InitSprite(game, @data.position.x, @data.position.y )
@@ -32,7 +33,18 @@ class Water extends MapPiece
     textureId: "water"
     identifier: 1
 
+class Branch extends MapPiece
+    textureId: "branch"
+    identifier: 2
+
+class LightGrass extends MapPiece
+    hardBlock: false
+    textureId: "light-grass"
+    identifier: 3
+
 exports.MapPieces = {
     Bush: Bush,
-    Water: Water
+    Water: Water,
+    Branch: Branch,
+    LightGrass: LightGrass
 }

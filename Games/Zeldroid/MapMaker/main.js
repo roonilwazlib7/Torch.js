@@ -86,8 +86,8 @@ function GenerateCell(x,y)
 function HandleCellClick(cell)
 {
     if (SELECTED_PIECE == null) return;
-    cell.empty();
-    var im = $("<img src='../Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
+    if (SHIFT_DOWN) cell.empty();
+    var im = $("<img src='../Assets/Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
     im.data("x", cell.data("x"));
     im.data("y", cell.data("y"));
     im.data("identifier", MapPieces[SELECTED_PIECE].prototype.identifier);
@@ -153,7 +153,7 @@ function LoadMapOptions()
     for (key in MapPieces)
     {
         p = MapPieces[key].prototype;
-        img = $("<img src='../Art/map/" + p.textureId + ".png' />");
+        img = $("<img src='../Assets/Art/map/" + p.textureId + ".png' />");
         option = $("<div class='option'></div>");
         title = $("<p>" + p.textureId + "</p>");
 

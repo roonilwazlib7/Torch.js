@@ -7,13 +7,14 @@ class Player extends Torch.Sprite
         @touching = {}
         @Body.Debug()
         @Bind.Texture("player")
-        @Effects.tint.color = "red"
+        @drawIndex = 11
 
         @Center()
         @position.y = window.innerHeight - 100
 
         @Collisions.Monitor()
         @On "Collision", (event) =>
+            return if not event.collisionData.collider.hardBlock
             @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
             @Body.Velocity("x", 0)
             @Body.Velocity("y", 0)
