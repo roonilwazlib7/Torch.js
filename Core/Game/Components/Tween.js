@@ -133,7 +133,7 @@
       return results;
     };
 
-    TweenManager.prototype.Add = function(object, timeTweenShouldTake) {
+    TweenManager.prototype.Tween = function(object, timeTweenShouldTake) {
       return new TweenSetup(this.game, object, timeTweenShouldTake);
     };
 

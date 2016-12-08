@@ -129,6 +129,10 @@
       this.Trashable = Trashable;
     }
 
+    Torch.prototype.RandomInRange = function(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
     Torch.prototype.Needs = function(key) {
       if (!Torch[key]) {
         throw "Compenent " + key + " is required";

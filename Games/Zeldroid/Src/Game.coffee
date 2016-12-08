@@ -43,6 +43,23 @@ Init = (game) ->
     game.Keys.I.On "KeyDown", ->
         game.Tweens.All (t) -> t.Trash()
 
+    game.Keys.Z.On "KeyDown", ->
+        emitter = game.Particles.ParticleEmitter 500, 500, 1000, true, "bush",
+            spread: 20
+            gravity: 0.0001
+            minRadius: 1
+            maxRadius: 2
+            minAngle: 0
+            maxAngle: Math.PI * 2
+            minScale: 1
+            maxScale: 2
+            minVelocity: 0.2
+            maxVelocity: 0.3
+            minAlphaDecay: 1000
+            maxAlphaDecay: 1500
+            minOmega: 1
+            maxOmega: 2
+
     game.mapManager.LoadMap("map")
     game.debugCondole = new Torch.DebugConsole(game)
     game.debugCondole.AddCommand "SPAWN", (tConsole, x, y) ->

@@ -58,6 +58,7 @@
       this.Debug = new Torch.Debug(this);
       this.Keys = new Torch.Keys(this);
       this.Tweens = new Torch.TweenManager(this);
+      this.Particles = new Torch.ParticleManager(this);
       Torch.Style();
       this.deltaTime = 0;
       this.fps = 0;

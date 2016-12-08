@@ -45,6 +45,7 @@ class CanvasGame
         @Debug = new Torch.Debug(@)
         @Keys = new Torch.Keys(@)
         @Tweens = new Torch.TweenManager(@)
+        @Particles = new Torch.ParticleManager(@)
         # @Audio = new Torch.Audio(@) not ready for this yet
 
         Torch.Style()

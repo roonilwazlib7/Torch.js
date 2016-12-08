@@ -82,7 +82,7 @@ class TweenManager
                 cleanedTweens.push(tween)
                 tween.Update()
 
-    Add: (object, timeTweenShouldTake) ->
+    Tween: (object, timeTweenShouldTake) ->
         return new TweenSetup(@game, object, timeTweenShouldTake)
 
     All: (callback) ->

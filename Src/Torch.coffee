@@ -74,6 +74,9 @@ class Torch
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
 
+    RandomInRange: (min, max) ->
+        return Math.floor(Math.random() * (max - min + 1)) + min
+
     Needs: (key) ->
         # make sure we have the peoper torch components
         if not Torch[key] then throw "Compenent #{key} is required"
