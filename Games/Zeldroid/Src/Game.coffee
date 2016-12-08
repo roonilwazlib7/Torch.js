@@ -14,7 +14,7 @@ Load = (game) ->
     game.Load.Texture("Assets/Art/map/water.png", "water")
     game.Load.Texture("Assets/Art/map/branch.png", "branch")
     game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass")
-    game.Load.File("Maps/map-3.map", "map")
+    game.Load.File("Maps/test-map-2.map", "map")
 
 Init = (game) ->
     game.Clear("#fcd8a8")

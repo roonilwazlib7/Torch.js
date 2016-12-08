@@ -28,13 +28,13 @@ var fs = require("fs");
 var SELECTED_PIECE = null,
     SCALE = 4,
     BASE = 16;
-
+var MOUSE_DOWN = false,
+    SHIFT_DOWN = false;
 
 function GenerateCell(x,y)
 {
     var cell = $("<div class = 'cell'></div>");
-    var MOUSE_DOWN = false,
-        SHIFT_DOWN = false;
+
 
     cell.attr("id", "cell-" + x + y);
 
@@ -88,6 +88,10 @@ function HandleCellClick(cell)
     if (SELECTED_PIECE == null) return;
     if (SHIFT_DOWN) cell.empty();
     var im = $("<img src='../Assets/Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
+    if (cell.children("img").length > 0)
+    {
+        im.css("margin-top", "-100%");
+    }
     im.data("x", cell.data("x"));
     im.data("y", cell.data("y"));
     im.data("identifier", MapPieces[SELECTED_PIECE].prototype.identifier);
@@ -136,7 +140,7 @@ function ImportMap()
 
         var segs = segment.split(",")
 
-        var im = $("<img src='../Art/map/" + mm.Parts[identifier].prototype.textureId + ".png' class = 'placed-peice'/>");
+        var im = $("<img src='../Assets/Art/map/" + mm.Parts[identifier].prototype.textureId + ".png' class = 'placed-peice'/>");
         var cell = $("#cell-" + parseInt(segs[1], 16) + parseInt(segs[2], 16));
         cell.empty();
 
