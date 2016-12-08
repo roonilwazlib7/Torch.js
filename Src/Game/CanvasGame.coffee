@@ -139,6 +139,7 @@ class CanvasGame
 
         if o._torch_add is "Sprite"
             o._torch_uid = "TORCHSPRITE" + @uidCounter.toString()
+            o._torch_add_order = @uidCounter
 
             @AddStack.push(o)
             @uidCounter++
@@ -215,6 +216,9 @@ class CanvasGame
         @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
 
         @spriteList.sort (a, b) ->
+            if a.drawIndex is b.drawIndex
+                return a._torch_add_order - b._torch_add_order
+                
             return a.drawIndex - b.drawIndex
 
         for sprite in @spriteList

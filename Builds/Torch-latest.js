@@ -4170,6 +4170,7 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       }
       if (o._torch_add === "Sprite") {
         o._torch_uid = "TORCHSPRITE" + this.uidCounter.toString();
+        o._torch_add_order = this.uidCounter;
         this.AddStack.push(o);
         return this.uidCounter++;
       } else if (o._torch_add === "Three") {
@@ -4264,6 +4265,9 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
       var i, len, ref, results, sprite;
       this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
+        if (a.drawIndex === b.drawIndex) {
+          return a._torch_add_order - b._torch_add_order;
+        }
         return a.drawIndex - b.drawIndex;
       });
       ref = this.spriteList;
@@ -5829,4 +5833,4 @@ if(!i(t)||0>t)throw new Error("k must be a non-negative integer");if(e&&e.isMatr
 
 }).call(this);
 
-Torch.version = '0.4.375'
+Torch.version = '0.4.376'

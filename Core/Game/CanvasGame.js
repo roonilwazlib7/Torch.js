@@ -151,6 +151,7 @@
       }
       if (o._torch_add === "Sprite") {
         o._torch_uid = "TORCHSPRITE" + this.uidCounter.toString();
+        o._torch_add_order = this.uidCounter;
         this.AddStack.push(o);
         return this.uidCounter++;
       } else if (o._torch_add === "Three") {
@@ -245,6 +246,9 @@
       var i, len, ref, results, sprite;
       this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
       this.spriteList.sort(function(a, b) {
+        if (a.drawIndex === b.drawIndex) {
+          return a._torch_add_order - b._torch_add_order;
+        }
         return a.drawIndex - b.drawIndex;
       });
       ref = this.spriteList;
