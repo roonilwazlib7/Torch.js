@@ -9,6 +9,18 @@ class HUD
         @hud_background.Size.height = @Height(5)
         @hud_background.fixed = true
 
+        @minimap = new Torch.Sprite(@game, 0, 0)
+        @minimap.Bind.Texture("hud_minimap_background")
+        @minimap.Grid.Align("bottom", "right")
+
+        @lifebar = new Torch.Sprite(@game, 0, 0)
+        @lifebar.Bind.Texture("hud_life_bar")
+        @lifebar.Grid.Center()
+        @lifebar.Grid.CenterVertical()
+        
+        @minimap.Grid.Append(@lifebar)
+        @hud_background.Grid.Append(@minimap)
+
     @Load: (game) ->
         game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
         game.Load.Texture("Assets/Art/hud_minimap_background.png", "hud_minimap_background")

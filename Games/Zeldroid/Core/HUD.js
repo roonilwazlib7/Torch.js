@@ -14,6 +14,15 @@
       this.hud_background.Size.width = window.innerWidth;
       this.hud_background.Size.height = this.Height(5);
       this.hud_background.fixed = true;
+      this.minimap = new Torch.Sprite(this.game, 0, 0);
+      this.minimap.Bind.Texture("hud_minimap_background");
+      this.minimap.Grid.Align("bottom", "right");
+      this.lifebar = new Torch.Sprite(this.game, 0, 0);
+      this.lifebar.Bind.Texture("hud_life_bar");
+      this.lifebar.Grid.Center();
+      this.lifebar.Grid.CenterVertical();
+      this.minimap.Grid.Append(this.lifebar);
+      this.hud_background.Grid.Append(this.minimap);
     }
 
     HUD.Load = function(game) {

@@ -69,7 +69,8 @@
     };
 
     GridManager.prototype.Append = function(sprite) {
-      return sprite.Grid.parent = this.sprite;
+      sprite.Grid.parent = this.sprite;
+      return sprite.drawIndex = this.sprite.drawIndex + 1;
     };
 
     GridManager.prototype.Parent = function() {
@@ -129,10 +130,10 @@
 
     GridManager.prototype.ApplyCentering = function(point) {
       if (this.centered) {
-        point.x = (point.x + this.parent.Size.width / 2) - (this.sprite.Size.width / 2);
+        point.x = (point.x + this.parent.rectangle.width / 2) - (this.sprite.rectangle.width / 2);
       }
       if (this.centerVertical) {
-        point.y = (point.y + this.parent.Size.height / 2) - (this.sprite.Size.height / 2);
+        point.y = (point.y + this.parent.rectangle.height / 2) - (this.sprite.rectangle.height / 2);
       }
       return point;
     };
@@ -142,13 +143,13 @@
         point.x = 0;
       }
       if (this.alignRight) {
-        point.x = (point.x + this.parent.Size.width) - this.sprite.Size.width;
+        point.x = point.x + (this.parent.rectangle.width - this.sprite.rectangle.width);
       }
       if (this.alignTop) {
         point.y = 0;
       }
       if (this.alignBottom) {
-        point.y = (point.y + this.parent.Size.height) - this.sprite.Size.height;
+        point.y = point.y + (this.parent.rectangle.height - this.sprite.rectangle.height);
       }
       return point;
     };
@@ -158,7 +159,7 @@
       if (this.parent === null) {
         return this.sprite.position;
       }
-      basePoint = this.parent.position;
+      basePoint = this.parent.position.Clone();
       basePoint = this.ApplyCentering(basePoint);
       basePoint = this.ApplyAlignment(basePoint);
       basePoint.Apply(this.position);
@@ -166,7 +167,10 @@
     };
 
     GridManager.prototype.Update = function() {
-      return this.sprite.position = this.ResolveAbosolutePosition();
+      this.sprite.position = this.ResolveAbosolutePosition();
+      if (this.parent !== null) {
+        return this.sprite.drawIndex = this.parent.drawIndex + 1;
+      }
     };
 
     return GridManager;

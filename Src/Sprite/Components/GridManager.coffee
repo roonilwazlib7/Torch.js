@@ -37,6 +37,7 @@ class GridManager
 
     Append: (sprite) ->
         sprite.Grid.parent = @sprite
+        sprite.drawIndex = @sprite.drawIndex + 1
 
     Parent: ->
         return @parent
@@ -76,10 +77,10 @@ class GridManager
 
     ApplyCentering: (point) ->
         if @centered
-            point.x = (point.x + @parent.Size.width / 2) - (@sprite.Size.width / 2)
+            point.x = (point.x + @parent.rectangle.width / 2) - (@sprite.rectangle.width / 2)
 
         if @centerVertical
-            point.y = (point.y + @parent.Size.height / 2) - (@sprite.Size.height / 2)
+            point.y = (point.y + @parent.rectangle.height / 2) - (@sprite.rectangle.height / 2)
 
         return point
 
@@ -87,11 +88,11 @@ class GridManager
         if @alignLeft
             point.x = 0
         if @alignRight
-            point.x = (point.x + @parent.Size.width) - @sprite.Size.width
+            point.x = point.x + (@parent.rectangle.width - @sprite.rectangle.width)
         if @alignTop
             point.y = 0
         if @alignBottom
-            point.y = (point.y + @parent.Size.height) - @sprite.Size.height
+            point.y = point.y + (@parent.rectangle.height - @sprite.rectangle.height)
 
         return point
 
@@ -99,7 +100,7 @@ class GridManager
         if @parent is null
             return @sprite.position
 
-        basePoint = @parent.position
+        basePoint = @parent.position.Clone()
 
         basePoint = @ApplyCentering(basePoint)
         basePoint = @ApplyAlignment(basePoint)
@@ -109,5 +110,7 @@ class GridManager
 
     Update: ->
         @sprite.position = @ResolveAbosolutePosition()
+        if @parent isnt null
+            @sprite.drawIndex = @parent.drawIndex + 1
 
 Torch.GridManager = GridManager

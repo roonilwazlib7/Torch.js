@@ -64,6 +64,7 @@ class Sprite
         @Size.Update()
         @Events.Update()
         @States.Update()
+        @Grid.Update()
 
         @rectangle.x = @position.x
         @rectangle.y = @position.y

@@ -74,6 +74,7 @@
       this.Size.Update();
       this.Events.Update();
       this.States.Update();
+      this.Grid.Update();
       this.rectangle.x = this.position.x;
       this.rectangle.y = this.position.y;
       return this.Collisions.Update();

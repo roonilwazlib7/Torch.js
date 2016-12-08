@@ -107,6 +107,13 @@ class Vector
 class Point
     constructor: (@x, @y, @z = 0) ->
 
+    Apply: (point) ->
+        @x += point.x
+        @y += point.y
+
+    Clone: ->
+        return new Point(@x, @y)
+
 Torch.Rectangle = Rectangle
 Torch.Vector = Vector
 Torch.Point = Point

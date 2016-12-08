@@ -152,6 +152,15 @@
       this.z = z != null ? z : 0;
     }
 
+    Point.prototype.Apply = function(point) {
+      this.x += point.x;
+      return this.y += point.y;
+    };
+
+    Point.prototype.Clone = function() {
+      return new Point(this.x, this.y);
+    };
+
     return Point;
 
   })();
