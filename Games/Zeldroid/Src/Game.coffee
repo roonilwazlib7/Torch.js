@@ -14,51 +14,39 @@ Load = (game) ->
     game.Load.Texture("Assets/Art/map/water.png", "water")
     game.Load.Texture("Assets/Art/map/branch.png", "branch")
     game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass")
+    game.Load.Texture("Assets/Art/map/bumps.png", "bumps")
+    game.Load.Texture("Assets/Art/particle.png", "particle")
     game.Load.File("Maps/test-map-2.map", "map")
 
 Init = (game) ->
-    game.Clear("#fcd8a8")
+    game.Clear("#FB8500")
     game.PixelScale()
     Torch.Scale = 4
     game.player = new Player(game)
     game.mapManager = new MapManager(game)
     game.hud = new HUD(game)
 
-    game.Keys.L.On "KeyDown", ->
-        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth)
-            .From({opacity: 1})
-            .To({opacity: 0})
-            .On "Finish", (event) -> alert("done")
-
-    game.Keys.P.On "KeyDown", ->
-        game.Tweens.Add(game.player, 1000, Torch.Easing.Smooth)
-            .From({rotation: 0})
-            .To({rotation: 2 * Math.PI})
-
-    game.Keys.K.On "KeyDown", ->
-        game.Tweens.Add(game.player.Size.scale, 1000, Torch.Easing.Smooth)
-            .From({width: 1, height: 1})
-            .To({width: 4, height: 4})
-
     game.Keys.I.On "KeyDown", ->
-        game.Tweens.All (t) -> t.Trash()
+        game.Tweens.Tween(game.Camera.position, 500, Torch.Easing.Smooth).To({x: -500})
+
+    emitter = game.Particles.ParticleEmitter 500, 500, 500, true, "particle",
+        spread: 20
+        gravity: 0.0001
+        minAngle: 0.2
+        maxAngle: 0.5
+        minScale: 4
+        maxScale: 6
+        minVelocity: 0.01
+        maxVelocity: 0.01
+        minAlphaDecay: 1000
+        maxAlphaDecay: 1500
+        minOmega: 0.001
+        maxOmega: 0.001
+    emitter.auto = false
 
     game.Keys.Z.On "KeyDown", ->
-        emitter = game.Particles.ParticleEmitter 500, 500, 1000, true, "bush",
-            spread: 20
-            gravity: 0.0001
-            minRadius: 1
-            maxRadius: 2
-            minAngle: 0
-            maxAngle: Math.PI * 2
-            minScale: 1
-            maxScale: 2
-            minVelocity: 0.3
-            maxVelocity: 0.3
-            minAlphaDecay: 1000
-            maxAlphaDecay: 1500
-            minOmega: 0.001
-            maxOmega: 0.002
+        emitter.EmitParticles()
+
 
     game.mapManager.LoadMap("map")
     game.debugCondole = new Torch.DebugConsole(game)

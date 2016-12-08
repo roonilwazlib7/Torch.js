@@ -1,5 +1,6 @@
 class ParticleEmitter extends Torch.Sprite
     particle: null
+    auto: true
     constructor: (@game, x, y, @interval, @loop, @particle, @config) ->
         @InitSprite(@game, x, y)
         @elapsedTime = 0
@@ -17,6 +18,7 @@ class ParticleEmitter extends Torch.Sprite
         particle = particle
 
     UpdateParticleEmitter: ->
+        return if not @auto
         @elapsedTime += @game.Loop.updateDelta
 
         if @elapsedTime >= @interval
@@ -35,8 +37,8 @@ class ParticleEmitter extends Torch.Sprite
         scale = Torch.RandomInRange(@config.minScale, @config.maxScale)
         alphaDecay = Torch.RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
         radius = Torch.RandomInRange(@config.minRadius, @config.maxRadius)
-        x = @position.x + radius * Math.cos( angle )
-        y = @position.y + radius * Math.cos( angle )
+        x = @position.x
+        y = @position.y
 
         if typeof @particle isnt "string"
             p = new @particle(@game, x, y)

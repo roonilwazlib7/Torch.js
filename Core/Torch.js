@@ -130,7 +130,7 @@
     }
 
     Torch.prototype.RandomInRange = function(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+      return Math.random() * (max - min + 1) + min;
     };
 
     Torch.prototype.Needs = function(key) {

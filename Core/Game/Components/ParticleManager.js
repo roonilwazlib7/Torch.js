@@ -9,6 +9,8 @@
 
     ParticleEmitter.prototype.particle = null;
 
+    ParticleEmitter.prototype.auto = true;
+
     function ParticleEmitter(game, x, y, interval1, loop, particle1, config1) {
       this.game = game;
       this.interval = interval1;
@@ -38,6 +40,9 @@
     };
 
     ParticleEmitter.prototype.UpdateParticleEmitter = function() {
+      if (!this.auto) {
+        return;
+      }
       this.elapsedTime += this.game.Loop.updateDelta;
       if (this.elapsedTime >= this.interval) {
         this.EmitParticles();
@@ -63,8 +68,8 @@
       scale = Torch.RandomInRange(this.config.minScale, this.config.maxScale);
       alphaDecay = Torch.RandomInRange(this.config.minAlphaDecay, this.config.maxAlphaDecay);
       radius = Torch.RandomInRange(this.config.minRadius, this.config.maxRadius);
-      x = this.position.x + radius * Math.cos(angle);
-      y = this.position.y + radius * Math.cos(angle);
+      x = this.position.x;
+      y = this.position.y;
       if (typeof this.particle !== "string") {
         p = new this.particle(this.game, x, y);
       } else {

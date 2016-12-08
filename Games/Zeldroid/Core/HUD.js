@@ -12,37 +12,8 @@
       this.hud_background.Size.Scale(1, 1);
       this.hud_background.DrawIndex(100);
       this.hud_background.Size.width = window.innerWidth;
-      this.hud_background.Size.height = this.Height(4);
-      this.hud_minimap_background = new Torch.Sprite(this.game, window.innerWidth / 20, window.innerHeight / 20);
-      this.hud_minimap_background.Bind.Texture("hud_minimap_background");
-      this.hud_minimap_background.DrawIndex(101);
-      this.hud_life_text = new Torch.Text(this.game, this.Width(1.2), this.Height(50), {
-        text: "LIFE",
-        color: "green",
-        fontSize: 36,
-        font: "Impact"
-      });
-      this.hud_life_text.DrawIndex(101);
-      this.hud_stress_text = new Torch.Text(this.game, this.Width(1.2), this.Height(7), {
-        text: "STRESS",
-        color: "purple",
-        fontSize: 36,
-        font: "Impact"
-      });
-      this.hud_stress_text.DrawIndex(101);
-      this.hud_life_bar = new Torch.Sprite(this.game, this.Width(1.2), this.Height(15));
-      this.hud_life_bar.Bind.Texture("hud_life_bar");
-      this.hud_life_bar.DrawIndex(101);
-      this.hud_stress_bar = new Torch.Sprite(this.game, this.Width(1.2), this.Height(5.5));
-      this.hud_stress_bar.Bind.Texture("hud_stress_bar");
-      this.hud_stress_bar.DrawIndex(101);
-      this.hud_slot_1_background = new Torch.Sprite(this.game, this.Width(2.5), this.Height(25));
-      this.hud_slot_1_background.Bind.Texture("hud_slot_1_background");
-      this.hud_slot_1_background.DrawIndex(101);
-      this.hud_slot_2_background = new Torch.Sprite(this.game, this.Width(2), this.Height(25));
-      this.hud_slot_2_background.Bind.Texture("hud_slot_2_background");
-      this.hud_slot_2_background.DrawIndex(101);
-      this.BindEvents();
+      this.hud_background.Size.height = this.Height(5);
+      this.hud_background.fixed = true;
     }
 
     HUD.Load = function(game) {
@@ -54,28 +25,7 @@
       return game.Load.Texture("Assets/Art/hud_slot_2_background.png", "hud_slot_2_background");
     };
 
-    HUD.prototype.BindEvents = function() {
-      this.game.Keys.E.On("KeyDown", (function(_this) {
-        return function() {
-          return _this.hud_slot_1_background.Opacity(0.5);
-        };
-      })(this));
-      this.game.Keys.E.On("KeyUp", (function(_this) {
-        return function() {
-          return _this.hud_slot_1_background.Opacity(1);
-        };
-      })(this));
-      this.game.Keys.R.On("KeyDown", (function(_this) {
-        return function() {
-          return _this.hud_slot_2_background.Opacity(0.5);
-        };
-      })(this));
-      return this.game.Keys.R.On("KeyUp", (function(_this) {
-        return function() {
-          return _this.hud_slot_2_background.Opacity(1);
-        };
-      })(this));
-    };
+    HUD.prototype.BindEvents = function() {};
 
     HUD.prototype.Width = function(scale) {
       if (scale == null) {

@@ -42,9 +42,15 @@ class LightGrass extends MapPiece
     textureId: "light-grass"
     identifier: 3
 
+class Bumps extends MapPiece
+    hardBlock: false
+    textureId: "bumps"
+    identifier: 4
+
 exports.MapPieces = {
     Bush: Bush,
     Water: Water,
     Branch: Branch,
-    LightGrass: LightGrass
+    LightGrass: LightGrass,
+    Bumps: Bumps
 }
