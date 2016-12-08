@@ -129,10 +129,10 @@
 
     GridManager.prototype.ApplyCentering = function(point) {
       if (this.centered) {
-        point.x = (point.x + this.parent.Width() / 2) - (this.sprite.Width() / 2);
+        point.x = (point.x + this.parent.Size.width / 2) - (this.sprite.Size.width / 2);
       }
       if (this.centerVertical) {
-        point.y = (point.y + this.parent.Height() / 2) - (this.sprite.Height() / 2);
+        point.y = (point.y + this.parent.Size.height / 2) - (this.sprite.Size.height / 2);
       }
       return point;
     };
@@ -142,13 +142,13 @@
         point.x = 0;
       }
       if (this.alignRight) {
-        point.x = (point.x + this.parent.Width()) - this.sprite.Width();
+        point.x = (point.x + this.parent.Size.width) - this.sprite.Size.width;
       }
       if (this.alignTop) {
         point.y = 0;
       }
       if (this.alignBottom) {
-        point.y = (point.y + this.parent.Height()) - this.sprite.Height();
+        point.y = (point.y + this.parent.Size.height) - this.sprite.Size.height;
       }
       return point;
     };
@@ -156,9 +156,9 @@
     GridManager.prototype.ResolveAbosolutePosition = function() {
       var basePoint;
       if (this.parent === null) {
-        return this.sprite.Position();
+        return this.sprite.position;
       }
-      basePoint = this.parent.Position();
+      basePoint = this.parent.position;
       basePoint = this.ApplyCentering(basePoint);
       basePoint = this.ApplyAlignment(basePoint);
       basePoint.Apply(this.position);
@@ -166,11 +166,13 @@
     };
 
     GridManager.prototype.Update = function() {
-      return this.sprite.Position(this.ResolveAbosolutePosition());
+      return this.sprite.position = this.ResolveAbosolutePosition();
     };
 
     return GridManager;
 
   })();
+
+  Torch.GridManager = GridManager;
 
 }).call(this);

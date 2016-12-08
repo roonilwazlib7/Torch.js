@@ -21,7 +21,6 @@
       this.movementStateMachine.State("idle", idleState);
       this.movementStateMachine.State("move", moveState);
       this.movementStateMachine.Switch("idle");
-      this.touching = {};
       this.drawIndex = 11;
       this.position.y = window.innerHeight - 100;
       this.SetUpCollisions();
@@ -48,7 +47,7 @@
       if (!event.collisionData.collider.hardBlock) {
         return;
       }
-      return this.touching = this.Collisions.SimpleCollisionHandle(event, 0.5);
+      return this.Collisions.SimpleCollisionHandle(event, 0.5);
     };
 
     return Player;

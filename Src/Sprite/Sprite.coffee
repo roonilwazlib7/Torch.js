@@ -25,6 +25,7 @@ class Sprite
         @Events = new Torch.EventManager(@)
         @Effects = new Torch.EffectManager(@)
         @States = new Torch.StateMachineManager(@)
+        @Grid = new Torch.GridManager(@)
 
         @DrawTexture = null
         @TexturePack = null

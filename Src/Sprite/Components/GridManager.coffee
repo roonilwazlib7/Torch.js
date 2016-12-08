@@ -76,10 +76,10 @@ class GridManager
 
     ApplyCentering: (point) ->
         if @centered
-            point.x = (point.x + @parent.Width() / 2) - (@sprite.Width() / 2)
+            point.x = (point.x + @parent.Size.width / 2) - (@sprite.Size.width / 2)
 
         if @centerVertical
-            point.y = (point.y + @parent.Height() / 2) - (@sprite.Height() / 2)
+            point.y = (point.y + @parent.Size.height / 2) - (@sprite.Size.height / 2)
 
         return point
 
@@ -87,19 +87,19 @@ class GridManager
         if @alignLeft
             point.x = 0
         if @alignRight
-            point.x = (point.x + @parent.Width()) - @sprite.Width()
+            point.x = (point.x + @parent.Size.width) - @sprite.Size.width
         if @alignTop
             point.y = 0
         if @alignBottom
-            point.y = (point.y + @parent.Height()) - @sprite.Height()
+            point.y = (point.y + @parent.Size.height) - @sprite.Size.height
 
         return point
 
     ResolveAbosolutePosition: ->
         if @parent is null
-            return @sprite.Position()
+            return @sprite.position
 
-        basePoint = @parent.Position()
+        basePoint = @parent.position
 
         basePoint = @ApplyCentering(basePoint)
         basePoint = @ApplyAlignment(basePoint)
@@ -108,4 +108,6 @@ class GridManager
         return basePoint;
 
     Update: ->
-        @sprite.Position(@ResolveAbosolutePosition())
+        @sprite.position = @ResolveAbosolutePosition()
+
+Torch.GridManager = GridManager

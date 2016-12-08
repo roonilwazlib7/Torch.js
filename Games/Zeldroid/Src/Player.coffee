@@ -12,7 +12,6 @@ class Player extends Torch.Sprite
         @movementStateMachine.State("move", moveState)
         @movementStateMachine.Switch("idle")
 
-        @touching = {}
         @drawIndex = 11
         @position.y = window.innerHeight - 100
 
@@ -31,8 +30,7 @@ class Player extends Torch.Sprite
 
     HandleCollision: (event) ->
         return if not event.collisionData.collider.hardBlock
-        @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
-        #@movementStateMachine.Switch("idle")
+        @Collisions.SimpleCollisionHandle(event, 0.5)
 
 
 
