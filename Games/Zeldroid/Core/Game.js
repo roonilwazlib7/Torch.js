@@ -18,7 +18,8 @@
     game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass");
     game.Load.Texture("Assets/Art/map/bumps.png", "bumps");
     game.Load.Texture("Assets/Art/particle.png", "particle");
-    return game.Load.File("Maps/test-map-2.map", "map");
+    game.Load.File("Maps/test-map-2.map", "map-1");
+    return game.Load.File("hud.xml", "hud-xml");
   };
 
   Init = function(game) {
@@ -29,6 +30,7 @@
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
+    game.hudGrid = new Torch.SpriteGrid(game, game.File("hud-xml"));
     game.Keys.I.On("KeyDown", function() {
       return game.Tweens.Tween(game.Camera.position, 500, Torch.Easing.Smooth).To({
         x: -500
@@ -52,7 +54,7 @@
     game.Keys.Z.On("KeyDown", function() {
       return emitter.EmitParticles();
     });
-    game.mapManager.LoadMap("map");
+    game.mapManager.LoadMap("map-1");
     game.debugCondole = new Torch.DebugConsole(game);
     return game.debugCondole.AddCommand("SPAWN", function(tConsole, x, y) {});
   };

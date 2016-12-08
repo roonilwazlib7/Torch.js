@@ -10,7 +10,7 @@ class Load
 
             GetSound: (id) ->return @game.Assets.Sounds[id].audio
 
-        @game.Files = []
+        @game.Files = {}
         @textures = @game.Assets.Textures = []
         @texturePacks = @game.Assets.TexturePacks = []
         @textureSheets = @game.Assets.TextureSheets = []
@@ -114,6 +114,7 @@ class Load
         @textureSheets[id] = sheet;
 
     File: (path, id) ->
+        console.log(id)
         @finish_stack++
         @Stack.push
             _torch_asset: "file"
@@ -199,9 +200,11 @@ class Load
                             # @game.FatalError(new Error("Torch.Load.File file '{0}' cannot be loaded, you must import Torch.Electron".format(path)))
                             # load with ajax instead
                             loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.Text)
-                            loader.Finish (data) =>
+                            loader.stackItem = stackItem
+                            loader.Finish (data, loader) =>
                                 @LoadItemFinished()
-                                @game.Files[stackItem.id] = data
+                                console.log(loader.stackItem.id)
+                                @game.Files[loader.stackItem.id] = data
                             loader.Load()
                         else
                             Torch.fs.readFile stackItem.path, 'utf8', (er, data) =>

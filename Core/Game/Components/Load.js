@@ -20,7 +20,7 @@
           return this.game.Assets.Sounds[id].audio;
         }
       };
-      this.game.Files = [];
+      this.game.Files = {};
       this.textures = this.game.Assets.Textures = [];
       this.texturePacks = this.game.Assets.TexturePacks = [];
       this.textureSheets = this.game.Assets.TextureSheets = [];
@@ -134,6 +134,7 @@
     };
 
     Load.prototype.File = function(path, id) {
+      console.log(id);
       this.finish_stack++;
       return this.Stack.push({
         _torch_asset: "file",
@@ -215,10 +216,12 @@
             case "file":
               if (!Torch.ELECTRON) {
                 loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.Text);
+                loader.stackItem = stackItem;
                 loader.Finish((function(_this) {
-                  return function(data) {
+                  return function(data, loader) {
                     _this.LoadItemFinished();
-                    return _this.game.Files[stackItem.id] = data;
+                    console.log(loader.stackItem.id);
+                    return _this.game.Files[loader.stackItem.id] = data;
                   };
                 })(this));
                 results.push(loader.Load());

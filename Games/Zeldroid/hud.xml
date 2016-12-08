@@ -1,11 +1,13 @@
 <!-- Torch Grid XML -->
-<Sprite texture = "hud_background">
+<SpriteGrid>
+    <Sprite texture = "hud_background">
 
-    <Sprite texture = "minimap_background" align = "right,bottom">
-        
-        <Sprite texture = "lifebar" center = "true" center-vertical = "true">
+        <Sprite texture = "minimap_background" align = "right,bottom">
+
+            <Sprite texture = "lifebar" center = "true" center-vertical = "true">
+            </Sprite>
+
         </Sprite>
 
     </Sprite>
-
-</Sprite>
+</SpriteGrid>

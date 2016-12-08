@@ -81,7 +81,7 @@
       request.responseType = this.responseType;
       request.onload = (function(_this) {
         return function() {
-          return _this.onFinish(request.response);
+          return _this.onFinish(request.response, _this);
         };
       })(this);
       return request.send();

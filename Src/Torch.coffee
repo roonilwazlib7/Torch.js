@@ -48,7 +48,7 @@ class AjaxLoader
         request.responseType = @responseType
 
         request.onload = =>
-            @onFinish(request.response)
+            @onFinish(request.response, @)
 
         request.send()
 

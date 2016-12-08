@@ -1,4 +1,4 @@
-Build: 456
+Build: 469
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -30,6 +30,7 @@ SourceMap: [
     "Sprite/Sprite.js"
     "Sprite/Text.js"
     "Sprite/SpriteGroup.js"
+    "Sprite/SpriteGrid.js"
     "Sprite/Colliders/Collider.js"
     "Sprite/Colliders/AABB.js"
     "Sprite/Colliders/Circle.js"
