@@ -2,6 +2,7 @@ class StateMachine
     constructor: (@obj) ->
         @currentState = null
         @states = {}
+        @game = @obj.game
 
     State: (stateName, stateObj) ->
         if stateObj is undefined
@@ -11,14 +12,16 @@ class StateMachine
             return @states[stateName]
 
         else
+            stateObj.stateMachine = @
+            stateObj.game = @game
             @states[stateName] = stateObj
 
-    Switch: (newState) ->
+    Switch: (newState, args...) ->
         if @currentState and @currentState.End isnt undefined
-            @currentState.End(@obj)
+            @currentState.End(@obj, args...)
 
         if @State(newState).Start isnt undefined
-            @State(newState).Start(@obj);
+            @State(newState).Start(@obj, args...);
 
         @currentState = @State(newState);
 

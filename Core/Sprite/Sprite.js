@@ -34,6 +34,7 @@
       this.Size = new Torch.Size(this);
       this.Events = new Torch.EventManager(this);
       this.Effects = new Torch.EffectManager(this);
+      this.States = new Torch.StateMachineManager(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
@@ -71,6 +72,7 @@
       this.Body.Update();
       this.Size.Update();
       this.Events.Update();
+      this.States.Update();
       this.rectangle.x = this.position.x;
       this.rectangle.y = this.position.y;
       return this.Collisions.Update();

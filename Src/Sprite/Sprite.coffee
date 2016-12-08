@@ -24,6 +24,7 @@ class Sprite
         @Size = new Torch.Size(@)
         @Events = new Torch.EventManager(@)
         @Effects = new Torch.EffectManager(@)
+        @States = new Torch.StateMachineManager(@)
 
         @DrawTexture = null
         @TexturePack = null
@@ -61,6 +62,7 @@ class Sprite
         @Body.Update()
         @Size.Update()
         @Events.Update()
+        @States.Update()
 
         @rectangle.x = @position.x
         @rectangle.y = @position.y

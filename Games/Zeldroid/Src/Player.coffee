@@ -4,20 +4,19 @@ class Player extends Torch.Sprite
     touching: null
     constructor: (game) ->
         @InitSprite(game, 0, 0)
-        @touching = {}
-        @Body.Debug()
         @Bind.Texture("player")
-        @drawIndex = 11
-
         @Center()
+
+        @movementStateMachine = @States.CreateStateMachine("Movement")
+        @movementStateMachine.State("idle", idleState)
+        @movementStateMachine.State("move", moveState)
+        @movementStateMachine.Switch("idle")
+
+        @touching = {}
+        @drawIndex = 11
         @position.y = window.innerHeight - 100
 
-        @Collisions.Monitor()
-        @On "Collision", (event) =>
-            return if not event.collisionData.collider.hardBlock
-            @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
-            @Body.Velocity("x", 0)
-            @Body.Velocity("y", 0)
+        @SetUpCollisions()
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/player.png", "player")
@@ -25,33 +24,47 @@ class Player extends Torch.Sprite
     Update: ->
         super()
 
-        @Movement()
+    SetUpCollisions: ->
+        @Collisions.Monitor()
+        @On "Collision", (event) =>
+            @HandleCollision(event)
 
-    Movement: ->
-        keys = @game.Keys
-        @Body.velocity.x = 0
-        @Body.velocity.y = 0
+    HandleCollision: (event) ->
+        return if not event.collisionData.collider.hardBlock
+        @touching = @Collisions.SimpleCollisionHandle(event, 0.5)
+        #@movementStateMachine.Switch("idle")
 
-        if not keys.A.down and not keys.S.down and not keys.W.down
-            if keys.D.down and @touching and not @touching.right
-                @Body.velocity.x = @VELOCITY
-            else @touching.right = false
 
-        else if not keys.D.down and not keys.S.down and not keys.W.down
-            if keys.A.down and @touching and not @touching.left
-                @Body.velocity.x = -@VELOCITY
-            else @touching.left = false
 
-        else if not keys.A.down and not keys.D.down and not keys.W.down
-            if keys.S.down and @touching and not @touching.bottom
-                @Body.velocity.y = @VELOCITY
-            else @touching.bottom = false
+idleState =
+    Execute: (player) ->
+        if @game.Keys.W.down
+            @stateMachine.Switch("move", "W", {x: 0, y: -1})
+        else if @game.Keys.S.down
+            @stateMachine.Switch("move", "S", {x: 0, y: 1})
+        else if @game.Keys.D.down
+            @stateMachine.Switch("move", "D", {x: 1, y: 0})
+        else if @game.Keys.A.down
+            @stateMachine.Switch("move", "A", {x: -1, y: 0})
 
-        else if not keys.A.down and not keys.S.down and not keys.D.down
-            if keys.W.down and @touching and not @touching.top
-                @Body.velocity.y = -@VELOCITY
-            else @touching.top = false
+    Start: (player) ->
+        player.Body.velocity.x = 0
+        player.Body.velocity.y = 0
 
+    End: (player) ->
+        # ...
+
+moveState =
+    Execute: (player) ->
+        if not @game.Keys[@triggerKey].down
+            @stateMachine.Switch("idle")
+
+    Start: (player, key, velocity) ->
+        player.Body.velocity.y = velocity.y * player.VELOCITY
+        player.Body.velocity.x = velocity.x * player.VELOCITY
+        @triggerKey = key
+
+    End: (player) ->
 
 
 
