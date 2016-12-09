@@ -1178,7 +1178,10 @@
       this.lastText = "";
       this.width = 100;
       this.height = 100;
-      this.Scale(1);
+      this.Size.scale = {
+        width: 1,
+        height: 1
+      };
       return this.Init();
     };
 
@@ -4456,4 +4459,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.62'
+Torch.version = '0.5.71'

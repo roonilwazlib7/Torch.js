@@ -7,6 +7,7 @@
   HUD = (function() {
     function HUD(game1) {
       this.game = game1;
+      this.build = JSON.parse(this.game.File("package"));
       this.hud_background = new Torch.Sprite(this.game, 0, 0);
       this.hud_background.Bind.Texture("hud_background");
       this.hud_background.Size.Scale(1, 1);
@@ -14,15 +15,11 @@
       this.hud_background.Size.width = window.innerWidth;
       this.hud_background.Size.height = this.Height(5);
       this.hud_background.fixed = true;
-      this.minimap = new Torch.Sprite(this.game, 0, 0);
-      this.minimap.Bind.Texture("hud_minimap_background");
-      this.minimap.Grid.Align("bottom", "right");
-      this.lifebar = new Torch.Sprite(this.game, 0, 0);
-      this.lifebar.Bind.Texture("hud_life_bar");
-      this.lifebar.Grid.Center();
-      this.lifebar.Grid.CenterVertical();
-      this.minimap.Grid.Append(this.lifebar);
-      this.hud_background.Grid.Append(this.minimap);
+      this.build_info = new Torch.Text(this.game, 0, 0, {
+        text: "Zeldroid-dev-build:" + this.build.GameConfig.Build,
+        color: "red"
+      });
+      this.hud_background.Grid.Append(this.build_info);
     }
 
     HUD.Load = function(game) {

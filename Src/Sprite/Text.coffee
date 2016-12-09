@@ -20,7 +20,7 @@ class Text extends Torch.Sprite
         @lastText = ""
         @width = 100
         @height = 100
-        @Scale(1)
+        @Size.scale = {width: 1, height: 1}
         @Init()
 
     Init: ->

@@ -18,6 +18,7 @@ Load = (game) ->
     game.Load.Texture("Assets/Art/particle.png", "particle")
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("hud.xml", "hud-xml")
+    game.Load.File("package.json", "package")
 
 Init = (game) ->
     game.Clear("#FB8500")

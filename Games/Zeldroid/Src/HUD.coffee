@@ -1,6 +1,7 @@
 exports = this
 class HUD
     constructor: (@game) ->
+        @build = JSON.parse(@game.File("package"))
         @hud_background = new Torch.Sprite(@game, 0, 0)
         @hud_background.Bind.Texture("hud_background")
         @hud_background.Size.Scale(1,1)
@@ -9,17 +10,12 @@ class HUD
         @hud_background.Size.height = @Height(5)
         @hud_background.fixed = true
 
-        @minimap = new Torch.Sprite(@game, 0, 0)
-        @minimap.Bind.Texture("hud_minimap_background")
-        @minimap.Grid.Align("bottom", "right")
+        @build_info = new Torch.Text @game, 0, 0,
+            text: "Zeldroid-dev-build:#{@build.GameConfig.Build}"
+            color: "red"
 
-        @lifebar = new Torch.Sprite(@game, 0, 0)
-        @lifebar.Bind.Texture("hud_life_bar")
-        @lifebar.Grid.Center()
-        @lifebar.Grid.CenterVertical()
 
-        @minimap.Grid.Append(@lifebar)
-        @hud_background.Grid.Append(@minimap)
+        @hud_background.Grid.Append(@build_info)
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
