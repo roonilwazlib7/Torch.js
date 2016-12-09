@@ -5,6 +5,7 @@
   Body = (function() {
     function Body(sprite) {
       this.sprite = sprite;
+      Torch.Assert(this.sprite !== null && this.sprite.__torch__ === Torch.Types.Sprite);
       this.game = this.sprite.game;
       this.velocity = new Torch.Vector(0, 0);
       this.acceleration = new Torch.Vector(0, 0);
@@ -18,16 +19,6 @@
       this.velocity.x += this.acceleration.x * this.game.Loop.updateDelta;
       this.velocity.y += this.acceleration.y * this.game.Loop.updateDelta;
       return this.sprite.rotation += this.omega * this.game.Loop.updateDelta;
-    };
-
-    Body.prototype.Velocity = function(plane, velocity) {
-      this.velocity[plane] = velocity;
-      return this;
-    };
-
-    Body.prototype.Acceleration = function(plane, acceleration) {
-      this.acceleration[plane] = acceleration;
-      return this;
     };
 
     Body.prototype.Debug = function(turnOn) {

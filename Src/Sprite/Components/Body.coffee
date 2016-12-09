@@ -1,5 +1,8 @@
 class Body
     constructor: (@sprite)->
+
+        Torch.Assert(@sprite isnt null and @sprite.__torch__ is Torch.Types.Sprite)
+
         @game = @sprite.game
         @velocity = new Torch.Vector(0,0)
         @acceleration = new Torch.Vector(0,0)
@@ -14,14 +17,6 @@ class Body
         @velocity.y += @acceleration.y * @game.Loop.updateDelta
 
         @sprite.rotation += @omega * @game.Loop.updateDelta
-
-    Velocity: (plane, velocity) ->
-        @velocity[plane] = velocity
-        return @
-
-    Acceleration: (plane, acceleration) ->
-        @acceleration[plane] = acceleration
-        return @
 
     Debug: (turnOn = true) ->
         @DEBUG = turnOn
