@@ -52,6 +52,15 @@ Init = (game) ->
 
     game.mapManager.LoadMap("map-1")
     game.debugCondole = new Torch.DebugConsole(game)
+    game.debugCondole.AddCommand "SPAWN", (tConsole, piece, x, y) ->
+        p = new MapPieces[piece](game, ["0", "0"])
+        p.position.x = parseInt(x)
+        p.position.y = parseInt(y)
+
+        tConsole.game.Tweens.Tween(p, 500, Torch.Easing.Smooth).From({opacity: 0}).To({opacity: 1})
+
+        console.log(p)
+
     game.debugCondole.AddCommand "UCAM", (tConsole) ->
         camVelocity = 1
         task =

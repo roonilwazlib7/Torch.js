@@ -56,6 +56,18 @@
     });
     game.mapManager.LoadMap("map-1");
     game.debugCondole = new Torch.DebugConsole(game);
+    game.debugCondole.AddCommand("SPAWN", function(tConsole, piece, x, y) {
+      var p;
+      p = new MapPieces[piece](game, ["0", "0"]);
+      p.position.x = parseInt(x);
+      p.position.y = parseInt(y);
+      tConsole.game.Tweens.Tween(p, 500, Torch.Easing.Smooth).From({
+        opacity: 0
+      }).To({
+        opacity: 1
+      });
+      return console.log(p);
+    });
     return game.debugCondole.AddCommand("UCAM", function(tConsole) {
       var camVelocity, task;
       camVelocity = 1;
