@@ -1,4 +1,4 @@
-Build: 35
+Build: 36
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -15,7 +15,7 @@ SourceMap: [
     "Mixins/Trashable.js"
     "Torch.js"
     "DebugConsole.js"
-    "Sprite/Components/Body.js"
+    "Sprite/Components/BodyManager.js"
     "Sprite/Components/SizeManager.js"
     "Sprite/Components/EventManager.js"
     "Sprite/Components/EffectManager.js"

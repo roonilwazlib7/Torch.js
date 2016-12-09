@@ -1,4 +1,4 @@
-class Body
+class BodyManager
     constructor: (@sprite)->
 
         Torch.Assert(@sprite isnt null and @sprite.__torch__ is Torch.Types.Sprite)
@@ -36,4 +36,4 @@ class Body
         vec.Normalize()
         return vec
 
-Torch.Body = Body
+Torch.Body = BodyManager
