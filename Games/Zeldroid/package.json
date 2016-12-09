@@ -10,7 +10,7 @@
     "description": "",
     "GameConfig": {
         "Map": false,
-        "Build": 455,
+        "Build": 456,
         "BuildMinor": 0,
         "BuildMajor": 0
     }
