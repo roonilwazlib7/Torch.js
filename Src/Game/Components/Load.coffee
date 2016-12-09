@@ -143,7 +143,6 @@ class Load
             console.log("%c#{@game.name} loaded in #{timeToLoad}s", "background-color:green; color:white; padding:2px;padding-right:5px;padding-left:5px")
 
     Load: (finishFunction) ->
-        textureLoader = new THREE.TextureLoader()
         @loadFinished = finishFunction
         @totalLoad = @finish_stack
         @startTime = new Date().getTime()
@@ -169,11 +168,6 @@ class Load
                             this.loader.textures[this.stackItem.id].width = this.width
                             this.loader.textures[this.stackItem.id].height = this.height
 
-                            texture = textureLoader.load(this.src)
-                            texture.magFilter = THREE.NearestFilter
-                            texture.minFilter = THREE.LinearMipMapLinearFilter
-
-                            this.loader.textures[this.stackItem.id].gl_texture = texture
                             this.loader.LoadItemFinished()
 
                     when "sound"

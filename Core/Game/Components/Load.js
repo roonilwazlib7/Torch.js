@@ -159,8 +159,7 @@
     };
 
     Load.prototype.Load = function(finishFunction) {
-      var aud, e, error, im, k, len, loader, ref, results, stackItem, textureLoader;
-      textureLoader = new THREE.TextureLoader();
+      var aud, e, error, im, k, len, loader, ref, results, stackItem;
       this.loadFinished = finishFunction;
       this.totalLoad = this.finish_stack;
       this.startTime = new Date().getTime();
@@ -179,13 +178,8 @@
               im.stackItem = stackItem;
               im.loader = this;
               results.push(im.onload = function() {
-                var texture;
                 this.loader.textures[this.stackItem.id].width = this.width;
                 this.loader.textures[this.stackItem.id].height = this.height;
-                texture = textureLoader.load(this.src);
-                texture.magFilter = THREE.NearestFilter;
-                texture.minFilter = THREE.LinearMipMapLinearFilter;
-                this.loader.textures[this.stackItem.id].gl_texture = texture;
                 return this.loader.LoadItemFinished();
               });
               break;

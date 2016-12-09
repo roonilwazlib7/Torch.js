@@ -1,4 +1,4 @@
-Build: 469
+Build: 474
 BuildMinor: 4
 BuildMajor: 0
 TestGame:
@@ -10,17 +10,11 @@ NeedsWork: [
     "Torch.Particles.js"
 ]
 SourceMap: [
-    "three/three.min.js"
-    "pixl/pixl.js"
-    "math/math.js"
     "Mixins/Natives.js"
     "Mixins/EventDispatcher.js"
     "Mixins/Trashable.js"
     "Torch.js"
     "DebugConsole.js"
-    "Three/ThreeEntity.js"
-    "Three/ThreeSprite.js"
-    "Three/Lights.js"
     "Sprite/Components/Body.js"
     "Sprite/Components/Size.js"
     "Sprite/Components/EventManager.js"

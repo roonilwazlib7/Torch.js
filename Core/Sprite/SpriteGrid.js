@@ -10,21 +10,14 @@
     }
 
     SpriteGrid.prototype.ParseXml = function() {
-      var i, len, parser, results, root, sprite, sprites, xmlDoc;
+      var parser, root, sprites, xmlDoc;
       parser = new DOMParser();
       xmlDoc = parser.parseFromString(this.gridXml, "text/xml");
       root = xmlDoc.getElementsByTagName("SpriteGrid")[0];
       if (root === null) {
         this.game.FatalError("Unable to parse SpriteGrid XML, no SpriteGrid tag");
       }
-      sprites = root.getElementsByTagName("Sprite");
-      window.nnodes = sprites;
-      results = [];
-      for (i = 0, len = sprites.length; i < len; i++) {
-        sprite = sprites[i];
-        results.push(console.log(sprite.parentNode));
-      }
-      return results;
+      return sprites = root.getElementsByTagName("Sprite");
     };
 
     return SpriteGrid;

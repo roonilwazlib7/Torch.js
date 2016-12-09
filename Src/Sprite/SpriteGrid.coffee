@@ -13,7 +13,7 @@ class SpriteGrid
 
         sprites = root.getElementsByTagName("Sprite")
 
-        for sprite in sprites
+        #for sprite in sprites
             # TODO make stuff happen here
 
 Torch.SpriteGrid = SpriteGrid
