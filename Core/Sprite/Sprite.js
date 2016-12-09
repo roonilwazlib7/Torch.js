@@ -99,27 +99,6 @@
       return otherSprite._torch_uid !== this._torch_uid;
     };
 
-    Sprite.prototype.GetDirectionVector = function(otherSprite) {
-      var vec;
-      vec = new Torch.Vector(otherSprite.Rectangle.x - this.position.x, otherSprite.Rectangle.y - this.position.y);
-      vec.Normalize();
-      return vec;
-    };
-
-    Sprite.prototype.GetDistance = function(otherSprite) {
-      var otherVec, thisVec;
-      thisVec = new Torch.Vector(this.position.x, this.position.y);
-      otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y);
-      return thisVec.GetDistance(otherVec);
-    };
-
-    Sprite.prototype.GetAngle = function(otherSprite) {
-      var angle, directionVector;
-      directionVector = this.GetDirectionVector(otherSprite);
-      angle = Math.atan2(directionVector.y, directionVector.x);
-      return angle + (Math.PI + (Math.PI / 2));
-    };
-
     Sprite.prototype.Center = function() {
       var width, x;
       width = this.game.canvasNode.width;

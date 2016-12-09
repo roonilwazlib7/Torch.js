@@ -28,6 +28,27 @@
       return this.DEBUG = turnOn;
     };
 
+    Body.prototype.AngleTo = function(otherSprite) {
+      var directionVector;
+      directionVector = this.DirectionTo(otherSprite);
+      return directionVector.angle;
+    };
+
+    Body.prototype.DistanceTo = function(otherSprite) {
+      var otherVec, thisVec;
+      thisVec = new Torch.Vector(this.sprite.position.x, this.sprite.position.y);
+      otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y);
+      otherVec.SubtractVector(thisVec);
+      return otherVec.magnitude;
+    };
+
+    Body.prototype.DirectionTo = function(otherSprite) {
+      var vec;
+      vec = new Torch.Vector(otherSprite.position.x - this.sprite.position.x, otherSprite.position.y - this.sprite.position.y);
+      vec.Normalize();
+      return vec;
+    };
+
     return Body;
 
   })();

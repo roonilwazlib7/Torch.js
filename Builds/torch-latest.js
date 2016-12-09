@@ -583,6 +583,27 @@
       return this.DEBUG = turnOn;
     };
 
+    Body.prototype.AngleTo = function(otherSprite) {
+      var directionVector;
+      directionVector = this.DirectionTo(otherSprite);
+      return directionVector.angle;
+    };
+
+    Body.prototype.DistanceTo = function(otherSprite) {
+      var otherVec, thisVec;
+      thisVec = new Torch.Vector(this.sprite.position.x, this.sprite.position.y);
+      otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y);
+      otherVec.SubtractVector(thisVec);
+      return otherVec.magnitude;
+    };
+
+    Body.prototype.DirectionTo = function(otherSprite) {
+      var vec;
+      vec = new Torch.Vector(otherSprite.position.x - this.sprite.position.x, otherSprite.position.y - this.sprite.position.y);
+      vec.Normalize();
+      return vec;
+    };
+
     return Body;
 
   })();
@@ -1076,27 +1097,6 @@
 
     Sprite.prototype.NotSelf = function(otherSprite) {
       return otherSprite._torch_uid !== this._torch_uid;
-    };
-
-    Sprite.prototype.GetDirectionVector = function(otherSprite) {
-      var vec;
-      vec = new Torch.Vector(otherSprite.Rectangle.x - this.position.x, otherSprite.Rectangle.y - this.position.y);
-      vec.Normalize();
-      return vec;
-    };
-
-    Sprite.prototype.GetDistance = function(otherSprite) {
-      var otherVec, thisVec;
-      thisVec = new Torch.Vector(this.position.x, this.position.y);
-      otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y);
-      return thisVec.GetDistance(otherVec);
-    };
-
-    Sprite.prototype.GetAngle = function(otherSprite) {
-      var angle, directionVector;
-      directionVector = this.GetDirectionVector(otherSprite);
-      angle = Math.atan2(directionVector.y, directionVector.x);
-      return angle + (Math.PI + (Math.PI / 2));
     };
 
     Sprite.prototype.Center = function() {
@@ -4457,4 +4457,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.30'
+Torch.version = '0.5.31'

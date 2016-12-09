@@ -21,5 +21,19 @@ class Body
     Debug: (turnOn = true) ->
         @DEBUG = turnOn
 
+    AngleTo: (otherSprite) ->
+        directionVector = @DirectionTo(otherSprite)
+        return directionVector.angle
+
+    DistanceTo: (otherSprite) ->
+        thisVec = new Torch.Vector(@sprite.position.x, @sprite.position.y)
+        otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y)
+        otherVec.SubtractVector(thisVec)
+        return otherVec.magnitude
+
+    DirectionTo: (otherSprite) ->
+        vec = new Torch.Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
+        vec.Normalize()
+        return vec
 
 Torch.Body = Body

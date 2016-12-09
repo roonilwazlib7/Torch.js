@@ -83,21 +83,6 @@ class Sprite
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
-    GetDirectionVector: (otherSprite) ->
-        vec = new Torch.Vector( (otherSprite.Rectangle.x - @position.x), (otherSprite.Rectangle.y - @position.y) )
-        vec.Normalize()
-        return vec
-
-    GetDistance: (otherSprite) ->
-        thisVec = new Torch.Vector(@position.x, @position.y)
-        otherVec = new Torch.Vector(otherSprite.rectangle.x, otherSprite.rectangle.y)
-        return thisVec.GetDistance(otherVec)
-
-    GetAngle: (otherSprite) ->
-        directionVector = @GetDirectionVector(otherSprite)
-        angle = Math.atan2(directionVector.y, directionVector.x)
-        return angle + (Math.PI + (Math.PI/2) )
-
     Center: ->
         width = @game.canvasNode.width
         x = (width / 2) - (@rectangle.width/2)
