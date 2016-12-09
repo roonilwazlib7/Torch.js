@@ -30,6 +30,7 @@ class Sprite
         @DrawTexture = null
         @TexturePack = null
         @TextureSheet = null
+        @TextureSimple = null
 
         @fixed = false
         @draw = true
@@ -42,22 +43,9 @@ class Sprite
         @_torch_uid = ""
 
         @events = {}
-        @tasks = {}
-        @children = []
-        @stateMachines = []
-        if not @GL then @renderer = new CanvasRenderer(@)
+        @renderer = new CanvasRenderer(@)
 
         game.Add(@)
-
-    Fixed: (tog) ->
-        if tog isnt undefined
-            if @fixed
-                @fixed = false
-            else
-                @fixed = true
-        else
-            @fixed = tog
-        return @
 
     UpdateSprite: ->
         @Body.Update()
@@ -70,73 +58,6 @@ class Sprite
         @rectangle.y = @position.y
 
         @Collisions.Update() # this needs to be after the rectangle thing, God knows why
-
-    UpdateEvents: ->
-        if not @game.Mouse.GetRectangle(@game).Intersects(@rectangle) and @mouseOver
-            @mouseOver = false
-            @Emit("MouseLeave", new Torch.Event(@game, {sprite: @}))
-
-        if @game.Mouse.GetRectangle(@game).Intersects(@rectangle)
-            if not @mouseOver
-                @Emit("MouseOver", new Torch.Event(@game, {sprite: @}))
-            @mouseOver = true
-
-        else if @fixed
-            mouseRec = @game.Mouse.GetRectangle()
-            reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
-            reComputedMouseRec.x += @game.Viewport.x
-            reComputedMouseRec.y += @game.Viewport.y
-            if reComputedMouseRec.Intersects(@rectangle)
-                @mouseOver = true
-            else
-                @mouseOver = false
-        else
-            @mouseOver = false
-
-        if @mouseOver and @game.Mouse.down and not @clickTrigger
-            @clickTrigger = true
-
-        if @clickTrigger and not @game.Mouse.down and @mouseOver
-            @wasClicked = true
-
-            @Emit("Click",new Torch.Event(@game, {sprite: @}))
-
-            @clickTrigger = false
-
-        if @clickTrigger and not @game.Mouse.down and not @mouseOver
-            @clickTrigger = false
-
-        if not @game.Mouse.down and not @mouseOver and @clickAwayTrigger
-            @Emit("ClickAway", new Torch.Event(@game, {sprite: @}))
-            @wasClicked = false
-            @clickAwayTrigger = false
-
-        else if @clickTrigger and not @game.Mouse.down and @mouseOver
-            @clickAwayTrigger = false
-
-        else if @game.Mouse.down and not @mouseOver
-            @clickAwayTrigger = true
-
-        if not @rectangle.Intersects(@game.BoundRec)
-            @Emit("OutOfBounds", new Torch.Event(@game, {sprite: @}))
-
-    UpdateGLEntities: ->
-        return if not @GL
-        # send all graphics-related information to
-        # the corresponding three.js mesh being rendered
-
-        # we should have something like this: @Three.Update()
-
-        transform = @GetThreeTransform()
-        if @GL and @gl_three_sprite
-            @Three().Position("x",  transform.x )
-                    .Position("y", transform.y)
-                    .Position("z", @rectangle.z)
-                    .Rotation(@rotation)
-                    .DrawIndex(@drawIndex)
-                    .Opacity(@opacity)
-                    .Width( @Width() )
-                    .Height( @Height() )
 
     Update: ->
         @UpdateSprite()
@@ -154,14 +75,6 @@ class Sprite
     Draw: ->
         if @renderer isnt null
             @renderer.Draw()
-
-    Hide: ->
-        @draw = false
-        return @
-
-    Show: ->
-        @draw = true
-        return @
 
     Clone: (x,y) ->
         proto = @constructor
@@ -199,25 +112,8 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new Torch.Collider.CollisionDetector(@, otherSprite)
-
-    Attatch: (otherItem) ->
-        @children.push(otherItem)
-        @game.Add(otherItem)
-
-    GetThreeTransform: () ->
-        point = @game.GetThreeTransform( ( @Position("x") + @Width() / 2 ), ( @Position("y") + @Height() / 2) )
-        point.x -= @Width() / 4
-        return point
 ###
-    @class Torch.GhostSprite @extends Torch.Sprite
-    @author roonilwazlib
-
-    @abstract
-
-    @description
-        DEPRECATED. Use Torch.Task instead
-        Used to create an 'invisible' sprite, i.e a sprite that is
-        updated and not drawn.
+gonna kill this...
 ###
 class GhostSprite extends Sprite
     GHOST_SPRITE: true

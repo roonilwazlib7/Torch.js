@@ -39,6 +39,7 @@
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
+      this.TextureSimple = null;
       this.fixed = false;
       this.draw = true;
       this.drawIndex = 0;
@@ -47,26 +48,8 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
-      this.tasks = {};
-      this.children = [];
-      this.stateMachines = [];
-      if (!this.GL) {
-        this.renderer = new CanvasRenderer(this);
-      }
+      this.renderer = new CanvasRenderer(this);
       return game.Add(this);
-    };
-
-    Sprite.prototype.Fixed = function(tog) {
-      if (tog !== void 0) {
-        if (this.fixed) {
-          this.fixed = false;
-        } else {
-          this.fixed = true;
-        }
-      } else {
-        this.fixed = tog;
-      }
-      return this;
     };
 
     Sprite.prototype.UpdateSprite = function() {
@@ -78,76 +61,6 @@
       this.rectangle.x = this.position.x;
       this.rectangle.y = this.position.y;
       return this.Collisions.Update();
-    };
-
-    Sprite.prototype.UpdateEvents = function() {
-      var mouseRec, reComputedMouseRec;
-      if (!this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle) && this.mouseOver) {
-        this.mouseOver = false;
-        this.Emit("MouseLeave", new Torch.Event(this.game, {
-          sprite: this
-        }));
-      }
-      if (this.game.Mouse.GetRectangle(this.game).Intersects(this.rectangle)) {
-        if (!this.mouseOver) {
-          this.Emit("MouseOver", new Torch.Event(this.game, {
-            sprite: this
-          }));
-        }
-        this.mouseOver = true;
-      } else if (this.fixed) {
-        mouseRec = this.game.Mouse.GetRectangle();
-        reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
-        reComputedMouseRec.x += this.game.Viewport.x;
-        reComputedMouseRec.y += this.game.Viewport.y;
-        if (reComputedMouseRec.Intersects(this.rectangle)) {
-          this.mouseOver = true;
-        } else {
-          this.mouseOver = false;
-        }
-      } else {
-        this.mouseOver = false;
-      }
-      if (this.mouseOver && this.game.Mouse.down && !this.clickTrigger) {
-        this.clickTrigger = true;
-      }
-      if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
-        this.wasClicked = true;
-        this.Emit("Click", new Torch.Event(this.game, {
-          sprite: this
-        }));
-        this.clickTrigger = false;
-      }
-      if (this.clickTrigger && !this.game.Mouse.down && !this.mouseOver) {
-        this.clickTrigger = false;
-      }
-      if (!this.game.Mouse.down && !this.mouseOver && this.clickAwayTrigger) {
-        this.Emit("ClickAway", new Torch.Event(this.game, {
-          sprite: this
-        }));
-        this.wasClicked = false;
-        this.clickAwayTrigger = false;
-      } else if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
-        this.clickAwayTrigger = false;
-      } else if (this.game.Mouse.down && !this.mouseOver) {
-        this.clickAwayTrigger = true;
-      }
-      if (!this.rectangle.Intersects(this.game.BoundRec)) {
-        return this.Emit("OutOfBounds", new Torch.Event(this.game, {
-          sprite: this
-        }));
-      }
-    };
-
-    Sprite.prototype.UpdateGLEntities = function() {
-      var transform;
-      if (!this.GL) {
-        return;
-      }
-      transform = this.GetThreeTransform();
-      if (this.GL && this.gl_three_sprite) {
-        return this.Three().Position("x", transform.x).Position("y", transform.y).Position("z", this.rectangle.z).Rotation(this.rotation).DrawIndex(this.drawIndex).Opacity(this.opacity).Width(this.Width()).Height(this.Height());
-      }
     };
 
     Sprite.prototype.Update = function() {
@@ -168,16 +81,6 @@
       if (this.renderer !== null) {
         return this.renderer.Draw();
       }
-    };
-
-    Sprite.prototype.Hide = function() {
-      this.draw = false;
-      return this;
-    };
-
-    Sprite.prototype.Show = function() {
-      this.draw = true;
-      return this;
     };
 
     Sprite.prototype.Clone = function(x, y) {
@@ -231,33 +134,13 @@
       return new Torch.Collider.CollisionDetector(this, otherSprite);
     };
 
-    Sprite.prototype.Attatch = function(otherItem) {
-      this.children.push(otherItem);
-      return this.game.Add(otherItem);
-    };
-
-    Sprite.prototype.GetThreeTransform = function() {
-      var point;
-      point = this.game.GetThreeTransform(this.Position("x") + this.Width() / 2, this.Position("y") + this.Height() / 2);
-      point.x -= this.Width() / 4;
-      return point;
-    };
-
     return Sprite;
 
   })();
 
 
   /*
-      @class Torch.GhostSprite @extends Torch.Sprite
-      @author roonilwazlib
-  
-      @abstract
-  
-      @description
-          DEPRECATED. Use Torch.Task instead
-          Used to create an 'invisible' sprite, i.e a sprite that is
-          updated and not drawn.
+  gonna kill this...
    */
 
   GhostSprite = (function(superClass) {
