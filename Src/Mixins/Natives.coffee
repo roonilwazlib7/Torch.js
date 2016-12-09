@@ -20,3 +20,7 @@ String::capitalize = ->
 
 String::unCapitalize = ->
     return this.charAt(0).toLowerCase() + this.slice(1)
+
+Object::Merge = (obj)->
+    for key,value of obj
+        this[key] = value
