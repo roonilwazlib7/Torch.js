@@ -18,8 +18,10 @@
       drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
       this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
       cameraTransform = new Torch.Point(0, 0);
-      drawRec.x += this.game.Camera.position.x;
-      drawRec.y += this.game.Camera.position.y;
+      if (!this.sprite.fixed) {
+        drawRec.x += this.game.Camera.position.x;
+        drawRec.y += this.game.Camera.position.y;
+      }
       if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
         this.PreRender(drawRec);
