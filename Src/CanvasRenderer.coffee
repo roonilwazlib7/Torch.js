@@ -11,7 +11,7 @@ class CanvasRenderer
         drawRec.y = ( @sprite.position.y - @previousPosition.y ) * @game.Loop.lagOffset + @previousPosition.y
         @previousPosition = new Torch.Point(@sprite.position.x, @sprite.position.y)
 
-        cameraTransform = new Torch.Point(0,0) # @game.Camera.Position()
+        cameraTransform = new Torch.Point(0,0)
 
         if not @sprite.fixed
             drawRec.x += @game.Camera.position.x

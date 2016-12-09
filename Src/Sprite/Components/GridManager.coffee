@@ -14,9 +14,6 @@ class GridManager
         @position = new Torch.Point(0,0)
         @children = []
 
-    Position: () ->
-        # same as sprite
-
     Align: (positionTags...) ->
         for tag in positionTags
             switch tag
@@ -38,6 +35,7 @@ class GridManager
     Append: (sprite) ->
         sprite.Grid.parent = @sprite
         sprite.drawIndex = @sprite.drawIndex + 1
+        sprite.fixed = @sprite.fixed
 
     Parent: ->
         return @parent
@@ -112,5 +110,6 @@ class GridManager
         @sprite.position = @ResolveAbosolutePosition()
         if @parent isnt null
             @sprite.drawIndex = @parent.drawIndex + 1
+            @sprite.fixed = @parent.fixed
 
 Torch.GridManager = GridManager

@@ -26,8 +26,6 @@
       this.children = [];
     }
 
-    GridManager.prototype.Position = function() {};
-
     GridManager.prototype.Align = function() {
       var i, len, positionTags, results, tag;
       positionTags = 1 <= arguments.length ? slice.call(arguments, 0) : [];
@@ -70,7 +68,8 @@
 
     GridManager.prototype.Append = function(sprite) {
       sprite.Grid.parent = this.sprite;
-      return sprite.drawIndex = this.sprite.drawIndex + 1;
+      sprite.drawIndex = this.sprite.drawIndex + 1;
+      return sprite.fixed = this.sprite.fixed;
     };
 
     GridManager.prototype.Parent = function() {
@@ -169,7 +168,8 @@
     GridManager.prototype.Update = function() {
       this.sprite.position = this.ResolveAbosolutePosition();
       if (this.parent !== null) {
-        return this.sprite.drawIndex = this.parent.drawIndex + 1;
+        this.sprite.drawIndex = this.parent.drawIndex + 1;
+        return this.sprite.fixed = this.parent.fixed;
       }
     };
 
