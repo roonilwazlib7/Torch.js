@@ -1,4 +1,4 @@
-Build: 10
+Build: 11
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -25,11 +25,11 @@ SourceMap: [
     "Sprite/Text.js"
     "Sprite/SpriteGroup.js"
     "Sprite/SpriteGrid.js"
-    "Sprite/Colliders/Collider.js"
-    "Sprite/Colliders/AABB.js"
-    "Sprite/Colliders/Circle.js"
-    "Sprite/Colliders/SAT.js"
-    "Sprite/Colliders/CollisionManager.js"
+    "Sprite/Components/Collision/Collider.js"
+    "Sprite/Components/Collision/AABB.js"
+    "Sprite/Components/Collision/Circle.js"
+    "Sprite/Components/Collision/SAT.js"
+    "Sprite/Components/Collision/CollisionManager.js"
     "Game/Components/Loop.js"
     "Game/Components/Load.js"
     "Game/Components/Viewport.js"
