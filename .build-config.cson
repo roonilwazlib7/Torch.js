@@ -1,4 +1,4 @@
-Build: 33
+Build: 35
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -16,7 +16,7 @@ SourceMap: [
     "Torch.js"
     "DebugConsole.js"
     "Sprite/Components/Body.js"
-    "Sprite/Components/Size.js"
+    "Sprite/Components/SizeManager.js"
     "Sprite/Components/EventManager.js"
     "Sprite/Components/EffectManager.js"
     "Sprite/Components/StateMachineManager.js"

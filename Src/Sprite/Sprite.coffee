@@ -20,7 +20,7 @@ class Sprite
         @Bind = new Torch.Bind(@)
         @Collisions = new Torch.CollisionManager(@)
         @Body = new Torch.Body(@)
-        @Size = new Torch.Size(@)
+        @Size = new Torch.SizeManager(@)
         @Events = new Torch.EventManager(@)
         @Effects = new Torch.EffectManager(@)
         @States = new Torch.StateMachineManager(@)

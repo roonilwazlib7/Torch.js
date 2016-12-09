@@ -1,4 +1,4 @@
-class Size
+class SizeManager
     width: 0
     height: 0
     scale: null
@@ -23,4 +23,4 @@ class Size
         @scale.width = widthScale
         @scale.height = heightScale
 
-Torch.Size = Size
+Torch.SizeManager = SizeManager
