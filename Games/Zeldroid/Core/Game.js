@@ -56,7 +56,28 @@
     });
     game.mapManager.LoadMap("map-1");
     game.debugCondole = new Torch.DebugConsole(game);
-    return game.debugCondole.AddCommand("SPAWN", function(tConsole, x, y) {});
+    return game.debugCondole.AddCommand("UCAM", function(tConsole) {
+      var camVelocity, task;
+      camVelocity = 1;
+      task = {
+        _torch_add: "Task",
+        Execute: function(game) {
+          if (game.Keys.RightArrow.down) {
+            game.Camera.position.x -= camVelocity * game.Loop.updateDelta;
+          }
+          if (game.Keys.LeftArrow.down) {
+            game.Camera.position.x += camVelocity * game.Loop.updateDelta;
+          }
+          if (game.Keys.UpArrow.down) {
+            game.Camera.position.y += camVelocity * game.Loop.updateDelta;
+          }
+          if (game.Keys.DownArrow.down) {
+            return game.Camera.position.y -= camVelocity * game.Loop.updateDelta;
+          }
+        }
+      };
+      return game.Task(task);
+    });
   };
 
   Draw = function(game) {};

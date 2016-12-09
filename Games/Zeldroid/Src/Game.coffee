@@ -52,8 +52,20 @@ Init = (game) ->
 
     game.mapManager.LoadMap("map-1")
     game.debugCondole = new Torch.DebugConsole(game)
-    game.debugCondole.AddCommand "SPAWN", (tConsole, x, y) ->
-        # ...
+    game.debugCondole.AddCommand "UCAM", (tConsole) ->
+        camVelocity = 1
+        task =
+            _torch_add: "Task"
+            Execute: (game) ->
+                if game.Keys.RightArrow.down
+                    game.Camera.position.x -= camVelocity * game.Loop.updateDelta
+                if game.Keys.LeftArrow.down
+                    game.Camera.position.x += camVelocity * game.Loop.updateDelta
+                if game.Keys.UpArrow.down
+                    game.Camera.position.y += camVelocity * game.Loop.updateDelta
+                if game.Keys.DownArrow.down
+                    game.Camera.position.y -= camVelocity * game.Loop.updateDelta
+        game.Task(task)
 
 Draw = (game)->
 

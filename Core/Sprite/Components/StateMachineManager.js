@@ -23,7 +23,6 @@
       results = [];
       for (key in ref) {
         sm = ref[key];
-        console.log(key, sm);
         results.push(sm.Update());
       }
       return results;

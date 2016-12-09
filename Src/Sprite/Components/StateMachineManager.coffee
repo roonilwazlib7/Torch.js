@@ -11,7 +11,6 @@ class StateMachineManager
 
     Update: ->
         for key,sm of @stateMachines
-            console.log(key,sm)
             sm.Update()
 
 Torch.StateMachineManager = StateMachineManager

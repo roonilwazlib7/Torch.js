@@ -802,7 +802,6 @@
       results = [];
       for (key in ref) {
         sm = ref[key];
-        console.log(key, sm);
         results.push(sm.Update());
       }
       return results;
@@ -4455,4 +4454,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.45'
+Torch.version = '0.5.52'
