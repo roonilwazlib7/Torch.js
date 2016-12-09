@@ -170,44 +170,6 @@ class Sprite
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
-    Three: ->
-        throw "Unable to access three.js object" if not @GL
-
-        return @gl_three_sprite
-
-    Rotation: (rotation) ->
-        if (rotation is undefined)
-            return @rotation
-        else
-            if (typeof(rotation) isnt "number")
-                @game.FatalError("Rotation values must be a number. Provided was '#{typeof(rotation)}'")
-            @rotation = rotation
-            return @
-
-    Opacity: (opacity) ->
-        if (opacity is undefined)
-            return @opacity
-        else
-            if (typeof(opacity) isnt "number")
-                @game.FatalError("Opacity values must be a number. Provided was '#{typeof(opacity)}'")
-            @opacity = opacity
-            return @
-
-    DrawIndex: (drawIndex) ->
-        if drawIndex is undefined
-            return @drawIndex
-        else
-            if typeof(drawIndex) isnt "number"
-                @game.FatalError("DrawIndex values must be a number. Provided was '#{typeof(drawIndex)}'")
-            @drawIndex = drawIndex
-            return @
-
-    Scale: (scale) ->
-        if scale is undefined
-            return @scale
-        else
-            @scale = scale
-
     GetDirectionVector: (otherSprite) ->
         vec = new Torch.Vector( (otherSprite.Rectangle.x - @position.x), (otherSprite.Rectangle.y - @position.y) )
         vec.Normalize()

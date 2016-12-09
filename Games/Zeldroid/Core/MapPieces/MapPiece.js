@@ -27,7 +27,7 @@
       this.data = this.GetData(rawData, game);
       this.InitSprite(game, this.data.position.x, this.data.position.y);
       this.Bind.Texture(this.textureId);
-      this.DrawIndex(10);
+      this.drawIndex = 10;
     }
 
     MapPiece.prototype.GetData = function(rawData, game) {

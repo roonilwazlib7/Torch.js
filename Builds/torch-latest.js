@@ -1178,57 +1178,6 @@
       return otherSprite._torch_uid !== this._torch_uid;
     };
 
-    Sprite.prototype.Three = function() {
-      if (!this.GL) {
-        throw "Unable to access three.js object";
-      }
-      return this.gl_three_sprite;
-    };
-
-    Sprite.prototype.Rotation = function(rotation) {
-      if (rotation === void 0) {
-        return this.rotation;
-      } else {
-        if (typeof rotation !== "number") {
-          this.game.FatalError("Rotation values must be a number. Provided was '" + (typeof rotation) + "'");
-        }
-        this.rotation = rotation;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Opacity = function(opacity) {
-      if (opacity === void 0) {
-        return this.opacity;
-      } else {
-        if (typeof opacity !== "number") {
-          this.game.FatalError("Opacity values must be a number. Provided was '" + (typeof opacity) + "'");
-        }
-        this.opacity = opacity;
-        return this;
-      }
-    };
-
-    Sprite.prototype.DrawIndex = function(drawIndex) {
-      if (drawIndex === void 0) {
-        return this.drawIndex;
-      } else {
-        if (typeof drawIndex !== "number") {
-          this.game.FatalError("DrawIndex values must be a number. Provided was '" + (typeof drawIndex) + "'");
-        }
-        this.drawIndex = drawIndex;
-        return this;
-      }
-    };
-
-    Sprite.prototype.Scale = function(scale) {
-      if (scale === void 0) {
-        return this.scale;
-      } else {
-        return this.scale = scale;
-      }
-    };
-
     Sprite.prototype.GetDirectionVector = function(otherSprite) {
       var vec;
       vec = new Torch.Vector(otherSprite.Rectangle.x - this.position.x, otherSprite.Rectangle.y - this.position.y);
@@ -4435,8 +4384,8 @@
         this.game.canvas.globalCompositeOperation = "destination-atop";
         this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
       }
-      canvas.globalAlpha = this.sprite.Opacity();
-      return canvas.rotate(this.sprite.Rotation());
+      canvas.globalAlpha = this.sprite.opacity;
+      return canvas.rotate(this.sprite.rotation);
     };
 
     CanvasRenderer.prototype.PostRender = function() {
@@ -4628,4 +4577,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.11'
+Torch.version = '0.5.20'

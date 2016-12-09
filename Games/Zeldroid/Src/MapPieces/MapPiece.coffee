@@ -11,7 +11,7 @@ class MapPiece extends Torch.Sprite
         @data = @GetData(rawData, game)
         @InitSprite(game, @data.position.x, @data.position.y )
         @Bind.Texture(@textureId)
-        @DrawIndex(10)
+        @drawIndex = 10
 
     GetData: (rawData, game) ->
         SCALE = 64

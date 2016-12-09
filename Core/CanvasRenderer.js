@@ -48,8 +48,8 @@
         this.game.canvas.globalCompositeOperation = "destination-atop";
         this.game.canvas.fillRect(-drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
       }
-      canvas.globalAlpha = this.sprite.Opacity();
-      return canvas.rotate(this.sprite.Rotation());
+      canvas.globalAlpha = this.sprite.opacity;
+      return canvas.rotate(this.sprite.rotation);
     };
 
     CanvasRenderer.prototype.PostRender = function() {

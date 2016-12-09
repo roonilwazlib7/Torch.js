@@ -54,8 +54,8 @@ class CanvasRenderer
             @game.canvas.globalCompositeOperation = "destination-atop"
             @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
 
-        canvas.globalAlpha = @sprite.Opacity()
-        canvas.rotate(@sprite.Rotation())
+        canvas.globalAlpha = @sprite.opacity
+        canvas.rotate(@sprite.rotation)
 
     PostRender: ->
         canvas = @game.canvas

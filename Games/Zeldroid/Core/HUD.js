@@ -10,7 +10,7 @@
       this.hud_background = new Torch.Sprite(this.game, 0, 0);
       this.hud_background.Bind.Texture("hud_background");
       this.hud_background.Size.Scale(1, 1);
-      this.hud_background.DrawIndex(100);
+      this.hud_background.drawIndex = 100;
       this.hud_background.Size.width = window.innerWidth;
       this.hud_background.Size.height = this.Height(5);
       this.hud_background.fixed = true;

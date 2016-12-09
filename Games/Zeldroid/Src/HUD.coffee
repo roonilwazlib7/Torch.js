@@ -4,7 +4,7 @@ class HUD
         @hud_background = new Torch.Sprite(@game, 0, 0)
         @hud_background.Bind.Texture("hud_background")
         @hud_background.Size.Scale(1,1)
-        @hud_background.DrawIndex(100)
+        @hud_background.drawIndex = 100
         @hud_background.Size.width = window.innerWidth
         @hud_background.Size.height = @Height(5)
         @hud_background.fixed = true
@@ -17,7 +17,7 @@ class HUD
         @lifebar.Bind.Texture("hud_life_bar")
         @lifebar.Grid.Center()
         @lifebar.Grid.CenterVertical()
-        
+
         @minimap.Grid.Append(@lifebar)
         @hud_background.Grid.Append(@minimap)
 
