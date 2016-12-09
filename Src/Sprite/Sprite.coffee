@@ -13,7 +13,6 @@ class Sprite
 
         @InitEventDispatch()
         @game = game
-        @GL = @game.graphicsType is Torch.WEBGL
 
         @rectangle = new Torch.Rectangle(x, y, 0, 0)
         @position = new Torch.Point(x,y)
@@ -63,8 +62,7 @@ class Sprite
         @UpdateSprite()
 
     Draw: ->
-        if @renderer isnt null
-            @renderer.Draw()
+        @renderer.Draw()
 
     GetCurrentDraw: ->
         if @TexturePack

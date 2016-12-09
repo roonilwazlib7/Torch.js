@@ -1026,7 +1026,6 @@
       }
       this.InitEventDispatch();
       this.game = game;
-      this.GL = this.game.graphicsType === Torch.WEBGL;
       this.rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.position = new Torch.Point(x, y);
       this.Bind = new Torch.Bind(this);
@@ -1069,9 +1068,7 @@
     };
 
     Sprite.prototype.Draw = function() {
-      if (this.renderer !== null) {
-        return this.renderer.Draw();
-      }
+      return this.renderer.Draw();
     };
 
     Sprite.prototype.GetCurrentDraw = function() {
@@ -4457,4 +4454,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.31'
+Torch.version = '0.5.33'
