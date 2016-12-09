@@ -62,6 +62,10 @@ class Sprite
     Update: ->
         @UpdateSprite()
 
+    Draw: ->
+        if @renderer isnt null
+            @renderer.Draw()
+
     GetCurrentDraw: ->
         if @TexturePack
             return @TexturePackAnimation.GetCurrentFrame()
@@ -72,13 +76,9 @@ class Sprite
         else if @DrawTexture
             return @DrawTexture
 
-    Draw: ->
-        if @renderer isnt null
-            @renderer.Draw()
-
-    Clone: (x,y) ->
+    Clone: (args...) ->
         proto = @constructor
-        return new proto(@game, x, y)
+        return new proto(args...)
 
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
