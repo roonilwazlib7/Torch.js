@@ -53,6 +53,7 @@ class MapPiece extends Torch.Sprite
 
 class Bush extends MapPiece
     textureId: "bush"
+    hp: Infinity
 
 class PlayerStart extends MapPiece
     textureId: "player-start"

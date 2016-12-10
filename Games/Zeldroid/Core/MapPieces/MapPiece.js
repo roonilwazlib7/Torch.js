@@ -84,6 +84,8 @@
 
     Bush.prototype.textureId = "bush";
 
+    Bush.prototype.hp = Infinity;
+
     return Bush;
 
   })(MapPiece);
