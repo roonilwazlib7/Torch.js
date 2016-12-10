@@ -4,7 +4,7 @@ class Player extends Torch.Sprite
     touching: null
     constructor: (game) ->
         @InitSprite(game, 0, 0)
-        @Bind.Texture("player")
+        @Bind.Texture("player-forward-idle")
         @Center()
 
         @movementStateMachine = @States.CreateStateMachine("Movement")
@@ -22,8 +22,12 @@ class Player extends Torch.Sprite
             b = new PlayerBullet(@)
 
     @Load: (game) ->
-        game.Load.Texture("Assets/Art/player.png", "player")
-        game.Load.Texture("Assets/Art/particle.png", "player-bullet")
+        game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle")
+        game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle")
+        game.Load.Texture("Assets/Art/player/player-right-idle.png", "player-right-idle")
+        game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle")
+
+        game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet")
 
     Update: ->
         super()
@@ -71,6 +75,16 @@ moveState =
         player.Body.velocity.x = velocity.x * player.VELOCITY
         @triggerKey = key
 
+        switch player.facing
+            when "forward"
+                player.Bind.Texture("player-forward-idle")
+            when "backward"
+                player.Bind.Texture("player-backward-idle")
+            when "right"
+                player.Bind.Texture("player-right-idle")
+            when "left"
+                player.Bind.Texture("player-left-idle")
+
     End: (player) ->
 
 class PlayerBullet extends Torch.Sprite
@@ -79,7 +93,7 @@ class PlayerBullet extends Torch.Sprite
         @Bind.Texture("player-bullet")
         @drawIndex = shooter.drawIndex + 1
 
-        @VELOCITY = 0.5
+        @VELOCITY = 1.5
         switch shooter.facing
             when "forward"
                 @Body.velocity.y = -1 * @VELOCITY
@@ -87,13 +101,41 @@ class PlayerBullet extends Torch.Sprite
                 @Body.velocity.y = 1 * @VELOCITY
             when "right"
                 @Body.velocity.x = 1 * @VELOCITY
+                @position.x += 1.1 * shooter.rectangle.width
+                @position.y += 0.25 * shooter.rectangle.height
+                @rotation = Math.PI/2
             when "left"
                 @Body.velocity.x = -1 * @VELOCITY
+                @position.x -= 0.1 * shooter.rectangle.width
+                @position.y += 0.25 * shooter.rectangle.height
+                @rotation = Math.PI/2
 
-        @Body.omega = 0.02
         @Size.scale.width = @Size.scale.height = 10
-        @game.Tweens.Tween(@, 500, Torch.Easing.Smooth).To({opacity: 0}).On "Finish", =>
+        # @game.Tweens.Tween(@, 500, Torch.Easing.Smooth).To({opacity: 0}).On "Finish", =>
+        #     @Trash()
+
+        @emitter = @game.Particles.ParticleEmitter 500, 500, 500, true, "particle",
+            spread: 20
+            gravity: 0.0001
+            minAngle: 0
+            maxAngle: Math.PI * 2
+            minScale: 2
+            maxScale: 4
+            minVelocity: 0.01
+            maxVelocity: 0.01
+            minAlphaDecay: 200
+            maxAlphaDecay: 250
+            minOmega: 0.001
+            maxOmega: 0.001
+        @emitter.auto = false
+
+        @Collisions.Monitor()
+        @On "Collision", (event) =>
+            return if not event.collisionData.collider.hardBlock
             @Trash()
+            @emitter.position = @position.Clone()
+            @emitter.EmitParticles()
+
 
     Update: ->
         super()

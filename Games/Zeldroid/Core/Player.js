@@ -15,7 +15,7 @@
 
     function Player(game) {
       this.InitSprite(game, 0, 0);
-      this.Bind.Texture("player");
+      this.Bind.Texture("player-forward-idle");
       this.Center();
       this.movementStateMachine = this.States.CreateStateMachine("Movement");
       this.movementStateMachine.State("idle", idleState);
@@ -34,8 +34,11 @@
     }
 
     Player.Load = function(game) {
-      game.Load.Texture("Assets/Art/player.png", "player");
-      return game.Load.Texture("Assets/Art/particle.png", "player-bullet");
+      game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle");
+      game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle");
+      game.Load.Texture("Assets/Art/player/player-right-idle.png", "player-right-idle");
+      game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle");
+      return game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet");
     };
 
     Player.prototype.Update = function() {
@@ -106,7 +109,17 @@
     Start: function(player, key, velocity) {
       player.Body.velocity.y = velocity.y * player.VELOCITY;
       player.Body.velocity.x = velocity.x * player.VELOCITY;
-      return this.triggerKey = key;
+      this.triggerKey = key;
+      switch (player.facing) {
+        case "forward":
+          return player.Bind.Texture("player-forward-idle");
+        case "backward":
+          return player.Bind.Texture("player-backward-idle");
+        case "right":
+          return player.Bind.Texture("player-right-idle");
+        case "left":
+          return player.Bind.Texture("player-left-idle");
+      }
     },
     End: function(player) {}
   };
@@ -118,7 +131,7 @@
       this.InitSprite(shooter.game, shooter.position.x, shooter.position.y);
       this.Bind.Texture("player-bullet");
       this.drawIndex = shooter.drawIndex + 1;
-      this.VELOCITY = 0.5;
+      this.VELOCITY = 1.5;
       switch (shooter.facing) {
         case "forward":
           this.Body.velocity.y = -1 * this.VELOCITY;
@@ -128,17 +141,41 @@
           break;
         case "right":
           this.Body.velocity.x = 1 * this.VELOCITY;
+          this.position.x += 1.1 * shooter.rectangle.width;
+          this.position.y += 0.25 * shooter.rectangle.height;
+          this.rotation = Math.PI / 2;
           break;
         case "left":
           this.Body.velocity.x = -1 * this.VELOCITY;
+          this.position.x -= 0.1 * shooter.rectangle.width;
+          this.position.y += 0.25 * shooter.rectangle.height;
+          this.rotation = Math.PI / 2;
       }
-      this.Body.omega = 0.02;
       this.Size.scale.width = this.Size.scale.height = 10;
-      this.game.Tweens.Tween(this, 500, Torch.Easing.Smooth).To({
-        opacity: 0
-      }).On("Finish", (function(_this) {
-        return function() {
-          return _this.Trash();
+      this.emitter = this.game.Particles.ParticleEmitter(500, 500, 500, true, "particle", {
+        spread: 20,
+        gravity: 0.0001,
+        minAngle: 0,
+        maxAngle: Math.PI * 2,
+        minScale: 2,
+        maxScale: 4,
+        minVelocity: 0.01,
+        maxVelocity: 0.01,
+        minAlphaDecay: 200,
+        maxAlphaDecay: 250,
+        minOmega: 0.001,
+        maxOmega: 0.001
+      });
+      this.emitter.auto = false;
+      this.Collisions.Monitor();
+      this.On("Collision", (function(_this) {
+        return function(event) {
+          if (!event.collisionData.collider.hardBlock) {
+            return;
+          }
+          _this.Trash();
+          _this.emitter.position = _this.position.Clone();
+          return _this.emitter.EmitParticles();
         };
       })(this));
     }
