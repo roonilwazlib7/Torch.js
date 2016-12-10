@@ -1,6 +1,7 @@
 # https://www.html5rocks.com/en/tutorials/webaudio/intro/
 class Audio
     audioContext: null
+    MasterVolume: 1
     constructor: (@game) ->
         @GetAudioContext()
 
@@ -20,22 +21,43 @@ class Audio
         return new AudioPlayer(@)
 
 class AudioPlayer
-    MasterVolume: 1
     constructor: (aud) ->
         @audioContext = aud.audioContext
         @game = aud.game
 
+    CreateGain: (gain = 1) ->
+        gainNode = @audioContext.createGain()
+        gainNode.gain.value = gain
+        return gainNode
+
     PlaySound: (id, time = 0, filters = null) ->
         source = @audioContext.createBufferSource()
         source.buffer = @game.Assets.Audio[id].audioData
-        source.connect(@audioContext.destination)
+
+        if @game.Audio.MasterVolume isnt 1
+            if filters is null
+                filters = [@CreateGain(@game.Audio.MasterVolume)]
+            else
+                filters.push(@CreateGain(@game.Audio.MasterVolume))
 
         if filters isnt null
-            for filter in filters
-                f = @CreateFilter(filter)
-                source.connect(filter)
-                filter.connect(@audioContext.destination)
 
+            lastFilter = null
+
+            for filter,index in filters
+                if lastFilter is null
+                    source.connect(filter)
+                else
+                    lastFilter.connect(filter)
+
+                lastFilter = filter
+
+                if index is filters.length - 1
+                    filter.connect(@audioContext.destination)
+                    source.start(time)
+                    return
+
+        source.connect(@audioContext.destination)
         source.start(time)
 
 Torch.Audio = Audio

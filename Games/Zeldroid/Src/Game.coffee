@@ -24,6 +24,7 @@ Load = (game) ->
 Init = (game) ->
     game.Clear("#00AF11")
     game.PixelScale()
+    game.Audio.MasterVolume = 0.5
     Torch.Scale = 4
     game.player = new Player(game)
     game.mapManager = new MapManager(game)

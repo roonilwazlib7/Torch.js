@@ -5,6 +5,8 @@
   Audio = (function() {
     Audio.prototype.audioContext = null;
 
+    Audio.prototype.MasterVolume = 1;
+
     function Audio(game) {
       this.game = game;
       this.GetAudioContext();
@@ -41,8 +43,18 @@
       this.game = aud.game;
     }
 
+    AudioPlayer.prototype.CreateGain = function(gain) {
+      var gainNode;
+      if (gain == null) {
+        gain = 1;
+      }
+      gainNode = this.audioContext.createGain();
+      gainNode.gain.value = gain;
+      return gainNode;
+    };
+
     AudioPlayer.prototype.PlaySound = function(id, time, filters) {
-      var f, filter, i, len, source;
+      var filter, i, index, lastFilter, len, source;
       if (time == null) {
         time = 0;
       }
@@ -51,15 +63,31 @@
       }
       source = this.audioContext.createBufferSource();
       source.buffer = this.game.Assets.Audio[id].audioData;
-      source.connect(this.audioContext.destination);
-      if (filters !== null) {
-        for (i = 0, len = filters.length; i < len; i++) {
-          filter = filters[i];
-          f = this.CreateFilter(filter);
-          source.connect(filter);
-          filter.connect(this.audioContext.destination);
+      if (this.game.Audio.MasterVolume !== 1) {
+        if (filters === null) {
+          filters = [this.CreateGain(this.game.Audio.MasterVolume)];
+        } else {
+          filters.push(this.CreateGain(this.game.Audio.MasterVolume));
         }
       }
+      if (filters !== null) {
+        lastFilter = null;
+        for (index = i = 0, len = filters.length; i < len; index = ++i) {
+          filter = filters[index];
+          if (lastFilter === null) {
+            source.connect(filter);
+          } else {
+            lastFilter.connect(filter);
+          }
+          lastFilter = filter;
+          if (index === filters.length - 1) {
+            filter.connect(this.audioContext.destination);
+            source.start(time);
+            return;
+          }
+        }
+      }
+      source.connect(this.audioContext.destination);
       return source.start(time);
     };
 
