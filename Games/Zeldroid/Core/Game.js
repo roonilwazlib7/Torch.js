@@ -20,11 +20,11 @@
     game.Load.Texture("Assets/Art/particle.png", "particle");
     game.Load.File("Maps/test-map-2.map", "map-1");
     game.Load.File("hud.xml", "hud-xml");
-    return game.Load.File("package.json", "package");
+    game.Load.File("package.json", "package");
+    return game.Load.Audio("Assets/Audio/shoot.wav", "shoot");
   };
 
   Init = function(game) {
-    var emitter;
     game.Clear("#00AF11");
     game.PixelScale();
     Torch.Scale = 4;
@@ -32,29 +32,6 @@
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
     game.hudGrid = new Torch.SpriteGrid(game, game.File("hud-xml"));
-    game.Keys.I.On("KeyDown", function() {
-      return game.Tweens.Tween(game.Camera.position, 500, Torch.Easing.Smooth).To({
-        x: -500
-      });
-    });
-    emitter = game.Particles.ParticleEmitter(500, 500, 500, true, "particle", {
-      spread: 20,
-      gravity: 0.0001,
-      minAngle: 0.2,
-      maxAngle: 0.5,
-      minScale: 4,
-      maxScale: 6,
-      minVelocity: 0.01,
-      maxVelocity: 0.01,
-      minAlphaDecay: 1000,
-      maxAlphaDecay: 1500,
-      minOmega: 0.001,
-      maxOmega: 0.001
-    });
-    emitter.auto = false;
-    game.Keys.Z.On("KeyDown", function() {
-      return emitter.EmitParticles();
-    });
     game.mapManager.LoadMap("map-1");
     game.debugCondole = new Torch.DebugConsole(game);
     game.debugCondole.AddCommand("SPAWN", function(tConsole, piece, x, y) {

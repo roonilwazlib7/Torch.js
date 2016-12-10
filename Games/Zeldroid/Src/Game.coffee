@@ -19,6 +19,7 @@ Load = (game) ->
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("hud.xml", "hud-xml")
     game.Load.File("package.json", "package")
+    game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
 
 Init = (game) ->
     game.Clear("#00AF11")
@@ -28,28 +29,6 @@ Init = (game) ->
     game.mapManager = new MapManager(game)
     game.hud = new HUD(game)
     game.hudGrid = new Torch.SpriteGrid(game, game.File("hud-xml"))
-
-    game.Keys.I.On "KeyDown", ->
-        game.Tweens.Tween(game.Camera.position, 500, Torch.Easing.Smooth).To({x: -500})
-
-    emitter = game.Particles.ParticleEmitter 500, 500, 500, true, "particle",
-        spread: 20
-        gravity: 0.0001
-        minAngle: 0.2
-        maxAngle: 0.5
-        minScale: 4
-        maxScale: 6
-        minVelocity: 0.01
-        maxVelocity: 0.01
-        minAlphaDecay: 1000
-        maxAlphaDecay: 1500
-        minOmega: 0.001
-        maxOmega: 0.001
-    emitter.auto = false
-
-    game.Keys.Z.On "KeyDown", ->
-        emitter.EmitParticles()
-
 
     game.mapManager.LoadMap("map-1")
     game.debugCondole = new Torch.DebugConsole(game)

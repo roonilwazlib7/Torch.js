@@ -1,20 +1,3 @@
-###
-    @class Torch.Game
-    @author roonilwazlib
-
-    @constructor
-        @param canvasId, string, REQUIRED
-        @param width, number|string, REQUIRED
-        @param height, number|string, REQUIRED
-        @param name, string, REQUIRED
-        @param graphicsType, enum, REQUIRED
-        @param pixel, enum
-
-    @description
-        Torch.Canvas game controls the base behavior of a Torch game. The gameloop,
-        asset loading, and initialization are handled here. Torch.CanvasGame
-        dictates the HTML5 2d canvas be used for rendering, as opposed to WEBGL
-###
 class CanvasGame
 
     constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
@@ -46,7 +29,7 @@ class CanvasGame
         @Keys = new Torch.Keys(@)
         @Tweens = new Torch.TweenManager(@)
         @Particles = new Torch.ParticleManager(@)
-        # @Audio = new Torch.Audio(@) not ready for this yet
+        @Audio = new Torch.Audio(@) #not ready for this yet
 
         Torch.Style()
 
@@ -218,7 +201,7 @@ class CanvasGame
         @spriteList.sort (a, b) ->
             if a.drawIndex is b.drawIndex
                 return a._torch_add_order - b._torch_add_order
-                
+
             return a.drawIndex - b.drawIndex
 
         for sprite in @spriteList

@@ -21,11 +21,11 @@
         }
       };
       this.game.Files = {};
-      this.textures = this.game.Assets.Textures = [];
-      this.texturePacks = this.game.Assets.TexturePacks = [];
-      this.textureSheets = this.game.Assets.TextureSheets = [];
-      this.sound = this.game.Assets.Sounds = [];
-      this.audio = this.game.Assets.Audio = [];
+      this.textures = this.game.Assets.Textures = {};
+      this.texturePacks = this.game.Assets.TexturePacks = {};
+      this.textureSheets = this.game.Assets.TextureSheets = {};
+      this.sound = this.game.Assets.Sounds = {};
+      this.audio = this.game.Assets.Audio = {};
       this.Stack = [];
       this.finish_stack = 0;
       this.progress = 0;
@@ -194,12 +194,14 @@
               });
               break;
             case "audio":
-              loader = new Torch.AjaxLoader(this.audio[stackItem.id].url, Torch.AjaxData.ArrayBuffer);
+              loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.ArrayBuffer);
+              loader.stackItem = stackItem;
               loader.Finish((function(_this) {
-                return function(data) {
-                  _this.audio[stackItem.id].encodedAudioData = data;
+                return function(data, loader) {
+                  _this.audio[loader.stackItem.id] = {};
+                  _this.audio[loader.stackItem.id].encodedAudioData = data;
                   return _this.game.Audio.DecodeAudioData(data, function(buffer) {
-                    _this.audio[stackItem.id].audioData = buffer;
+                    _this.audio[loader.stackItem.id].audioData = buffer;
                     return _this.LoadItemFinished();
                   });
                 };

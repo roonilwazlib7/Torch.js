@@ -11,11 +11,11 @@ class Load
             GetSound: (id) ->return @game.Assets.Sounds[id].audio
 
         @game.Files = {}
-        @textures = @game.Assets.Textures = []
-        @texturePacks = @game.Assets.TexturePacks = []
-        @textureSheets = @game.Assets.TextureSheets = []
-        @sound = @game.Assets.Sounds = []
-        @audio = @game.Assets.Audio = []
+        @textures = @game.Assets.Textures = {}
+        @texturePacks = @game.Assets.TexturePacks = {}
+        @textureSheets = @game.Assets.TextureSheets = {}
+        @sound = @game.Assets.Sounds = {}
+        @audio = @game.Assets.Audio = {}
         @Stack = []
         @finish_stack = 0
         @progress = 0
@@ -180,11 +180,13 @@ class Load
                             @play()
 
                     when "audio"
-                        loader = new Torch.AjaxLoader(@audio[stackItem.id].url, Torch.AjaxData.ArrayBuffer)
-                        loader.Finish (data) =>
-                            @audio[stackItem.id].encodedAudioData = data
+                        loader = new Torch.AjaxLoader(stackItem.path, Torch.AjaxData.ArrayBuffer)
+                        loader.stackItem = stackItem
+                        loader.Finish (data, loader) =>
+                            @audio[loader.stackItem.id] = {}
+                            @audio[loader.stackItem.id].encodedAudioData = data
                             @game.Audio.DecodeAudioData data, (buffer) =>
-                                @audio[stackItem.id].audioData = buffer
+                                @audio[loader.stackItem.id].audioData = buffer
                                 @LoadItemFinished()
                         loader.Load()
 

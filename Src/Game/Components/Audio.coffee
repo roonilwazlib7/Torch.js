@@ -36,3 +36,5 @@ class AudioPlayer
                 filter.connect(@audioContext.destination)
 
         source.start(time)
+
+Torch.Audio = Audio
