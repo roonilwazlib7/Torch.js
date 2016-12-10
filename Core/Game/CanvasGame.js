@@ -41,6 +41,7 @@
       this.Tweens = new Torch.TweenManager(this);
       this.Particles = new Torch.ParticleManager(this);
       this.Audio = new Torch.Audio(this);
+      this.Hooks = new Torch.HookManager(this);
       Torch.Style();
       this.deltaTime = 0;
       this.fps = 0;

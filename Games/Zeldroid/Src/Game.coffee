@@ -10,12 +10,8 @@ Load = (game) ->
 
     Player.Load(game)
     HUD.Load(game)
+    MapPieces.MapPiece.Load(game)
 
-    game.Load.Texture("Assets/Art/map/bush.png", "bush")
-    game.Load.Texture("Assets/Art/map/water.png", "water")
-    game.Load.Texture("Assets/Art/map/branch.png", "branch")
-    game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass")
-    game.Load.Texture("Assets/Art/map/bumps.png", "bumps")
     game.Load.Texture("Assets/Art/particle.png", "particle")
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("hud.xml", "hud-xml")
@@ -43,7 +39,8 @@ Draw = (game)->
 
 Update = (game) ->
     if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
-    g()
+    zeldroid.Hooks.positionTransform.x = Torch.RandomInRange(5,20)
+    zeldroid.Hooks.positionTransform.y = Torch.RandomInRange(5,20)
 
 zeldroid.Start(Load, Update, Draw, Init)
 window.zeldroid = zeldroid

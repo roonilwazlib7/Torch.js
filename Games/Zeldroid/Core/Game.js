@@ -14,11 +14,7 @@
     game.Bounds();
     Player.Load(game);
     HUD.Load(game);
-    game.Load.Texture("Assets/Art/map/bush.png", "bush");
-    game.Load.Texture("Assets/Art/map/water.png", "water");
-    game.Load.Texture("Assets/Art/map/branch.png", "branch");
-    game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass");
-    game.Load.Texture("Assets/Art/map/bumps.png", "bumps");
+    MapPieces.MapPiece.Load(game);
     game.Load.Texture("Assets/Art/particle.png", "particle");
     game.Load.File("Maps/test-map-2.map", "map-1");
     game.Load.File("hud.xml", "hud-xml");
@@ -45,7 +41,8 @@
     if (game.deltaTime > 1000 / 50) {
       alert("FPS Dipped! " + game.deltaTime);
     }
-    return g();
+    zeldroid.Hooks.positionTransform.x = Torch.RandomInRange(5, 20);
+    return zeldroid.Hooks.positionTransform.y = Torch.RandomInRange(5, 20);
   };
 
   zeldroid.Start(Load, Update, Draw, Init);

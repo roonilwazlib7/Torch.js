@@ -1,4 +1,4 @@
-Build: 208
+Build: 225
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -43,6 +43,7 @@ SourceMap: [
     "Game/Components/Tween.js"
     "Game/Components/ParticleManager.js"
     "Game/Components/Audio.js"
+    "Game/Components/HookManager.js"
     "Game/CanvasGame.js"
     "Game/WebGLGame.js"
     "Game/Game.js"

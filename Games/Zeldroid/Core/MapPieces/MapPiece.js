@@ -32,6 +32,14 @@
       this.drawIndex = 10;
     }
 
+    MapPiece.Load = function(game) {
+      game.Load.Texture("Assets/Art/map/bush.png", "bush");
+      game.Load.Texture("Assets/Art/map/water.png", "water");
+      game.Load.Texture("Assets/Art/map/branch.png", "branch");
+      game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass");
+      return game.Load.Texture("Assets/Art/map/bumps.png", "bumps");
+    };
+
     MapPiece.prototype.GetData = function(rawData, game) {
       var SCALE, data;
       SCALE = 64;
@@ -168,6 +176,7 @@
   })(MapPiece);
 
   exports.MapPieces = {
+    MapPiece: MapPiece,
     Bush: Bush,
     Water: Water,
     Branch: Branch,

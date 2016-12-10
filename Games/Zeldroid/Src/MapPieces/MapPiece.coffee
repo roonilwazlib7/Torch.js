@@ -14,6 +14,13 @@ class MapPiece extends Torch.Sprite
         @Bind.Texture(@textureId)
         @drawIndex = 10
 
+    @Load: (game) ->
+        game.Load.Texture("Assets/Art/map/bush.png", "bush")
+        game.Load.Texture("Assets/Art/map/water.png", "water")
+        game.Load.Texture("Assets/Art/map/branch.png", "branch")
+        game.Load.Texture("Assets/Art/map/light-grass.png", "light-grass")
+        game.Load.Texture("Assets/Art/map/bumps.png", "bumps")
+
 
     GetData: (rawData, game) ->
         SCALE = 64
@@ -76,10 +83,10 @@ class Bumps extends MapPiece
     textureId: "bumps"
     identifier: 4
 
-exports.MapPieces = {
-    Bush: Bush,
-    Water: Water,
-    Branch: Branch,
+exports.MapPieces =
+    MapPiece: MapPiece
+    Bush: Bush
+    Water: Water
+    Branch: Branch
     LightGrass: LightGrass,
     Bumps: Bumps
-}

@@ -30,6 +30,7 @@ class CanvasGame
         @Tweens = new Torch.TweenManager(@)
         @Particles = new Torch.ParticleManager(@)
         @Audio = new Torch.Audio(@) #not ready for this yet
+        @Hooks = new Torch.HookManager(@)
 
         Torch.Style()
 

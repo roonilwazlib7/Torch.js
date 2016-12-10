@@ -14,8 +14,8 @@ class CanvasRenderer
         cameraTransform = new Torch.Point(0,0)
 
         if not @sprite.fixed
-            drawRec.x += @game.Camera.position.x
-            drawRec.y += @game.Camera.position.y
+            drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
+            drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
         if @sprite.TextureSheet
             frame = @sprite.GetCurrentDraw()

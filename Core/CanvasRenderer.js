@@ -19,8 +19,8 @@
       this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
       cameraTransform = new Torch.Point(0, 0);
       if (!this.sprite.fixed) {
-        drawRec.x += this.game.Camera.position.x;
-        drawRec.y += this.game.Camera.position.y;
+        drawRec.x += this.game.Camera.position.x + this.game.Hooks.positionTransform.x;
+        drawRec.y += this.game.Camera.position.y + this.game.Hooks.positionTransform.y;
       }
       if (this.sprite.TextureSheet) {
         frame = this.sprite.GetCurrentDraw();
