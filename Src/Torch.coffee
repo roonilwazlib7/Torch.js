@@ -65,6 +65,8 @@ class Torch
     WEBGL: 2
     PIXEL: 3
 
+    DUMP_ERRORS: false
+
     constructor: ->
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
@@ -90,6 +92,11 @@ class Torch
             error = new Error(error)
 
         document.body.backgroundColor = "black"
+
+        if @DUMP_ERRORS
+            if require isnt undefined
+                require("fs").writeFileSync("torch-error.log", error.stack)
+
         stack = error.stack.replace(/\n/g, "<br><br>")
 
         errorHtml = """
@@ -103,6 +110,9 @@ class Torch
 
     StrictErrors: ->
         @STRICT_ERRORS = true
+
+    DumpErrors: ->
+        @DUMP_ERRORS = true
 
     DisableConsoleWarnings: ->
         console.warn = ->

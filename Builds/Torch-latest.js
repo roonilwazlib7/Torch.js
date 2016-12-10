@@ -247,6 +247,8 @@
 
     Torch.prototype.PIXEL = 3;
 
+    Torch.prototype.DUMP_ERRORS = false;
+
     function Torch() {
       this.GamePads = this.Enum("Pad1", "Pad2", "Pad3", "Pad4");
       this.AjaxData = this.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text");
@@ -278,6 +280,11 @@
         error = new Error(error);
       }
       document.body.backgroundColor = "black";
+      if (this.DUMP_ERRORS) {
+        if (require !== void 0) {
+          require("fs").writeFileSync("torch-error.log", error.stack);
+        }
+      }
       stack = error.stack.replace(/\n/g, "<br><br>");
       errorHtml = "<code style='color:#C9302C;margin-left:15%;font-size:24px'>" + error + "</code>\n<br>\n<code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>\n<code style='color:#C9302C;font-size:20px'>" + stack + "</code><br>";
       document.body.innerHTML = errorHtml;
@@ -286,6 +293,10 @@
 
     Torch.prototype.StrictErrors = function() {
       return this.STRICT_ERRORS = true;
+    };
+
+    Torch.prototype.DumpErrors = function() {
+      return this.DUMP_ERRORS = true;
     };
 
     Torch.prototype.DisableConsoleWarnings = function() {
@@ -4546,4 +4557,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.204'
+Torch.version = '0.5.208'

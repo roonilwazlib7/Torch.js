@@ -1,4 +1,5 @@
 Torch.StrictErrors()
+Torch.DumpErrors()
 Torch.DisableConsoleWarnings()
 
 zeldroid = new Zeldroid("container", "fill", "fill", "TheGame", Torch.CANVAS)
@@ -42,6 +43,7 @@ Draw = (game)->
 
 Update = (game) ->
     if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
+    g()
 
 zeldroid.Start(Load, Update, Draw, Init)
 window.zeldroid = zeldroid

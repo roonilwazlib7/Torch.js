@@ -4,6 +4,8 @@
 
   Torch.StrictErrors();
 
+  Torch.DumpErrors();
+
   Torch.DisableConsoleWarnings();
 
   zeldroid = new Zeldroid("container", "fill", "fill", "TheGame", Torch.CANVAS);
@@ -41,8 +43,9 @@
 
   Update = function(game) {
     if (game.deltaTime > 1000 / 50) {
-      return alert("FPS Dipped! " + game.deltaTime);
+      alert("FPS Dipped! " + game.deltaTime);
     }
+    return g();
   };
 
   zeldroid.Start(Load, Update, Draw, Init);
