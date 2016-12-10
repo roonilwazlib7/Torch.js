@@ -17,6 +17,7 @@
       this.InitSprite(game, 0, 0);
       this.Bind.Texture("player-forward-idle");
       this.Center();
+      this.audioPlayer = this.game.Audio.CreateAudioPlayer();
       this.movementStateMachine = this.States.CreateStateMachine("Movement");
       this.movementStateMachine.State("idle", idleState);
       this.movementStateMachine.State("move", moveState);
@@ -28,6 +29,7 @@
       this.game.Keys.Space.On("KeyDown", (function(_this) {
         return function(event) {
           var b;
+          _this.audioPlayer.PlaySound("shoot");
           return b = new PlayerBullet(_this);
         };
       })(this));

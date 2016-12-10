@@ -20,6 +20,7 @@ class Audio
         return new AudioPlayer(@)
 
 class AudioPlayer
+    MasterVolume: 1
     constructor: (aud) ->
         @audioContext = aud.audioContext
         @game = aud.game

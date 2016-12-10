@@ -6,6 +6,7 @@ class Player extends Torch.Sprite
         @InitSprite(game, 0, 0)
         @Bind.Texture("player-forward-idle")
         @Center()
+        @audioPlayer = @game.Audio.CreateAudioPlayer()
 
         @movementStateMachine = @States.CreateStateMachine("Movement")
         @movementStateMachine.State("idle", idleState)
@@ -19,6 +20,7 @@ class Player extends Torch.Sprite
         @SetUpCollisions()
 
         @game.Keys.Space.On "KeyDown", (event) =>
+            @audioPlayer.PlaySound("shoot")
             b = new PlayerBullet(@)
 
     @Load: (game) ->
