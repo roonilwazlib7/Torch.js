@@ -46,9 +46,9 @@ class MapPiece extends Torch.Sprite
             maxOmega: 0.001
         @emitter.auto = false
         @emitter.position = @position.Clone()
-        @emitter.EmitParticles()
-
         @Trash()
+        @emitter.EmitParticles(true)
+
 
 
 class Bush extends MapPiece

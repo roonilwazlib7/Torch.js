@@ -51,15 +51,19 @@
       }
     };
 
-    ParticleEmitter.prototype.EmitParticles = function() {
-      var i, results;
+    ParticleEmitter.prototype.EmitParticles = function(removeEmitterWhenDone) {
+      var i;
+      if (removeEmitterWhenDone == null) {
+        removeEmitterWhenDone = false;
+      }
       i = 0;
-      results = [];
       while (i < this.config.spread) {
         i++;
-        results.push(this.EmitParticle());
+        this.EmitParticle();
       }
-      return results;
+      if (removeEmitterWhenDone) {
+        return this.Trash();
+      }
     };
 
     ParticleEmitter.prototype.EmitParticle = function() {

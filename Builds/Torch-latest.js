@@ -1891,7 +1891,6 @@
     };
 
     Load.prototype.File = function(path, id) {
-      console.log(id);
       this.finish_stack++;
       return this.Stack.push({
         _torch_asset: "file",
@@ -1971,7 +1970,6 @@
                 loader.Finish((function(_this) {
                   return function(data, loader) {
                     _this.LoadItemFinished();
-                    console.log(loader.stackItem.id);
                     return _this.game.Files[loader.stackItem.id] = data;
                   };
                 })(this));
@@ -2567,15 +2565,19 @@
       }
     };
 
-    ParticleEmitter.prototype.EmitParticles = function() {
-      var i, results;
+    ParticleEmitter.prototype.EmitParticles = function(removeEmitterWhenDone) {
+      var i;
+      if (removeEmitterWhenDone == null) {
+        removeEmitterWhenDone = false;
+      }
       i = 0;
-      results = [];
       while (i < this.config.spread) {
         i++;
-        results.push(this.EmitParticle());
+        this.EmitParticle();
       }
-      return results;
+      if (removeEmitterWhenDone) {
+        return this.Trash();
+      }
     };
 
     ParticleEmitter.prototype.EmitParticle = function() {
@@ -4459,4 +4461,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.133'
+Torch.version = '0.5.148'

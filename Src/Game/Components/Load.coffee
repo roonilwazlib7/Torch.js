@@ -114,7 +114,6 @@ class Load
         @textureSheets[id] = sheet;
 
     File: (path, id) ->
-        console.log(id)
         @finish_stack++
         @Stack.push
             _torch_asset: "file"
@@ -197,7 +196,6 @@ class Load
                             loader.stackItem = stackItem
                             loader.Finish (data, loader) =>
                                 @LoadItemFinished()
-                                console.log(loader.stackItem.id)
                                 @game.Files[loader.stackItem.id] = data
                             loader.Load()
                         else

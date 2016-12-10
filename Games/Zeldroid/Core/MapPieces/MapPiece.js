@@ -67,8 +67,8 @@
       });
       this.emitter.auto = false;
       this.emitter.position = this.position.Clone();
-      this.emitter.EmitParticles();
-      return this.Trash();
+      this.Trash();
+      return this.emitter.EmitParticles(true);
     };
 
     return MapPiece;

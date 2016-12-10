@@ -175,7 +175,7 @@
       });
       this.emitter.auto = false;
       this.emitter.position = this.position.Clone();
-      this.emitter.EmitParticles();
+      this.emitter.EmitParticles(true);
       this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {
@@ -186,7 +186,7 @@
           _this.Trash();
           _this.emitter.particle = "particle";
           _this.emitter.position = _this.position.Clone();
-          return _this.emitter.EmitParticles();
+          return _this.emitter.EmitParticles(true);
         };
       })(this));
     }

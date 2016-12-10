@@ -134,7 +134,6 @@
     };
 
     Load.prototype.File = function(path, id) {
-      console.log(id);
       this.finish_stack++;
       return this.Stack.push({
         _torch_asset: "file",
@@ -214,7 +213,6 @@
                 loader.Finish((function(_this) {
                   return function(data, loader) {
                     _this.LoadItemFinished();
-                    console.log(loader.stackItem.id);
                     return _this.game.Files[loader.stackItem.id] = data;
                   };
                 })(this));

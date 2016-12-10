@@ -26,13 +26,15 @@ class ParticleEmitter extends Torch.Sprite
             @hasEmitted = true
             @elapsedTime = 0
 
-    EmitParticles: ->
+    EmitParticles: (removeEmitterWhenDone = false) ->
         i = 0
         while i < @config.spread
             i++
             @EmitParticle()
 
-    EmitParticle: ->
+        if removeEmitterWhenDone then @Trash()
+
+    EmitParticle: ()->
         angle = Torch.RandomInRange(@config.minAngle, @config.maxAngle)
         scale = Torch.RandomInRange(@config.minScale, @config.maxScale)
         alphaDecay = Torch.RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)

@@ -133,18 +133,17 @@ class PlayerBullet extends Torch.Sprite
             maxOmega: 0.001
         @emitter.auto = false
         @emitter.position = @position.Clone()
-        @emitter.EmitParticles()
+        @emitter.EmitParticles(true)
 
         @Collisions.Monitor()
         @On "Collision", (event) =>
             return if not event.collisionData.collider.hardBlock
-
             event.collisionData.collider.hp -= @DAMAGE
-
             @Trash()
+
             @emitter.particle = "particle"
             @emitter.position = @position.Clone()
-            @emitter.EmitParticles()
+            @emitter.EmitParticles(true)
 
 
     Update: ->
