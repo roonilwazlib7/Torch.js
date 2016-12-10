@@ -20,6 +20,7 @@
         color: "red"
       });
       this.hud_background.Grid.Append(this.build_info);
+      this.game.Camera.position.y += this.hud_background.Size.height;
     }
 
     HUD.Load = function(game) {

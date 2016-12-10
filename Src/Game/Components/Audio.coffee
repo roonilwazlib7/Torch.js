@@ -21,6 +21,7 @@ class Audio
         return new AudioPlayer(@)
 
 class AudioPlayer
+    volume: 1
     constructor: (aud) ->
         @audioContext = aud.audioContext
         @game = aud.game
@@ -40,22 +41,25 @@ class AudioPlayer
             else
                 filters.push(@CreateGain(@game.Audio.MasterVolume))
 
-        if filters isnt null
+        if filters is null
+            filters = [@CreateGain(@volume)]
+        else
+            filters = [filters..., @CreateGain(@volume)]
 
-            lastFilter = null
+        lastFilter = null
 
-            for filter,index in filters
-                if lastFilter is null
-                    source.connect(filter)
-                else
-                    lastFilter.connect(filter)
+        for filter,index in filters
+            if lastFilter is null
+                source.connect(filter)
+            else
+                lastFilter.connect(filter)
 
-                lastFilter = filter
+            lastFilter = filter
 
-                if index is filters.length - 1
-                    filter.connect(@audioContext.destination)
-                    source.start(time)
-                    return
+            if index is filters.length - 1
+                filter.connect(@audioContext.destination)
+                source.start(time)
+                return
 
         source.connect(@audioContext.destination)
         source.start(time)

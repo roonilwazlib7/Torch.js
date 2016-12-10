@@ -17,6 +17,8 @@ class HUD
 
         @hud_background.Grid.Append(@build_info)
 
+        @game.Camera.position.y += @hud_background.Size.height
+
     @Load: (game) ->
         game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
         game.Load.Texture("Assets/Art/hud_minimap_background.png", "hud_minimap_background")

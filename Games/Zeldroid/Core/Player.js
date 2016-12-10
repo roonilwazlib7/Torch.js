@@ -15,24 +15,24 @@
 
     function Player(game) {
       this.InitSprite(game, 0, 0);
-      this.Bind.Texture("player-forward-idle");
-      this.Center();
+      this.Bind.Texture("player-right-idle");
       this.audioPlayer = this.game.Audio.CreateAudioPlayer();
+      this.audioPlayer.volume = 0.25;
       this.movementStateMachine = this.States.CreateStateMachine("Movement");
       this.movementStateMachine.State("idle", idleState);
       this.movementStateMachine.State("move", moveState);
       this.movementStateMachine.Switch("idle");
       this.drawIndex = 11;
-      this.position.y = window.innerHeight - 100;
       this.facing = "forward";
-      this.SetUpCollisions();
-      this.game.Keys.Space.On("KeyDown", (function(_this) {
-        return function(event) {
+      this.shootKeyWasDown = false;
+      this.game.Keys.Space.On("KeyUp", (function(_this) {
+        return function() {
           var b;
-          _this.audioPlayer.PlaySound("shoot", 0, [_this.audioPlayer.CreateGain(0.1)]);
+          _this.audioPlayer.PlaySound("shoot");
           return b = new PlayerBullet(_this);
         };
       })(this));
+      this.SetUpCollisions();
     }
 
     Player.Load = function(game) {

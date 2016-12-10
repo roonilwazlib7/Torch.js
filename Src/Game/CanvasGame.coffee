@@ -325,29 +325,30 @@ class CanvasGame
             [
                 "keyup", (e) =>
                     c = e.keyCode
+                    key = null
                     if c is 32
                         @Keys.Space.down = false
-                        @Keys.Space.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
+                        key = @Keys.Space
 
                     else if c is 37
                         @Keys.LeftArrow.down = false
-                        @Keys.LeftArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
-
+                        key = @Keys.LeftArrow
                     else if c is 38
                         @Keys.UpArrow.down = false
-                        @Keys.UpArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
-
+                        key = @Keys.UpArrow
                     else if c is 39
                         @Keys.RightArrow.down = false
-                        @Keys.RightArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
-
+                        key = @Keys.RightArrow
                     else if c is 40
                         @Keys.DownArrow.down = false
-                        @Keys.DownArrow.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
+                        key = @Keys.DownArrow
 
                     else
+                        key = @Keys[String.fromCharCode(e.keyCode).toUpperCase()]
                         @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
+
+                    if key isnt null
+                        key.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
             ]
         ]
         return bodyEvents

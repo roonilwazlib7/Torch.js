@@ -4,9 +4,10 @@ class Player extends Torch.Sprite
     touching: null
     constructor: (game) ->
         @InitSprite(game, 0, 0)
-        @Bind.Texture("player-forward-idle")
-        @Center()
+        @Bind.Texture("player-right-idle")
+
         @audioPlayer = @game.Audio.CreateAudioPlayer()
+        @audioPlayer.volume = 0.25
 
         @movementStateMachine = @States.CreateStateMachine("Movement")
         @movementStateMachine.State("idle", idleState)
@@ -14,14 +15,14 @@ class Player extends Torch.Sprite
         @movementStateMachine.Switch("idle")
 
         @drawIndex = 11
-        @position.y = window.innerHeight - 100
         @facing = "forward"
+        @shootKeyWasDown = false
+
+        @game.Keys.Space.On "KeyUp", =>
+            @audioPlayer.PlaySound("shoot")
+            b = new PlayerBullet(@)
 
         @SetUpCollisions()
-
-        @game.Keys.Space.On "KeyDown", (event) =>
-            @audioPlayer.PlaySound("shoot", 0, [@audioPlayer.CreateGain(0.1)])
-            b = new PlayerBullet(@)
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle")

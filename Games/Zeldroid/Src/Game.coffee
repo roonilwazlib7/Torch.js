@@ -20,7 +20,7 @@ Load = (game) ->
     game.Load.File("hud.xml", "hud-xml")
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
-    game.Load.Audio("Assets/Audio/background.mp3", "background")
+    #game.Load.Audio("Assets/Audio/background.mp3", "background")
 
 Init = (game) ->
     game.Clear("#00AF11")
@@ -28,7 +28,7 @@ Init = (game) ->
     Torch.Scale = 4
 
     game.backgroundAudioPlayer = game.Audio.CreateAudioPlayer()
-    game.backgroundAudioPlayer.PlaySound("background")
+    #game.backgroundAudioPlayer.PlaySound("background")
 
     game.player = new Player(game)
     game.mapManager = new MapManager(game)
@@ -36,6 +36,19 @@ Init = (game) ->
     game.hudGrid = new Torch.SpriteGrid(game, game.File("hud-xml"))
 
     game.mapManager.LoadMap("map-1")
+    SetUpConsoleCommands(game)
+
+Draw = (game)->
+
+Update = (game) ->
+    if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
+
+zeldroid.Start(Load, Update, Draw, Init)
+window.zeldroid = zeldroid
+
+
+# initialization...
+SetUpConsoleCommands = (game) ->
     game.debugCondole = new Torch.DebugConsole(game)
     game.debugCondole.AddCommand "SPAWN", (tConsole, piece, x, y) ->
         p = new MapPieces[piece](game, ["0", "0"])
@@ -60,11 +73,3 @@ Init = (game) ->
                 if game.Keys.DownArrow.down
                     game.Camera.position.y -= camVelocity * game.Loop.updateDelta
         game.Task(task)
-
-Draw = (game)->
-
-Update = (game) ->
-    if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
-
-zeldroid.Start(Load, Update, Draw, Init)
-window.zeldroid = zeldroid

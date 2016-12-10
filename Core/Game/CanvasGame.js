@@ -415,36 +415,30 @@
         ], [
           "keyup", (function(_this) {
             return function(e) {
-              var c;
+              var c, key;
               c = e.keyCode;
+              key = null;
               if (c === 32) {
                 _this.Keys.Space.down = false;
-                return _this.Keys.Space.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+                key = _this.Keys.Space;
               } else if (c === 37) {
                 _this.Keys.LeftArrow.down = false;
-                return _this.Keys.LeftArrow.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+                key = _this.Keys.LeftArrow;
               } else if (c === 38) {
                 _this.Keys.UpArrow.down = false;
-                return _this.Keys.UpArrow.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+                key = _this.Keys.UpArrow;
               } else if (c === 39) {
                 _this.Keys.RightArrow.down = false;
-                return _this.Keys.RightArrow.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+                key = _this.Keys.RightArrow;
               } else if (c === 40) {
                 _this.Keys.DownArrow.down = false;
-                return _this.Keys.DownArrow.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+                key = _this.Keys.DownArrow;
               } else {
+                key = _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()];
                 _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
-                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyUp", new Torch.Event(_this, {
+              }
+              if (key !== null) {
+                return key.Emit("KeyUp", new Torch.Event(_this, {
                   nativeEvent: e
                 }));
               }
