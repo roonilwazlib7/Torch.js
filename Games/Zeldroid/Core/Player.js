@@ -38,7 +38,8 @@
       game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle");
       game.Load.Texture("Assets/Art/player/player-right-idle.png", "player-right-idle");
       game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle");
-      return game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet");
+      game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet");
+      return game.Load.Texture("Assets/Art/player/shoot-particle.png", "shoot-particle");
     };
 
     Player.prototype.Update = function() {
@@ -127,6 +128,8 @@
   PlayerBullet = (function(superClass) {
     extend(PlayerBullet, superClass);
 
+    PlayerBullet.prototype.DAMAGE = 1;
+
     function PlayerBullet(shooter) {
       this.InitSprite(shooter.game, shooter.position.x, shooter.position.y);
       this.Bind.Texture("player-bullet");
@@ -135,9 +138,13 @@
       switch (shooter.facing) {
         case "forward":
           this.Body.velocity.y = -1 * this.VELOCITY;
+          this.position.y -= 0.3 * shooter.rectangle.height;
+          this.position.x += 0.1 * shooter.rectangle.width;
           break;
         case "backward":
           this.Body.velocity.y = 1 * this.VELOCITY;
+          this.position.x += 0.1 * shooter.rectangle.width;
+          this.position.y += 0.3 * shooter.rectangle.height;
           break;
         case "right":
           this.Body.velocity.x = 1 * this.VELOCITY;
@@ -152,7 +159,7 @@
           this.rotation = Math.PI / 2;
       }
       this.Size.scale.width = this.Size.scale.height = 10;
-      this.emitter = this.game.Particles.ParticleEmitter(500, 500, 500, true, "particle", {
+      this.emitter = this.game.Particles.ParticleEmitter(500, 500, 500, true, "shoot-particle", {
         spread: 20,
         gravity: 0.0001,
         minAngle: 0,
@@ -167,13 +174,17 @@
         maxOmega: 0.001
       });
       this.emitter.auto = false;
+      this.emitter.position = this.position.Clone();
+      this.emitter.EmitParticles();
       this.Collisions.Monitor();
       this.On("Collision", (function(_this) {
         return function(event) {
           if (!event.collisionData.collider.hardBlock) {
             return;
           }
+          event.collisionData.collider.hp -= _this.DAMAGE;
           _this.Trash();
+          _this.emitter.particle = "particle";
           _this.emitter.position = _this.position.Clone();
           return _this.emitter.EmitParticles();
         };

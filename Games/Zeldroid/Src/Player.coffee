@@ -28,6 +28,7 @@ class Player extends Torch.Sprite
         game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle")
 
         game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet")
+        game.Load.Texture("Assets/Art/player/shoot-particle.png", "shoot-particle")
 
     Update: ->
         super()
@@ -88,6 +89,7 @@ moveState =
     End: (player) ->
 
 class PlayerBullet extends Torch.Sprite
+    DAMAGE: 1
     constructor: (shooter) ->
         @InitSprite(shooter.game, shooter.position.x, shooter.position.y)
         @Bind.Texture("player-bullet")
@@ -97,8 +99,12 @@ class PlayerBullet extends Torch.Sprite
         switch shooter.facing
             when "forward"
                 @Body.velocity.y = -1 * @VELOCITY
+                @position.y -= 0.3 * shooter.rectangle.height
+                @position.x += 0.1 * shooter.rectangle.width
             when "backward"
                 @Body.velocity.y = 1 * @VELOCITY
+                @position.x += 0.1 * shooter.rectangle.width
+                @position.y += 0.3 * shooter.rectangle.height
             when "right"
                 @Body.velocity.x = 1 * @VELOCITY
                 @position.x += 1.1 * shooter.rectangle.width
@@ -111,10 +117,8 @@ class PlayerBullet extends Torch.Sprite
                 @rotation = Math.PI/2
 
         @Size.scale.width = @Size.scale.height = 10
-        # @game.Tweens.Tween(@, 500, Torch.Easing.Smooth).To({opacity: 0}).On "Finish", =>
-        #     @Trash()
 
-        @emitter = @game.Particles.ParticleEmitter 500, 500, 500, true, "particle",
+        @emitter = @game.Particles.ParticleEmitter 500, 500, 500, true, "shoot-particle",
             spread: 20
             gravity: 0.0001
             minAngle: 0
@@ -128,11 +132,17 @@ class PlayerBullet extends Torch.Sprite
             minOmega: 0.001
             maxOmega: 0.001
         @emitter.auto = false
+        @emitter.position = @position.Clone()
+        @emitter.EmitParticles()
 
         @Collisions.Monitor()
         @On "Collision", (event) =>
             return if not event.collisionData.collider.hardBlock
+
+            event.collisionData.collider.hp -= @DAMAGE
+
             @Trash()
+            @emitter.particle = "particle"
             @emitter.position = @position.Clone()
             @emitter.EmitParticles()
 

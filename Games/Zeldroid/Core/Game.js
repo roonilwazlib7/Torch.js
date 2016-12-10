@@ -25,7 +25,7 @@
 
   Init = function(game) {
     var emitter;
-    game.Clear("#FB8500");
+    game.Clear("#00AF11");
     game.PixelScale();
     Torch.Scale = 4;
     game.player = new Player(game);

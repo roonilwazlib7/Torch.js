@@ -23,6 +23,8 @@
 
     MapPiece.prototype.hardBlock = true;
 
+    MapPiece.prototype.hp = 2;
+
     function MapPiece(game, rawData) {
       this.data = this.GetData(rawData, game);
       this.InitSprite(game, this.data.position.x, this.data.position.y);
@@ -39,6 +41,34 @@
         y: parseInt(rawData[1], 16) * SCALE + game.hud.hud_background.Size.height
       };
       return data;
+    };
+
+    MapPiece.prototype.Update = function() {
+      MapPiece.__super__.Update.call(this);
+      if (this.hp <= 0) {
+        return this.Die();
+      }
+    };
+
+    MapPiece.prototype.Die = function() {
+      this.emitter = this.game.Particles.ParticleEmitter(500, 0, 0, true, this.textureId, {
+        spread: 20,
+        gravity: 0.0001,
+        minAngle: 0,
+        maxAngle: Math.PI * 2,
+        minScale: 0.1,
+        maxScale: 0.5,
+        minVelocity: 0.01,
+        maxVelocity: 0.01,
+        minAlphaDecay: 400,
+        maxAlphaDecay: 450,
+        minOmega: 0.001,
+        maxOmega: 0.001
+      });
+      this.emitter.auto = false;
+      this.emitter.position = this.position.Clone();
+      this.emitter.EmitParticles();
+      return this.Trash();
     };
 
     return MapPiece;
