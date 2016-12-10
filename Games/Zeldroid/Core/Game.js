@@ -21,14 +21,16 @@
     game.Load.File("Maps/test-map-2.map", "map-1");
     game.Load.File("hud.xml", "hud-xml");
     game.Load.File("package.json", "package");
-    return game.Load.Audio("Assets/Audio/shoot.wav", "shoot");
+    game.Load.Audio("Assets/Audio/shoot.wav", "shoot");
+    return game.Load.Audio("Assets/Audio/background.mp3", "background");
   };
 
   Init = function(game) {
     game.Clear("#00AF11");
     game.PixelScale();
-    game.Audio.MasterVolume = 0.5;
     Torch.Scale = 4;
+    game.backgroundAudioPlayer = game.Audio.CreateAudioPlayer();
+    game.backgroundAudioPlayer.PlaySound("background");
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);

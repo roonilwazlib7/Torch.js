@@ -20,7 +20,7 @@ class Player extends Torch.Sprite
         @SetUpCollisions()
 
         @game.Keys.Space.On "KeyDown", (event) =>
-            @audioPlayer.PlaySound("shoot")
+            @audioPlayer.PlaySound("shoot", 0, [@audioPlayer.CreateGain(0.1)])
             b = new PlayerBullet(@)
 
     @Load: (game) ->

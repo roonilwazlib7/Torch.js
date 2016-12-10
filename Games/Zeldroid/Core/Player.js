@@ -29,7 +29,7 @@
       this.game.Keys.Space.On("KeyDown", (function(_this) {
         return function(event) {
           var b;
-          _this.audioPlayer.PlaySound("shoot");
+          _this.audioPlayer.PlaySound("shoot", 0, [_this.audioPlayer.CreateGain(0.1)]);
           return b = new PlayerBullet(_this);
         };
       })(this));
