@@ -169,8 +169,8 @@ class MAP
             that.data += parseInt(p.data("y")).toString(16)
             that.data += ";"
 
-        if @name is then @name = "New Map"
-        if @author is then @author = "Team"
+        if @name is "" then @name = "New Map"
+        if @author is "" then @author = "Team"
 
 
 

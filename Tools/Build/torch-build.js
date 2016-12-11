@@ -91,7 +91,9 @@ if (buildConfig.TestGame.run)
         {
             var cf = buildConfig.TestGame.CoffeeSources[i];
             console.log("[] Compiling " + cf + " Coffee");
-            shell.exec("coffee --compile --output Games/" + buildConfig.TestGame.Path + "/" + cf + "/Core/ Games/" + buildConfig.TestGame.Path + "/" + cf + "/Src/")
+            var extraPath = buildConfig.TestGame.Path + "/" + cf
+            console.log(extraPath)
+            shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/")
         }
     }
     if (buildConfig.TestGame.Electron)
