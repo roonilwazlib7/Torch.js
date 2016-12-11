@@ -157,6 +157,10 @@ class Torch
     Is = (obj, torchType) ->
         return Torch.TypeOf(obj).indexOf(torchType) isnt -1
 
+    ExtendObject: (objectToExtend, newObject) ->
+        for key,value of newObject
+            objectToExtend[key] = value
+
     ExtendProperties: (Class, properties...) ->
         for prop in properties
             keyProp = prop.unCapitalize()

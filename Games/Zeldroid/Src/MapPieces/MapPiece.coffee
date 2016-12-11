@@ -83,6 +83,11 @@ class Bumps extends MapPiece
     textureId: "bumps"
     identifier: 4
 
+class Blob extends MapPiece
+    hardBlock: true
+    textureId: "blob"
+    identifier: 5
+
 exports.MapPieces =
     MapPiece: MapPiece
     Bush: Bush

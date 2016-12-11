@@ -356,6 +356,16 @@
       return Torch.TypeOf(obj).indexOf(torchType) !== -1;
     };
 
+    Torch.prototype.ExtendObject = function(objectToExtend, newObject) {
+      var key, results, value;
+      results = [];
+      for (key in newObject) {
+        value = newObject[key];
+        results.push(objectToExtend[key] = value);
+      }
+      return results;
+    };
+
     Torch.prototype.ExtendProperties = function() {
       var Class, func, j, keyProp, len, prop, properties, results;
       Class = arguments[0], properties = 2 <= arguments.length ? slice.call(arguments, 1) : [];
@@ -4578,4 +4588,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.225'
+Torch.version = '0.5.238'

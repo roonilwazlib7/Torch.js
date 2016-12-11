@@ -11,6 +11,7 @@ Load = (game) ->
     Player.Load(game)
     HUD.Load(game)
     MapPieces.MapPiece.Load(game)
+    Enemy.Load(game)
 
     game.Load.Texture("Assets/Art/particle.png", "particle")
     game.Load.File("Maps/test-map-2.map", "map-1")
@@ -18,6 +19,9 @@ Load = (game) ->
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
     #game.Load.Audio("Assets/Audio/background.mp3", "background")
+
+    game.On "LoadProgressed", (event) ->
+        console.log(event.progress)
 
 Init = (game) ->
     game.Clear("#00AF11")
@@ -39,8 +43,6 @@ Draw = (game)->
 
 Update = (game) ->
     if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
-    zeldroid.Hooks.positionTransform.x = Torch.RandomInRange(5,20)
-    zeldroid.Hooks.positionTransform.y = Torch.RandomInRange(5,20)
 
 zeldroid.Start(Load, Update, Draw, Init)
 window.zeldroid = zeldroid
