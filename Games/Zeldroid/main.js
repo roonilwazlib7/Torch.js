@@ -37,7 +37,7 @@ function StartWindow()
 
 
                 // Create the browser window.
-                mainWindow = new BrowserWindow({width: 1000, height: 625, title: "TheGame", icon: "icon.png"});
+                mainWindow = new BrowserWindow({width: 1000, height: 625, title: "Zeldroid", icon: "icon.png"});
 
                 //for development
                 mainWindow.setMenuBarVisibility(false);

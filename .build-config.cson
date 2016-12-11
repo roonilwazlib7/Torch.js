@@ -1,4 +1,4 @@
-Build: 244
+Build: 249
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -6,6 +6,9 @@ TestGame:
     Source: "Coffee"
     run: true
     Electron: true
+    CoffeeSources: [
+        "MapMaker"
+    ]
 NeedsWork: [
     "Torch.Particles.js"
 ]

@@ -3,7 +3,7 @@ var compressor = require('node-minify');
 var shell = require('shelljs');
 var CSON = require('cson');
 
-console.log("Building Torch -- " + process.platform)
+console.log("[] Building Torch -- " + process.platform)
 
 buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
@@ -28,11 +28,11 @@ for (var i = 0; i < source.length; i++)
     source[i] = "Core/" + source[i];
 }
 
-console.log("Compiling Torch Coffee...");
+console.log("[] Compiling Torch Coffee...");
 // compile the source coffeescript
 shell.exec("coffee --compile --output Core/ Src/")
 
-console.log("Writing uncompressed...");
+console.log("[] Writing uncompressed...");
 // write the uncompressed js version
 compressor.minify({
     compressor: 'no-compress',
@@ -85,12 +85,18 @@ if (buildConfig.TestGame.run)
 
     if (buildConfig.TestGame.Source == "Coffee")
     {
-        console.log("Compiling Game Coffee...");
+        console.log("[] Compiling Game Coffee...");
         shell.exec("coffee --compile --output Games/" + buildConfig.TestGame.Path + "/Core/ Games/" + buildConfig.TestGame.Path + "/Src/")
+        for (var i = 0; i < buildConfig.TestGame.CoffeeSources.length; i++)
+        {
+            var cf = buildConfig.TestGame.CoffeeSources[i];
+            console.log("[] Compiling " + cf + " Coffee");
+            shell.exec("coffee --compile --output Games/" + buildConfig.TestGame.Path + "/" + cf + "/Core/ Games/" + buildConfig.TestGame.Path + "/" + cf + "/Src/")
+        }
     }
     if (buildConfig.TestGame.Electron)
     {
-        console.log("Starting Electron...");
+        console.log("[] Starting Electron...");
         //this won't work for some reason...
         //shell.exec("electron " + "Games/" + buildConfig.TestGame.Path + "/main.js");
         if (process.platform == "win32")
