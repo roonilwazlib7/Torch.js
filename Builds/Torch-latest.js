@@ -4588,4 +4588,4 @@
 
 }).call(this);
 
-Torch.version = '0.5.238'
+Torch.version = '0.5.244'
