@@ -13,9 +13,11 @@ class MapMaker
     GenerateCells: ->
         LENGTH = 36
         HEIGHT = 24
-        i = j = 0
+        i = 0
         while i < LENGTH
-            while j < height
+            j = 0
+            while j < HEIGHT
+                console.log(i,j)
                 @GenerateCell(i,j)
                 j++
             i++
@@ -53,8 +55,8 @@ class MapMaker
 
         cell.css {
             position: "absolute"
-            left: x * BASE * SCALE
-            top: y * BASE * SCALE
+            left: x * @BASE * @SCALE
+            top: y * @BASE * @SCALE
         }
 
         $("#grid").append(cell)
@@ -73,14 +75,14 @@ class MapMaker
         if @SELECTED_PIECE is null then return
         if @SHIFT_DOWN then cell.empty()
 
-        im = $("<img src='../Assets/Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>")
+        im = $("<img src='../Assets/Art/map/" + MapPieces[@SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>")
 
         if cell.children("img").length > 0
             im.css("margin-top", "-100%")
 
         im.data("x", cell.data("x"))
         im.data("y", cell.data("y"))
-        im.data("identifier", MapPieces[SELECTED_PIECE].prototype.identifier)
+        im.data("identifier", MapPieces[@SELECTED_PIECE].prototype.identifier)
         cell.append(im)
 
     ExportMap: ->

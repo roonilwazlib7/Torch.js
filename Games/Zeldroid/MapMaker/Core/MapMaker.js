@@ -24,10 +24,12 @@
       var HEIGHT, LENGTH, i, j, results;
       LENGTH = 36;
       HEIGHT = 24;
-      i = j = 0;
+      i = 0;
       results = [];
       while (i < LENGTH) {
-        while (j < height) {
+        j = 0;
+        while (j < HEIGHT) {
+          console.log(i, j);
           this.GenerateCell(i, j);
           j++;
         }
@@ -82,8 +84,8 @@
       cell.data("y", y);
       cell.css({
         position: "absolute",
-        left: x * BASE * SCALE,
-        top: y * BASE * SCALE
+        left: x * this.BASE * this.SCALE,
+        top: y * this.BASE * this.SCALE
       });
       $("#grid").append(cell);
       cell.click(function() {
@@ -106,13 +108,13 @@
       if (this.SHIFT_DOWN) {
         cell.empty();
       }
-      im = $("<img src='../Assets/Art/map/" + MapPieces[SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
+      im = $("<img src='../Assets/Art/map/" + MapPieces[this.SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
       if (cell.children("img").length > 0) {
         im.css("margin-top", "-100%");
       }
       im.data("x", cell.data("x"));
       im.data("y", cell.data("y"));
-      im.data("identifier", MapPieces[SELECTED_PIECE].prototype.identifier);
+      im.data("identifier", MapPieces[this.SELECTED_PIECE].prototype.identifier);
       return cell.append(im);
     };
 
