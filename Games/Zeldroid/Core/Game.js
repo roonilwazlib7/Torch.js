@@ -8,7 +8,7 @@
 
   Torch.DisableConsoleWarnings();
 
-  zeldroid = new Zeldroid("container", "fill", "fill", "TheGame", Torch.CANVAS);
+  zeldroid = new Zeldroid("container", "fill", "fill", "Zeldroid", Torch.CANVAS);
 
   Load = function(game) {
     game.Bounds();
@@ -21,9 +21,8 @@
     game.Load.File("hud.xml", "hud-xml");
     game.Load.File("package.json", "package");
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot");
-    return game.On("LoadProgressed", function(event) {
-      return console.log(event.progress);
-    });
+    game.Load.Audio("Assets/Audio/background.mp3", "background");
+    return game.On("LoadProgressed", function(event) {});
   };
 
   Init = function(game) {
@@ -31,6 +30,7 @@
     game.PixelScale();
     Torch.Scale = 4;
     game.backgroundAudioPlayer = game.Audio.CreateAudioPlayer();
+    game.backgroundAudioPlayer.PlaySound("background");
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);

@@ -1,4 +1,7 @@
-# https://www.html5rocks.com/en/tutorials/webaudio/intro/
+class Sound
+    volume: 1
+    pan: 0
+    constructor: (@soundId) ->
 class Audio
     audioContext: null
     MasterVolume: 1
@@ -30,6 +33,9 @@ class AudioPlayer
         gainNode = @audioContext.createGain()
         gainNode.gain.value = gain
         return gainNode
+
+    Play: (sound) ->
+        @game.FatalError("Cannot play sound. sound must be Torch.Sound")
 
     PlaySound: (id, time = 0, filters = null) ->
         source = @audioContext.createBufferSource()
