@@ -257,28 +257,28 @@ class CanvasGame
                     @Mouse.SetMousePos(@canvasNode, e)
                     @Emit "MouseMove", new Torch.Event @,
                         nativeEvent: e
-            ],
+            ]
             [
                 "mousedown", (e) =>
                     @Mouse.down = true
                     @Emit "MouseDown", new Torch.Event @,
                         nativeEvent: e
-            ],
+            ]
             [
                 "mouseup", (e) =>
                     @Mouse.down = false
                     @Emit "MouseUp", new Torch.Event @,
                         nativeEvent: e
-            ],
+            ]
             [
                 "touchstart", (e) =>
                     @Mouse.down = true
 
-            ],
+            ]
             [
                 "touchend", (e) =>
                     @Mouse.down = false
-            ],
+            ]
             [
                 "click", (e) =>
                     e.preventDefault()
@@ -297,59 +297,25 @@ class CanvasGame
             [
                 "keydown", (e) =>
                     c = e.keyCode
-                    if c is 32
-                        @Keys.Space.down = true
-                        @Keys.Space.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
+                    key = @Keys.SpecialKey(c)
 
-                    else if c is 37
-                        @Keys.LeftArrow.down = true
-                        @Keys.LeftArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
+                    if key is null
+                        key = @Keys[String.fromCharCode(e.keyCode).toUpperCase()]
 
-                    else if c is 38
-                        @Keys.UpArrow.down = true
-                        @Keys.UpArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
+                    key.down = true
+                    key.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
 
-                    else if c is 39
-                        @Keys.RightArrow.down = true
-                        @Keys.RightArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
-
-                    else if c is 40
-                        @Keys.DownArrow.down = true
-                        @Keys.DownArrow.Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
-
-                    else
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyDown", new Torch.Event(@, {nativeEvent: e}))
-
-
-            ],
+            ]
             [
                 "keyup", (e) =>
                     c = e.keyCode
-                    key = null
-                    if c is 32
-                        @Keys.Space.down = false
-                        key = @Keys.Space
+                    key = @Keys.SpecialKey(c)
 
-                    else if c is 37
-                        @Keys.LeftArrow.down = false
-                        key = @Keys.LeftArrow
-                    else if c is 38
-                        @Keys.UpArrow.down = false
-                        key = @Keys.UpArrow
-                    else if c is 39
-                        @Keys.RightArrow.down = false
-                        key = @Keys.RightArrow
-                    else if c is 40
-                        @Keys.DownArrow.down = false
-                        key = @Keys.DownArrow
-
-                    else
+                    if key is null
                         key = @Keys[String.fromCharCode(e.keyCode).toUpperCase()]
-                        @Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false
 
-                    if key isnt null
-                        key.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
+                    key.down = false
+                    key.Emit("KeyUp", new Torch.Event(@, {nativeEvent: e}))
             ]
         ]
         return bodyEvents
@@ -360,15 +326,6 @@ class CanvasGame
 
         for eventItem in @getBodyEvents()
             document.body.addEventListener(eventItem[0], eventItem[1], false)
-
-        # document.body.addEventListener("keypress", RecordKeyPress, false)
-
-        window.addEventListener "gamepadconnected", (e) =>
-            gp = navigator.getGamepads()[e.gamepad.index]
-            @GamePads.push(new Torch.GamePad(gp))
-            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-            e.gamepad.index, e.gamepad.id,
-            e.gamepad.buttons.length, e.gamepad.axes.length)
 
         # window resize event
         resize = (event) =>
@@ -381,12 +338,6 @@ class CanvasGame
 
         pads = navigator.getGamepads()
 
-        ###
-        for (var i = 0 i < pads.length i++)
-        {
-            @GamePads.push(new Torch.GamePad(pads[i]))
-        }
-        ###
 
     TogglePause: ->
         if not @paused

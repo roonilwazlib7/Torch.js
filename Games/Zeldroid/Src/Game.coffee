@@ -18,7 +18,6 @@ Load = (game) ->
     game.Load.File("hud.xml", "hud-xml")
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
-    game.Load.Audio("Assets/Audio/background.mp3", "background")
 
     game.On "LoadProgressed", (event) ->
         #console.log(event.progress)
@@ -29,7 +28,6 @@ Init = (game) ->
     Torch.Scale = 4
 
     game.backgroundAudioPlayer = game.Audio.CreateAudioPlayer()
-    game.backgroundAudioPlayer.PlaySound("background")
 
     game.player = new Player(game)
     game.mapManager = new MapManager(game)

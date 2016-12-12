@@ -3,7 +3,7 @@ var compressor = require('node-minify');
 var shell = require('shelljs');
 var CSON = require('cson');
 
-console.log("[] Building Torch -- " + process.platform)
+console.log("[] Building Torch...")
 
 buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
@@ -33,7 +33,6 @@ console.log("[] Compiling Torch Coffee...");
 shell.exec("coffee --compile --output Core/ Src/")
 
 console.log("[] Writing uncompressed...");
-// write the uncompressed js version
 compressor.minify({
     compressor: 'no-compress',
     input: source,
@@ -42,20 +41,19 @@ compressor.minify({
     callback: function (err, min) {}
 });
 
-console.log("Writing compressed...");
-//write the compressed js version
-// compressor.minify({
-//     compressor: 'yui-js',
-//     input: 'Builds/torch-latest.js',
-//     output: 'Builds/torch-latest.min.js',
-//     sync: true,
-//     callback: function (err, min) {}
-// });
+console.log("[] Writing compressed...");
+compressor.minify({
+    compressor: 'uglifyjs',
+    input: 'Builds/torch-latest.js',
+    output: 'Builds/torch-latest.min.js',
+    sync: true,
+    callback: function (err, min) {}
+});
 
 // run the test game, if its there
 if (buildConfig.TestGame.run)
 {
-    console.log("Running Test Game...");
+    console.log("[] Running " + buildConfig.TestGame.Path + "...");
     var windows_script = "cd Games\\" + buildConfig.TestGame.Path;
         windows_script += "\nnpm start";
     var linux_script = "cd Games/" + buildConfig.TestGame.Path;

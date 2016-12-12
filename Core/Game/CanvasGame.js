@@ -378,39 +378,16 @@
         [
           "keydown", (function(_this) {
             return function(e) {
-              var c;
+              var c, key;
               c = e.keyCode;
-              if (c === 32) {
-                _this.Keys.Space.down = true;
-                return _this.Keys.Space.Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              } else if (c === 37) {
-                _this.Keys.LeftArrow.down = true;
-                return _this.Keys.LeftArrow.Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              } else if (c === 38) {
-                _this.Keys.UpArrow.down = true;
-                return _this.Keys.UpArrow.Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              } else if (c === 39) {
-                _this.Keys.RightArrow.down = true;
-                return _this.Keys.RightArrow.Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              } else if (c === 40) {
-                _this.Keys.DownArrow.down = true;
-                return _this.Keys.DownArrow.Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              } else {
-                _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = true;
-                return _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].Emit("KeyDown", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
+              key = _this.Keys.SpecialKey(c);
+              if (key === null) {
+                key = _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()];
               }
+              key.down = true;
+              return key.Emit("KeyDown", new Torch.Event(_this, {
+                nativeEvent: e
+              }));
             };
           })(this)
         ], [
@@ -418,31 +395,14 @@
             return function(e) {
               var c, key;
               c = e.keyCode;
-              key = null;
-              if (c === 32) {
-                _this.Keys.Space.down = false;
-                key = _this.Keys.Space;
-              } else if (c === 37) {
-                _this.Keys.LeftArrow.down = false;
-                key = _this.Keys.LeftArrow;
-              } else if (c === 38) {
-                _this.Keys.UpArrow.down = false;
-                key = _this.Keys.UpArrow;
-              } else if (c === 39) {
-                _this.Keys.RightArrow.down = false;
-                key = _this.Keys.RightArrow;
-              } else if (c === 40) {
-                _this.Keys.DownArrow.down = false;
-                key = _this.Keys.DownArrow;
-              } else {
+              key = _this.Keys.SpecialKey(c);
+              if (key === null) {
                 key = _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()];
-                _this.Keys[String.fromCharCode(e.keyCode).toUpperCase()].down = false;
               }
-              if (key !== null) {
-                return key.Emit("KeyUp", new Torch.Event(_this, {
-                  nativeEvent: e
-                }));
-              }
+              key.down = false;
+              return key.Emit("KeyUp", new Torch.Event(_this, {
+                nativeEvent: e
+              }));
             };
           })(this)
         ]
@@ -462,14 +422,6 @@
         eventItem = ref1[j];
         document.body.addEventListener(eventItem[0], eventItem[1], false);
       }
-      window.addEventListener("gamepadconnected", (function(_this) {
-        return function(e) {
-          var gp;
-          gp = navigator.getGamepads()[e.gamepad.index];
-          _this.GamePads.push(new Torch.GamePad(gp));
-          return console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);
-        };
-      })(this));
       resize = (function(_this) {
         return function(event) {
           _this.Viewport.width = window.innerWidth;
@@ -481,13 +433,6 @@
       })(this);
       window.addEventListener('resize', resize, false);
       return pads = navigator.getGamepads();
-
-      /*
-      for (var i = 0 i < pads.length i++)
-      {
-          @GamePads.push(new Torch.GamePad(pads[i]))
-      }
-       */
     };
 
     CanvasGame.prototype.TogglePause = function() {
