@@ -36,6 +36,7 @@
       this.Effects = new Torch.EffectManager(this);
       this.States = new Torch.StateMachineManager(this);
       this.Grid = new Torch.GridManager(this);
+      this.Animations = new Torch.AnimationManager(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;

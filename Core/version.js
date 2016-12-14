@@ -1,2 +1,2 @@
 
-Torch.version = '0.5.325';
+Torch.version = '0.5.326';
