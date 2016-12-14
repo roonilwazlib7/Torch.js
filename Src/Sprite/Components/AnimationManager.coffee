@@ -17,17 +17,13 @@ class AnimationManager
             cleanedAnims.push(anim) if not anim.trash
         @animations = cleanedAnims
 
-    SpriteSheet: (width, height, numberOfFrames, config = {}) ->
-        defaultConfig =
-            step: 200
-
-        config = Torch.Utils.BlendObject(defaultConfig, config)
+    SpriteSheet: (width, height, numberOfFrames, config = {step: 200}) ->
         anim = new SpriteSheetAnimation(@sprite, width, height, numberOfFrames, config.step)
         @animations.push( anim )
-
         return anim
+
 class SpriteSheetAnimation extends Animation
-    index: 0
+    index: -1
     clipX: 0
     clipY: 0
     game: null
@@ -37,12 +33,13 @@ class SpriteSheetAnimation extends Animation
     stepTime: null
 
     constructor: (@sprite, @clipWidth, @clipHeight, @numberOfFrames, @stepTime) ->
+        @loop = true
         @game = @sprite.game
         @Reset()
 
     Update: ->
         return if @stopped
-        @intervalTime += @game.updateDelta
+        @intervalTime += @game.Loop.updateDelta
 
         if @intervalTime >= @stepTime
             @AdvanceFrame()
@@ -51,25 +48,42 @@ class SpriteSheetAnimation extends Animation
         @intervalTime = 0
         @index += 1
 
-        @sprite.drawParams.clipX = index * @clipWidth
+        @sprite.DrawTexture.drawParams.clipX = @index * @clipWidth
 
-        if index >= @numberOfFrames
+        if @index >= @numberOfFrames - 1
 
             if @loop
-                @index = 0
+                @index = -1
             else
                 @Trash()
 
     Stop: ->
         @stopped = true
 
+    Start: ->
+        @stopped = false
+
+    Index: (index) ->
+        @index = index - 1
+        @sprite.DrawTexture.drawParams.clipX = ( @index + 1) * @clipWidth
+
     Reset: ->
         @intervalTime = 0
-        @index = 0
+        @index = -1
 
-        @sprite.drawParams.clipX = 0
-        @sprite.drawParams.clipY = 0
-        @sprite.drawParams.clipWidth = @clipWidth
-        @sprite.drawParams.clipHeight = @clipHeight
+        @sprite.DrawTexture.drawParams.clipX = 0
+        @sprite.DrawTexture.drawParams.clipY = 0
+        @sprite.DrawTexture.drawParams.clipWidth = @clipWidth
+        @sprite.DrawTexture.drawParams.clipHeight = @clipHeight
+        @sprite.Size.width = @clipWidth
+        @sprite.Size.height = @clipHeight
+
+    SyncFrame: ->
+        @sprite.DrawTexture.drawParams.clipX = 0
+        @sprite.DrawTexture.drawParams.clipY = 0
+        @sprite.DrawTexture.drawParams.clipWidth = @clipWidth
+        @sprite.DrawTexture.drawParams.clipHeight = @clipHeight
+        @sprite.Size.width = @clipWidth
+        @sprite.Size.height = @clipHeight
 
 Torch.AnimationManager = AnimationManager

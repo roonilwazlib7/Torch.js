@@ -16,6 +16,8 @@
     function Player(game) {
       this.InitSprite(game, 0, 0);
       this.Bind.Texture("player-right-idle");
+      this.spriteSheetAnim = this.Animations.SpriteSheet(16, 16, 2);
+      this.spriteSheetAnim.Stop();
       this.audioPlayer = this.game.Audio.CreateAudioPlayer();
       this.audioPlayer.volume = 0.25;
       this.movementStateMachine = this.States.CreateStateMachine("Movement");
@@ -39,7 +41,7 @@
       game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle");
       game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle");
       game.Load.Texture("Assets/Art/player/player-right-idle-sheet.png", "player-right-idle");
-      game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle");
+      game.Load.Texture("Assets/Art/player/player-left.png", "player-left-idle");
       game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet");
       return game.Load.Texture("Assets/Art/player/shoot-particle.png", "shoot-particle");
     };
@@ -110,21 +112,29 @@
       }
     },
     Start: function(player, key, velocity) {
+      player.spriteSheetAnim.Start();
       player.Body.velocity.y = velocity.y * player.VELOCITY;
       player.Body.velocity.x = velocity.x * player.VELOCITY;
       this.triggerKey = key;
       switch (player.facing) {
         case "forward":
-          return player.Bind.Texture("player-forward-idle");
+          player.Bind.Texture("player-forward-idle");
+          return player.spriteSheetAnim.SyncFrame();
         case "backward":
-          return player.Bind.Texture("player-backward-idle");
+          player.Bind.Texture("player-backward-idle");
+          return player.spriteSheetAnim.SyncFrame();
         case "right":
-          return player.Bind.Texture("player-right-idle");
+          player.Bind.Texture("player-right-idle");
+          return player.spriteSheetAnim.SyncFrame();
         case "left":
-          return player.Bind.Texture("player-left-idle");
+          player.Bind.Texture("player-left-idle");
+          return player.spriteSheetAnim.SyncFrame();
       }
     },
-    End: function(player) {}
+    End: function(player) {
+      player.spriteSheetAnim.Stop();
+      return player.spriteSheetAnim.Index(0);
+    }
   };
 
   PlayerBullet = (function(superClass) {

@@ -5,6 +5,8 @@ class Player extends Torch.Sprite
     constructor: (game) ->
         @InitSprite(game, 0, 0)
         @Bind.Texture("player-right-idle")
+        @spriteSheetAnim = @Animations.SpriteSheet(16, 16, 2)
+        @spriteSheetAnim.Stop()
 
         @audioPlayer = @game.Audio.CreateAudioPlayer()
         @audioPlayer.volume = 0.25
@@ -28,7 +30,7 @@ class Player extends Torch.Sprite
         game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle")
         game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle")
         game.Load.Texture("Assets/Art/player/player-right-idle-sheet.png", "player-right-idle")
-        game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle")
+        game.Load.Texture("Assets/Art/player/player-left.png", "player-left-idle")
 
         game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet")
         game.Load.Texture("Assets/Art/player/shoot-particle.png", "shoot-particle")
@@ -75,6 +77,7 @@ moveState =
             @stateMachine.Switch("idle")
 
     Start: (player, key, velocity) ->
+        player.spriteSheetAnim.Start()
         player.Body.velocity.y = velocity.y * player.VELOCITY
         player.Body.velocity.x = velocity.x * player.VELOCITY
         @triggerKey = key
@@ -82,14 +85,20 @@ moveState =
         switch player.facing
             when "forward"
                 player.Bind.Texture("player-forward-idle")
+                player.spriteSheetAnim.SyncFrame()
             when "backward"
                 player.Bind.Texture("player-backward-idle")
+                player.spriteSheetAnim.SyncFrame()
             when "right"
                 player.Bind.Texture("player-right-idle")
+                player.spriteSheetAnim.SyncFrame()
             when "left"
                 player.Bind.Texture("player-left-idle")
+                player.spriteSheetAnim.SyncFrame()
 
     End: (player) ->
+        player.spriteSheetAnim.Stop()
+        player.spriteSheetAnim.Index(0)
 
 class PlayerBullet extends Torch.Sprite
     DAMAGE: 1

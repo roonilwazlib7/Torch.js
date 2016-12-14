@@ -46,14 +46,12 @@
     };
 
     AnimationManager.prototype.SpriteSheet = function(width, height, numberOfFrames, config) {
-      var anim, defaultConfig;
+      var anim;
       if (config == null) {
-        config = {};
+        config = {
+          step: 200
+        };
       }
-      defaultConfig = {
-        step: 200
-      };
-      config = Torch.Utils.BlendObject(defaultConfig, config);
       anim = new SpriteSheetAnimation(this.sprite, width, height, numberOfFrames, config.step);
       this.animations.push(anim);
       return anim;
@@ -66,7 +64,7 @@
   SpriteSheetAnimation = (function(superClass) {
     extend(SpriteSheetAnimation, superClass);
 
-    SpriteSheetAnimation.prototype.index = 0;
+    SpriteSheetAnimation.prototype.index = -1;
 
     SpriteSheetAnimation.prototype.clipX = 0;
 
@@ -88,6 +86,7 @@
       this.clipHeight = clipHeight;
       this.numberOfFrames = numberOfFrames1;
       this.stepTime = stepTime;
+      this.loop = true;
       this.game = this.sprite.game;
       this.Reset();
     }
@@ -96,7 +95,7 @@
       if (this.stopped) {
         return;
       }
-      this.intervalTime += this.game.updateDelta;
+      this.intervalTime += this.game.Loop.updateDelta;
       if (this.intervalTime >= this.stepTime) {
         return this.AdvanceFrame();
       }
@@ -105,10 +104,10 @@
     SpriteSheetAnimation.prototype.AdvanceFrame = function() {
       this.intervalTime = 0;
       this.index += 1;
-      this.sprite.drawParams.clipX = index * this.clipWidth;
-      if (index >= this.numberOfFrames) {
+      this.sprite.DrawTexture.drawParams.clipX = this.index * this.clipWidth;
+      if (this.index >= this.numberOfFrames - 1) {
         if (this.loop) {
-          return this.index = 0;
+          return this.index = -1;
         } else {
           return this.Trash();
         }
@@ -119,13 +118,33 @@
       return this.stopped = true;
     };
 
+    SpriteSheetAnimation.prototype.Start = function() {
+      return this.stopped = false;
+    };
+
+    SpriteSheetAnimation.prototype.Index = function(index) {
+      this.index = index - 1;
+      return this.sprite.DrawTexture.drawParams.clipX = (this.index + 1) * this.clipWidth;
+    };
+
     SpriteSheetAnimation.prototype.Reset = function() {
       this.intervalTime = 0;
-      this.index = 0;
-      this.sprite.drawParams.clipX = 0;
-      this.sprite.drawParams.clipY = 0;
-      this.sprite.drawParams.clipWidth = this.clipWidth;
-      return this.sprite.drawParams.clipHeight = this.clipHeight;
+      this.index = -1;
+      this.sprite.DrawTexture.drawParams.clipX = 0;
+      this.sprite.DrawTexture.drawParams.clipY = 0;
+      this.sprite.DrawTexture.drawParams.clipWidth = this.clipWidth;
+      this.sprite.DrawTexture.drawParams.clipHeight = this.clipHeight;
+      this.sprite.Size.width = this.clipWidth;
+      return this.sprite.Size.height = this.clipHeight;
+    };
+
+    SpriteSheetAnimation.prototype.SyncFrame = function() {
+      this.sprite.DrawTexture.drawParams.clipX = 0;
+      this.sprite.DrawTexture.drawParams.clipY = 0;
+      this.sprite.DrawTexture.drawParams.clipWidth = this.clipWidth;
+      this.sprite.DrawTexture.drawParams.clipHeight = this.clipHeight;
+      this.sprite.Size.width = this.clipWidth;
+      return this.sprite.Size.height = this.clipHeight;
     };
 
     return SpriteSheetAnimation;
