@@ -1,7 +1,8 @@
-var CSON = require("cson");
-var fs = require("fs");
+var CSON = require("cson"),
+    compressor = require('node-minify'),
+    fs = require("fs");
 
-function TorchBundle(gameRootDirectory)
+function GameBundler(gameRootDirectory)
 {
     var gameBlob = "";
 
@@ -26,11 +27,20 @@ function TorchBundle(gameRootDirectory)
 
     if (bundle.bundle)
     {
+        fs.writeFileSync( gameRootDirectory +  "/game-complete.js", gameBlob );
+
         if (bundle.compress)
         {
-            // minify the game blob
+            compressor.minify({
+                compressor: 'uglifyjs',
+                input: gameRootDirectory +  "/game-complete.js",
+                output: gameRootDirectory +  "/game-complete.js",
+                sync: true,
+                callback: function (err, min) {}
+            });
         }
-        gameBlob = "<script>" + gameBlob + "</script>"
+
+        gameBlob = "<script src = 'game-complete.js'></script>"
     }
 
     gameHtmlFile = gameHtmlFile.replace("{bundle}", gameBlob);
@@ -38,4 +48,4 @@ function TorchBundle(gameRootDirectory)
     fs.writeFileSync( gameRootDirectory + "/index.html", gameHtmlFile);
 }
 
-module.exports = TorchBundle;
+module.exports = GameBundler;

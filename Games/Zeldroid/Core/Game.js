@@ -18,7 +18,6 @@
     Enemy.Load(game);
     game.Load.Texture("Assets/Art/particle.png", "particle");
     game.Load.File("Maps/test-map-2.map", "map-1");
-    game.Load.File("hud.xml", "hud-xml");
     game.Load.File("package.json", "package");
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot");
     return game.On("LoadProgressed", function(event) {});
@@ -32,7 +31,6 @@
     game.player = new Player(game);
     game.mapManager = new MapManager(game);
     game.hud = new HUD(game);
-    game.hudGrid = new Torch.SpriteGrid(game, game.File("hud-xml"));
     game.mapManager.LoadMap("map-1");
     return SetUpConsoleCommands(game);
   };

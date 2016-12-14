@@ -1,8 +1,8 @@
-var fs = require("fs");
-var compressor = require('node-minify');
-var shell = require('shelljs');
-var CSON = require('cson');
-var TorchBundle = require('./bundle.js');
+var fs = require("fs"),
+    compressor = require('node-minify'),
+    shell = require('shelljs'),
+    CSON = require('cson'),
+    GameRunner = require('./game-runner.js');
 
 console.log("[] Building Torch...")
 
@@ -54,64 +54,5 @@ compressor.minify({
 // run the test game, if its there
 if (buildConfig.TestGame.run)
 {
-    console.log("[] Copying torch to " + buildConfig.TestGame.Path + "...");
-    compressor.minify({
-        compressor: 'no-compress',
-        input: source,
-        output: 'Games/' + buildConfig.TestGame.Path + '/torch.js',
-        sync: true,
-        callback: function (err, min) {}
-    });
-
-    console.log("[] Running " + buildConfig.TestGame.Path + "...");
-    var windows_script = "cd Games\\" + buildConfig.TestGame.Path;
-        windows_script += "\nnpm start";
-    var linux_script = "cd Games/" + buildConfig.TestGame.Path;
-        linux_script += "\nnpm start";
-
-    if (process.platform == "win32")
-    {
-        fs.writeFileSync("_tmp.bat", windows_script);
-    }
-    else
-    {
-        fs.writeFileSync("_tmp.sh", linux_script);
-    }
-
-    if (buildConfig.TestGame.Source == "Coffee")
-    {
-        console.log("[] Compiling Game Coffee...");
-        shell.exec("coffee --compile --output Games/" + buildConfig.TestGame.Path + "/Core/ Games/" + buildConfig.TestGame.Path + "/Src/")
-        for (var i = 0; i < buildConfig.TestGame.CoffeeSources.length; i++)
-        {
-            var cf = buildConfig.TestGame.CoffeeSources[i];
-            console.log("[] Compiling " + cf + " Coffee");
-            var extraPath = buildConfig.TestGame.Path + "/" + cf;
-            shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/");
-        }
-    }
-
-    console.log("[] Bundling Game Files...");
-    TorchBundle("Games/" + buildConfig.TestGame.Path);
-
-    if (buildConfig.TestGame.Electron)
-    {
-        console.log("[] Starting Electron...");
-        //this won't work for some reason...
-        //shell.exec("electron " + "Games/" + buildConfig.TestGame.Path + "/main.js");
-        if (process.platform == "win32")
-        {
-            shell.exec("_tmp.bat");
-            fs.unlinkSync("_tmp.bat");
-        }
-        else
-        {
-            shell.exec("bash _tmp.sh");
-            fs.unlinkSync("_tmp.sh");
-        }
-    }
-    else
-    {
-        var child = shell.exec("chrome " + buildConfig.TestGame.Path + "/index.html");
-    }
+    GameRunner(buildConfig.TestGame);
 }
