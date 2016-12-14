@@ -27,7 +27,7 @@ class Player extends Torch.Sprite
     @Load: (game) ->
         game.Load.Texture("Assets/Art/player/player-forward-idle.png", "player-forward-idle")
         game.Load.Texture("Assets/Art/player/player-backward-idle.png", "player-backward-idle")
-        game.Load.Texture("Assets/Art/player/player-right-idle.png", "player-right-idle")
+        game.Load.Texture("Assets/Art/player/player-right-idle-sheet.png", "player-right-idle")
         game.Load.Texture("Assets/Art/player/player-left-idle.png", "player-left-idle")
 
         game.Load.Texture("Assets/Art/player/bullet.png", "player-bullet")

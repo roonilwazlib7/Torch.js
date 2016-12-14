@@ -26,7 +26,6 @@ class AnimationManager
         @animations.push( anim )
 
         return anim
-
 class SpriteSheetAnimation extends Animation
     index: 0
     clipX: 0
