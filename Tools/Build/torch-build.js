@@ -2,6 +2,7 @@ var fs = require("fs");
 var compressor = require('node-minify');
 var shell = require('shelljs');
 var CSON = require('cson');
+var TorchBundle = require('./bundle.js');
 
 console.log("[] Building Torch...")
 
@@ -89,9 +90,8 @@ if (buildConfig.TestGame.run)
         {
             var cf = buildConfig.TestGame.CoffeeSources[i];
             console.log("[] Compiling " + cf + " Coffee");
-            var extraPath = buildConfig.TestGame.Path + "/" + cf
-            console.log(extraPath)
-            shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/")
+            var extraPath = buildConfig.TestGame.Path + "/" + cf;
+            shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/");
         }
     }
     if (buildConfig.TestGame.Electron)
