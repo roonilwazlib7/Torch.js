@@ -46,6 +46,13 @@ function GameRunner(TestGame)
     console.log("[] Bundling Game Files...");
     GameBundler("Games/" + TestGame.Path);
 
+    if (TestGame.Build)
+    {
+        // console.log("[] Building Game Packages...");
+        // shell.exec("electron-packager Games/" + TestGame.Path + " " + TestGame.Path + " --platform=win32 --arch=all --version=1.3.1 --out=Games/" + TestGame.Path);
+        // return;
+    }
+
     if (TestGame.Electron)
     {
         console.log("[] Starting Electron...");

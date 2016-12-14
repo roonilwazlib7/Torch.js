@@ -8,8 +8,7 @@
   },
   "devDependencies": {
     "node-minify": "2.0.0",
-    "shelljs": "0.7.5",
-    "electron-prebuilt": "^0.35.2"
+    "shelljs": "0.7.5"
   },
   "author": "Alex",
   "license": "ISC"

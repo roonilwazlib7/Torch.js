@@ -1,4 +1,4 @@
-Build: 306
+Build: 310
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -6,6 +6,7 @@ TestGame:
     Source: "Coffee"
     run: true
     Electron: true
+    Build: false
     CoffeeSources: [
         "MapMaker"
     ]
