@@ -12,7 +12,7 @@
     }
 
     CanvasRenderer.prototype.Draw = function() {
-      var cameraTransform, drawRec, frame;
+      var cameraTransform, drawRec, frame, params;
       drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       drawRec.x = (this.sprite.position.x - this.previousPosition.x) * this.game.Loop.lagOffset + this.previousPosition.x;
       drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
@@ -22,14 +22,11 @@
         drawRec.x += this.game.Camera.position.x + this.game.Hooks.positionTransform.x;
         drawRec.y += this.game.Camera.position.y + this.game.Hooks.positionTransform.y;
       }
-      if (this.sprite.TextureSheet) {
-        frame = this.sprite.GetCurrentDraw();
+      if (this.sprite.DrawTexture) {
+        frame = this.sprite.DrawTexture;
+        params = frame.drawParams;
         this.PreRender(drawRec);
-        canvas.drawImage(this.sprite.DrawTexture.image, frame.clipX, frame.clipY, frame.clipWidth, frame.clipHeight, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
-        return this.PostRender();
-      } else if (this.sprite.DrawTexture) {
-        this.PreRender(drawRec);
-        this.game.canvas.drawImage(this.sprite.DrawTexture.image, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
+        this.game.canvas.drawImage(this.sprite.DrawTexture.image, params.clipX, params.clipY, params.clipWidth, params.clipHeight, -drawRec.width / 2, -drawRec.height / 2, drawRec.width, drawRec.height);
         if (this.sprite.Body.DEBUG && false) {
           this.game.canvas.fillStyle = "green";
           this.game.canvas.globalAlpha = 0.5;

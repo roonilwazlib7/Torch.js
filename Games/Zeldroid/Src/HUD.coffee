@@ -6,8 +6,8 @@ class HUD
         @hud_background.Bind.Texture("hud_background")
         @hud_background.Size.Scale(1,1)
         @hud_background.drawIndex = 100
-        @hud_background.Size.width = window.innerWidth
         @hud_background.Size.height = @Height(5)
+        @hud_background.Size.width = window.innerWidth
         @hud_background.fixed = true
 
         @build_info = new Torch.Text @game, 0, 0,

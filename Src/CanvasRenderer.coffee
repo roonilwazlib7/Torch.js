@@ -17,25 +17,15 @@ class CanvasRenderer
             drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
-        if @sprite.TextureSheet
-            frame = @sprite.GetCurrentDraw()
+        if @sprite.DrawTexture
+            frame = @sprite.DrawTexture
+            params = frame.drawParams
 
             @PreRender(drawRec)
 
-            canvas.drawImage(@sprite.DrawTexture.image, frame.clipX, frame.clipY,
-            frame.clipWidth, frame.clipHeight,
-            -drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
-
-            @PostRender()
-
-        else if @sprite.DrawTexture
-
-            @PreRender(drawRec)
-
-            @game.canvas.drawImage(@sprite.DrawTexture.image, -drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
-
-            # if @sprite.Effects.mask.texture isnt null
-            #     # ...
+            @game.canvas.drawImage(@sprite.DrawTexture.image, params.clipX, params.clipY,
+            params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
+            drawRec.width, drawRec.height)
 
             if @sprite.Body.DEBUG and false
                 @game.canvas.fillStyle = "green"
