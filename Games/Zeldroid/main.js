@@ -23,11 +23,6 @@ function StartWindow()
         {
             app.quit();
         }
-        try
-        {
-            fs.unlinkSync("_tmp_index.html");
-        }
-        catch (e) {}
 
     });
 
@@ -53,7 +48,7 @@ function StartWindow()
                 // and load the index.html of the app.
                 if (!config.Map)
                 {
-                    mainWindow.loadURL('file://' + __dirname + '/' + "_tmp_index.html");
+                    mainWindow.loadURL('file://' + __dirname + '/' + "index.html");
                 }
                 else
                 {

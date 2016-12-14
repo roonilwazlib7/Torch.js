@@ -19,7 +19,7 @@ if (buildConfig.Build >= 500)
 fs.writeFileSync(".build-config.cson", CSON.stringify(buildConfig, null, 4));
 
 // save version info
-fs.writeFileSync("Core/version.js", "Torch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "'");
+fs.writeFileSync("Core/version.js", "\nTorch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "';\n");
 
 source = buildConfig.SourceMap;
 source.push("version.js");
@@ -54,6 +54,15 @@ compressor.minify({
 // run the test game, if its there
 if (buildConfig.TestGame.run)
 {
+    console.log("[] Copying torch to " + buildConfig.TestGame.Path + "...");
+    compressor.minify({
+        compressor: 'no-compress',
+        input: source,
+        output: 'Games/' + buildConfig.TestGame.Path + '/torch.js',
+        sync: true,
+        callback: function (err, min) {}
+    });
+
     console.log("[] Running " + buildConfig.TestGame.Path + "...");
     var windows_script = "cd Games\\" + buildConfig.TestGame.Path;
         windows_script += "\nnpm start";
@@ -69,19 +78,6 @@ if (buildConfig.TestGame.run)
         fs.writeFileSync("_tmp.sh", linux_script);
     }
 
-    // easy file includes...
-    index = fs.readFileSync("Games/" + buildConfig.TestGame.Path + "/index.html").toString();
-
-    index = index.replace(/\{([^}]+)\}/g, function(path){
-
-        var clean = path.replace("{", "").replace("}", "");
-
-        return "<script src = '" + clean + "' ></script>";
-
-    });
-
-    fs.writeFileSync("Games/" + buildConfig.TestGame.Path + "/_tmp_index.html", index);
-
     if (buildConfig.TestGame.Source == "Coffee")
     {
         console.log("[] Compiling Game Coffee...");
@@ -94,6 +90,10 @@ if (buildConfig.TestGame.run)
             shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/");
         }
     }
+
+    console.log("[] Bundling Game Files...");
+    TorchBundle("Games/" + buildConfig.TestGame.Path);
+
     if (buildConfig.TestGame.Electron)
     {
         console.log("[] Starting Electron...");
