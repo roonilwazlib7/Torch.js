@@ -21,8 +21,8 @@ class EventManager
         else if @sprite.fixed
             mouseRec = @game.Mouse.GetRectangle()
             reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
-            reComputedMouseRec.x += @game.Viewport.x
-            reComputedMouseRec.y += @game.Viewport.y
+            reComputedMouseRec.x += @game.Camera.position.x
+            reComputedMouseRec.y += @game.Camera.position.y
             if reComputedMouseRec.Intersects(@sprite.rectangle)
                 @mouseOver = true
             else
@@ -53,8 +53,5 @@ class EventManager
 
         else if @game.Mouse.down and not @mouseOver
             @clickAwayTrigger = true
-
-        if not @sprite.rectangle.Intersects(@game.BoundRec)
-            @sprite.Emit("OutOfBounds", new Torch.Event(@game, {sprite: @sprite}))
 
 Torch.EventManager = EventManager

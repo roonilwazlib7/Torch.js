@@ -1,4 +1,4 @@
-Build: 359
+Build: 379
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -37,7 +37,6 @@ SourceMap: [
     "Sprite/Components/Collision/CollisionManager.js"
     "Game/Components/Loop.js"
     "Game/Components/Load.js"
-    "Game/Components/Viewport.js"
     "Game/Components/Timer.js"
     "Game/Components/Mouse.js"
     "Game/Components/Camera.js"

@@ -31,7 +31,6 @@
       console.log("%c Torch v" + Torch.version + " |" + graphicsString + "| - " + this.name, styleString);
       this.Loop = new Torch.Loop(this);
       this.Load = new Torch.Load(this);
-      this.Viewport = new Torch.Viewport(this);
       this.Mouse = new Torch.Mouse(this);
       this.Timer = new Torch.Timer(this);
       this.Camera = new Torch.Camera(this);
@@ -81,13 +80,6 @@
       return this;
     };
 
-    CanvasGame.prototype.Bounds = function(boundRec) {
-      if (boundRec === void 0) {
-        this.BoundRec = this.Viewport.GetViewRectangle();
-      }
-      return this;
-    };
-
     CanvasGame.prototype.Start = function(load, update, draw, init) {
       if (load === void 0) {
         this.FatalError("Unable to start game '" + this.name + "' without load function");
@@ -122,10 +114,8 @@
         this.canvasNode.width = document.body.clientWidth - 50;
       }
       if (typeof this.height === "string") {
-        this.canvasNode.height = document.body.clientHeight - 25;
+        return this.canvasNode.height = document.body.clientHeight - 25;
       }
-      this.Viewport.width = this.canvasNode.width;
-      return this.Viewport.height = this.canvasNode.height;
     };
 
     CanvasGame.prototype.Add = function(o) {
@@ -187,22 +177,19 @@
     };
 
     CanvasGame.prototype.UpdateTasks = function() {
-      var cleanedTasks, i, len, ref, task;
-      cleanedTasks = [];
+      var i, len, ref, task;
       ref = this.taskList;
       for (i = 0, len = ref.length; i < len; i++) {
         task = ref[i];
         task.Execute(this);
-        if (!task.trash) {
-          cleanedTasks.push(task);
-        }
       }
-      return this.taskList = cleanedTasks;
+      return this.taskList = Torch.Util.Array(this.taskList).Filter(function(t) {
+        return !t.trash;
+      });
     };
 
     CanvasGame.prototype.UpdateSprites = function() {
-      var cleanedSprites, i, j, len, len1, o, ref, ref1, sprite;
-      cleanedSprites = [];
+      var i, len, ref, sprite;
       ref = this.spriteList;
       for (i = 0, len = ref.length; i < len; i++) {
         sprite = ref[i];
@@ -210,24 +197,21 @@
           if (!sprite.game.paused) {
             sprite.Update();
           }
-          cleanedSprites.push(sprite);
         } else {
           sprite.trashed = true;
           sprite.Emit("Trash", new Torch.Event(this));
         }
       }
-      this.spriteList = cleanedSprites;
-      ref1 = this.AddStack;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        o = ref1[j];
-        this.spriteList.push(o);
-      }
+      this.spriteList = Torch.Util.Array(this.spriteList).Filter(function(s) {
+        return !s.trash;
+      });
+      this.spriteList = this.spriteList.concat(this.AddStack);
       return this.AddStack = [];
     };
 
     CanvasGame.prototype.DrawSprites = function() {
       var i, len, ref, results, sprite;
-      this.canvas.clearRect(0, 0, this.Viewport.width, this.Viewport.height);
+      this.canvas.clearRect(this.Camera.position.x, this.Camera.position.y, this.Camera.Viewport.maxWidth, this.Camera.Viewport.maxHeight);
       this.spriteList.sort(function(a, b) {
         if (a.drawIndex === b.drawIndex) {
           return a._torch_add_order - b._torch_add_order;
@@ -424,8 +408,6 @@
       }
       resize = (function(_this) {
         return function(event) {
-          _this.Viewport.width = window.innerWidth;
-          _this.Viewport.height = window.innerHeight;
           return _this.Emit("Resize", new Torch.Event(_this, {
             nativeEvent: event
           }));

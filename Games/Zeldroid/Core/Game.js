@@ -11,7 +11,6 @@
   zeldroid = new Zeldroid("container", "fill", "fill", "Zeldroid", Torch.CANVAS);
 
   Load = function(game) {
-    game.Bounds();
     Player.Load(game);
     HUD.Load(game);
     MapPieces.MapPiece.Load(game);

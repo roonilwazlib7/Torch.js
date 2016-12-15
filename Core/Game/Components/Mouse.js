@@ -18,7 +18,7 @@
     };
 
     Mouse.prototype.GetRectangle = function() {
-      return new Torch.Rectangle(this.x - this.game.Viewport.x, this.y - this.game.Viewport.y, 5, 5);
+      return new Torch.Rectangle(this.x, this.y, 5, 5);
     };
 
     return Mouse;

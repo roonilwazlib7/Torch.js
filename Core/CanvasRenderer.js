@@ -12,7 +12,7 @@
     }
 
     CanvasRenderer.prototype.Draw = function() {
-      var cameraTransform, drawRec, frame, params;
+      var cameraTransform, drawRec, frame, params, v;
       drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       drawRec.x = (this.sprite.position.x - this.previousPosition.x) * this.game.Loop.lagOffset + this.previousPosition.x;
       drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
@@ -21,6 +21,14 @@
       if (!this.sprite.fixed) {
         drawRec.x += this.game.Camera.position.x + this.game.Hooks.positionTransform.x;
         drawRec.y += this.game.Camera.position.y + this.game.Hooks.positionTransform.y;
+        if (!drawRec.Intersects(this.game.Camera.Viewport.rectangle)) {
+          return;
+        }
+      } else {
+        v = this.game.Camera.Viewport;
+        if (!this.sprite.rectangle.Intersects(new Torch.Rectangle(0, 0, v.width, v.height))) {
+          return;
+        }
       }
       if (this.sprite.DrawTexture) {
         frame = this.sprite.DrawTexture;

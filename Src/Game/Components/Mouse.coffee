@@ -10,8 +10,7 @@ class Mouse
         @y = evt.clientY - rect.top
 
     GetRectangle: ->
-        return new Torch.Rectangle(@x - @game.Viewport.x,
-                                    @y - @game.Viewport.y, 5, 5);
+        return new Torch.Rectangle(@x, @y, 5, 5);
 
 
 # expose to torch

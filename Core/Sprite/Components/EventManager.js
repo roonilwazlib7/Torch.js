@@ -36,8 +36,8 @@
       } else if (this.sprite.fixed) {
         mouseRec = this.game.Mouse.GetRectangle();
         reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
-        reComputedMouseRec.x += this.game.Viewport.x;
-        reComputedMouseRec.y += this.game.Viewport.y;
+        reComputedMouseRec.x += this.game.Camera.position.x;
+        reComputedMouseRec.y += this.game.Camera.position.y;
         if (reComputedMouseRec.Intersects(this.sprite.rectangle)) {
           this.mouseOver = true;
         } else {
@@ -64,16 +64,11 @@
           sprite: this.sprite
         }));
         this.wasClicked = false;
-        this.clickAwayTrigger = false;
+        return this.clickAwayTrigger = false;
       } else if (this.clickTrigger && !this.game.Mouse.down && this.mouseOver) {
-        this.clickAwayTrigger = false;
+        return this.clickAwayTrigger = false;
       } else if (this.game.Mouse.down && !this.mouseOver) {
-        this.clickAwayTrigger = true;
-      }
-      if (!this.sprite.rectangle.Intersects(this.game.BoundRec)) {
-        return this.sprite.Emit("OutOfBounds", new Torch.Event(this.game, {
-          sprite: this.sprite
-        }));
+        return this.clickAwayTrigger = true;
       }
     };
 

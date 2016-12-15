@@ -20,7 +20,6 @@ class CanvasGame
 
         @Loop = new Torch.Loop(@)
         @Load = new Torch.Load(@)
-        @Viewport = new Torch.Viewport(@)
         @Mouse = new Torch.Mouse(@)
         @Timer = new Torch.Timer(@)
         @Camera = new Torch.Camera(@)
@@ -76,11 +75,6 @@ class CanvasGame
 
         return @
 
-    Bounds: (boundRec) ->
-        if boundRec is undefined
-            @BoundRec = @Viewport.GetViewRectangle()
-        return @
-
     Start: (load, update, draw, init) ->
         if load is undefined
             @FatalError("Unable to start game '#{@name}' without load function")
@@ -113,9 +107,6 @@ class CanvasGame
 
         if typeof(@height) is "string"
             @canvasNode.height = document.body.clientHeight - 25
-
-        @Viewport.width = @canvasNode.width
-        @Viewport.height = @canvasNode.height
 
     Add: (o) ->
         if o is undefined or o._torch_add is undefined
@@ -174,30 +165,28 @@ class CanvasGame
         throw error
 
     UpdateTasks: ->
-        cleanedTasks = []
         for task in @taskList
             task.Execute(@)
 
-            if not task.trash then cleanedTasks.push(task)
-        @taskList = cleanedTasks
+        @taskList = Torch.Util.Array( @taskList ).Filter (t) -> return not t.trash
 
     UpdateSprites: ->
-        cleanedSprites = []
         for sprite in @spriteList
             if not sprite.trash
                 if not sprite.game.paused
                     sprite.Update()
-                cleanedSprites.push(sprite)
             else
                 sprite.trashed = true
                 sprite.Emit "Trash", new Torch.Event(@)
-        @spriteList = cleanedSprites
 
-        for o in @AddStack then @spriteList.push(o)
+        @spriteList = Torch.Util.Array( @spriteList ).Filter (s) -> return not s.trash
+
+        @spriteList = @spriteList.concat( @AddStack )
         @AddStack = []
 
     DrawSprites: ->
-        @canvas.clearRect(0, 0, @Viewport.width, @Viewport.height)
+        # we need to clear the entire screen
+        @canvas.clearRect(@Camera.position.x, @Camera.position.y, @Camera.Viewport.maxWidth, @Camera.Viewport.maxHeight)
 
         @spriteList.sort (a, b) ->
             if a.drawIndex is b.drawIndex
@@ -239,7 +228,7 @@ class CanvasGame
         return @
 
     File: (fileId) ->
-        if (@Files[fileId] is undefined)
+        if @Files[fileId] is undefined
             @FatalError("Unable to access no-existent file: #{fileId}. File does not exist")
         else
             return @Files[fileId]
@@ -329,8 +318,6 @@ class CanvasGame
 
         # window resize event
         resize = (event) =>
-            @Viewport.width = window.innerWidth
-            @Viewport.height = window.innerHeight
             @Emit "Resize", new Torch.Event @,
                 nativeEvent: event
 
