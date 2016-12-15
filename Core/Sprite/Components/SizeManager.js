@@ -42,6 +42,4 @@
 
   })();
 
-  Torch.SizeManager = SizeManager;
-
 }).call(this);

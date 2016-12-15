@@ -52,6 +52,4 @@
 
   })();
 
-  Torch.Bind = Bind;
-
 }).call(this);

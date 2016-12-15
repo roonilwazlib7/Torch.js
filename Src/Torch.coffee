@@ -1,16 +1,5 @@
 exports = this
 
-# Catch all errors
-window.onerror = (args...) ->
-    return if not window.Torch.STRICT_ERRORS
-
-    errorObj = args[4]
-
-    if errorObj isnt undefined
-        window.Torch.FatalError(errorObj)
-    else
-        window.Torch.FatalError("An error has occured")
-
 class Task
 
     Task.MixIn(Trashable)
@@ -100,6 +89,7 @@ class Torch
         @Loop = Loop
         @ParticleManager = ParticleManager
         @Load = Load
+        @Sprite = Sprite
         @TweenManager = TweenManager
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
@@ -116,6 +106,7 @@ class Torch
         @Collider.Circle = Circle
         @Collider.AABB = AABB
         @CollisionManager = CollisionManager
+        @Collision = Collision
         @Electron = new Electron()
 
     RandomInRange: (min, max) ->

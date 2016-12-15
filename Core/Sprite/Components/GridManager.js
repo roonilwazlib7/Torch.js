@@ -177,6 +177,4 @@
 
   })();
 
-  Torch.GridManager = GridManager;
-
 }).call(this);

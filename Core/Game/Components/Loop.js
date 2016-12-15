@@ -66,6 +66,4 @@
 
   })();
 
-  Torch.Loop = Loop;
-
 }).call(this);

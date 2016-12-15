@@ -118,6 +118,4 @@
 
   })();
 
-  Torch.Audio = Audio;
-
 }).call(this);

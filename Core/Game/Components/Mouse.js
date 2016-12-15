@@ -25,6 +25,4 @@
 
   })();
 
-  Torch.Mouse = Mouse;
-
 }).call(this);

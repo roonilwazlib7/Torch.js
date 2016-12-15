@@ -24,6 +24,4 @@
 
   })();
 
-  Torch.SpriteGrid = SpriteGrid;
-
 }).call(this);

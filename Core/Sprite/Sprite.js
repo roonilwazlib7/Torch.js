@@ -6,9 +6,7 @@
     hasProp = {}.hasOwnProperty;
 
   Sprite = (function() {
-    Sprite.MixIn(Torch.EventDispatcher).MixIn(Torch.Trashable);
-
-    Sprite.prototype.__torch__ = Torch.Types.Sprite;
+    Sprite.MixIn(EventDispatcher).MixIn(Trashable);
 
     function Sprite(game, x, y) {
       this.InitSprite(game, x, y);
@@ -28,15 +26,15 @@
       this.game = game;
       this.rectangle = new Torch.Rectangle(x, y, 0, 0);
       this.position = new Torch.Point(x, y);
-      this.Bind = new Torch.Bind(this);
-      this.Collisions = new Torch.CollisionManager(this);
-      this.Body = new Torch.Body(this);
-      this.Size = new Torch.SizeManager(this);
-      this.Events = new Torch.EventManager(this);
-      this.Effects = new Torch.EffectManager(this);
-      this.States = new Torch.StateMachineManager(this);
-      this.Grid = new Torch.GridManager(this);
-      this.Animations = new Torch.AnimationManager(this);
+      this.Bind = new Bind(this);
+      this.Collisions = new CollisionManager(this);
+      this.Body = new Body(this);
+      this.Size = new SizeManager(this);
+      this.Events = new EventManager(this);
+      this.Effects = new EffectManager(this);
+      this.States = new StateMachineManager(this);
+      this.Grid = new GridManager(this);
+      this.Animations = new AnimationManager(this);
       this.DrawTexture = null;
       this.TexturePack = null;
       this.TextureSheet = null;
@@ -49,7 +47,7 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
-      this.renderer = new Torch.CanvasRenderer(this);
+      this.renderer = new CanvasRenderer(this);
       return game.Add(this);
     };
 
@@ -139,9 +137,5 @@
     return GhostSprite;
 
   })(Sprite);
-
-  Torch.Sprite = Sprite;
-
-  Torch.GhostSprite = GhostSprite;
 
 }).call(this);

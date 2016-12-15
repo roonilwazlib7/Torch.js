@@ -59,6 +59,4 @@
 
   })();
 
-  Torch.CanvasRenderer = CanvasRenderer;
-
 }).call(this);

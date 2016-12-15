@@ -20,7 +20,7 @@
     };
 
     Timer.prototype.SetFutureEvent = function(timeToOccur, handle) {
-      return this.futureEvents.push(new Torch.FutureEvent(timeToOccur, handle, this.game));
+      return this.futureEvents.push(new FutureEvent(timeToOccur, handle, this.game));
     };
 
     return Timer;
@@ -48,9 +48,5 @@
     return FutureEvent;
 
   })();
-
-  Torch.Timer = Timer;
-
-  Torch.FutureEvent = FutureEvent;
 
 }).call(this);

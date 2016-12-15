@@ -23,7 +23,7 @@
 
     return Graphic;
 
-  })(Torch.Sprite);
+  })(Sprite);
 
   Circle = (function(superClass) {
     extend(Circle, superClass);

@@ -32,6 +32,4 @@
 
   })();
 
-  Torch.StateMachineManager = StateMachineManager;
-
 }).call(this);

@@ -1,4 +1,4 @@
-class Animation extends Torch.Trashable
+class Animation extends Trashable
     loop: false
     stopped: false
     intervalTime: 0

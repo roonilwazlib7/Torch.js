@@ -16,6 +16,4 @@
 
   })();
 
-  Torch.Collider.AABB = AABB;
-
 }).call(this);

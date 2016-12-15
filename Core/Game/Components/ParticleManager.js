@@ -95,7 +95,7 @@
 
     return ParticleEmitter;
 
-  })(Torch.Sprite);
+  })(Sprite);
 
   ParticleManager = (function() {
     function ParticleManager(game) {
@@ -109,7 +109,5 @@
     return ParticleManager;
 
   })();
-
-  Torch.ParticleManager = ParticleManager;
 
 }).call(this);

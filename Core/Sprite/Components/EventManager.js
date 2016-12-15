@@ -76,6 +76,4 @@
 
   })();
 
-  Torch.EventManager = EventManager;
-
 }).call(this);

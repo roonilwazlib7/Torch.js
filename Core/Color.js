@@ -65,6 +65,4 @@
 
   Color.Ruby = new Color("#e60000");
 
-  Torch.Color = Color;
-
 }).call(this);

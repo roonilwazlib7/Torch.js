@@ -1,8 +1,6 @@
 class Sprite
-    Sprite.MixIn(Torch.EventDispatcher)
-          .MixIn(Torch.Trashable)
-
-    __torch__: Torch.Types.Sprite
+    Sprite.MixIn(EventDispatcher)
+          .MixIn(Trashable)
 
     constructor: (game, x, y)->
         @InitSprite(game, x, y)
@@ -102,7 +100,3 @@ gonna kill this...
 ###
 class GhostSprite extends Sprite
     GHOST_SPRITE: true
-
-# expose to Torch
-Torch.Sprite = Sprite
-Torch.GhostSprite = GhostSprite

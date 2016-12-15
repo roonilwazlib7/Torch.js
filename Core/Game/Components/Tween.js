@@ -2,8 +2,6 @@
 (function() {
   var Tween, TweenManager, TweenSetup;
 
-  Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine");
-
   Tween = (function() {
     Tween.MixIn(Trashable);
 
@@ -151,7 +149,5 @@
     return TweenManager;
 
   })();
-
-  Torch.TweenManager = TweenManager;
 
 }).call(this);

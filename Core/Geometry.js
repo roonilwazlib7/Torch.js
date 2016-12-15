@@ -165,10 +165,4 @@
 
   })();
 
-  Torch.Rectangle = Rectangle;
-
-  Torch.Vector = Vector;
-
-  Torch.Point = Point;
-
 }).call(this);

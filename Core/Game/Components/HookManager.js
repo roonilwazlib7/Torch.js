@@ -14,6 +14,4 @@
 
   })();
 
-  Torch.HookManager = HookManager;
-
 }).call(this);

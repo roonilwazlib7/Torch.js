@@ -13,7 +13,7 @@
       this.InitGame();
     }
 
-    CanvasGame.MixIn(Torch.EventDispatcher);
+    CanvasGame.MixIn(EventDispatcher);
 
     CanvasGame.prototype.InitGame = function() {
       this.InitEventDispatch();
@@ -29,19 +29,19 @@
         graphicsString = "Canvas";
       }
       console.log("%c Torch v" + Torch.version + " |" + graphicsString + "| - " + this.name, styleString);
-      this.Loop = new Torch.Loop(this);
-      this.Load = new Torch.Load(this);
-      this.Mouse = new Torch.Mouse(this);
-      this.Timer = new Torch.Timer(this);
-      this.Camera = new Torch.Camera(this);
-      this.Layers = new Torch.Layers(this);
-      this.Debug = new Torch.Debug(this);
-      this.Keys = new Torch.Keys(this);
-      this.Tweens = new Torch.TweenManager(this);
-      this.Particles = new Torch.ParticleManager(this);
-      this.Audio = new Torch.Audio(this);
-      this.Hooks = new Torch.HookManager(this);
-      Torch.Style();
+      this.Loop = new Loop(this);
+      this.Load = new Load(this);
+      this.Mouse = new Mouse(this);
+      this.Timer = new Timer(this);
+      this.Camera = new Camera(this);
+      this.Layers = new Layers(this);
+      this.Debug = new Debug(this);
+      this.Keys = new Keys(this);
+      this.Tweens = new TweenManager(this);
+      this.Particles = new ParticleManager(this);
+      this.Audio = new Audio(this);
+      this.Hooks = new HookManager(this);
+      Style();
       this.deltaTime = 0;
       this.fps = 0;
       this.averageFps = 0;
@@ -105,9 +105,6 @@
           return _this.Run();
         };
       })(this));
-      if (this.graphicsType === Torch.WEBGL) {
-        return;
-      }
       this.canvasNode.width = this.width;
       this.canvasNode.height = this.height;
       if (typeof this.width === "string") {
@@ -429,7 +426,5 @@
     return CanvasGame;
 
   })();
-
-  Torch.CanvasGame = CanvasGame;
 
 }).call(this);

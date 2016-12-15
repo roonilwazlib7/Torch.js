@@ -99,6 +99,4 @@
 
   })();
 
-  Torch.Layers = Layers;
-
 }).call(this);

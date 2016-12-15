@@ -1,4 +1,4 @@
-class ParticleEmitter Sprite
+class ParticleEmitter extends Sprite
     particle: null
     auto: true
     constructor: (@game, x, y, @interval, @loop, @particle, @config) ->

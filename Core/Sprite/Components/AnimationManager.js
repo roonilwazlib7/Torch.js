@@ -21,7 +21,7 @@
 
     return Animation;
 
-  })(Torch.Trashable);
+  })(Trashable);
 
   AnimationManager = (function() {
     AnimationManager.prototype.animations = null;
@@ -150,7 +150,5 @@
     return SpriteSheetAnimation;
 
   })(Animation);
-
-  Torch.AnimationManager = AnimationManager;
 
 }).call(this);

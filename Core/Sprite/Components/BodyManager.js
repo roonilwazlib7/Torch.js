@@ -53,6 +53,4 @@
 
   })();
 
-  Torch.Body = BodyManager;
-
 }).call(this);

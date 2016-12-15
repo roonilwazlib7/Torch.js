@@ -27,6 +27,4 @@
 
   })();
 
-  Torch.Debug = Debug;
-
 }).call(this);

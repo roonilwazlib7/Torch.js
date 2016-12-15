@@ -24,6 +24,4 @@
 
   })();
 
-  Torch.EffectManager = EffectManager;
-
 }).call(this);

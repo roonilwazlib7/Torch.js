@@ -107,6 +107,4 @@
 
   })();
 
-  Torch.SpriteGroup = SpriteGroup;
-
 }).call(this);

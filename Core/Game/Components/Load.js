@@ -248,6 +248,4 @@
 
   })();
 
-  Torch.Load = Load;
-
 }).call(this);

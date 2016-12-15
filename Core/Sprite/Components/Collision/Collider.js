@@ -2,8 +2,6 @@
 (function() {
   var CollisionDetector;
 
-  Torch.Collider = {};
-
   CollisionDetector = (function() {
     function CollisionDetector(sprite, otherSprite) {
       this.sprite = sprite;
@@ -25,7 +23,5 @@
     return CollisionDetector;
 
   })();
-
-  Torch.Collider.CollisionDetector = CollisionDetector;
 
 }).call(this);

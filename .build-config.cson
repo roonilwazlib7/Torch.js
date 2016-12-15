@@ -1,4 +1,4 @@
-Build: 422
+Build: 438
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -14,10 +14,10 @@ NeedsWork: [
     "Torch.Particles"
 ]
 SourceMap: [
+    "Mixins/Error"
     "Mixins/Natives"
     "Mixins/EventDispatcher"
     "Mixins/Trashable"
-    "Torch"
     "DebugConsole"
     "Sprite/Components/BodyManager"
     "Sprite/Components/SizeManager"
@@ -56,4 +56,5 @@ SourceMap: [
     "Electron"
     "CanvasRenderer"
     "Geometry"
+    "Torch"
 ]

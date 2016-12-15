@@ -3,7 +3,7 @@ class CanvasGame
     constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
         @InitGame()
 
-    CanvasGame.MixIn(Torch.EventDispatcher)
+    CanvasGame.MixIn(EventDispatcher)
 
     InitGame: ->
         @InitEventDispatch()

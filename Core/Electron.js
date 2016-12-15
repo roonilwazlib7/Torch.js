@@ -14,6 +14,4 @@
 
   })();
 
-  Torch.Electron = new Electron();
-
 }).call(this);

@@ -1,5 +1,3 @@
-Torch.Collider = {}
-
 class CollisionDetector
     constructor: (@sprite, @otherSprite) ->
 

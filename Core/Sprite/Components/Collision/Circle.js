@@ -33,6 +33,4 @@
 
   })();
 
-  Torch.Collider.Circle = Circle;
-
 }).call(this);

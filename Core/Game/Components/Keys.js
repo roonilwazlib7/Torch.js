@@ -3,7 +3,7 @@
   var Key, Keys;
 
   Key = (function() {
-    Key.MixIn(Torch.EventDispatcher);
+    Key.MixIn(EventDispatcher);
 
     Key.prototype.down = false;
 
@@ -17,7 +17,7 @@
   })();
 
   Keys = (function() {
-    Keys.MixIn(Torch.EventDispatcher);
+    Keys.MixIn(EventDispatcher);
 
     function Keys() {
       this.specialKeys = {
@@ -128,7 +128,5 @@
     return Keys;
 
   })();
-
-  Torch.Keys = Keys;
 
 }).call(this);

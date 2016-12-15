@@ -57,8 +57,4 @@
 
   })();
 
-  Torch.StateMachine = StateMachine;
-
-  Torch.StateMachine.State = State;
-
 }).call(this);

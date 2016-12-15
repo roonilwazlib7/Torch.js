@@ -1,5 +1,5 @@
 class Key
-    Key.MixIn(Torch.EventDispatcher)
+    Key.MixIn(EventDispatcher)
 
     down : false
     constructor: (@keyCode) ->
@@ -8,7 +8,7 @@ class Key
 
 
 class Keys
-    Keys.MixIn(Torch.EventDispatcher)
+    Keys.MixIn(EventDispatcher)
 
     constructor: ->
         @specialKeys =

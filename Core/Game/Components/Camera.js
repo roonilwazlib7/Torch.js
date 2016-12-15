@@ -130,6 +130,4 @@
 
   })();
 
-  Torch.Camera = Camera;
-
 }).call(this);

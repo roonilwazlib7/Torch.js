@@ -1,10 +1,10 @@
-Torch.Collision =
+Collision =
     AABB: 1
     Circle: 2
     SAT: 3
 
 class CollisionManager
-    mode: Torch.Collision.AABB
+    mode: Collision.AABB
     sprite: null
     filter: null
     limit: null

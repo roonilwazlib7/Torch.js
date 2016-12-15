@@ -35,6 +35,4 @@
 
   })();
 
-  Torch.Game = Game;
-
 }).call(this);

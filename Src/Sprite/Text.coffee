@@ -2,7 +2,7 @@ measureCanvas = document.createElement("CANVAS")
 measureCanvas.width = 500
 measureCanvas.height = 500
 
-class Text extends Torch.Sprite
+class Text extends Sprite
     TEXT: true
     @measureCanvas: measureCanvas.getContext("2d")
 
@@ -75,5 +75,3 @@ class Text extends Torch.Sprite
         if @text isnt @lastText
             @Render()
             @lastText = @text
-
-Torch.ExtendProperties(Text, "Text", "Font", "FontSize", "FontWeight", "Color")

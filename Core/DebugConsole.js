@@ -175,6 +175,4 @@
 
   })();
 
-  Torch.DebugConsole = DebugConsole;
-
 }).call(this);

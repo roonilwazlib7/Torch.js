@@ -5,20 +5,6 @@
 
   exports = this;
 
-  window.onerror = function() {
-    var args, errorObj;
-    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    if (!window.Torch.STRICT_ERRORS) {
-      return;
-    }
-    errorObj = args[4];
-    if (errorObj !== void 0) {
-      return window.Torch.FatalError(errorObj);
-    } else {
-      return window.Torch.FatalError("An error has occured");
-    }
-  };
-
   Task = (function() {
     Task.MixIn(Trashable);
 
@@ -125,11 +111,52 @@
       this.GamePads = this.Enum("Pad1", "Pad2", "Pad3", "Pad4");
       this.AjaxData = this.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text");
       this.Types = this.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null");
+      this.Easing = this.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine");
       this.AjaxLoader = AjaxLoader;
       this.Event = Event;
       this.EventDispatcher = EventDispatcher;
       this.Trashable = Trashable;
       this.Util = new Utilities();
+      this.Animation = Animation;
+      this.Bind = Bind;
+      this.CanvasRenderer = CanvasRenderer;
+      this.Color = Color;
+      this.DebugConsole = DebugConsole;
+      this.StateMachine = StateMachine;
+      this.Rectangle = Rectangle;
+      this.Vector = Vector;
+      this.Point = Point;
+      this.Game = Game;
+      this.Debug = Debug;
+      this.Audio = Audio;
+      this.HookManager = HookManager;
+      this.Camera = Camera;
+      this.Keys = Keys;
+      this.Layers = Layers;
+      this.Timer = Timer;
+      this.Mouse = Mouse;
+      this.Loop = Loop;
+      this.ParticleManager = ParticleManager;
+      this.Load = Load;
+      this.Sprite = Sprite;
+      this.TweenManager = TweenManager;
+      this.SpriteGrid = SpriteGrid;
+      this.SpriteGroup = SpriteGroup;
+      this.Text = Text;
+      this.EffectManager = EffectManager;
+      this.Body = BodyManager;
+      this.EventManager = EventManager;
+      this.SizeManager = SizeManager;
+      this.StateMachineManager = StateMachineManager;
+      this.GridManager = GridManager;
+      this.AnimationManager = AnimationManager;
+      this.Collider = {};
+      this.Collider.CollisionDetector = CollisionDetector;
+      this.Collider.Circle = Circle;
+      this.Collider.AABB = AABB;
+      this.CollisionManager = CollisionManager;
+      this.Collision = Collision;
+      this.Electron = new Electron();
     }
 
     Torch.prototype.RandomInRange = function(min, max) {

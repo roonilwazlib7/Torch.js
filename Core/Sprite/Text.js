@@ -114,10 +114,6 @@
 
     return Text;
 
-  })(Torch.Sprite);
-
-  Torch.ExtendProperties(Text, "Text", "Font", "FontSize", "FontWeight", "Color");
-
-  Torch.Text = Text;
+  })(Sprite);
 
 }).call(this);
