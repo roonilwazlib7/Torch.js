@@ -20,7 +20,7 @@ class EventManager
 
         else if @sprite.fixed
             mouseRec = @game.Mouse.GetRectangle()
-            reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
+            reComputedMouseRec = new Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
             reComputedMouseRec.x += @game.Camera.position.x
             reComputedMouseRec.y += @game.Camera.position.y
             if reComputedMouseRec.Intersects(@sprite.rectangle)

@@ -9,7 +9,7 @@
     }
 
     StateMachineManager.prototype.CreateStateMachine = function(name) {
-      this.stateMachines[name] = new Torch.StateMachine(this.sprite);
+      this.stateMachines[name] = new StateMachine(this.sprite);
       return this.stateMachines[name];
     };
 

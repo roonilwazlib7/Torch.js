@@ -239,7 +239,7 @@
         return results;
       } catch (error) {
         e = error;
-        console.log("%c" + this.game.name + " could not load!", "background-color:" + Torch.Color.Ruby + "; color:white; padding:2px;padding-right:5px;padding-left:5px");
+        console.log("%c" + this.game.name + " could not load!", "background-color:" + Color.Ruby + "; color:white; padding:2px;padding-right:5px;padding-left:5px");
         return Torch.FatalError(e);
       }
     };

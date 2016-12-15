@@ -209,5 +209,5 @@ class Load
                                     @game.Files[stackItem.id] = data
 
         catch e
-            console.log("%c#{@game.name} could not load!", "background-color:#{Torch.Color.Ruby}; color:white; padding:2px;padding-right:5px;padding-left:5px")
+            console.log("%c#{@game.name} could not load!", "background-color:#{Color.Ruby}; color:white; padding:2px;padding-right:5px;padding-left:5px")
             Torch.FatalError(e)

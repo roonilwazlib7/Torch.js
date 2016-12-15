@@ -2,9 +2,11 @@
 window.onerror = (args...) ->
     return if not window.Torch.STRICT_ERRORS
 
+    document.body.style.backgroundColor = "black"
+
     errorObj = args[4]
 
     if errorObj isnt undefined
-        window.Torch.FatalError(errorObj)
+        Torch.FatalError(errorObj)
     else
-        window.Torch.FatalError("An error has occured")
+        Torch.FatalError("An error has occured")

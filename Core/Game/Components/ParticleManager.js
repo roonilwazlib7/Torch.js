@@ -68,21 +68,21 @@
 
     ParticleEmitter.prototype.EmitParticle = function() {
       var alphaDecay, angle, p, radius, scale, x, y;
-      angle = Torch.RandomInRange(this.config.minAngle, this.config.maxAngle);
-      scale = Torch.RandomInRange(this.config.minScale, this.config.maxScale);
-      alphaDecay = Torch.RandomInRange(this.config.minAlphaDecay, this.config.maxAlphaDecay);
-      radius = Torch.RandomInRange(this.config.minRadius, this.config.maxRadius);
+      angle = Torch.Util.Math().RandomInRange(this.config.minAngle, this.config.maxAngle);
+      scale = Torch.Util.Math().RandomInRange(this.config.minScale, this.config.maxScale);
+      alphaDecay = Torch.Util.Math().RandomInRange(this.config.minAlphaDecay, this.config.maxAlphaDecay);
+      radius = Torch.Util.Math().RandomInRange(this.config.minRadius, this.config.maxRadius);
       x = this.position.x;
       y = this.position.y;
       if (typeof this.particle !== "string") {
         p = new this.particle(this.game, x, y);
       } else {
-        p = new Torch.Sprite(this.game, x, y);
+        p = new Sprite(this.game, x, y);
         p.Bind.Texture(this.particle);
       }
-      p.Body.velocity.x = Math.cos(angle) * Torch.RandomInRange(this.config.minVelocity, this.config.maxVelocity);
-      p.Body.velocity.y = Math.sin(angle) * Torch.RandomInRange(this.config.minVelocity, this.config.maxVelocity);
-      p.Body.omega = Torch.RandomInRange(this.config.minOmega, this.config.maxOmega);
+      p.Body.velocity.x = Math.cos(angle) * Torch.Util.Math().RandomInRange(this.config.minVelocity, this.config.maxVelocity);
+      p.Body.velocity.y = Math.sin(angle) * Torch.Util.Math().RandomInRange(this.config.minVelocity, this.config.maxVelocity);
+      p.Body.omega = Torch.Util.Math().RandomInRange(this.config.minOmega, this.config.maxOmega);
       p.Size.scale.width = scale;
       p.Size.scale.height = scale;
       p.drawIndex = 1000;

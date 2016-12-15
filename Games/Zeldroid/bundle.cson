@@ -9,6 +9,5 @@ files:
         "Core/MapPieces/MapPiece.js"
         "Core/MapPieces/Enemies/Enemy.js"
         "Core/MapManager.js"
-        "Core/Zeldroid.js"
         "Core/Game.js"
     ]

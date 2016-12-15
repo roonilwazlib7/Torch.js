@@ -2,10 +2,10 @@ class CollisionDetector
     constructor: (@sprite, @otherSprite) ->
 
     AABB: ->
-        return new Torch.Collider.AABB(@sprite, @otherSprite).Execute()
+        return new AABB(@sprite, @otherSprite).Execute()
 
     Circle: ->
-        return new Torch.Collider.Circle(@sprite, @otherSprite).Execute()
+        return new Circle(@sprite, @otherSprite).Execute()
 
     SAT: ->
-        return new Torch.Collider.SAT(@sprite, @otherSprite).Execute()
+        return new SAT(@sprite, @otherSprite).Execute()

@@ -78,7 +78,7 @@ class CollisionManager
                 collisionDetected = false
                 collisionData = {}
                 switch @mode
-                    when Torch.Collision.AABB
+                    when Collision.AABB
                         collisionData = @sprite.CollidesWith(otherSprite).AABB()
                         collisionDetected = collisionData isnt false
 

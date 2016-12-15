@@ -2,12 +2,14 @@
 window.onerror = (args...) ->
     return if not window.Torch.STRICT_ERRORS
 
+    document.body.style.backgroundColor = "black"
+
     errorObj = args[4]
 
     if errorObj isnt undefined
-        window.Torch.FatalError(errorObj)
+        Torch.FatalError(errorObj)
     else
-        window.Torch.FatalError("An error has occured")
+        Torch.FatalError("An error has occured")
 
 # Modify some core js prototypes
 Function::MixIn = Function::is = (otherFunction) ->
@@ -204,12 +206,9 @@ class DebugConsole
 
 class BodyManager
     constructor: (@sprite)->
-
-        Torch.Assert(@sprite isnt null and @sprite.__torch__ is Torch.Types.Sprite)
-
         @game = @sprite.game
-        @velocity = new Torch.Vector(0,0)
-        @acceleration = new Torch.Vector(0,0)
+        @velocity = new Vector(0,0)
+        @acceleration = new Vector(0,0)
         @omega = 0
         @alpha = 0
 
@@ -230,13 +229,13 @@ class BodyManager
         return directionVector.angle
 
     DistanceTo: (otherSprite) ->
-        thisVec = new Torch.Vector(@sprite.position.x, @sprite.position.y)
-        otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y)
+        thisVec = new Vector(@sprite.position.x, @sprite.position.y)
+        otherVec = new Vector(otherSprite.position.x, otherSprite.position.y)
         otherVec.SubtractVector(thisVec)
         return otherVec.magnitude
 
     DirectionTo: (otherSprite) ->
-        vec = new Torch.Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
+        vec = new Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
         vec.Normalize()
         return vec
 
@@ -287,7 +286,7 @@ class EventManager
 
         else if @sprite.fixed
             mouseRec = @game.Mouse.GetRectangle()
-            reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
+            reComputedMouseRec = new Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height)
             reComputedMouseRec.x += @game.Camera.position.x
             reComputedMouseRec.y += @game.Camera.position.y
             if reComputedMouseRec.Intersects(@sprite.rectangle)
@@ -334,7 +333,7 @@ class StateMachineManager
         @stateMachines = {}
 
     CreateStateMachine: (name) ->
-        @stateMachines[name] = new Torch.StateMachine(@sprite)
+        @stateMachines[name] = new StateMachine(@sprite)
         return @stateMachines[name]
 
     GetStateMachine: (name) ->
@@ -357,7 +356,7 @@ class GridManager
     alignBottom: false
 
     constructor: (@sprite) ->
-        @position = new Torch.Point(0,0)
+        @position = new Point(0,0)
         @children = []
 
     Align: (positionTags...) ->
@@ -560,12 +559,12 @@ class Sprite
         @InitEventDispatch()
         @game = game
 
-        @rectangle = new Torch.Rectangle(x, y, 0, 0)
-        @position = new Torch.Point(x,y)
+        @rectangle = new Rectangle(x, y, 0, 0)
+        @position = new Point(x,y)
 
         @Bind = new Bind(@)
         @Collisions = new CollisionManager(@)
-        @Body = new Body(@)
+        @Body = new BodyManager(@)
         @Size = new SizeManager(@)
         @Events = new EventManager(@)
         @Effects = new EffectManager(@)
@@ -642,20 +641,20 @@ class Sprite
         return @
 
     CollidesWith: (otherSprite) ->
-        return new Torch.Collider.CollisionDetector(@, otherSprite)
+        return new CollisionDetector(@, otherSprite)
 ###
 gonna kill this...
 ###
 class GhostSprite extends Sprite
     GHOST_SPRITE: true
 
-measureCanvas = document.createElement("CANVAS")
-measureCanvas.width = 500
-measureCanvas.height = 500
+_measureCanvas = document.createElement("CANVAS")
+_measureCanvas.width = 500
+_measureCanvas.height = 500
 
 class Text extends Sprite
     TEXT: true
-    @measureCanvas: measureCanvas.getContext("2d")
+    @measureCanvas: _measureCanvas.getContext("2d")
 
     constructor: (game, x, y, data) ->
         @InitText(game, x, y, data)
@@ -688,7 +687,7 @@ class Text extends Sprite
     Render: ->
         cnv = document.createElement("CANVAS")
         Text.measureCanvas.font = @fontSize + "px " + @font
-        cnv.width = Torch.Text.measureCanvas.measureText(@text).width
+        cnv.width = Text.measureCanvas.measureText(@text).width
         cnv.height = @fontSize
 
         if @buffHeight
@@ -794,13 +793,13 @@ class CollisionDetector
     constructor: (@sprite, @otherSprite) ->
 
     AABB: ->
-        return new Torch.Collider.AABB(@sprite, @otherSprite).Execute()
+        return new AABB(@sprite, @otherSprite).Execute()
 
     Circle: ->
-        return new Torch.Collider.Circle(@sprite, @otherSprite).Execute()
+        return new Circle(@sprite, @otherSprite).Execute()
 
     SAT: ->
-        return new Torch.Collider.SAT(@sprite, @otherSprite).Execute()
+        return new SAT(@sprite, @otherSprite).Execute()
 
 class AABB
     constructor: (@sprite, @otherSprite) ->
@@ -912,7 +911,7 @@ class CollisionManager
                 collisionDetected = false
                 collisionData = {}
                 switch @mode
-                    when Torch.Collision.AABB
+                    when Collision.AABB
                         collisionData = @sprite.CollidesWith(otherSprite).AABB()
                         collisionDetected = collisionData isnt false
 
@@ -1222,7 +1221,7 @@ class Load
                                     @game.Files[stackItem.id] = data
 
         catch e
-            console.log("%c#{@game.name} could not load!", "background-color:#{Torch.Color.Ruby}; color:white; padding:2px;padding-right:5px;padding-left:5px")
+            console.log("%c#{@game.name} could not load!", "background-color:#{Color.Ruby}; color:white; padding:2px;padding-right:5px;padding-left:5px")
             Torch.FatalError(e)
 
 class Timer
@@ -1256,13 +1255,13 @@ class Mouse
         @y = evt.clientY - rect.top
 
     GetRectangle: ->
-        return new Torch.Rectangle(@x, @y, 5, 5);
+        return new Rectangle(@x, @y, 5, 5);
 
 class Camera
     position: null
     _jerkFollow: null
     constructor: (@game) ->
-        @position = new Torch.Point(0,0)
+        @position = new Point(0,0)
         @Viewport = new Viewport(@)
 
     JerkFollow: (sprite, offset = 5, config) ->
@@ -1289,7 +1288,7 @@ class Viewport
     constructor: (@camera) ->
         @maxWidth = @width = window.innerWidth
         @maxHeight = @height = window.innerHeight
-        @rectangle = new Torch.Rectangle(@camera.position.x, @camera.position.y, @width, @height)
+        @rectangle = new Rectangle(@camera.position.x, @camera.position.y, @width, @height)
 
     Update: ->
         @rectangle.x = @camera.position.x
@@ -1678,23 +1677,23 @@ class ParticleEmitter extends Sprite
         if removeEmitterWhenDone then @Trash()
 
     EmitParticle: ()->
-        angle = Torch.RandomInRange(@config.minAngle, @config.maxAngle)
-        scale = Torch.RandomInRange(@config.minScale, @config.maxScale)
-        alphaDecay = Torch.RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
-        radius = Torch.RandomInRange(@config.minRadius, @config.maxRadius)
+        angle = Torch.Util.Math().RandomInRange(@config.minAngle, @config.maxAngle)
+        scale = Torch.Util.Math().RandomInRange(@config.minScale, @config.maxScale)
+        alphaDecay = Torch.Util.Math().RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
+        radius = Torch.Util.Math().RandomInRange(@config.minRadius, @config.maxRadius)
         x = @position.x
         y = @position.y
 
         if typeof @particle isnt "string"
             p = new @particle(@game, x, y)
         else
-            p = new Torch.Sprite(@game, x, y)
+            p = new Sprite(@game, x, y)
             p.Bind.Texture(@particle)
 
         #p.Body.acceleration.y = @config.gravity
-        p.Body.velocity.x = Math.cos(angle) * Torch.RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.velocity.y = Math.sin(angle) * Torch.RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.omega = Torch.RandomInRange(@config.minOmega, @config.maxOmega)
+        p.Body.velocity.x = Math.cos(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.velocity.y = Math.sin(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.omega = Torch.Util.Math().RandomInRange(@config.minOmega, @config.maxOmega)
         p.Size.scale.width = scale
         p.Size.scale.height = scale
         p.drawIndex = 1000
@@ -1809,7 +1808,7 @@ class HookManager
     positionTransform: null
 
     constructor: (@game) ->
-        @positionTransform = new Torch.Point(0,0)
+        @positionTransform = new Point(0,0)
 
 class CanvasGame
 
@@ -2144,28 +2143,13 @@ class CanvasGame
             @paused = false
         return @
 
-###
-    @class Torch.Game
-    @author roonilwazlib
-
-    @constructor
-        @param canvasId, string, REQUIRED
-        @param width, number|string, REQUIRED
-        @param height, number|string, REQUIRED
-        @param name, string, REQUIRED
-        @param graphicsType, enum, REQUIRED
-        @param pixel, enum
-
-    @description
-        A weird little class, Torch.Game acts as a facade and switches either a
-        Torch.WebGLGame or Torch.CanvasGame in for itself depending on the desired
-        graphics type
-###
 class Game
     constructor: (canvasId, width, height, name, graphicsType, pixel) ->
 
         return new Torch.CanvasGame(canvasId, width, height, name, graphicsType, pixel) if graphicsType is Torch.CANVAS
         return new Torch.WebGLGame(canvasId, width, height, name, graphicsType, pixel)  if graphicsType is Torch.WEBGL
+
+Game = CanvasGame
 
 class StateMachine
     constructor: (@obj) ->
@@ -2299,15 +2283,15 @@ class Electron
 class CanvasRenderer
     constructor: (@sprite) ->
         @game = @sprite.game
-        @previousPosition = new Torch.Point(@sprite.position.x, @sprite.position.y)
+        @previousPosition = new Point(@sprite.position.x, @sprite.position.y)
     Draw: ->
-        drawRec = new Torch.Rectangle(@sprite.position.x, @sprite.position.y, @sprite.rectangle.width, @sprite.rectangle.height)
+        drawRec = new Rectangle(@sprite.position.x, @sprite.position.y, @sprite.rectangle.width, @sprite.rectangle.height)
 
         drawRec.x = ( @sprite.position.x - @previousPosition.x ) * @game.Loop.lagOffset + @previousPosition.x
         drawRec.y = ( @sprite.position.y - @previousPosition.y ) * @game.Loop.lagOffset + @previousPosition.y
-        @previousPosition = new Torch.Point(@sprite.position.x, @sprite.position.y)
+        @previousPosition = new Point(@sprite.position.x, @sprite.position.y)
 
-        cameraTransform = new Torch.Point(0,0)
+        cameraTransform = new Point(0,0)
 
         if not @sprite.fixed
             drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
@@ -2468,208 +2452,14 @@ class Point
 
 exports = this
 
-class Task
 
-    Task.MixIn(Trashable)
+Enum = (parts...) ->
+    obj = {}
 
-    _torch_add: "Task"
-    constructor: (@func) ->
+    for part,i in parts
+        obj[part] = i+1
 
-    Execute: (game) ->
-        @func(game)
-
-class AjaxLoader
-    onFinish: ->
-    onError: ->
-
-    constructor: (url, responseType = window.Torch.AjaxData.Text) ->
-        @url = url
-        @responseType = @GetResponseTypeString(responseType)
-
-    GetResponseTypeString: (responseType) ->
-        switch responseType
-            when window.Torch.AjaxData.DOMString then      return ""
-            when window.Torch.AjaxData.ArrayBuffer then    return "arraybuffer"
-            when window.Torch.AjaxData.Blob then           return "blob"
-            when window.Torch.AjaxData.Document then       return "document"
-            when window.Torch.AjaxData.Json then           return "json"
-            when window.Torch.AjaxData.Text then           return "text"
-
-    Error: (func) -> @onError = func
-
-    Finish: (func) -> @onFinish = func
-
-    Load: ->
-        request = new XMLHttpRequest()
-        request.open('GET', @url, true)
-        request.responseType = @responseType
-
-        request.onload = =>
-            @onFinish(request.response, @)
-
-        request.send()
-
-class Event
-    constructor: (@game, @data) ->
-        if @game isnt null
-            @time = @game.time
-        for key,value of @data
-            @[key] = value
-
-class Torch
-
-    CANVAS: 1
-    WEBGL: 2
-    PIXEL: 3
-
-    DUMP_ERRORS: false
-
-    constructor: ->
-        @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
-        @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
-        @Types = @Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
-        @Easing = @Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
-        @AjaxLoader = AjaxLoader
-        @Event = Event
-        @EventDispatcher = EventDispatcher
-        @Trashable = Trashable
-        @Util = new Utilities()
-
-        # all the modules
-        @Animation = Animation
-        @Bind = Bind
-        @CanvasRenderer = CanvasRenderer
-        @Color = Color
-        @DebugConsole = DebugConsole
-        @StateMachine = StateMachine
-        @Rectangle = Rectangle
-        @Vector = Vector
-        @Point = Point
-        @Game = Game
-        @Debug = Debug
-        @Audio = Audio
-        @HookManager = HookManager
-        @Camera = Camera
-        @Keys = Keys
-        @Layers = Layers
-        @Timer = Timer
-        @Mouse = Mouse
-        @Loop = Loop
-        @ParticleManager = ParticleManager
-        @Load = Load
-        @Sprite = Sprite
-        @TweenManager = TweenManager
-        @SpriteGrid = SpriteGrid
-        @SpriteGroup = SpriteGroup
-        @Text = Text
-        @EffectManager = EffectManager
-        @Body = BodyManager
-        @EventManager = EventManager
-        @SizeManager = SizeManager
-        @StateMachineManager = StateMachineManager
-        @GridManager = GridManager
-        @AnimationManager = AnimationManager
-        @Collider = {}
-        @Collider.CollisionDetector = CollisionDetector
-        @Collider.Circle = Circle
-        @Collider.AABB = AABB
-        @CollisionManager = CollisionManager
-        @Collision = Collision
-        @Electron = new Electron()
-
-    RandomInRange: (min, max) ->
-        return Math.random() * (max - min + 1) + min
-
-    Needs: (key) ->
-        # make sure we have the peoper torch components
-        if not Torch[key] then throw "Compenent #{key} is required"
-        return @
-
-    FatalError: (error) ->
-        return if @fatal
-        @fatal = true
-
-        if typeof error is "string"
-            error = new Error(error)
-
-        document.body.backgroundColor = "black"
-
-        if @DUMP_ERRORS
-            if require isnt undefined
-                require("fs").writeFileSync("torch-error.log", error.stack)
-
-        stack = error.stack.replace(/\n/g, "<br><br>")
-
-        errorHtml = """
-        <code style='color:#C9302C;margin-left:15%;font-size:24px'>#{error}</code>
-        <br>
-        <code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>
-        <code style='color:#C9302C;font-size:20px'>#{stack}</code><br>
-        """
-        document.body.innerHTML = errorHtml
-        throw error
-
-    StrictErrors: ->
-        @STRICT_ERRORS = true
-
-    DumpErrors: ->
-        @DUMP_ERRORS = true
-
-    DisableConsoleWarnings: ->
-        console.warn = ->
-
-    Enum: (parts...) ->
-        obj = {}
-
-        for part,i in parts
-            obj[part] = i+1
-
-        return obj
-
-    Assert: (expression, errorTag = "Assertation Failed") ->
-        if not expression
-            Torch.FatalError(errorTag)
-
-    TypeOf: (obj) ->
-
-        objTypes = []
-
-        objTypes.push(obj.__torch__) if obj.__torch__ isnt undefined
-
-
-        typeString = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-
-        switch typeString
-            when "string"
-                objTypes.push(Torch.Types.String)
-            when "number"
-                objTypes.push(Torch.Types.Number)
-            when "object"
-                objTypes.push(Torch.Types.Object)
-            when "array"
-                objTypes.push(Torch.Types.Array)
-            when "function"
-                objTypes.push(Torch.Types.Function)
-            else
-                objTypes.push(Torch.Types.Null)
-
-        return objTypes
-
-    Is = (obj, torchType) ->
-        return Torch.TypeOf(obj).indexOf(torchType) isnt -1
-
-    ExtendObject: (objectToExtend, newObject) ->
-        for key,value of newObject
-            objectToExtend[key] = value
-
-    ExtendProperties: (Class, properties...) ->
-        for prop in properties
-            keyProp = prop.unCapitalize()
-            func = (arg) ->
-                return @[keyProp] if arg is undefined
-                @[keyProp] = arg
-                return @
-            Class.prototype[prop] = func
+    return obj
 
 class Utilities
     Expose: ->
@@ -2688,6 +2478,9 @@ class Utilities
 
     Object: (obj) ->
         return new ObjectUtility(obj)
+
+    Math: ->
+        return new MathUtility()
 
 
 class StringUtility
@@ -3067,6 +2860,205 @@ class ObjectUtility
     Empty: ->
         return @Keys().length is 0
 
+class MathUtility
+    constructor: ->
 
+    RandomInRange: (min,max) ->
+        return Math.random() * (max - min + 1) + min
+
+class Task
+
+    Task.MixIn(Trashable)
+
+    _torch_add: "Task"
+    constructor: (@func) ->
+
+    Execute: (game) ->
+        @func(game)
+
+class AjaxLoader
+    onFinish: ->
+    onError: ->
+
+    constructor: (url, responseType = window.Torch.AjaxData.Text) ->
+        @url = url
+        @responseType = @GetResponseTypeString(responseType)
+
+    GetResponseTypeString: (responseType) ->
+        switch responseType
+            when window.Torch.AjaxData.DOMString then      return ""
+            when window.Torch.AjaxData.ArrayBuffer then    return "arraybuffer"
+            when window.Torch.AjaxData.Blob then           return "blob"
+            when window.Torch.AjaxData.Document then       return "document"
+            when window.Torch.AjaxData.Json then           return "json"
+            when window.Torch.AjaxData.Text then           return "text"
+
+    Error: (func) -> @onError = func
+
+    Finish: (func) -> @onFinish = func
+
+    Load: ->
+        request = new XMLHttpRequest()
+        request.open('GET', @url, true)
+        request.responseType = @responseType
+
+        request.onload = =>
+            @onFinish(request.response, @)
+
+        request.send()
+
+class Event
+    constructor: (@game, @data) ->
+        if @game isnt null
+            @time = @game.time
+        for key,value of @data
+            @[key] = value
+
+class Torch
+
+    CANVAS: 1
+    WEBGL: 2
+    PIXEL: 3
+
+    DUMP_ERRORS: false
+
+    @GamePads: Enum("Pad1", "Pad2", "Pad3", "Pad4")
+    @AjaxData: Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
+    @Types: Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+    @Easing: Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
+
+    @AjaxLoader: AjaxLoader
+    @Event: Event
+    @Util: new Utilities()
+
+    constructor: ->
+        @GamePads = Enum("Pad1", "Pad2", "Pad3", "Pad4")
+        @AjaxData = Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
+        @Types = Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+        @Easing = Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
+
+        @Event = Event
+        @EventDispatcher = EventDispatcher
+        @Trashable = Trashable
+
+        # all the modules
+        @Animation = Animation
+        @Bind = Bind
+        @CanvasRenderer = CanvasRenderer
+        @Color = Color
+        @DebugConsole = DebugConsole
+        @StateMachine = StateMachine
+        @Rectangle = Rectangle
+        @Vector = Vector
+        @Point = Point
+        @Game = Game
+        @Debug = Debug
+        @Audio = Audio
+        @HookManager = HookManager
+        @Camera = Camera
+        @Keys = Keys
+        @Layers = Layers
+        @Timer = Timer
+        @Mouse = Mouse
+        @Loop = Loop
+        @ParticleManager = ParticleManager
+        @Load = Load
+        @Sprite = Sprite
+        @TweenManager = TweenManager
+        @SpriteGrid = SpriteGrid
+        @SpriteGroup = SpriteGroup
+        @Text = Text
+        @EffectManager = EffectManager
+        @Body = BodyManager
+        @EventManager = EventManager
+        @SizeManager = SizeManager
+        @StateMachineManager = StateMachineManager
+        @GridManager = GridManager
+        @AnimationManager = AnimationManager
+        @Collider = {}
+        @Collider.CollisionDetector = CollisionDetector
+        @Collider.Circle = Circle
+        @Collider.AABB = AABB
+        @CollisionManager = CollisionManager
+        @Collision = Collision
+        @Electron = new Electron()
+
+    @FatalError: (error) ->
+        return if @fatal
+        @fatal = true
+
+        if typeof error is "string"
+            error = new Error(error)
+
+        document.body.backgroundColor = "black"
+
+        if @DUMP_ERRORS
+            if require isnt undefined
+                require("fs").writeFileSync("torch-error.log", error.stack)
+
+        stack = error.stack.replace(/\n/g, "<br><br>")
+
+        errorHtml = """
+        <code style='color:#C9302C;margin-left:15%;font-size:24px'>#{error}</code>
+        <br>
+        <code style='color:#C9302C;font-size:20px;font-weight:bold'>Stack Trace:</code><br>
+        <code style='color:#C9302C;font-size:20px'>#{stack}</code><br>
+        """
+        document.body.innerHTML = errorHtml
+        throw error
+
+    StrictErrors: ->
+        @STRICT_ERRORS = true
+
+    DumpErrors: ->
+        @DUMP_ERRORS = true
+
+    DisableConsoleWarnings: ->
+        console.warn = ->
+
+    Assert: (expression, errorTag = "Assertation Failed") ->
+        if not expression
+            Torch.FatalError(errorTag)
+
+    TypeOf: (obj) ->
+
+        objTypes = []
+
+        objTypes.push(obj.__torch__) if obj.__torch__ isnt undefined
+
+
+        typeString = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+
+        switch typeString
+            when "string"
+                objTypes.push(Torch.Types.String)
+            when "number"
+                objTypes.push(Torch.Types.Number)
+            when "object"
+                objTypes.push(Torch.Types.Object)
+            when "array"
+                objTypes.push(Torch.Types.Array)
+            when "function"
+                objTypes.push(Torch.Types.Function)
+            else
+                objTypes.push(Torch.Types.Null)
+
+        return objTypes
+
+    Is = (obj, torchType) ->
+        return Torch.TypeOf(obj).indexOf(torchType) isnt -1
+
+    ExtendObject: (objectToExtend, newObject) ->
+        for key,value of newObject
+            objectToExtend[key] = value
+
+    ExtendProperties: (Class, properties...) ->
+        for prop in properties
+            keyProp = prop.unCapitalize()
+            func = (arg) ->
+                return @[keyProp] if arg is undefined
+                @[keyProp] = arg
+                return @
+            Class.prototype[prop] = func
 
 exports.Torch = new Torch()

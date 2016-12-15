@@ -1,10 +1,10 @@
-measureCanvas = document.createElement("CANVAS")
-measureCanvas.width = 500
-measureCanvas.height = 500
+_measureCanvas = document.createElement("CANVAS")
+_measureCanvas.width = 500
+_measureCanvas.height = 500
 
 class Text extends Sprite
     TEXT: true
-    @measureCanvas: measureCanvas.getContext("2d")
+    @measureCanvas: _measureCanvas.getContext("2d")
 
     constructor: (game, x, y, data) ->
         @InitText(game, x, y, data)
@@ -37,7 +37,7 @@ class Text extends Sprite
     Render: ->
         cnv = document.createElement("CANVAS")
         Text.measureCanvas.font = @fontSize + "px " + @font
-        cnv.width = Torch.Text.measureCanvas.measureText(@text).width
+        cnv.width = Text.measureCanvas.measureText(@text).width
         cnv.height = @fontSize
 
         if @buffHeight

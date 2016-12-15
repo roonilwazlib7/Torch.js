@@ -5,10 +5,9 @@
   BodyManager = (function() {
     function BodyManager(sprite) {
       this.sprite = sprite;
-      Torch.Assert(this.sprite !== null && this.sprite.__torch__ === Torch.Types.Sprite);
       this.game = this.sprite.game;
-      this.velocity = new Torch.Vector(0, 0);
-      this.acceleration = new Torch.Vector(0, 0);
+      this.velocity = new Vector(0, 0);
+      this.acceleration = new Vector(0, 0);
       this.omega = 0;
       this.alpha = 0;
     }
@@ -36,15 +35,15 @@
 
     BodyManager.prototype.DistanceTo = function(otherSprite) {
       var otherVec, thisVec;
-      thisVec = new Torch.Vector(this.sprite.position.x, this.sprite.position.y);
-      otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y);
+      thisVec = new Vector(this.sprite.position.x, this.sprite.position.y);
+      otherVec = new Vector(otherSprite.position.x, otherSprite.position.y);
       otherVec.SubtractVector(thisVec);
       return otherVec.magnitude;
     };
 
     BodyManager.prototype.DirectionTo = function(otherSprite) {
       var vec;
-      vec = new Torch.Vector(otherSprite.position.x - this.sprite.position.x, otherSprite.position.y - this.sprite.position.y);
+      vec = new Vector(otherSprite.position.x - this.sprite.position.x, otherSprite.position.y - this.sprite.position.y);
       vec.Normalize();
       return vec;
     };

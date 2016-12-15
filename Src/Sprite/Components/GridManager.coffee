@@ -11,7 +11,7 @@ class GridManager
     alignBottom: false
 
     constructor: (@sprite) ->
-        @position = new Torch.Point(0,0)
+        @position = new Point(0,0)
         @children = []
 
     Align: (positionTags...) ->

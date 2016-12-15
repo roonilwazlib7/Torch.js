@@ -6,16 +6,16 @@
     function CanvasRenderer(sprite) {
       this.sprite = sprite;
       this.game = this.sprite.game;
-      this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
+      this.previousPosition = new Point(this.sprite.position.x, this.sprite.position.y);
     }
 
     CanvasRenderer.prototype.Draw = function() {
       var cameraTransform, drawRec, frame, params;
-      drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
+      drawRec = new Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       drawRec.x = (this.sprite.position.x - this.previousPosition.x) * this.game.Loop.lagOffset + this.previousPosition.x;
       drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
-      this.previousPosition = new Torch.Point(this.sprite.position.x, this.sprite.position.y);
-      cameraTransform = new Torch.Point(0, 0);
+      this.previousPosition = new Point(this.sprite.position.x, this.sprite.position.y);
+      cameraTransform = new Point(0, 0);
       if (!this.sprite.fixed) {
         drawRec.x += this.game.Camera.position.x + this.game.Hooks.positionTransform.x;
         drawRec.y += this.game.Camera.position.y + this.game.Hooks.positionTransform.y;

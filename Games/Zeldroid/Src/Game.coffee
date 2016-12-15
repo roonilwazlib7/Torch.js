@@ -2,7 +2,7 @@ Torch.StrictErrors()
 Torch.DumpErrors()
 Torch.DisableConsoleWarnings()
 
-zeldroid = new Zeldroid("container", "fill", "fill", "Zeldroid", Torch.CANVAS)
+zeldroid = new Torch.Game("container", "fill", "fill", "Zeldroid", Torch.CANVAS)
 
 
 Load = (game) ->

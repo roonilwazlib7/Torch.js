@@ -22,7 +22,7 @@
 
     function GridManager(sprite1) {
       this.sprite = sprite1;
-      this.position = new Torch.Point(0, 0);
+      this.position = new Point(0, 0);
       this.children = [];
     }
 

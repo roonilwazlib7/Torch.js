@@ -2,7 +2,7 @@ class Camera
     position: null
     _jerkFollow: null
     constructor: (@game) ->
-        @position = new Torch.Point(0,0)
+        @position = new Point(0,0)
         @Viewport = new Viewport(@)
 
     JerkFollow: (sprite, offset = 5, config) ->
@@ -29,7 +29,7 @@ class Viewport
     constructor: (@camera) ->
         @maxWidth = @width = window.innerWidth
         @maxHeight = @height = window.innerHeight
-        @rectangle = new Torch.Rectangle(@camera.position.x, @camera.position.y, @width, @height)
+        @rectangle = new Rectangle(@camera.position.x, @camera.position.y, @width, @height)
 
     Update: ->
         @rectangle.x = @camera.position.x

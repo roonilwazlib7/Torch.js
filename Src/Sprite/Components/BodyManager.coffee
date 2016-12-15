@@ -1,11 +1,8 @@
 class BodyManager
     constructor: (@sprite)->
-
-        Torch.Assert(@sprite isnt null and @sprite.__torch__ is Torch.Types.Sprite)
-
         @game = @sprite.game
-        @velocity = new Torch.Vector(0,0)
-        @acceleration = new Torch.Vector(0,0)
+        @velocity = new Vector(0,0)
+        @acceleration = new Vector(0,0)
         @omega = 0
         @alpha = 0
 
@@ -26,12 +23,12 @@ class BodyManager
         return directionVector.angle
 
     DistanceTo: (otherSprite) ->
-        thisVec = new Torch.Vector(@sprite.position.x, @sprite.position.y)
-        otherVec = new Torch.Vector(otherSprite.position.x, otherSprite.position.y)
+        thisVec = new Vector(@sprite.position.x, @sprite.position.y)
+        otherVec = new Vector(otherSprite.position.x, otherSprite.position.y)
         otherVec.SubtractVector(thisVec)
         return otherVec.magnitude
 
     DirectionTo: (otherSprite) ->
-        vec = new Torch.Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
+        vec = new Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
         vec.Normalize()
         return vec

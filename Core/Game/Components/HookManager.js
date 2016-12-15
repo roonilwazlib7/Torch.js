@@ -7,7 +7,7 @@
 
     function HookManager(game) {
       this.game = game;
-      this.positionTransform = new Torch.Point(0, 0);
+      this.positionTransform = new Point(0, 0);
     }
 
     return HookManager;

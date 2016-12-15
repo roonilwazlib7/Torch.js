@@ -24,11 +24,11 @@
       }
       this.InitEventDispatch();
       this.game = game;
-      this.rectangle = new Torch.Rectangle(x, y, 0, 0);
-      this.position = new Torch.Point(x, y);
+      this.rectangle = new Rectangle(x, y, 0, 0);
+      this.position = new Point(x, y);
       this.Bind = new Bind(this);
       this.Collisions = new CollisionManager(this);
-      this.Body = new Body(this);
+      this.Body = new BodyManager(this);
       this.Size = new SizeManager(this);
       this.Events = new EventManager(this);
       this.Effects = new EffectManager(this);
@@ -113,7 +113,7 @@
     };
 
     Sprite.prototype.CollidesWith = function(otherSprite) {
-      return new Torch.Collider.CollisionDetector(this, otherSprite);
+      return new CollisionDetector(this, otherSprite);
     };
 
     return Sprite;

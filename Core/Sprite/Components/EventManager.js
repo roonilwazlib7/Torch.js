@@ -35,7 +35,7 @@
         this.mouseOver = true;
       } else if (this.sprite.fixed) {
         mouseRec = this.game.Mouse.GetRectangle();
-        reComputedMouseRec = new Torch.Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
+        reComputedMouseRec = new Rectangle(mouseRec.x, mouseRec.y, mouseRec.width, mouseRec.height);
         reComputedMouseRec.x += this.game.Camera.position.x;
         reComputedMouseRec.y += this.game.Camera.position.y;
         if (reComputedMouseRec.Intersects(this.sprite.rectangle)) {

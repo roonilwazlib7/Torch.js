@@ -9,7 +9,7 @@
 
     function Camera(game) {
       this.game = game;
-      this.position = new Torch.Point(0, 0);
+      this.position = new Point(0, 0);
       this.Viewport = new Viewport(this);
     }
 
@@ -52,7 +52,7 @@
       this.camera = camera;
       this.maxWidth = this.width = window.innerWidth;
       this.maxHeight = this.height = window.innerHeight;
-      this.rectangle = new Torch.Rectangle(this.camera.position.x, this.camera.position.y, this.width, this.height);
+      this.rectangle = new Rectangle(this.camera.position.x, this.camera.position.y, this.width, this.height);
     }
 
     Viewport.prototype.Update = function() {

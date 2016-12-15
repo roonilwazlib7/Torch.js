@@ -2,4 +2,4 @@ class HookManager
     positionTransform: null
 
     constructor: (@game) ->
-        @positionTransform = new Torch.Point(0,0)
+        @positionTransform = new Point(0,0)

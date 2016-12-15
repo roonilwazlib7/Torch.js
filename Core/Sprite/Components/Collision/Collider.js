@@ -9,15 +9,15 @@
     }
 
     CollisionDetector.prototype.AABB = function() {
-      return new Torch.Collider.AABB(this.sprite, this.otherSprite).Execute();
+      return new AABB(this.sprite, this.otherSprite).Execute();
     };
 
     CollisionDetector.prototype.Circle = function() {
-      return new Torch.Collider.Circle(this.sprite, this.otherSprite).Execute();
+      return new Circle(this.sprite, this.otherSprite).Execute();
     };
 
     CollisionDetector.prototype.SAT = function() {
-      return new Torch.Collider.SAT(this.sprite, this.otherSprite).Execute();
+      return new SAT(this.sprite, this.otherSprite).Execute();
     };
 
     return CollisionDetector;

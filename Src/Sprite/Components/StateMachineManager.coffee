@@ -3,7 +3,7 @@ class StateMachineManager
         @stateMachines = {}
 
     CreateStateMachine: (name) ->
-        @stateMachines[name] = new Torch.StateMachine(@sprite)
+        @stateMachines[name] = new StateMachine(@sprite)
         return @stateMachines[name]
 
     GetStateMachine: (name) ->

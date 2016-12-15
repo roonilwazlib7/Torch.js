@@ -12,12 +12,12 @@ class Sprite
         @InitEventDispatch()
         @game = game
 
-        @rectangle = new Torch.Rectangle(x, y, 0, 0)
-        @position = new Torch.Point(x,y)
+        @rectangle = new Rectangle(x, y, 0, 0)
+        @position = new Point(x,y)
 
         @Bind = new Bind(@)
         @Collisions = new CollisionManager(@)
-        @Body = new Body(@)
+        @Body = new BodyManager(@)
         @Size = new SizeManager(@)
         @Events = new EventManager(@)
         @Effects = new EffectManager(@)
@@ -94,7 +94,7 @@ class Sprite
         return @
 
     CollidesWith: (otherSprite) ->
-        return new Torch.Collider.CollisionDetector(@, otherSprite)
+        return new CollisionDetector(@, otherSprite)
 ###
 gonna kill this...
 ###

@@ -8,7 +8,7 @@
 
   Torch.DisableConsoleWarnings();
 
-  zeldroid = new Zeldroid("container", "fill", "fill", "Zeldroid", Torch.CANVAS);
+  zeldroid = new Torch.Game("container", "fill", "fill", "Zeldroid", Torch.CANVAS);
 
   Load = function(game) {
     Player.Load(game);

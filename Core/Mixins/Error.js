@@ -8,11 +8,12 @@
     if (!window.Torch.STRICT_ERRORS) {
       return;
     }
+    document.body.style.backgroundColor = "black";
     errorObj = args[4];
     if (errorObj !== void 0) {
-      return window.Torch.FatalError(errorObj);
+      return Torch.FatalError(errorObj);
     } else {
-      return window.Torch.FatalError("An error has occured");
+      return Torch.FatalError("An error has occured");
     }
   };
 

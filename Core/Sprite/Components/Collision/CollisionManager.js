@@ -112,7 +112,7 @@
           collisionDetected = false;
           collisionData = {};
           switch (this.mode) {
-            case Torch.Collision.AABB:
+            case Collision.AABB:
               collisionData = this.sprite.CollidesWith(otherSprite).AABB();
               collisionDetected = collisionData !== false;
           }
