@@ -7,13 +7,9 @@ var fs = require("fs"),
 function GameRunner(TestGame)
 {
     console.log("[] Copying torch to " + TestGame.Path + "...");
-    compressor.minify({
-        compressor: 'no-compress',
-        input: source,
-        output: 'Games/' + TestGame.Path + '/torch.js',
-        sync: true,
-        callback: function (err, min) {}
-    });
+    
+    var torch = fs.readFileSync("Builds/torch-latest.js");
+    fs.writeFileSync("Games/" + TestGame.Path + "/torch.js", torch);
 
     console.log("[] Running " + TestGame.Path + "...");
     var windows_script = "cd Games\\" + TestGame.Path;

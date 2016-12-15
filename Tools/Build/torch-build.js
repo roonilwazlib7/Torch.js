@@ -19,28 +19,33 @@ if (buildConfig.Build >= 500)
 fs.writeFileSync(".build-config.cson", CSON.stringify(buildConfig, null, 4));
 
 // save version info
-fs.writeFileSync("Core/version.js", "\nTorch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "';\n");
+fs.writeFileSync("Src/version.coffee", "\nTorch.version = '" + buildConfig.BuildMajor + "." + buildConfig.BuildMinor + "." + buildConfig.Build + "'\n");
 
-source = buildConfig.SourceMap;
-source.push("version.js");
+
+var coffeeSource = [];
+var source = buildConfig.SourceMap;
 
 for (var i = 0; i < source.length; i++)
 {
-    source[i] = "Core/" + source[i];
+    coffeeSource[i] = "Src/" + source[i] + ".coffee"
 }
+
 
 console.log("[] Compiling Torch Coffee...");
 // compile the source coffeescript
 shell.exec("coffee --compile --output Core/ Src/")
 
-console.log("[] Writing uncompressed...");
+console.log("[] Writing uncompressed CoffeeScript...");
 compressor.minify({
     compressor: 'no-compress',
-    input: source,
-    output: 'Builds/torch-latest.js',
+    input: coffeeSource,
+    output: 'Builds/torch-latest.coffee',
     sync: true,
     callback: function (err, min) {}
 });
+
+console.log("[] Writing uncompressed JS...");
+shell.exec("coffee --compile Builds/torch-latest.coffee")
 
 console.log("[] Writing compressed...");
 compressor.minify({
