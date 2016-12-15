@@ -15,5 +15,3 @@ class SpriteGrid
 
         #for sprite in sprites
             # TODO make stuff happen here
-
-Torch.SpriteGrid = SpriteGrid

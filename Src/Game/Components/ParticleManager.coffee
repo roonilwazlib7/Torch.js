@@ -1,4 +1,4 @@
-class ParticleEmitter extends Torch.Sprite
+class ParticleEmitter Sprite
     particle: null
     auto: true
     constructor: (@game, x, y, @interval, @loop, @particle, @config) ->
@@ -66,8 +66,6 @@ class ParticleManager
 
     ParticleEmitter: (x, y, interval, shouldLoop, particle, config)->
         return new ParticleEmitter(@game, x, y, interval, shouldLoop, particle, config)
-
-Torch.ParticleManager = ParticleManager
 
 
 # # usage

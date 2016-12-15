@@ -49,7 +49,7 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
-      this.renderer = new CanvasRenderer(this);
+      this.renderer = new Torch.CanvasRenderer(this);
       return game.Add(this);
     };
 

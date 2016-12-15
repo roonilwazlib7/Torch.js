@@ -71,11 +71,52 @@ class Torch
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
         @Types = @Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+        @Easing = @Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
         @AjaxLoader = AjaxLoader
         @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
         @Util = new Utilities()
+
+        # all the modules
+        @Animation = Animation
+        @Bind = Bind
+        @CanvasRenderer = CanvasRenderer
+        @Color = Color
+        @DebugConsole = DebugConsole
+        @StateMachine = StateMachine
+        @Rectangle = Rectangle
+        @Vector = Vector
+        @Point = Point
+        @Game = Game
+        @Debug = Debug
+        @Audio = Audio
+        @HookManager = HookManager
+        @Camera = Camera
+        @Keys = Keys
+        @Layers = Layers
+        @Timer = Timer
+        @Mouse = Mouse
+        @Loop = Loop
+        @ParticleManager = ParticleManager
+        @Load = Load
+        @TweenManager = TweenManager
+        @SpriteGrid = SpriteGrid
+        @SpriteGroup = SpriteGroup
+        @Text = Text
+        @EffectManager = EffectManager
+        @Body = BodyManager
+        @EventManager = EventManager
+        @SizeManager = SizeManager
+        @StateMachineManager = StateMachineManager
+        @GridManager = GridManager
+        @AnimationManager = AnimationManager
+        @Collider = {}
+        @Collider.CollisionDetector = CollisionDetector
+        @Collider.Circle = Circle
+        @Collider.AABB = AABB
+        @CollisionManager = CollisionManager
+        @Electron = new Electron()
 
     RandomInRange: (min, max) ->
         return Math.random() * (max - min + 1) + min

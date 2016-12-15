@@ -128,6 +128,3 @@ class DebugConsole
                 tConsole.Output("Statment Executed", "green")
             catch error
                 tConsole.Output("Statement: '#{statement}' caused an error. #{error}", "red")
-
-
-Torch.DebugConsole = DebugConsole

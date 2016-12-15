@@ -38,8 +38,6 @@
     return this.charAt(0).toLowerCase() + this.slice(1);
   };
 
-  exports = this;
-
   EventDispatcher = (function() {
     function EventDispatcher() {}
 
@@ -95,10 +93,6 @@
 
   })();
 
-  exports.EventDispatcher = EventDispatcher;
-
-  exports = this;
-
   Trashable = (function() {
     function Trashable() {}
 
@@ -112,8 +106,6 @@
     return Trashable;
 
   })();
-
-  exports.Trashable = Trashable;
 
   exports = this;
 
@@ -1770,7 +1762,7 @@
       this._torch_add = "Sprite";
       this._torch_uid = "";
       this.events = {};
-      this.renderer = new CanvasRenderer(this);
+      this.renderer = new Torch.CanvasRenderer(this);
       return game.Add(this);
     };
 
@@ -3009,8 +3001,6 @@
 
   Torch.Debug = Debug;
 
-  exports = this;
-
   Key = (function() {
     Key.MixIn(Torch.EventDispatcher);
 
@@ -4109,8 +4099,6 @@
 
   Torch.Game = Game;
 
-  exports = this;
-
   Torch.Platformer = {
     Gravity: 0.001,
     SHIFT_COLLIDE_LEFT: 5,
@@ -4834,8 +4822,6 @@
 
   Torch.Electron = new Electron();
 
-  exports = this;
-
   CanvasRenderer = (function() {
     function CanvasRenderer(sprite1) {
       this.sprite = sprite1;
@@ -4893,7 +4879,7 @@
 
   })();
 
-  exports.CanvasRenderer = CanvasRenderer;
+  Torch.CanvasRenderer = CanvasRenderer;
 
   Rectangle = (function() {
     function Rectangle(x1, y1, width1, height1) {

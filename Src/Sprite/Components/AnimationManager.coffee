@@ -85,5 +85,3 @@ class SpriteSheetAnimation extends Animation
         @sprite.DrawTexture.drawParams.clipHeight = @clipHeight
         @sprite.Size.width = @clipWidth
         @sprite.Size.height = @clipHeight
-
-Torch.AnimationManager = AnimationManager

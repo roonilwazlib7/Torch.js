@@ -77,5 +77,3 @@ class Text extends Torch.Sprite
             @lastText = @text
 
 Torch.ExtendProperties(Text, "Text", "Font", "FontSize", "FontWeight", "Color")
-
-Torch.Text = Text

@@ -102,5 +102,3 @@ class Keys
 
         for keyCode,value of @specialKeys
             _keys[value] = new Key(keyCode)
-
-Torch.Keys = Keys

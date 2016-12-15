@@ -49,6 +49,3 @@ Color.Green = new Color(0, 256, 0, 1)
 Color.Blue = new Color(0, 0, 256, 1)
 Color.Flame = new Color("#ff8000")
 Color.Ruby = new Color("#e60000")
-
-# expose to Torch
-Torch.Color = Color

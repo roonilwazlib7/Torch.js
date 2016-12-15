@@ -111,5 +111,3 @@ class GridManager
         if @parent isnt null
             @sprite.drawIndex = @parent.drawIndex + 1
             @sprite.fixed = @parent.fixed
-
-Torch.GridManager = GridManager

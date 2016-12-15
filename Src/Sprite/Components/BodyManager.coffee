@@ -35,5 +35,3 @@ class BodyManager
         vec = new Torch.Vector( (otherSprite.position.x - @sprite.position.x), (otherSprite.position.y - @sprite.position.y) )
         vec.Normalize()
         return vec
-
-Torch.Body = BodyManager

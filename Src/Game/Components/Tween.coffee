@@ -1,4 +1,3 @@
-Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 class Tween
     @MixIn Trashable
     @MixIn EventDispatcher
@@ -88,9 +87,6 @@ class TweenManager
     All: (callback) ->
         for tween in @game.tweens
             callback(tween)
-
-
-Torch.TweenManager = TweenManager
 
 # # objects or primitives
 # game.Tween(sprite.position, 500).To({x: 500, y: 500})

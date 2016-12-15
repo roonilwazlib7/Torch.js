@@ -42,6 +42,3 @@ class SpriteGroup
     ToggleFixed: ->
         for sprite in @sprites then sprite.ToggleFixed()
         return @
-
-# expose to Torch
-Torch.SpriteGroup = SpriteGroup

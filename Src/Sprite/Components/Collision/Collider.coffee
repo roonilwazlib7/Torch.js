@@ -11,5 +11,3 @@ class CollisionDetector
 
     SAT: ->
         return new Torch.Collider.SAT(@sprite, @otherSprite).Execute()
-
-Torch.Collider.CollisionDetector = CollisionDetector

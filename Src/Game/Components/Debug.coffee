@@ -18,5 +18,3 @@ class Debug
         #
         # @text = @game.name + " Debug Info: <br />"
         # @text += "fps: "  + @game.fps
-
-Torch.Debug = Debug

@@ -12,5 +12,3 @@ class StateMachineManager
     Update: ->
         for key,sm of @stateMachines
             sm.Update()
-
-Torch.StateMachineManager = StateMachineManager

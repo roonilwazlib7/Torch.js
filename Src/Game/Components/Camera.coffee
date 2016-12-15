@@ -85,7 +85,3 @@ class JerkFollow
             @boundBottom -= @Inc
 
             @game.Tweens.Tween( @camera.position, 500, Torch.Easing.Smooth ).To({x: @camera.position.y + @Inc})
-
-
-# expose to Torch
-Torch.Camera = Camera

@@ -18,20 +18,20 @@ class CanvasGame
 
         console.log("%c Torch v#{Torch.version} |#{graphicsString}| - #{@name}", styleString)
 
-        @Loop = new Torch.Loop(@)
-        @Load = new Torch.Load(@)
-        @Mouse = new Torch.Mouse(@)
-        @Timer = new Torch.Timer(@)
-        @Camera = new Torch.Camera(@)
-        @Layers = new Torch.Layers(@)
-        @Debug = new Torch.Debug(@)
-        @Keys = new Torch.Keys(@)
-        @Tweens = new Torch.TweenManager(@)
-        @Particles = new Torch.ParticleManager(@)
-        @Audio = new Torch.Audio(@) #not ready for this yet
-        @Hooks = new Torch.HookManager(@)
+        @Loop = new Loop(@)
+        @Load = new Load(@)
+        @Mouse = new Mouse(@)
+        @Timer = new Timer(@)
+        @Camera = new Camera(@)
+        @Layers = new Layers(@)
+        @Debug = new Debug(@)
+        @Keys = new Keys(@)
+        @Tweens = new TweenManager(@)
+        @Particles = new ParticleManager(@)
+        @Audio = new Audio(@) #not ready for this yet
+        @Hooks = new HookManager(@)
 
-        Torch.Style()
+        Style()
 
         @deltaTime = 0
         @fps = 0
@@ -96,8 +96,6 @@ class CanvasGame
             @init(@)
             @WireUpEvents()
             @Run()
-
-        if @graphicsType is Torch.WEBGL then return
 
         @canvasNode.width = @width
         @canvasNode.height = @height
@@ -332,7 +330,3 @@ class CanvasGame
         else
             @paused = false
         return @
-
-
-# expose to Torch
-Torch.CanvasGame = CanvasGame

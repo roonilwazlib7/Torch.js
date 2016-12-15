@@ -3,5 +3,3 @@ class AABB
 
     Execute: ->
         return @sprite.rectangle.Intersects(@otherSprite.rectangle)
-
-Torch.Collider.AABB = AABB

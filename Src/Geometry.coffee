@@ -113,7 +113,3 @@ class Point
 
     Clone: ->
         return new Point(@x, @y)
-
-Torch.Rectangle = Rectangle
-Torch.Vector = Vector
-Torch.Point = Point

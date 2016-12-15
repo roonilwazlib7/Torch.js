@@ -57,5 +57,3 @@ class Layers
             Torch.FatalError("Unable to get layer '#{ layerName }'. Layer does not exist")
 
         else return @layerMap[layerName]
-
-Torch.Layers = Layers

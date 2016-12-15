@@ -5,7 +5,7 @@ class Timer
         for event in @futureEvents
             event.Update()
     SetFutureEvent: (timeToOccur, handle) ->
-        @futureEvents.push( new Torch.FutureEvent(timeToOccur, handle, @game) )
+        @futureEvents.push( new FutureEvent(timeToOccur, handle, @game) )
 
 class FutureEvent
     constructor: (@timeToOccur, @handle, @game) ->
@@ -16,7 +16,3 @@ class FutureEvent
             if @handle isnt null and @handle isnt undefined
                 @handle()
                 @handle = null
-
-
-Torch.Timer = Timer
-Torch.FutureEvent = FutureEvent

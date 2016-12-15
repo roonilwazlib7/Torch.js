@@ -69,5 +69,3 @@ class AudioPlayer
 
         source.connect(@audioContext.destination)
         source.start(time)
-
-Torch.Audio = Audio

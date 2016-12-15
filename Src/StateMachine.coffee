@@ -31,7 +31,3 @@ class StateMachine
 
 class State
     constructor: (@Execute, @Start, @End) ->
-
-# expose to Torch
-Torch.StateMachine = StateMachine
-Torch.StateMachine.State = State

@@ -51,5 +51,3 @@ class CanvasRenderer
     PostRender: ->
         canvas = @game.canvas
         canvas.restore()
-
-Torch.CanvasRenderer = CanvasRenderer

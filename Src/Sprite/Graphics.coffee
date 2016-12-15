@@ -1,4 +1,4 @@
-class Graphic extends Torch.Sprite
+class Graphic extends Sprite
     constructor(args...) ->
         @RenderGraphic(args...)
 
@@ -11,7 +11,7 @@ class Circle extends Graphic
     Radius: (radius) ->
         if radius isnt undefined and radius isnt @radius
             @radius = radius
-            
+
 
     Color: (color) ->
 

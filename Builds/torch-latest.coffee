@@ -21,7 +21,6 @@ String::capitalize = ->
 String::unCapitalize = ->
     return this.charAt(0).toLowerCase() + this.slice(1)
 
-exports = this
 class EventDispatcher
     @dispatchers: []
 
@@ -55,16 +54,11 @@ class EventDispatcher
                 @events[key] = undefined
         return @
 
-exports.EventDispatcher = EventDispatcher
-
-exports = this
 class Trashable
     trash: false
     Trash: ->
         @trash = true
         return @
-
-exports.Trashable = Trashable
 
 exports = this
 
@@ -139,11 +133,52 @@ class Torch
         @GamePads = @Enum("Pad1", "Pad2", "Pad3", "Pad4")
         @AjaxData = @Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
         @Types = @Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+        @Easing = @Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
         @AjaxLoader = AjaxLoader
         @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
         @Util = new Utilities()
+
+        # all the modules
+        @Animation = Animation
+        @Bind = Bind
+        @CanvasRenderer = CanvasRenderer
+        @Color = Color
+        @DebugConsole = DebugConsole
+        @StateMachine = StateMachine
+        @Rectangle = Rectangle
+        @Vector = Vector
+        @Point = Point
+        @Game = Game
+        @Debug = Debug
+        @Audio = Audio
+        @HookManager = HookManager
+        @Camera = Camera
+        @Keys = Keys
+        @Layers = Layers
+        @Timer = Timer
+        @Mouse = Mouse
+        @Loop = Loop
+        @ParticleManager = ParticleManager
+        @Load = Load
+        @TweenManager = TweenManager
+        @SpriteGrid = SpriteGrid
+        @SpriteGroup = SpriteGroup
+        @Text = Text
+        @EffectManager = EffectManager
+        @Body = BodyManager
+        @EventManager = EventManager
+        @SizeManager = SizeManager
+        @StateMachineManager = StateMachineManager
+        @GridManager = GridManager
+        @AnimationManager = AnimationManager
+        @Collider = {}
+        @Collider.CollisionDetector = CollisionDetector
+        @Collider.Circle = Circle
+        @Collider.AABB = AABB
+        @CollisionManager = CollisionManager
+        @Electron = new Electron()
 
     RandomInRange: (min, max) ->
         return Math.random() * (max - min + 1) + min
@@ -770,9 +805,6 @@ class DebugConsole
             catch error
                 tConsole.Output("Statement: '#{statement}' caused an error. #{error}", "red")
 
-
-Torch.DebugConsole = DebugConsole
-
 class BodyManager
     constructor: (@sprite)->
 
@@ -811,8 +843,6 @@ class BodyManager
         vec.Normalize()
         return vec
 
-Torch.Body = BodyManager
-
 class SizeManager
     width: 0
     height: 0
@@ -837,8 +867,6 @@ class SizeManager
     Scale: (widthScale, heightScale) ->
         @scale.width = widthScale
         @scale.height = heightScale
-
-Torch.SizeManager = SizeManager
 
 class EventManager
     mouseOver: false
@@ -896,8 +924,6 @@ class EventManager
         else if @game.Mouse.down and not @mouseOver
             @clickAwayTrigger = true
 
-Torch.EventManager = EventManager
-
 class EffectManager
     tint: null
     mask: null
@@ -905,8 +931,6 @@ class EffectManager
     constructor: (@sprite) ->
         @tint = {color: null, opacity: 0.5}
         @mask = {texture: null, in: false, out: false} # destination-in, destination-out
-
-Torch.EffectManager = EffectManager
 
 class StateMachineManager
     constructor: (@sprite) ->
@@ -922,8 +946,6 @@ class StateMachineManager
     Update: ->
         for key,sm of @stateMachines
             sm.Update()
-
-Torch.StateMachineManager = StateMachineManager
 
 class GridManager
     parent: null
@@ -1039,8 +1061,6 @@ class GridManager
             @sprite.drawIndex = @parent.drawIndex + 1
             @sprite.fixed = @parent.fixed
 
-Torch.GridManager = GridManager
-
 class Animation extends Torch.Trashable
     loop: false
     stopped: false
@@ -1129,8 +1149,6 @@ class SpriteSheetAnimation extends Animation
         @sprite.Size.width = @clipWidth
         @sprite.Size.height = @clipHeight
 
-Torch.AnimationManager = AnimationManager
-
 class Sprite
     Sprite.MixIn(Torch.EventDispatcher)
           .MixIn(Torch.Trashable)
@@ -1150,15 +1168,15 @@ class Sprite
         @rectangle = new Torch.Rectangle(x, y, 0, 0)
         @position = new Torch.Point(x,y)
 
-        @Bind = new Torch.Bind(@)
-        @Collisions = new Torch.CollisionManager(@)
-        @Body = new Torch.Body(@)
-        @Size = new Torch.SizeManager(@)
-        @Events = new Torch.EventManager(@)
-        @Effects = new Torch.EffectManager(@)
-        @States = new Torch.StateMachineManager(@)
-        @Grid = new Torch.GridManager(@)
-        @Animations = new Torch.AnimationManager(@)
+        @Bind = new Bind(@)
+        @Collisions = new CollisionManager(@)
+        @Body = new Body(@)
+        @Size = new SizeManager(@)
+        @Events = new EventManager(@)
+        @Effects = new EffectManager(@)
+        @States = new StateMachineManager(@)
+        @Grid = new GridManager(@)
+        @Animations = new AnimationManager(@)
 
         @DrawTexture = null
         @TexturePack = null
@@ -1320,8 +1338,6 @@ class Text extends Torch.Sprite
 
 Torch.ExtendProperties(Text, "Text", "Font", "FontSize", "FontWeight", "Color")
 
-Torch.Text = Text
-
 class SpriteGroup
     constructor: (@sprites = [], @game) ->
         for sprite in @sprites
@@ -1367,9 +1383,6 @@ class SpriteGroup
         for sprite in @sprites then sprite.ToggleFixed()
         return @
 
-# expose to Torch
-Torch.SpriteGroup = SpriteGroup
-
 class SpriteGrid
     constructor: (@game, @gridXml) ->
         @ParseXml()
@@ -1388,8 +1401,6 @@ class SpriteGrid
         #for sprite in sprites
             # TODO make stuff happen here
 
-Torch.SpriteGrid = SpriteGrid
-
 Torch.Collider = {}
 
 class CollisionDetector
@@ -1404,15 +1415,11 @@ class CollisionDetector
     SAT: ->
         return new Torch.Collider.SAT(@sprite, @otherSprite).Execute()
 
-Torch.Collider.CollisionDetector = CollisionDetector
-
 class AABB
     constructor: (@sprite, @otherSprite) ->
 
     Execute: ->
         return @sprite.rectangle.Intersects(@otherSprite.rectangle)
-
-Torch.Collider.AABB = AABB
 
 class Circle
     constructor: (@sprite, @otherSprite) ->
@@ -1436,9 +1443,6 @@ class Circle
             #collision detected!
             return true
         return false
-
-
-Torch.Collider.Circle = Circle
 
 
 Torch.Collision =
@@ -1563,8 +1567,6 @@ class CollisionManager
 
         return touching
 
-Torch.CollisionManager = CollisionManager
-
 class Loop
     constructor: (@game) ->
         @fps = 50
@@ -1621,8 +1623,6 @@ class Loop
 
     Run: (timestamp) ->
         @AdvanceFrame(0)
-
-Torch.Loop = Loop
 
 class Load
     constructor: (@game) ->
@@ -1837,7 +1837,6 @@ class Load
         catch e
             console.log("%c#{@game.name} could not load!", "background-color:#{Torch.Color.Ruby}; color:white; padding:2px;padding-right:5px;padding-left:5px")
             Torch.FatalError(e)
-Torch.Load = Load
 
 class Timer
     constructor: (@game)->
@@ -1846,7 +1845,7 @@ class Timer
         for event in @futureEvents
             event.Update()
     SetFutureEvent: (timeToOccur, handle) ->
-        @futureEvents.push( new Torch.FutureEvent(timeToOccur, handle, @game) )
+        @futureEvents.push( new FutureEvent(timeToOccur, handle, @game) )
 
 class FutureEvent
     constructor: (@timeToOccur, @handle, @game) ->
@@ -1857,10 +1856,6 @@ class FutureEvent
             if @handle isnt null and @handle isnt undefined
                 @handle()
                 @handle = null
-
-
-Torch.Timer = Timer
-Torch.FutureEvent = FutureEvent
 
 class Mouse
     constructor: (@game) ->
@@ -1875,10 +1870,6 @@ class Mouse
 
     GetRectangle: ->
         return new Torch.Rectangle(@x, @y, 5, 5);
-
-
-# expose to torch
-Torch.Mouse = Mouse
 
 class Camera
     position: null
@@ -1968,10 +1959,6 @@ class JerkFollow
 
             @game.Tweens.Tween( @camera.position, 500, Torch.Easing.Smooth ).To({x: @camera.position.y + @Inc})
 
-
-# expose to Torch
-Torch.Camera = Camera
-
 class Layer
     constructor: (@drawIndex)->
         @children = []
@@ -2032,9 +2019,7 @@ class Layers
 
         else return @layerMap[layerName]
 
-Torch.Layers = Layers
-
-Torch.Style = ->
+Style = ->
 
     # a few style fixes to get around having a css file
 
@@ -2068,10 +2053,6 @@ class Debug
         #
         # @text = @game.name + " Debug Info: <br />"
         # @text += "fps: "  + @game.fps
-
-Torch.Debug = Debug
-
-exports = this
 
 class Key
     Key.MixIn(Torch.EventDispatcher)
@@ -2178,9 +2159,6 @@ class Keys
         for keyCode,value of @specialKeys
             _keys[value] = new Key(keyCode)
 
-Torch.Keys = Keys
-
-Torch.Easing = Torch.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 class Tween
     @MixIn Trashable
     @MixIn EventDispatcher
@@ -2271,15 +2249,12 @@ class TweenManager
         for tween in @game.tweens
             callback(tween)
 
-
-Torch.TweenManager = TweenManager
-
 # # objects or primitives
 # game.Tween(sprite.position, 500).To({x: 500, y: 500})
 # # or set the properties before tweening
 # game.Tween.(sprite.opacity, 500).From(0).To(1)
 
-class ParticleEmitter extends Torch.Sprite
+class ParticleEmitter Sprite
     particle: null
     auto: true
     constructor: (@game, x, y, @interval, @loop, @particle, @config) ->
@@ -2347,8 +2322,6 @@ class ParticleManager
 
     ParticleEmitter: (x, y, interval, shouldLoop, particle, config)->
         return new ParticleEmitter(@game, x, y, interval, shouldLoop, particle, config)
-
-Torch.ParticleManager = ParticleManager
 
 
 # # usage
@@ -2445,15 +2418,11 @@ class AudioPlayer
         source.connect(@audioContext.destination)
         source.start(time)
 
-Torch.Audio = Audio
-
 class HookManager
     positionTransform: null
 
     constructor: (@game) ->
         @positionTransform = new Torch.Point(0,0)
-
-Torch.HookManager = HookManager
 
 class CanvasGame
 
@@ -2475,20 +2444,20 @@ class CanvasGame
 
         console.log("%c Torch v#{Torch.version} |#{graphicsString}| - #{@name}", styleString)
 
-        @Loop = new Torch.Loop(@)
-        @Load = new Torch.Load(@)
-        @Mouse = new Torch.Mouse(@)
-        @Timer = new Torch.Timer(@)
-        @Camera = new Torch.Camera(@)
-        @Layers = new Torch.Layers(@)
-        @Debug = new Torch.Debug(@)
-        @Keys = new Torch.Keys(@)
-        @Tweens = new Torch.TweenManager(@)
-        @Particles = new Torch.ParticleManager(@)
-        @Audio = new Torch.Audio(@) #not ready for this yet
-        @Hooks = new Torch.HookManager(@)
+        @Loop = new Loop(@)
+        @Load = new Load(@)
+        @Mouse = new Mouse(@)
+        @Timer = new Timer(@)
+        @Camera = new Camera(@)
+        @Layers = new Layers(@)
+        @Debug = new Debug(@)
+        @Keys = new Keys(@)
+        @Tweens = new TweenManager(@)
+        @Particles = new ParticleManager(@)
+        @Audio = new Audio(@) #not ready for this yet
+        @Hooks = new HookManager(@)
 
-        Torch.Style()
+        Style()
 
         @deltaTime = 0
         @fps = 0
@@ -2553,8 +2522,6 @@ class CanvasGame
             @init(@)
             @WireUpEvents()
             @Run()
-
-        if @graphicsType is Torch.WEBGL then return
 
         @canvasNode.width = @width
         @canvasNode.height = @height
@@ -2790,101 +2757,6 @@ class CanvasGame
             @paused = false
         return @
 
-
-# expose to Torch
-Torch.CanvasGame = CanvasGame
-
-###
-    @class Torch.WebGLGame @extends Torch.CanvasGame
-    @author roonilwazlib
-
-    @constructor
-        @param canvasId, string, REQUIRED
-        @param width, number|string, REQUIRED
-        @param height, number|string, REQUIRED
-        @param name, string, REQUIRED
-        @param graphicsType, enum, REQUIRED
-        @param pixel, enum
-
-    @description
-        Torch.WebGLGame dictates that WEBGL, through three.js, be used to render
-        graphics.
-###
-class WebGLGame extends Torch.CanvasGame
-    constructor: (@canvasId, @width, @height, @name, @graphicsType, @pixel = 0) ->
-        @InitGame()
-
-    InitGraphics: ->
-        @gl_rendererContainer = document.getElementById(@canvasId)
-
-        @gl_scene = new THREE.Scene()
-        @gl_scene.add(new THREE.AxisHelper(100))
-
-        @gl_camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 1000 )
-        @gl_camera.position.z = 600
-
-        @gl_renderer = new THREE.WebGLRenderer( {antialias: @pixel isnt Torch.PIXEL, alpha: true} )
-        @gl_renderer.setSize( window.innerWidth, window.innerHeight )
-        @gl_renderer.setPixelRatio( window.devicePixelRatio )
-
-        @canvasNode = @gl_renderer.domElement
-        @gl_rendererContainer.appendChild(@canvasNode)
-
-
-        @On "Resize", ( event ) =>
-            @gl_renderer.setSize( @Viewport.width, @Viewport.height )
-            @gl_camera.aspect = @Viewport.width / @Viewport.height
-            @gl_camera.updateProjectionMatrix()
-
-    DrawSprites: ->
-        @spriteList.sort (a, b) ->
-            return a.drawIndex - b.drawIndex
-
-        for sprite in @spriteList
-            if sprite.draw and not sprite.trash and not sprite.GHOST_SPRITE
-                sprite.Draw()
-            if sprite.trash
-                sprite.Three().Remove()
-
-        @gl_camera.lookAt( @gl_scene.position )
-        @gl_renderer.render( @gl_scene, @gl_camera )
-
-    UpdateSprites: ->
-        cleanedSprites = []
-        for sprite in @spriteList
-            if not sprite.trash
-                if not sprite.game.paused
-                    sprite.Update()
-                cleanedSprites.push(sprite)
-            else
-                if sprite.Three() isnt undefined
-                    sprite.Three().Remove()
-
-                sprite.trashed = true
-                sprite.Emit("Trash")
-        @spriteList = cleanedSprites
-
-    GetThreeTransform: (x, y)->
-        vector = new THREE.Vector3()
-        camera = @gl_camera
-
-        vector.set(
-                    ( x / window.innerWidth ) * 2 - 1,
-                    -( y / window.innerHeight ) * 2 + 1,
-                    1 )
-
-        vector.unproject( camera )
-
-        dir = vector.sub( camera.position ).normalize()
-
-        distance = - camera.position.z / dir.z
-
-        pos = camera.position.clone().add( dir.multiplyScalar( distance ) )
-
-        return pos
-
-Torch.WebGLGame = WebGLGame
-
 ###
     @class Torch.Game
     @author roonilwazlib
@@ -2907,277 +2779,6 @@ class Game
 
         return new Torch.CanvasGame(canvasId, width, height, name, graphicsType, pixel) if graphicsType is Torch.CANVAS
         return new Torch.WebGLGame(canvasId, width, height, name, graphicsType, pixel)  if graphicsType is Torch.WEBGL
-
-Torch.Game = Game
-
-exports = this
-# the base Torch.Platformer namespace
-
-Torch.Platformer =
-    Gravity: 0.001
-    SHIFT_COLLIDE_LEFT: 5
-
-    SetWorld: (spawnItems) ->
-        Torch.Platformer.spawnItems = spawnItems
-
-
-# the Actor class. Any sort of character is an Actor
-
-class Actor
-
-    ACTOR: true
-    Health: 100
-    currentFriction: 1
-    inFluid: false
-    onGround: false
-    onLeft: false
-    onTop: false
-    onRight: false
-    hitLockCounter: 0
-    hitLockBlinkCounter: 0
-    hitLock: false
-    hitLockMax: 1000
-
-    constructor: ->
-        # shouldn't ever be making Actors, its a base class
-        throw "Actor is a base class"
-
-    HitLock: -> @hitLock = true
-
-    Hit: (amount = 1) ->
-        @Health -= amount
-
-        @Die if @Health <= 0
-
-    Die: -> @isDead = true
-
-    BlockCollision: (item, offset) ->
-        if offset
-
-            if offset.vx < offset.halfWidths and offset.vy < offset.halfHeights
-
-                if offset.x < offset.y
-
-                    @Body.Velocity("y", 0)
-
-                    if offset.vx > 0
-                        #colDir = "l"
-                        if not item.Sprite.Slope
-                            @Rectangle.x += offset.x + Torch.Platformer.SHIFT_COLLIDE_LEFT
-                            @Body.Velocity("x", 0)
-                            @onLeft = true
-                        else
-                            @BlockSlope(item.Sprite, offset)
-                    else if offset.vx < 0
-                        #colDir = "r"
-                        if (not item.Sprite.Slope)
-                            @Rectangle.x -= offset.x
-                            @Body.Velocity("x", 0)
-                            @onRight = true
-                        else
-                            @BlockSlope(item.Sprite, offset)
-
-                else if offset.x > offset.y
-
-                    if offset.vy > 0
-                        #colDir = "t"
-                        @Rectangle.y += offset.y
-                        @Body.Velocity("y", 0)
-
-                    else if  offset.vy < 0
-                        #colDir = "b"
-                        if not item.Sprite.Slope
-                            @Rectangle.y -= (offset.y - item.Sprite.sink)
-                            @Body.Acceleration("y", 0).Velocity("y", 0)
-                            @onGround = true
-                            if not @inFluid then @currentFriction = item.Sprite.friction
-                        else
-                            @BlockSlope(item.Sprite, offset)
-
-    BlockSlope: (block, offset) ->
-        # keep how far it's moved, but change y
-        Yoffset = offset.x * Math.tan(block.Slope)
-        # @Rectangle.y -= Yoffset
-        @Rectangle.y = ( block.Rectangle.y + (block.Rectangle.height - Yoffset) - @Rectangle.height )
-        @onSlope = true
-
-    FluidCollision: (item, offset) ->
-        if offset
-            @currentFriction = item.Sprite.friction
-            @Body.y.acceleration = item.Sprite.gravity
-            @inFluid = true
-
-    UpdateActor: ->
-        @inFluid = false
-        @onGround = false
-        @onTop = false
-        @onRight = false
-        @onLeft = false
-
-        for item in Torch.Platformer.spawnItems
-
-            rect = @Rectangle
-
-            if (item.spawned and item.Sprite and item.Sprite.BLOCK and @NotSelf(item.Sprite) and (@ACTOR) )
-                offset = @Rectangle.Intersects(item.Sprite.Rectangle)
-                @BlockCollision(item, offset)
-            if (item.spawned and item.Sprite and item.Sprite.FLUID and @NotSelf(item.Sprite) and (@ACTOR) )
-                offset = @Rectangle.Intersects(item.Sprite.Rectangle)
-                @FluidCollision(item, offset)
-            if not @onGround and not @inFluid then @Body.y.acceleration = Torch.Platformer.Gravity
-
-        if @hitLock
-
-            @hitLockCounter += Game.deltaTime
-            @hitLockBlinkCounter += Game.deltaTime
-
-            if @hitLockBlinkCounter >= 200
-
-                if (@opacity == 0.1)
-                    @opacity = 0.8
-                else
-                    @opacity = 0.1
-
-                @hitLockBlinkCounter = 0
-
-            if @hitLockCounter >= @hitLockMax
-                @hitLock = false
-                @opacity = 1
-                @hitLockCounter = 0
-                @hitLockBlinkCounter = 0
-
-# the Block class
-
-class Block
-    BLOCK: true
-    friction: 1
-    sink: 0
-    constructor: ->
-        throw "Block is a base class"
-
-# the Fluid class
-
-class Fluid
-    FLUID: true
-    friction: 0.3
-    gravity: 0.0001
-    drawIndex: 30
-    constructor: ->
-        throw "Fluid is a base class"
-
-# the Spawner class
-
-class Spawner extends Torch.GhostSprite
-     constructor: (@spawnItems) ->
-         Torch.Platformer.SetWorld(@spawnItems)
-
-    FlushSprites: ->
-
-        for item in @spawnItems
-
-            item.Sprite.Trash() if item.Sprite
-
-    Update: ->
-
-            if @spawnItems.length > 0
-
-                viewRect = Game.Viewport.GetViewRectangle()
-
-                for item in @spriteList
-
-                    if not item.Manual
-                        newRec =
-                            x: item.Sprite.Rectangle.x
-                            y: item.Sprite.Rectangle.y
-                            width: item.Sprite.Rectangle.width
-                            height: item.Sprite.Rectangle.height
-
-                        if not item.spawned and not item.dead and item.DisableDynamicSpawning
-
-                            spr = @SpawnTypes[item.SpawnType](item.Position, item, item.addData)
-                            item.Sprite = spr
-                            item.spawned = true
-                            spr.spawnItem = item
-
-                        else if (not item.spawned and not item.dead and viewRect.Intersects( {x: item.Position.x, y: item.Position.y, width: (item.width * Game.SCALE), height: (item.height * Game.SCALE)} ) )
-
-                            if (item.SpawnType)
-
-                                spr = @SpawnTypes[item.SpawnType](item.Position, item, item.addData)
-                                item.Sprite = spr
-                                item.spawned = true
-                                spr.spawnItem = item
-
-                        else if item.spawned and item.Sprite and item.Sprite.Rectangle and not viewRect.Intersects(newRec)
-
-                            item.Sprite.Trash()
-                            item.Sprite = null
-                            item.spawned = false
-
-# the SpawnItem class
-
-class SpawnItem
-    constructor: (@spawnType, @spawned, @obj, @position) ->
-        @Sprite = @obj if @obj
-
-# Some enums
-
-exports.Facing = Torch.Enum("Right", "Left")
-exports.Walking = Torch.Enum("Right", "Left", "None")
-
-# put everything together
-
-Torch.Platformer.Actor = Actor
-Torch.Platformer.Block = Block
-Torch.Platformer.Fluid = Fluid
-Torch.Platformer.Spawner = Spawner
-Torch.Platformer.spawnItem = SpawnItem
-
-
-Torch.Sound = {}
-
-class PlayList extends Torch.GhostSprite
-    constructor: (@game, @songList) ->
-        @currentSong = @songList[0]
-        @index = 0
-
-    Play: ->
-        @game.Assets.GetSound(@currentSong).volume = 0.7
-        @game.Assets.GetSound(@currentSong).play()
-        return @
-
-    ShuffleArray: (array) ->
-        currentIndex = array.length
-        temporaryValue = null
-        randomIndex = null
-
-        # While there remain elements to shuffle...
-        while 0 isnt currentIndex
-
-            # Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex)
-            currentIndex -= 1
-
-            # And swap it with the current element.
-            temporaryValue = array[currentIndex]
-            array[currentIndex] = array[randomIndex]
-            array[randomIndex] = temporaryValue
-
-
-        return array;
-
-    Randomize: ->
-        @songList = @ShuffleArray(@songList)
-        @currentSong = @songList[0]
-        return @
-
-    Update: ->
-        if @game.Assets.GetSound(@currentSong).currentTime >= @game.Assets.GetSound(@currentSong).duration
-            @index++
-            @currentSong = @songList[@index]
-            @Play()
-            if @index is @songList.length - 1
-                @index = 0
 
 class StateMachine
     constructor: (@obj) ->
@@ -3212,10 +2813,6 @@ class StateMachine
 
 class State
     constructor: (@Execute, @Start, @End) ->
-
-# expose to Torch
-Torch.StateMachine = StateMachine
-Torch.StateMachine.State = State
 
 class Bind
     constructor: (sprite) ->
@@ -3254,135 +2851,6 @@ class CanvasBind
             clipHeight: @sprite.DrawTexture.image.height
 
         return @sprite.DrawTexture
-
-#expose to Torch
-Torch.Bind = Bind
-
-class Animation
-    constructor: (@game) ->
-
-    Run: ->
-    	if @animating
-    		@Update()
-    	if @Kill and @hasRun
-    		@Stop()
-
-    Start: -> @animating = true
-
-    Stop: -> @animating = false
-
-    Single: ->
-    	@KillOnFirstRun = true
-    	@animating = true
-
-    Reset: ->
-    	@elapsedTime = 0
-    	@textureListIndex = 0
-    	@hasRun = false
-
-class TexturePack extends Animation
-    constructor: (@texturePack, @game) ->
-    	@step = 50
-    	@maxIndex = texturePack.length - 1
-    	@textureIndex = 0
-    	@elapsedTime = 0
-    	@game.animations.push(@)
-
-    Update: ->
-    	@elapsedTime += @game.deltaTime
-
-    	if @elapsedTime >= @step
-
-    		@elapsedTime = 0
-    		@textureIndex++
-
-    	if @textureIndex > @maxIndex
-
-    		if !@Kill
-                @textureIndex = 0
-    		if @Kill
-                @textureIndex = -1
-	        @hasRun = true
-
-    GetCurrentFrame: ->
-        return @game.Assets.Textures[@texturePack[@textureIndex]]
-
-class TextureSheet extends Animation
-    constructor: (@TextureSheet, @game) ->
-    	@step = 50
-    	@maxIndex = @TextureSheet.length - 1
-    	@textureIndex = 0
-    	@elapsedTime = 0
-    	@delay = 0
-    	@delayCount = 0
-    	@onStep = null
-    	@game.animations.push(@)
-
-    Update: ->
-    	@elapsedTime += @game.deltaTime;
-
-    	if @elapsedTime >= @step and not (@hasRun and @Kill)
-    		@elapsedTime = 0
-    		@textureIndex++
-    		if @onStep
-                @onStep(@textureIndex)
-    	if @textureIndex >= @maxIndex && @delayCount <= 0
-    		if not @Kill
-                @textureIndex = 0
-    		#if (@Kill) @textureIndex = @TextureSheet.length - 1
-    		#@TextureSheet = null
-    		@hasRun = true
-    		if @finishCallBack
-                @finishCallBack()
-    		@delayCount = @delay
-    	else if @textureIndex >= @maxIndex
-    		@delayCount -= Game.deltaTime
-    		@textureIndex--
-
-    GetCurrentFrame: ->
-    	if @TextureSheet
-    		return @TextureSheet[@textureIndex]
-
-    Step: (step, onStep) ->
-    	if step is undefined
-    		return @step
-    	else
-    		@step = step
-    		if (onStep isnt undefined)
-    			@onStep = onStep
-    	return @
-
-class StepAnimation extends Torch.GhostSprite
-    constructor: (game, totalTime, steps, start, end) ->
-    	@InitSprite(game, 0, 0)
-    	@steps = steps
-    	@totalTime = totalTime
-    	@interval = totalTime / steps.length
-    	@time = 0
-    	@index = 0
-    	@steps[0]()
-    	@start = start
-    	@end = end
-    	if start
-            @start()
-
-    Update: ->
-    	@time += @game.deltaTime
-    	if @time >= @interval
-    		@time = 0
-    		@index++
-    		@steps[@index]()
-    		if @index is @steps.length - 1
-    			if @end
-                    @end()
-    			@Trash()
-
-
-# expose to Torch
-Torch.Animation = Animation
-Torch.Animation.TextureSheet = TextureSheet
-Torch.Animation.TexturePack = TexturePack
-Torch.Animation.StepAnimation = StepAnimation
 
 class Color
     constructor: (rOrHex, g, b, a) ->
@@ -3436,17 +2904,10 @@ Color.Blue = new Color(0, 0, 256, 1)
 Color.Flame = new Color("#ff8000")
 Color.Ruby = new Color("#e60000")
 
-# expose to Torch
-Torch.Color = Color
-
 class Electron
     @Import: ->
         Torch.ELECTRON = true
         Torch.fs = require("fs")
-
-Torch.Electron = new Electron()
-
-exports = this
 
 class CanvasRenderer
     constructor: (@sprite) ->
@@ -3501,9 +2962,6 @@ class CanvasRenderer
     PostRender: ->
         canvas = @game.canvas
         canvas.restore()
-
-
-exports.CanvasRenderer = CanvasRenderer
 
 class Rectangle
     constructor: (@x, @y, @width, @height) ->
@@ -3620,7 +3078,3 @@ class Point
 
     Clone: ->
         return new Point(@x, @y)
-
-Torch.Rectangle = Rectangle
-Torch.Vector = Vector
-Torch.Point = Point

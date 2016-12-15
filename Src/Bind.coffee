@@ -35,6 +35,3 @@ class CanvasBind
             clipHeight: @sprite.DrawTexture.image.height
 
         return @sprite.DrawTexture
-
-#expose to Torch
-Torch.Bind = Bind

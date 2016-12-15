@@ -54,5 +54,3 @@ class Loop
 
     Run: (timestamp) ->
         @AdvanceFrame(0)
-
-Torch.Loop = Loop

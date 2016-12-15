@@ -1,4 +1,4 @@
-Build: 419
+Build: 422
 BuildMinor: 5
 BuildMajor: 0
 TestGame:
@@ -49,14 +49,9 @@ SourceMap: [
     "Game/Components/Audio"
     "Game/Components/HookManager"
     "Game/CanvasGame"
-    "Game/WebGLGame"
     "Game/Game"
-    "Plugins/Platformer"
-    "Plugins/SideScroller"
-    "Sound"
     "StateMachine"
     "Bind"
-    "Animation"
     "Color"
     "Electron"
     "CanvasRenderer"

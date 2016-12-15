@@ -11,7 +11,3 @@ class Mouse
 
     GetRectangle: ->
         return new Torch.Rectangle(@x, @y, 5, 5);
-
-
-# expose to torch
-Torch.Mouse = Mouse

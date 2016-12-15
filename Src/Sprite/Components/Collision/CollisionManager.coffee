@@ -119,5 +119,3 @@ class CollisionManager
                     touching.bottom = true
 
         return touching
-
-Torch.CollisionManager = CollisionManager

@@ -20,6 +20,3 @@ class Circle
             #collision detected!
             return true
         return false
-
-
-Torch.Collider.Circle = Circle

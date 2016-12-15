@@ -53,5 +53,3 @@ class EventManager
 
         else if @game.Mouse.down and not @mouseOver
             @clickAwayTrigger = true
-
-Torch.EventManager = EventManager

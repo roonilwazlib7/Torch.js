@@ -17,15 +17,15 @@ class Sprite
         @rectangle = new Torch.Rectangle(x, y, 0, 0)
         @position = new Torch.Point(x,y)
 
-        @Bind = new Torch.Bind(@)
-        @Collisions = new Torch.CollisionManager(@)
-        @Body = new Torch.Body(@)
-        @Size = new Torch.SizeManager(@)
-        @Events = new Torch.EventManager(@)
-        @Effects = new Torch.EffectManager(@)
-        @States = new Torch.StateMachineManager(@)
-        @Grid = new Torch.GridManager(@)
-        @Animations = new Torch.AnimationManager(@)
+        @Bind = new Bind(@)
+        @Collisions = new CollisionManager(@)
+        @Body = new Body(@)
+        @Size = new SizeManager(@)
+        @Events = new EventManager(@)
+        @Effects = new EffectManager(@)
+        @States = new StateMachineManager(@)
+        @Grid = new GridManager(@)
+        @Animations = new AnimationManager(@)
 
         @DrawTexture = null
         @TexturePack = null
@@ -43,7 +43,7 @@ class Sprite
         @_torch_uid = ""
 
         @events = {}
-        @renderer = new Torch.CanvasRenderer(@)
+        @renderer = new CanvasRenderer(@)
 
         game.Add(@)
 

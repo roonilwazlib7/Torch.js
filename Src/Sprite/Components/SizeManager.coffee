@@ -22,5 +22,3 @@ class SizeManager
     Scale: (widthScale, heightScale) ->
         @scale.width = widthScale
         @scale.height = heightScale
-
-Torch.SizeManager = SizeManager
