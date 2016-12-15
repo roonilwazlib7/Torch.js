@@ -9,10 +9,17 @@ class MapPiece extends Torch.Sprite
     hardBlock: true
     hp: 2
     constructor: (game, rawData) ->
-        @data = @GetData(rawData, game)
-        @InitSprite(game, @data.position.x, @data.position.y )
+        @InitSprite(game, 0, 0 )
         @Bind.Texture(@textureId)
+        @data = @GetData(rawData, game)
+
+        @position.x = @data.position.x * @DrawTexture.image.width
+        @position.y = @data.position.y * @DrawTexture.image.height
+
         @drawIndex = 10
+
+        SCALE = @game.Camera.Viewport.width / 480
+        @Size.Scale(SCALE,SCALE)
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/map/bush.png", "bush")
@@ -23,7 +30,7 @@ class MapPiece extends Torch.Sprite
 
 
     GetData: (rawData, game) ->
-        SCALE = 64
+        SCALE = @game.Camera.Viewport.width / 480
         data = {}
         data.position =
             x: parseInt(rawData[0], 16) * SCALE

@@ -26,10 +26,15 @@
     MapPiece.prototype.hp = 2;
 
     function MapPiece(game, rawData) {
-      this.data = this.GetData(rawData, game);
-      this.InitSprite(game, this.data.position.x, this.data.position.y);
+      var SCALE;
+      this.InitSprite(game, 0, 0);
       this.Bind.Texture(this.textureId);
+      this.data = this.GetData(rawData, game);
+      this.position.x = this.data.position.x * this.DrawTexture.image.width;
+      this.position.y = this.data.position.y * this.DrawTexture.image.height;
       this.drawIndex = 10;
+      SCALE = this.game.Camera.Viewport.width / 480;
+      this.Size.Scale(SCALE, SCALE);
     }
 
     MapPiece.Load = function(game) {
@@ -42,7 +47,7 @@
 
     MapPiece.prototype.GetData = function(rawData, game) {
       var SCALE, data;
-      SCALE = 64;
+      SCALE = this.game.Camera.Viewport.width / 480;
       data = {};
       data.position = {
         x: parseInt(rawData[0], 16) * SCALE,

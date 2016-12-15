@@ -4812,9 +4812,6 @@
         tex = textureId;
       }
       scale = 1;
-      if (Torch.Scale && !this.sprite.TEXT) {
-        this.sprite.Size.Scale(Torch.Scale, Torch.Scale);
-      }
       if (typeof textureId === "string") {
         this.sprite.DrawTexture = tex;
       } else {
@@ -5364,4 +5361,4 @@
 }).call(this);
 
 
-Torch.version = '0.5.397';
+Torch.version = '0.5.409';

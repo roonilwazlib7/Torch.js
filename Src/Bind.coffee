@@ -19,8 +19,8 @@ class CanvasBind
 
         scale = 1
 
-        if Torch.Scale and not @sprite.TEXT
-            @sprite.Size.Scale(Torch.Scale, Torch.Scale)
+        # if Torch.Scale and not @sprite.TEXT
+        #     @sprite.Size.Scale(Torch.Scale, Torch.Scale)
 
         if typeof(textureId) is "string"
             @sprite.DrawTexture = tex
