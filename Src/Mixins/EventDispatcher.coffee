@@ -1,4 +1,3 @@
-exports = this
 class EventDispatcher
     @dispatchers: []
 
@@ -31,5 +30,3 @@ class EventDispatcher
             for key,val of @events
                 @events[key] = undefined
         return @
-
-exports.EventDispatcher = EventDispatcher

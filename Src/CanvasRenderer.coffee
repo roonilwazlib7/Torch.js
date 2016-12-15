@@ -1,5 +1,3 @@
-exports = this
-
 class CanvasRenderer
     constructor: (@sprite) ->
         @game = @sprite.game
@@ -54,5 +52,4 @@ class CanvasRenderer
         canvas = @game.canvas
         canvas.restore()
 
-
-exports.CanvasRenderer = CanvasRenderer
+Torch.CanvasRenderer = CanvasRenderer

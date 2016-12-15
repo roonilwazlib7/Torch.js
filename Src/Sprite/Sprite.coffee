@@ -43,7 +43,7 @@ class Sprite
         @_torch_uid = ""
 
         @events = {}
-        @renderer = new CanvasRenderer(@)
+        @renderer = new Torch.CanvasRenderer(@)
 
         game.Add(@)
 

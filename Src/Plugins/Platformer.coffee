@@ -1,6 +1,3 @@
-exports = this
-# the base Torch.Platformer namespace
-
 Torch.Platformer =
     Gravity: 0.001
     SHIFT_COLLIDE_LEFT: 5

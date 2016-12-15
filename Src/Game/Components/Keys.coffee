@@ -1,5 +1,3 @@
-exports = this
-
 class Key
     Key.MixIn(Torch.EventDispatcher)
 
