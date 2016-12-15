@@ -1,5 +1,5 @@
-bundle: false
-compress: false
+bundle: true
+compress: true
 
 files:
     [
