@@ -24,12 +24,7 @@
     }
 
     HUD.Load = function(game) {
-      game.Load.Texture("Assets/Art/hud-design.png", "hud_background");
-      game.Load.Texture("Assets/Art/hud_minimap_background.png", "hud_minimap_background");
-      game.Load.Texture("Assets/Art/health_bar.png", "hud_life_bar");
-      game.Load.Texture("Assets/Art/stress_bar.png", "hud_stress_bar");
-      game.Load.Texture("Assets/Art/hud_slot_1_background.png", "hud_slot_1_background");
-      return game.Load.Texture("Assets/Art/hud_slot_2_background.png", "hud_slot_2_background");
+      return game.Load.Texture("Assets/Art/hud-design.png", "hud_background");
     };
 
     HUD.prototype.BindEvents = function() {};

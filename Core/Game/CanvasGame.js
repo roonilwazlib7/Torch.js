@@ -211,7 +211,7 @@
 
     CanvasGame.prototype.DrawSprites = function() {
       var i, len, ref, results, sprite;
-      this.canvas.clearRect(this.Camera.position.x, this.Camera.position.y, this.Camera.Viewport.maxWidth, this.Camera.Viewport.maxHeight);
+      this.canvas.clearRect(0, 0, this.Camera.Viewport.maxWidth, this.Camera.Viewport.maxHeight);
       this.spriteList.sort(function(a, b) {
         if (a.drawIndex === b.drawIndex) {
           return a._torch_add_order - b._torch_add_order;

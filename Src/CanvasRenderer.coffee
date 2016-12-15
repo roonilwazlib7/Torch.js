@@ -17,11 +17,7 @@ class CanvasRenderer
             drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
-            return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
-
-        else
-            v = @game.Camera.Viewport
-            return if not @sprite.rectangle.Intersects( new Torch.Rectangle(0, 0, v.width, v.height) )
+            #return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
 
         if @sprite.DrawTexture
             frame = @sprite.DrawTexture

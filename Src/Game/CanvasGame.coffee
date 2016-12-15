@@ -186,7 +186,7 @@ class CanvasGame
 
     DrawSprites: ->
         # we need to clear the entire screen
-        @canvas.clearRect(@Camera.position.x, @Camera.position.y, @Camera.Viewport.maxWidth, @Camera.Viewport.maxHeight)
+        @canvas.clearRect(0, 0, @Camera.Viewport.maxWidth, @Camera.Viewport.maxHeight)
 
         @spriteList.sort (a, b) ->
             if a.drawIndex is b.drawIndex

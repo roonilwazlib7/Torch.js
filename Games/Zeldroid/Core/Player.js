@@ -13,6 +13,8 @@
 
     Player.prototype.touching = null;
 
+    Player.prototype.boundRight = 0;
+
     function Player(game) {
       this.InitSprite(game, 0, 0);
       this.Bind.Texture("player-right-idle");
@@ -20,6 +22,8 @@
       this.spriteSheetAnim.Stop();
       this.audioPlayer = this.game.Audio.CreateAudioPlayer();
       this.audioPlayer.volume = 0.25;
+      this.boundRight = this.game.Camera.Viewport.width - this.game.Camera.Viewport.width / 5;
+      this.boundLeft = this.game.Camera.Viewport.width / 5;
       this.movementStateMachine = this.States.CreateStateMachine("Movement");
       this.movementStateMachine.State("idle", idleState);
       this.movementStateMachine.State("move", moveState);
@@ -47,7 +51,8 @@
     };
 
     Player.prototype.Update = function() {
-      return Player.__super__.Update.call(this);
+      Player.__super__.Update.call(this);
+      return this.UpdateCameraFollow();
     };
 
     Player.prototype.SetUpCollisions = function() {
@@ -64,6 +69,25 @@
         return;
       }
       return this.Collisions.SimpleCollisionHandle(event, 0.5);
+    };
+
+    Player.prototype.UpdateCameraFollow = function() {
+      var inc;
+      inc = this.game.Camera.Viewport.width / 4;
+      if (this.position.x >= this.boundRight) {
+        this.boundRight += inc;
+        this.boundLeft += inc;
+        this.game.Tweens.Tween(this.game.Camera.position, 500, Torch.Easing.Smooth).To({
+          x: this.game.Camera.position.x - inc
+        });
+      }
+      if (this.position.x <= this.boundLeft) {
+        this.boundRight -= inc;
+        this.boundLeft -= inc;
+        return this.game.Tweens.Tween(this.game.Camera.position, 500, Torch.Easing.Smooth).To({
+          x: this.game.Camera.position.x + inc
+        });
+      }
     };
 
     return Player;

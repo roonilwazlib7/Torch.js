@@ -3869,7 +3869,7 @@
 
     CanvasGame.prototype.DrawSprites = function() {
       var i, len, ref, results, sprite;
-      this.canvas.clearRect(this.Camera.position.x, this.Camera.position.y, this.Camera.Viewport.maxWidth, this.Camera.Viewport.maxHeight);
+      this.canvas.clearRect(0, 0, this.Camera.Viewport.maxWidth, this.Camera.Viewport.maxHeight);
       this.spriteList.sort(function(a, b) {
         if (a.drawIndex === b.drawIndex) {
           return a._torch_add_order - b._torch_add_order;
@@ -5051,7 +5051,7 @@
     }
 
     CanvasRenderer.prototype.Draw = function() {
-      var cameraTransform, drawRec, frame, params, v;
+      var cameraTransform, drawRec, frame, params;
       drawRec = new Torch.Rectangle(this.sprite.position.x, this.sprite.position.y, this.sprite.rectangle.width, this.sprite.rectangle.height);
       drawRec.x = (this.sprite.position.x - this.previousPosition.x) * this.game.Loop.lagOffset + this.previousPosition.x;
       drawRec.y = (this.sprite.position.y - this.previousPosition.y) * this.game.Loop.lagOffset + this.previousPosition.y;
@@ -5060,14 +5060,6 @@
       if (!this.sprite.fixed) {
         drawRec.x += this.game.Camera.position.x + this.game.Hooks.positionTransform.x;
         drawRec.y += this.game.Camera.position.y + this.game.Hooks.positionTransform.y;
-        if (!drawRec.Intersects(this.game.Camera.Viewport.rectangle)) {
-          return;
-        }
-      } else {
-        v = this.game.Camera.Viewport;
-        if (!this.sprite.rectangle.Intersects(new Torch.Rectangle(0, 0, v.width, v.height))) {
-          return;
-        }
       }
       if (this.sprite.DrawTexture) {
         frame = this.sprite.DrawTexture;
@@ -5288,4 +5280,4 @@
 }).call(this);
 
 
-Torch.version = '0.5.380';
+Torch.version = '0.5.390';
