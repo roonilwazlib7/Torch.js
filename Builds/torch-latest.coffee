@@ -1828,7 +1828,7 @@ class CanvasGame
 
         if @graphicsType is Torch.CANVAS then graphicsString = "Canvas"
 
-        console.log("%c Torch v#{Torch.version} |#{graphicsString}| - #{@name}", styleString)
+        console.log("%c Torch v#{Torch::version} |#{graphicsString}| - #{@name}", styleString)
 
         @Loop = new Loop(@)
         @Load = new Load(@)
@@ -1881,7 +1881,6 @@ class CanvasGame
         @Clear("#cc5200")
 
     PixelScale: ->
-        @canvas.webkitImageSmoothingEnabled = false
         @canvas.mozImageSmoothingEnabled = false
         @canvas.imageSmoothingEnabled = false
 
@@ -3062,3 +3061,6 @@ class Torch
             Class.prototype[prop] = func
 
 exports.Torch = new Torch()
+
+
+Torch::version = '0.5.488'
