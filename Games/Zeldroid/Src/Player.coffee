@@ -2,7 +2,6 @@ class Player extends Torch.Sprite
     VELOCITY: 0.4
     stoppped: false
     touching: null
-    boundRight: 0
     constructor: (game) ->
         @InitSprite(game, 0, 0)
         @Bind.Texture("player-right-idle")
@@ -11,9 +10,6 @@ class Player extends Torch.Sprite
 
         @audioPlayer = @game.Audio.CreateAudioPlayer()
         @audioPlayer.volume = 0.25
-
-        @boundRight = @game.Camera.Viewport.width - @game.Camera.Viewport.width/5
-        @boundLeft = @game.Camera.Viewport.width/5
 
         @movementStateMachine = @States.CreateStateMachine("Movement")
         @movementStateMachine.State("idle", idleState)
@@ -24,6 +20,8 @@ class Player extends Torch.Sprite
         @facing = "forward"
         @shootKeyWasDown = false
 
+        @game.Camera.JerkFollow(@)
+        
         @game.Keys.Space.On "KeyUp", =>
             @audioPlayer.PlaySound("shoot")
             b = new PlayerBullet(@)
@@ -41,7 +39,6 @@ class Player extends Torch.Sprite
 
     Update: ->
         super()
-        @UpdateCameraFollow()
 
     SetUpCollisions: ->
         @Collisions.Monitor()
@@ -51,20 +48,6 @@ class Player extends Torch.Sprite
     HandleCollision: (event) ->
         return if not event.collisionData.collider.hardBlock
         @Collisions.SimpleCollisionHandle(event, 0.5)
-
-    UpdateCameraFollow: ->
-        inc = ( @game.Camera.Viewport.width / 4)
-        if @position.x >= @boundRight
-            @boundRight += inc
-            @boundLeft += inc
-
-            @game.Tweens.Tween( @game.Camera.position, 500, Torch.Easing.Smooth ).To({x: @game.Camera.position.x - inc})
-
-        if @position.x <= @boundLeft
-            @boundRight -= inc
-            @boundLeft -= inc
-
-            @game.Tweens.Tween( @game.Camera.position, 500, Torch.Easing.Smooth ).To({x: @game.Camera.position.x + inc})
 
 
 idleState =
