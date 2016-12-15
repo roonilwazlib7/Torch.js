@@ -7,7 +7,7 @@ var fs = require("fs"),
 function GameRunner(TestGame)
 {
     console.log("[] Copying torch to " + TestGame.Path + "...");
-    
+
     var torch = fs.readFileSync("Builds/torch-latest.js");
     fs.writeFileSync("Games/" + TestGame.Path + "/torch.js", torch);
 
@@ -29,7 +29,7 @@ function GameRunner(TestGame)
     if (TestGame.Source == "Coffee")
     {
         console.log("[] Compiling Game Coffee...");
-        shell.exec("coffee --compile --output Games/" + TestGame.Path + "/Core/ Games/" + TestGame.Path + "/Src/")
+        shell.exec("coffee --inline-map --compile --output Games/" + TestGame.Path + "/Core/ Games/" + TestGame.Path + "/Src/")
         for (var i = 0; i < TestGame.CoffeeSources.length; i++)
         {
             var cf = TestGame.CoffeeSources[i];
