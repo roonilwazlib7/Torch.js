@@ -1,4 +1,4 @@
-Build: 7
+Build: 8
 BuildMinor: 6
 BuildMajor: 0
 TestGame:
@@ -14,6 +14,7 @@ NeedsWork: [
     "Torch.Particles"
 ]
 SourceMap: [
+    "Utilities"
     "Mixins/Error"
     "Mixins/Natives"
     "Mixins/EventDispatcher"
