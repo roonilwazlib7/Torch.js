@@ -8,7 +8,8 @@
   },
   "devDependencies": {
     "node-minify": "2.0.0",
-    "shelljs": "0.7.5"
+    "shelljs": "0.7.5",
+    "cson": "4.0.0"
   },
   "author": "Alex",
   "license": "ISC"
