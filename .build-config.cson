@@ -1,4 +1,4 @@
-Build: 35
+Build: 36
 BuildMinor: 6
 BuildMajor: 0
 TestGame:
@@ -25,6 +25,7 @@ SourceMap: [
     "Sprite/Components/GridManager"
     "Sprite/Components/AnimationManager"
     "Sprite/Components/BindManager"
+    "Sprite/Components/CanvasRenderer"
     "Sprite/Sprite"
     "Sprite/Text"
     "Sprite/SpriteGroup"
@@ -52,7 +53,6 @@ SourceMap: [
     "StateMachine"
     "Color"
     "Electron"
-    "CanvasRenderer"
     "Geometry"
     "Torch"
 ]
