@@ -7,3 +7,7 @@ Function::MixIn = Function::is = (otherFunction) ->
         proto[key] = value
 
     return this #allow chaining
+
+# ECMAscript 5 property get/set
+Function::property = (prop, desc) ->
+    Object.defineProperty @prototype, prop, desc

@@ -422,6 +422,10 @@ Function::MixIn = Function::is = (otherFunction) ->
 
     return this #allow chaining
 
+# ECMAscript 5 property get/set
+Function::property = (prop, desc) ->
+    Object.defineProperty @prototype, prop, desc
+
 class EventDispatcher
     @dispatchers: []
 
@@ -1133,29 +1137,60 @@ class Text extends Sprite
     TEXT: true
     @measureCanvas: _measureCanvas.getContext("2d")
 
+    # we need properties because the text needs to re-render
+    # whenever it is changed
+    @property 'fontSize',
+        get: -> return @_fontSize
+        set: (fontSize) ->
+            @_fontSize = fontSize
+            @Render()
+
+    @property 'font',
+        get: -> return @_font
+        set: (font) ->
+            @_font = font
+            @Render()
+
+    @property 'fontWeight',
+        get: -> return @_fontWeight
+        set: (fontWeight) ->
+            @_fontWeight = fontWeight
+            @Render()
+
+    @property 'color',
+        get: -> return @_color
+        set: (color) ->
+            @_color = color
+            @Render()
+
+    @property 'text',
+        get: -> return @_text
+        set: (text) ->
+            @_text = text
+            @Render()
+
     constructor: (game, x, y, data) ->
         @InitText(game, x, y, data)
 
     InitText: (game, x, y, data) ->
         @InitSprite(game,x,y)
         @data = data
-        @font = "Arial"
-        @fontSize = 16
-        @fontWeight = ""
-        @color = "#2b4531"
-        @text = ""
-        @lastText = ""
+        @_font = "Arial"
+        @_fontSize = 16
+        @_fontWeight = ""
+        @_color = "#2b4531"
+        @_text = ""
         @width = 100
         @height = 100
         @Size.scale = {width: 1, height: 1}
         @Init()
 
     Init: ->
-        if @data.font            then @font =           @data.font
-        if @data.fontSize        then @fontSize =       @data.fontSize
-        if @data.fontWeight      then @fontWeight =     @data.fontWeight
-        if @data.color           then @color =          @data.color
-        if @data.text            then @text =           @data.text
+        if @data.font            then @_font =           @data.font
+        if @data.fontSize        then @_fontSize =       @data.fontSize
+        if @data.fontWeight      then @_fontWeight =     @data.fontWeight
+        if @data.color           then @_color =          @data.color
+        if @data.text            then @_text =           @data.text
         if @data.rectangle       then @rectangle =      @data.rectangle
         if @data.buffHeight      then @buffHeight =     @data.buffHeight
 
@@ -1163,45 +1198,29 @@ class Text extends Sprite
 
     Render: ->
         cnv = document.createElement("CANVAS")
-        Text.measureCanvas.font = @fontSize + "px " + @font
-        cnv.width = Text.measureCanvas.measureText(@text).width
-        cnv.height = @fontSize
+        Text.measureCanvas.font = @_fontSize + "px " + @_font
+        cnv.width = Text.measureCanvas.measureText(@_text).width
+        cnv.height = @_fontSize
 
         if @buffHeight
             cnv.height += @buffHeight
 
         canvas = cnv.getContext("2d")
-        canvas.fillStyle = @color
-        canvas.font = @fontWeight + " " + @fontSize + "px " + @font
-        canvas.fillText(@text,0,cnv.height)
+        canvas.fillStyle = @_color
+        canvas.font = @_fontWeight + " " + @_fontSize + "px " + @_font
+        canvas.fillText(@_text,0,cnv.height)
 
         # generate the image
         image = new Image()
         image.src = cnv.toDataURL()
         image.onload = =>
-            if @GL
-                # we need to get rid of the old one
-                if @Three() then @Three().Remove()
-
-                @Bind.WebGLTexture
-                            gl_2d_canvas_generated_image: true
-                            width: image.width
-                            height: image.height
-                            texture: new THREE.TextureLoader().load( image.src )
-            else
                 @Bind.Texture(image)
 
         @rectangle.width = cnv.width
-        @rectangle.height = @fontSize
+        @rectangle.height = @_fontSize
 
     Update: ->
         super()
-        @UpdateText()
-
-    UpdateText: ->
-        if @text isnt @lastText
-            @Render()
-            @lastText = @text
 
 class SpriteGroup
     constructor: (@sprites = [], @game) ->
@@ -3019,4 +3038,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.37'
+Torch::version = '0.6.45'
