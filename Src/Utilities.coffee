@@ -396,3 +396,5 @@ class ObjectUtility
 
     Empty: ->
         return @Keys().length is 0
+
+Util = new Utilities()

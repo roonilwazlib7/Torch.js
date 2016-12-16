@@ -1,2 +1,2 @@
 
-Torch::version = '0.6.24'
+Torch::version = '0.6.34'

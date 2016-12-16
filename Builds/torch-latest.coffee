@@ -397,6 +397,8 @@ class ObjectUtility
     Empty: ->
         return @Keys().length is 0
 
+Util = new Utilities()
+
 # Catch all errors
 window?.onerror = (args...) ->
     return if not window.Torch.STRICT_ERRORS
@@ -2226,7 +2228,7 @@ class CanvasGame
         @InitComponents()
 
     InitComponents: ->
-        styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px"
+        styleString = "background-color:#{Color.Flame.GetHtmlString()}; color:#{Color.Ruby.GetHtmlString()}; font-weight: bold; padding:2px; padding-right:5px;padding-left:5px"
         graphicsString = "WebGL"
 
         if @graphicsType is Torch.CANVAS then graphicsString = "Canvas"
@@ -2635,7 +2637,7 @@ class Color
 
     Set: (rOrHex, g, b) ->
         if typeof rOrHex is "string"
-            hex = rOrHex
+            @hex = rOrHex
             @DecodeHex()
         else
             @r = rOrHex
@@ -2644,25 +2646,28 @@ class Color
             @EncodeHex()
 
     DecodeHex: ->
-        chunks = Torch.Util.String(@hex).Chunk(2)
+        chunks = Util.String(@hex).Chunk(2)
 
-        r = parseInt(chunks[0], 16)
-        g = parseInt(chunks[1], 16)
-        b = parseInt(chunks[2], 16)
+        @r = parseInt(chunks[0], 16)
+        @g = parseInt(chunks[1], 16)
+        @b = parseInt(chunks[2], 16)
 
     EncodeHex: ->
         @hex = ""
-        @hex += r.toString(16)
-        @hex += g.toString(16)
-        @hex += b.toString(16)
+        @hex += @r.toString(16)
+        @hex += @g.toString(16)
+        @hex += @b.toString(16)
+
+    GetHtmlString: ->
+        return "#" + @hex
 
     Invert: ->
-        @Set( Math.abs( 255 - @r ), Math.abs( 255 - @g ), Math.abs( 255 - @b ) )
+        @Set( Math.floor( Math.abs( 255 - @r ) ), Math.floor( Math.abs( 255 - @g ) ), Math.floor( Math.abs( 255 - @b ) ) )
 
     # static color methods
 
     @Random: ->
-        return new Color( Torch.Util.RandomInRange(0,255), Torch.Util.RandomInRange(0,255), Torch.Util.RandomInRange(0,255) )
+        return new Color( Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ) )
 
 Color.Red = new Color(256, 0, 0, 1)
 Color.Green = new Color(0, 256, 0, 1)
@@ -3034,4 +3039,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.24'
+Torch::version = '0.6.34'

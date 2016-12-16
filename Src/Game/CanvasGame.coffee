@@ -11,7 +11,7 @@ class CanvasGame
         @InitComponents()
 
     InitComponents: ->
-        styleString = "background-color:orange; color:white; padding:2px; padding-right:5px;padding-left:5px"
+        styleString = "background-color:#{Color.Flame.GetHtmlString()}; color:#{Color.Ruby.GetHtmlString()}; font-weight: bold; padding:2px; padding-right:5px;padding-left:5px"
         graphicsString = "WebGL"
 
         if @graphicsType is Torch.CANVAS then graphicsString = "Canvas"
