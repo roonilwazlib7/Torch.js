@@ -15,7 +15,7 @@ class Sprite
         @rectangle = new Rectangle(x, y, 0, 0)
         @position = new Point(x,y)
 
-        @Bind = new Bind(@)
+        @Bind = new BindManager(@)
         @Collisions = new CollisionManager(@)
         @Body = new BodyManager(@)
         @Size = new SizeManager(@)

@@ -1,11 +1,4 @@
-class Bind
-    constructor: (sprite) ->
-        return new WebGLBind(sprite) if sprite.GL
-        return new CanvasBind(sprite)
-
-
-
-class CanvasBind
+class BindManager
     constructor: (@sprite) ->
 
     Texture: (textureId, optionalParameters) ->

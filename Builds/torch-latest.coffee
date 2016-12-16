@@ -946,6 +946,37 @@ class SpriteSheetAnimation extends Animation
         @sprite.Size.width = @clipWidth
         @sprite.Size.height = @clipHeight
 
+class BindManager
+    constructor: (@sprite) ->
+
+    Texture: (textureId, optionalParameters) ->
+        tex = null
+        if typeof(textureId) is "string"
+            tex = @sprite.game.Assets.Textures[textureId]
+            if not tex
+                @sprite.game.FatalError("Sprite.Bind.Texture given textureId '#{textureId}' was not found")
+        else
+            tex = textureId
+
+        scale = 1
+
+        # if Torch.Scale and not @sprite.TEXT
+        #     @sprite.Size.Scale(Torch.Scale, Torch.Scale)
+
+        if typeof(textureId) is "string"
+            @sprite.DrawTexture = tex
+        else
+            @sprite.DrawTexture = {image:textureId}
+
+        @sprite.Size.Set(tex.width, tex.height)
+        @sprite.DrawTexture.drawParams =
+            clipX: 0
+            clipY: 0
+            clipWidth: @sprite.DrawTexture.image.width
+            clipHeight: @sprite.DrawTexture.image.height
+
+        return @sprite.DrawTexture
+
 class Sprite
     Sprite.MixIn(EventDispatcher)
           .MixIn(Trashable)
@@ -963,7 +994,7 @@ class Sprite
         @rectangle = new Rectangle(x, y, 0, 0)
         @position = new Point(x,y)
 
-        @Bind = new Bind(@)
+        @Bind = new BindManager(@)
         @Collisions = new CollisionManager(@)
         @Body = new BodyManager(@)
         @Size = new SizeManager(@)
@@ -2589,44 +2620,6 @@ class StateMachine
 class State
     constructor: (@Execute, @Start, @End) ->
 
-class Bind
-    constructor: (sprite) ->
-        return new WebGLBind(sprite) if sprite.GL
-        return new CanvasBind(sprite)
-
-
-
-class CanvasBind
-    constructor: (@sprite) ->
-
-    Texture: (textureId, optionalParameters) ->
-        tex = null
-        if typeof(textureId) is "string"
-            tex = @sprite.game.Assets.Textures[textureId]
-            if not tex
-                @sprite.game.FatalError("Sprite.Bind.Texture given textureId '#{textureId}' was not found")
-        else
-            tex = textureId
-
-        scale = 1
-
-        # if Torch.Scale and not @sprite.TEXT
-        #     @sprite.Size.Scale(Torch.Scale, Torch.Scale)
-
-        if typeof(textureId) is "string"
-            @sprite.DrawTexture = tex
-        else
-            @sprite.DrawTexture = {image:textureId}
-
-        @sprite.Size.Set(tex.width, tex.height)
-        @sprite.DrawTexture.drawParams =
-            clipX: 0
-            clipY: 0
-            clipWidth: @sprite.DrawTexture.image.width
-            clipHeight: @sprite.DrawTexture.image.height
-
-        return @sprite.DrawTexture
-
 class Color
     hex: null
     r: null
@@ -3039,4 +3032,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.34'
+Torch::version = '0.6.35'

@@ -1,4 +1,4 @@
-Build: 34
+Build: 35
 BuildMinor: 6
 BuildMajor: 0
 TestGame:
@@ -24,6 +24,7 @@ SourceMap: [
     "Sprite/Components/StateMachineManager"
     "Sprite/Components/GridManager"
     "Sprite/Components/AnimationManager"
+    "Sprite/Components/BindManager"
     "Sprite/Sprite"
     "Sprite/Text"
     "Sprite/SpriteGroup"
@@ -49,7 +50,6 @@ SourceMap: [
     "Game/CanvasGame"
     "Game/Game"
     "StateMachine"
-    "Bind"
     "Color"
     "Electron"
     "CanvasRenderer"
