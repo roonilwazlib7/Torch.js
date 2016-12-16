@@ -3041,4 +3041,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.8'
+Torch::version = '0.6.10'

@@ -18,8 +18,8 @@ class MapPiece extends Torch.Sprite
 
         @drawIndex = 10
 
-        SCALE = @game.Camera.Viewport.width / 480
-        @Size.Scale(SCALE,SCALE)
+        scale = @game.GetScale()
+        @Size.Scale(scale,scale)
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/map/bush.png", "bush")
@@ -30,11 +30,11 @@ class MapPiece extends Torch.Sprite
 
 
     GetData: (rawData, game) ->
-        SCALE = @game.Camera.Viewport.width / 480
+        scale = @game.GetScale()
         data = {}
         data.position =
-            x: parseInt(rawData[0], 16) * SCALE
-            y: parseInt(rawData[1], 16) * SCALE
+            x: parseInt(rawData[0], 16) * scale
+            y: parseInt(rawData[1], 16) * scale
 
         return data
 

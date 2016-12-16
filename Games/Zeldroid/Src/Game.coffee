@@ -3,6 +3,8 @@ Torch.DumpErrors()
 Torch.DisableConsoleWarnings()
 
 zeldroid = new Torch.Game("container", "fill", "fill", "Zeldroid", Torch.CANVAS)
+zeldroid.GetScale = ->
+    return zeldroid.Camera.Viewport.width / 480
 
 
 Load = (game) ->

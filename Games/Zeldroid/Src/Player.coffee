@@ -21,10 +21,13 @@ class Player extends Torch.Sprite
         @shootKeyWasDown = false
 
         @game.Camera.JerkFollow(@)
-        
+
         @game.Keys.Space.On "KeyUp", =>
             @audioPlayer.PlaySound("shoot")
             b = new PlayerBullet(@)
+
+        scale = @game.GetScale()
+        @Size.Scale(scale, scale)
 
         @SetUpCollisions()
 
