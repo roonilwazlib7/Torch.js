@@ -1143,31 +1143,31 @@ class Text extends Sprite
         get: -> return @_fontSize
         set: (fontSize) ->
             @_fontSize = fontSize
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'font',
         get: -> return @_font
         set: (font) ->
             @_font = font
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'fontWeight',
         get: -> return @_fontWeight
         set: (fontWeight) ->
             @_fontWeight = fontWeight
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'color',
         get: -> return @_color
         set: (color) ->
             @_color = color
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'text',
         get: -> return @_text
         set: (text) ->
             @_text = text
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     constructor: (game, x, y, data) ->
         @InitText(game, x, y, data)
@@ -1199,7 +1199,7 @@ class Text extends Sprite
     Render: ->
         cnv = document.createElement("CANVAS")
         Text.measureCanvas.font = @_fontSize + "px " + @_font
-        cnv.width = Text.measureCanvas.measureText(@_text).width
+        cnv.width = Text.measureCanvas.measureText(@_text).width # need to fix this to account for bold fonts
         cnv.height = @_fontSize
 
         if @buffHeight
@@ -3038,4 +3038,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.45'
+Torch::version = '0.6.48'

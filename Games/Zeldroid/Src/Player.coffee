@@ -111,7 +111,7 @@ class PlayerBullet extends Torch.Sprite
         @InitSprite(shooter.game, shooter.position.x, shooter.position.y)
         @Bind.Texture("player-bullet")
         @drawIndex = shooter.drawIndex + 1
-
+        @shooter = shooter
         @VELOCITY = 1.5
         switch shooter.facing
             when "forward"
@@ -161,6 +161,7 @@ class PlayerBullet extends Torch.Sprite
             @emitter.particle = "particle"
             @emitter.position = @position.Clone()
             @emitter.EmitParticles(true)
+            @shooter.audioPlayer.PlaySound("shoot-explode")
 
 
     Update: ->

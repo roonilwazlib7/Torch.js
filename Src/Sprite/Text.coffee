@@ -16,31 +16,31 @@ class Text extends Sprite
         get: -> return @_fontSize
         set: (fontSize) ->
             @_fontSize = fontSize
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'font',
         get: -> return @_font
         set: (font) ->
             @_font = font
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'fontWeight',
         get: -> return @_fontWeight
         set: (fontWeight) ->
             @_fontWeight = fontWeight
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'color',
         get: -> return @_color
         set: (color) ->
             @_color = color
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     @property 'text',
         get: -> return @_text
         set: (text) ->
             @_text = text
-            @Render()
+            Util.Function( => @Render() ).Defer()
 
     constructor: (game, x, y, data) ->
         @InitText(game, x, y, data)

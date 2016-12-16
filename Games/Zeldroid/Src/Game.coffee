@@ -17,6 +17,7 @@ Load = (game) ->
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
+    game.Load.Audio("Assets/Audio/shoot-explode.wav", "shoot-explode")
 
     game.On "LoadProgressed", (event) ->
         #console.log(event.progress)
