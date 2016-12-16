@@ -22,6 +22,7 @@ tests.push ->
     test.assert( foundItem is "50" )
 
 tests.push ->
+    # test Util.Array.Filter
     arrayHasEvens = T.Array( [1,2,3] ).Filter (item) ->
         return item % 2 is 0
 
@@ -31,6 +32,9 @@ tests.push ->
     test.assert( arrayHasEvens.length is 1 )
     test.assert( arrayHasEvens[0] is 2 )
     test.assert( arrayHasObjectsWithProp.length is 1 )
+
+tests.push ->
+    arrayShouldntHaveEvens = T.Array( 1,2,3 )
 
 module.exports = ->
     torchTest.RunTests(tests, __filename)
