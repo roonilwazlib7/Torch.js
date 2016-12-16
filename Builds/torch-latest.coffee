@@ -422,19 +422,6 @@ Function::MixIn = Function::is = (otherFunction) ->
 
     return this #allow chaining
 
-String::format = (args...) ->
-    replacer = (match, number) ->
-        return args[number] if typeof args[number] isnt undefined
-        return match        if typeof args[number] is undefined
-
-    return @replace(/{(\d+)}/g, replacer)
-
-String::capitalize = ->
-    return this.charAt(0).toUpperCase() + this.slice(1)
-
-String::unCapitalize = ->
-    return this.charAt(0).toLowerCase() + this.slice(1)
-
 class EventDispatcher
     @dispatchers: []
 
@@ -3032,4 +3019,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.36'
+Torch::version = '0.6.37'
