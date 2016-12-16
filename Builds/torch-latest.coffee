@@ -2958,12 +2958,7 @@ class Torch
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
-        @Collider = {}
-        @Collider.CollisionDetector = CollisionDetector
-        @Collider.Circle = Circle
-        @Collider.AABB = AABB
-        @CollisionManager = CollisionManager
-        @Collision = Collision
+
         @Electron = new Electron()
 
     @FatalError: (error) ->
@@ -3047,4 +3042,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.6'
+Torch::version = '0.6.7'

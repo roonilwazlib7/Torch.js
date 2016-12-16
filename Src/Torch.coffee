@@ -503,12 +503,6 @@ class Torch
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
-        @Collider = {}
-        @Collider.CollisionDetector = CollisionDetector
-        @Collider.Circle = Circle
-        @Collider.AABB = AABB
-        @CollisionManager = CollisionManager
-        @Collision = Collision
         @Electron = new Electron()
 
     @FatalError: (error) ->
