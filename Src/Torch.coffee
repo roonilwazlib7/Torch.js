@@ -492,9 +492,6 @@ class Torch
         @Util = new Utilities()
 
         # all the modules we want exposed
-        @Animation = Animation
-        @Bind = Bind
-        @CanvasRenderer = CanvasRenderer
         @Color = Color
         @DebugConsole = DebugConsole
         @StateMachine = StateMachine
@@ -502,29 +499,10 @@ class Torch
         @Vector = Vector
         @Point = Point
         @Game = Game
-        @Debug = Debug
-        @Audio = Audio
-        @HookManager = HookManager
-        @Camera = Camera
-        @Keys = Keys
-        @Layers = Layers
-        @Timer = Timer
-        @Mouse = Mouse
-        @Loop = Loop
-        @ParticleManager = ParticleManager
-        @Load = Load
         @Sprite = Sprite
-        @TweenManager = TweenManager
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
-        @EffectManager = EffectManager
-        @Body = BodyManager
-        @EventManager = EventManager
-        @SizeManager = SizeManager
-        @StateMachineManager = StateMachineManager
-        @GridManager = GridManager
-        @AnimationManager = AnimationManager
         @Collider = {}
         @Collider.CollisionDetector = CollisionDetector
         @Collider.Circle = Circle
