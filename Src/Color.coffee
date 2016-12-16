@@ -1,51 +1,44 @@
 class Color
-    constructor: (rOrHex, g, b, a) ->
-        @hex = ""
-        @Red = 0
-        @Green = 0
-        @Blue = 0
-        @Alpha = 1
-        @Init(rOrHex, g, b, a)
+    hex: null
+    r: null
+    g: null
+    b: null
+    constructor: (rOrHex, g, b) ->
+        @Set(rOrHex, g, b)
 
-    Init: (rOrHex, g, b, a) ->
-        if g is undefined and g isnt null
-            #rgba values
-            @GetHexFromRGB(rOrHex, g, b, a)
+    Set: (rOrHex, g, b) ->
+        if typeof rOrHex is "string"
+            hex = rOrHex
+            @DecodeHex()
         else
-            #html color hash
-            @GetRGBFromHex(rOrHex)
+            @r = rOrHex
+            @g = g
+            @b = b
+            @EncodeHex()
 
-    GetHexadecimal: (dec, a) ->
-        hexa = Math.round(dec * a).toString(16)
-        if hexa.length is 1
-            hexa = "0" + hexa
-        return hexa
+    DecodeHex: ->
+        chunks = Torch.Util.String(@hex).Chunk(2)
 
-    GetHexFromRGB: (r, g, b, a) ->
-        @Red = r
-        @Green = g
-        @Blue = b
-        @Alpha = a
-        @hex = "#" + @GetHexadecimal(r,a) + @GetHexadecimal(g,a) + @GetHexadecimal(b,a)
+        r = parseInt(chunks[0], 16)
+        g = parseInt(chunks[1], 16)
+        b = parseInt(chunks[2], 16)
 
-    GetRGBFromHex: ->
-        # @hex = hex.split("#")[1]
-        # hexRed = @hex.slice(0,2)
-        # hexGreen = @hex.slice(2,4)
-        # hexBlue = @hex.slice(4,6)
-        # @Red = parseInt(hexRed, 16)
-        # @Blue = parseInt(hexBlue, 16)
-        # @Green = parseInt(hexGreen, 16)
-        # @hex = '#' + @hex
+    EncodeHex: ->
+        @hex = ""
+        @hex += r.toString(16)
+        @hex += g.toString(16)
+        @hex += b.toString(16)
 
-    BlendHex: -> @GetRGBFromHex(@hex)
+    Invert: ->
+        @Set( Math.abs( 255 - @r ), Math.abs( 255 - @g ), Math.abs( 255 - @b ) )
 
-    BlendRGB: -> @GetHexFromRGB(@Red, @Green, @Blue, @Alpha)
+    # static color methods
 
-    GetRGBString: -> return "rgba(" + @Red + "," + @Green + "," + @Blue + "," + @Alpha + ");"
+    @Random: ->
+        return new Color( Torch.Util.RandomInRange(0,255), Torch.Util.RandomInRange(0,255), Torch.Util.RandomInRange(0,255) )
 
 Color.Red = new Color(256, 0, 0, 1)
 Color.Green = new Color(0, 256, 0, 1)
 Color.Blue = new Color(0, 0, 256, 1)
-Color.Flame = new Color("#ff8000")
-Color.Ruby = new Color("#e60000")
+Color.Flame = new Color("ff8000")
+Color.Ruby = new Color("e60000")
