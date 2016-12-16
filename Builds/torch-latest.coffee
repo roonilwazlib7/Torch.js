@@ -620,8 +620,8 @@ class BodyManager
 
         @sprite.rotation += @omega * @game.Loop.updateDelta
 
-    Debug: (turnOn = true) ->
-        @DEBUG = turnOn
+    Debug: (color = "red") ->
+        @DEBUG = color
 
     AngleTo: (otherSprite) ->
         directionVector = @DirectionTo(otherSprite)
@@ -2711,8 +2711,8 @@ class CanvasRenderer
             params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
             drawRec.width, drawRec.height)
 
-            if @sprite.Body.DEBUG and false
-                @game.canvas.fillStyle = "green"
+            if @sprite.Body.DEBUG
+                @game.canvas.fillStyle = @sprite.Body.DEBUG
                 @game.canvas.globalAlpha = 0.5
                 @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
 
@@ -3041,4 +3041,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.10'
+Torch::version = '0.6.21'

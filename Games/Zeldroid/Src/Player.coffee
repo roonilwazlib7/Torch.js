@@ -5,6 +5,7 @@ class Player extends Torch.Sprite
     constructor: (game) ->
         @InitSprite(game, 0, 0)
         @Bind.Texture("player-right-idle")
+
         @spriteSheetAnim = @Animations.SpriteSheet(16, 16, 2)
         @spriteSheetAnim.Stop()
 

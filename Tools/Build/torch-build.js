@@ -54,7 +54,7 @@ compressor.minify({
 });
 
 // run the test game, if its there
-if (buildConfig.TestGame.run)
+if (buildConfig.TestGame.Run)
 {
     GameRunner(buildConfig.TestGame);
 }

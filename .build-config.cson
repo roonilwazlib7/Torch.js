@@ -1,18 +1,15 @@
-Build: 10
+Build: 21
 BuildMinor: 6
 BuildMajor: 0
 TestGame:
     Path: "Zeldroid"
     Source: "Coffee"
-    run: true
+    Run: true
     Electron: true
     Build: false
     CoffeeSources: [
         "MapMaker"
     ]
-NeedsWork: [
-    "Torch.Particles"
-]
 SourceMap: [
     "Utilities"
     "Mixins/Error"

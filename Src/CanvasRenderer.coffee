@@ -27,8 +27,8 @@ class CanvasRenderer
             params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
             drawRec.width, drawRec.height)
 
-            if @sprite.Body.DEBUG and false
-                @game.canvas.fillStyle = "green"
+            if @sprite.Body.DEBUG
+                @game.canvas.fillStyle = @sprite.Body.DEBUG
                 @game.canvas.globalAlpha = 0.5
                 @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
 

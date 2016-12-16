@@ -15,8 +15,8 @@ class BodyManager
 
         @sprite.rotation += @omega * @game.Loop.updateDelta
 
-    Debug: (turnOn = true) ->
-        @DEBUG = turnOn
+    Debug: (color = "red") ->
+        @DEBUG = color
 
     AngleTo: (otherSprite) ->
         directionVector = @DirectionTo(otherSprite)
