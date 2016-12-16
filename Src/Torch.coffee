@@ -477,7 +477,7 @@ class Torch
 
     @AjaxLoader: AjaxLoader
     @Event: Event
-    @Util: new Utilities()
+    @Util: new Utilities() # a static reference for use within torch
 
     constructor: ->
         @GamePads = Enum("Pad1", "Pad2", "Pad3", "Pad4")
@@ -489,7 +489,9 @@ class Torch
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
 
-        # all the modules
+        @Util = new Utilities()
+
+        # all the modules we want exposed
         @Animation = Animation
         @Bind = Bind
         @CanvasRenderer = CanvasRenderer

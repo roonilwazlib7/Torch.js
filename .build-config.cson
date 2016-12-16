@@ -1,5 +1,5 @@
-Build: 492
-BuildMinor: 5
+Build: 3
+BuildMinor: 6
 BuildMajor: 0
 TestGame:
     Path: "Zeldroid"

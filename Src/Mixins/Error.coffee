@@ -1,5 +1,5 @@
 # Catch all errors
-window.onerror = (args...) ->
+window?.onerror = (args...) ->
     return if not window.Torch.STRICT_ERRORS
 
     document.body.style.backgroundColor = "black"

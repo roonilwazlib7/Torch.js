@@ -1,6 +1,10 @@
-_measureCanvas = document.createElement("CANVAS")
-_measureCanvas.width = 500
-_measureCanvas.height = 500
+if document?
+    _measureCanvas = document.createElement("CANVAS")
+    _measureCanvas.width = 500
+    _measureCanvas.height = 500
+else
+    _measureCanvas =
+        getContext: ->
 
 class Text extends Sprite
     TEXT: true

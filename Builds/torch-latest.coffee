@@ -1,5 +1,5 @@
 # Catch all errors
-window.onerror = (args...) ->
+window?.onerror = (args...) ->
     return if not window.Torch.STRICT_ERRORS
 
     document.body.style.backgroundColor = "black"
@@ -648,9 +648,13 @@ gonna kill this...
 class GhostSprite extends Sprite
     GHOST_SPRITE: true
 
-_measureCanvas = document.createElement("CANVAS")
-_measureCanvas.width = 500
-_measureCanvas.height = 500
+if document?
+    _measureCanvas = document.createElement("CANVAS")
+    _measureCanvas.width = 500
+    _measureCanvas.height = 500
+else
+    _measureCanvas =
+        getContext: ->
 
 class Text extends Sprite
     TEXT: true
@@ -2928,7 +2932,7 @@ class Torch
 
     @AjaxLoader: AjaxLoader
     @Event: Event
-    @Util: new Utilities()
+    @Util: new Utilities() # a static reference for use within torch
 
     constructor: ->
         @GamePads = Enum("Pad1", "Pad2", "Pad3", "Pad4")
@@ -2940,7 +2944,9 @@ class Torch
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
 
-        # all the modules
+        @Util = new Utilities()
+
+        # all the modules we want exposed
         @Animation = Animation
         @Bind = Bind
         @CanvasRenderer = CanvasRenderer
@@ -3063,4 +3069,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.5.492'
+Torch::version = '0.6.3'
