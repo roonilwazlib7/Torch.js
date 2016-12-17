@@ -43,6 +43,13 @@ class Utilities
             return null
 
 
+    Enum: (parts...) ->
+        obj = {}
+
+        for part,i in parts
+            obj[part] = i+1
+
+        return obj
 
 class StringUtility
     constructor: (@str) ->

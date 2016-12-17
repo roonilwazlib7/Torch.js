@@ -1,19 +1,17 @@
-exports = this
+exports = this # this will either be 'window' for Chrome or
+               # 'module' for node
 
+###
+    A few notes to keep in mind:
 
-Enum = (parts...) ->
-    obj = {}
+    - CoffeeScript wraps each file into it's own scope when it is compiled into
+      javascript. When Torch is built, it puts all the coffeescript into one file
+      (torch-latest.coffee) thus throwing all of Torch into the same scope. The only
+      piece that is exposed is an instance of Torch called 'Torch'
 
-    for part,i in parts
-        obj[part] = i+1
-
-    return obj
-
-class MathUtility
-    constructor: ->
-
-    RandomInRange: (min,max) ->
-        return Math.random() * (max - min + 1) + min
+    - There are a few custom objects that are defined in the torch scope a little odly:
+       - Util - An instance of Utilities, used internally by Torch, exported as Torch.Util
+###
 
 class Task
 
@@ -71,26 +69,26 @@ class Torch
 
     DUMP_ERRORS: false
 
-    @GamePads: Enum("Pad1", "Pad2", "Pad3", "Pad4")
-    @AjaxData: Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
-    @Types: Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
-    @Easing: Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
+    @GamePads: Util.Enum("Pad1", "Pad2", "Pad3", "Pad4")
+    @AjaxData: Util.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
+    @Types: Util.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+    @Easing: Util.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 
     @AjaxLoader: AjaxLoader
     @Event: Event
     @Util: new Utilities() # a static reference for use within torch
 
     constructor: ->
-        @GamePads = Enum("Pad1", "Pad2", "Pad3", "Pad4")
-        @AjaxData = Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
-        @Types = Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
-        @Easing = Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
+        @GamePads = Util.Enum("Pad1", "Pad2", "Pad3", "Pad4")
+        @AjaxData = Util.Enum("DOMString", "ArrayBuffer", "Blob", "Document", "Json", "Text")
+        @Types = Util.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
+        @Easing = Util.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 
         @Event = Event
         @EventDispatcher = EventDispatcher
         @Trashable = Trashable
 
-        @Util = new Utilities()
+        @Util = Util
 
         # all the modules we want exposed
         @Color = Color
