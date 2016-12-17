@@ -642,10 +642,15 @@ class BodyManager
         @acceleration = new Vector(0,0)
         @omega = 0
         @alpha = 0
+        @distance = 0
 
     Update: ->
-        @sprite.position.x += @velocity.x * @game.Loop.updateDelta
-        @sprite.position.y += @velocity.y * @game.Loop.updateDelta
+        dX = @velocity.x * @game.Loop.updateDelta
+        dY = @velocity.y * @game.Loop.updateDelta
+        @distance += Math.sqrt( (dX * dX) + (dY * dY) )
+
+        @sprite.position.x += dX
+        @sprite.position.y += dY
 
         @velocity.x += @acceleration.x * @game.Loop.updateDelta
         @velocity.y += @acceleration.y * @game.Loop.updateDelta
@@ -1025,23 +1030,11 @@ class CanvasRenderer
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
             #return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
-
-        if @sprite.DrawTexture
-            frame = @sprite.DrawTexture
-            params = frame.drawParams
-
-            @PreRender(drawRec)
-
-            @game.canvas.drawImage(@sprite.DrawTexture.image, params.clipX, params.clipY,
-            params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
-            drawRec.width, drawRec.height)
-
-            if @sprite.Body.DEBUG
-                @game.canvas.fillStyle = @sprite.Body.DEBUG
-                @game.canvas.globalAlpha = 0.5
-                @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
-
-            @PostRender()
+        switch @sprite.torch_render_type
+            when "Image"
+                @RenderImageSprite(drawRec)
+            when "Line"
+                @RenderLineSprite(drawRec)
 
     PreRender: (drawRec)->
         canvas = @game.canvas
@@ -1061,7 +1054,40 @@ class CanvasRenderer
         canvas = @game.canvas
         canvas.restore()
 
+    RenderImageSprite: (drawRec) ->
+        if @sprite.DrawTexture
+            frame = @sprite.DrawTexture
+            params = frame.drawParams
+
+            @PreRender(drawRec)
+
+            @game.canvas.drawImage(@sprite.DrawTexture.image, params.clipX, params.clipY,
+            params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
+            drawRec.width, drawRec.height)
+
+            if @sprite.Body.DEBUG
+                @game.canvas.fillStyle = @sprite.Body.DEBUG
+                @game.canvas.globalAlpha = 0.5
+                @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+
+            @PostRender()
+
+    RenderLineSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+        @game.canvas.strokeStyle = @sprite.color
+        @game.canvas.lineWidth = @sprite.lineWidth
+
+        @game.canvas.beginPath()
+        @game.canvas.moveTo(drawRec.x, drawRec.y)
+        @game.canvas.lineTo( @sprite.endX + @game.Camera.position.x, @sprite.endY + @game.Camera.position.y )
+        @game.canvas.stroke()
+
+        @game.canvas.restore()
+
 class Sprite
+    torch_render_type: "Image"
     Sprite.MixIn(EventDispatcher)
           .MixIn(Trashable)
 
@@ -1260,6 +1286,108 @@ class Text extends Sprite
 
     Update: ->
         super()
+
+###
+    We need to have circles, rectangles, lines, and polys
+###
+Shapes = {}
+
+class Shapes.Circle extends Sprite
+    _EXPERIMENTAL_OPTIMAZATION: true
+    _radius: 0
+    _fillColor: "black"
+    _strokeColor: "black"
+    _startAngle: 0
+    _endAngle: 2 * Math.PI
+    _drawDirection: "clockwise" # or counterclockwise
+
+    constructor: (game, x, y, radius, fillColor = "black", strokeColor = "black")->
+        @InitSprite(game, x, y)
+        @_radius = radius
+        @_fillColor = fillColor
+        @_strokeColor = strokeColor
+        @Render()
+
+    Render: ->
+        return if not @_EXPERIMENTAL_OPTIMAZATION
+        canvasNode = document.createElement("CANVAS")
+        canvas = canvasNode.getContext("2d")
+
+        canvas.strokeStyle = @_strokeColor
+        canvas.fillStyle = @_fillColor
+
+        canvas.beginPath()
+
+        canvas.arc(@_radius, @_radius, @_radius, @_startAngle, @_endAngle, @_drawDirection is "counterclockwise")
+
+        canvas.fill()
+        canvas.stroke()
+
+        image = new Image()
+        image.src = canvasNode.toDataURL()
+        image.onload = =>
+            @Bind.Texture(image)
+
+    Draw: ->
+        if @_EXPERIMENTAL_OPTIMAZATION
+            super()
+        else
+            # draw it natively
+
+    # we need properties to it re-renders everytime a property is changed
+
+    @property 'radius',
+        get: ->
+            return @_radius
+        set: (value) ->
+            @_radius = value
+            Util.Function( => @Render() ).Defer()
+
+    @property 'fillColor',
+        get: ->
+            return @_fillColor
+        set: (value) ->
+            @_fillColor = value
+            Util.Function( => @Render() ).Defer()
+
+    @property 'strokeColor',
+        get: ->
+            return @_strokeColor
+        set: (value) ->
+            @_strokeColor = value
+            Util.Function( => @Render() ).Defer()
+
+    @property 'startAngle',
+        get: ->
+            return @_startAngle
+        set: (value) ->
+            @_startAngle = value
+            Util.Function( => @Render() ).Defer()
+
+    @property 'endAngle',
+        get: ->
+            return @_endAngle
+        set: (value) ->
+            @_endAngle = value
+            Util.Function( => @Render() ).Defer()
+
+    @property 'drawDirection',
+        get: ->
+            return @_drawDirection
+        set: (value) ->
+            @_drawDirection = value
+            Util.Function( => @Render() ).Defer()
+
+class Shapes.Line extends Sprite
+    torch_render_type: "Line"
+    endX: 0
+    endY: 0
+    color: "black"
+    lineWidth: 1
+
+    constructor: (game, x, y, @endX, @endY, @color, config) ->
+        @InitSprite(game, x, y)
+        Util.Object(@).Extend(config)
 
 class SpriteGroup
     constructor: (@sprites = [], @game) ->
@@ -2759,7 +2887,7 @@ class Color
     # static color methods
 
     @Random: ->
-        return new Color( Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ) )
+        return new Color( Math.floor( Util.Math.RandomInRange(0,255) ), Math.floor( Util.Math.RandomInRange(0,255) ), Math.floor( Util.Math.RandomInRange(0,255) ) )
 
 Color.Red = new Color(256, 0, 0, 1)
 Color.Green = new Color(0, 256, 0, 1)
@@ -2992,6 +3120,7 @@ class Torch
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
+        @Shapes = Shapes
         @Electron = new Electron()
 
     @FatalError: (error) ->
@@ -3075,4 +3204,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.62'
+Torch::version = '0.6.84'

@@ -5,10 +5,15 @@ class BodyManager
         @acceleration = new Vector(0,0)
         @omega = 0
         @alpha = 0
+        @distance = 0
 
     Update: ->
-        @sprite.position.x += @velocity.x * @game.Loop.updateDelta
-        @sprite.position.y += @velocity.y * @game.Loop.updateDelta
+        dX = @velocity.x * @game.Loop.updateDelta
+        dY = @velocity.y * @game.Loop.updateDelta
+        @distance += Math.sqrt( (dX * dX) + (dY * dY) )
+
+        @sprite.position.x += dX
+        @sprite.position.y += dY
 
         @velocity.x += @acceleration.x * @game.Loop.updateDelta
         @velocity.y += @acceleration.y * @game.Loop.updateDelta

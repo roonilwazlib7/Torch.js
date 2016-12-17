@@ -38,7 +38,7 @@ class Color
     # static color methods
 
     @Random: ->
-        return new Color( Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ), Math.floor( Util.Math().RandomInRange(0,255) ) )
+        return new Color( Math.floor( Util.Math.RandomInRange(0,255) ), Math.floor( Util.Math.RandomInRange(0,255) ), Math.floor( Util.Math.RandomInRange(0,255) ) )
 
 Color.Red = new Color(256, 0, 0, 1)
 Color.Green = new Color(0, 256, 0, 1)

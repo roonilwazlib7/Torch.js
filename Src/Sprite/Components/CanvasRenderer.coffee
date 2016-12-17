@@ -16,23 +16,11 @@ class CanvasRenderer
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
             #return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
-
-        if @sprite.DrawTexture
-            frame = @sprite.DrawTexture
-            params = frame.drawParams
-
-            @PreRender(drawRec)
-
-            @game.canvas.drawImage(@sprite.DrawTexture.image, params.clipX, params.clipY,
-            params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
-            drawRec.width, drawRec.height)
-
-            if @sprite.Body.DEBUG
-                @game.canvas.fillStyle = @sprite.Body.DEBUG
-                @game.canvas.globalAlpha = 0.5
-                @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
-
-            @PostRender()
+        switch @sprite.torch_render_type
+            when "Image"
+                @RenderImageSprite(drawRec)
+            when "Line"
+                @RenderLineSprite(drawRec)
 
     PreRender: (drawRec)->
         canvas = @game.canvas
@@ -51,3 +39,35 @@ class CanvasRenderer
     PostRender: ->
         canvas = @game.canvas
         canvas.restore()
+
+    RenderImageSprite: (drawRec) ->
+        if @sprite.DrawTexture
+            frame = @sprite.DrawTexture
+            params = frame.drawParams
+
+            @PreRender(drawRec)
+
+            @game.canvas.drawImage(@sprite.DrawTexture.image, params.clipX, params.clipY,
+            params.clipWidth, params.clipHeight,-drawRec.width/2, -drawRec.height/2,
+            drawRec.width, drawRec.height)
+
+            if @sprite.Body.DEBUG
+                @game.canvas.fillStyle = @sprite.Body.DEBUG
+                @game.canvas.globalAlpha = 0.5
+                @game.canvas.fillRect(-drawRec.width/2, -drawRec.height/2, drawRec.width, drawRec.height)
+
+            @PostRender()
+
+    RenderLineSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+        @game.canvas.strokeStyle = @sprite.color
+        @game.canvas.lineWidth = @sprite.lineWidth
+
+        @game.canvas.beginPath()
+        @game.canvas.moveTo(drawRec.x, drawRec.y)
+        @game.canvas.lineTo( @sprite.endX + @game.Camera.position.x, @sprite.endY + @game.Camera.position.y )
+        @game.canvas.stroke()
+
+        @game.canvas.restore()

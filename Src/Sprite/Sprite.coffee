@@ -1,4 +1,5 @@
 class Sprite
+    torch_render_type: "Image"
     Sprite.MixIn(EventDispatcher)
           .MixIn(Trashable)
 

@@ -166,6 +166,8 @@ class PlayerBullet extends Torch.Sprite
 
     Update: ->
         super()
+        if @Body.distance >= 500
+            @Trash()
 
 
 window.Player = Player

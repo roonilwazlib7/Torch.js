@@ -1,4 +1,4 @@
-Build: 62
+Build: 84
 BuildMinor: 6
 BuildMajor: 0
 Files: [
@@ -19,6 +19,7 @@ Files: [
     "Sprite/Components/CanvasRenderer"
     "Sprite/Sprite"
     "Sprite/Text"
+    "Sprite/Shapes"
     "Sprite/SpriteGroup"
     "Sprite/SpriteGrid"
     "Sprite/Components/Collision/Collider"

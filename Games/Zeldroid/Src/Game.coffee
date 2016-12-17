@@ -33,6 +33,12 @@ Init = (game) ->
     game.mapManager = new MapManager(game)
     game.hud = new HUD(game)
 
+    color = Torch.Color.Random().GetHtmlString()
+    game.circ = new Torch.Shapes.Circle(game, 50, 50, 25, color, color)
+    game.circ.drawIndex = 1000
+
+    game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "orange", {lineWidth: 5})
+
     game.mapManager.LoadMap("map-1")
     SetUpConsoleCommands(game)
 

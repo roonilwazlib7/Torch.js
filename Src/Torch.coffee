@@ -102,6 +102,7 @@ class Torch
         @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
+        @Shapes = Shapes
         @Electron = new Electron()
 
     @FatalError: (error) ->
