@@ -35,10 +35,10 @@ class ParticleEmitter extends Sprite
         if removeEmitterWhenDone then @Trash()
 
     EmitParticle: ()->
-        angle = Torch.Util.Math().RandomInRange(@config.minAngle, @config.maxAngle)
-        scale = Torch.Util.Math().RandomInRange(@config.minScale, @config.maxScale)
-        alphaDecay = Torch.Util.Math().RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
-        radius = Torch.Util.Math().RandomInRange(@config.minRadius, @config.maxRadius)
+        angle = Util.Math.RandomInRange(@config.minAngle, @config.maxAngle)
+        scale = Util.Math.RandomInRange(@config.minScale, @config.maxScale)
+        alphaDecay = Util.Math.RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
+        radius = Util.Math.RandomInRange(@config.minRadius, @config.maxRadius)
         x = @position.x
         y = @position.y
 
@@ -49,9 +49,9 @@ class ParticleEmitter extends Sprite
             p.Bind.Texture(@particle)
 
         #p.Body.acceleration.y = @config.gravity
-        p.Body.velocity.x = Math.cos(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.velocity.y = Math.sin(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.omega = Torch.Util.Math().RandomInRange(@config.minOmega, @config.maxOmega)
+        p.Body.velocity.x = Math.cos(angle) * Util.Math.RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.velocity.y = Math.sin(angle) * Util.Math.RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.omega = Util.Math.RandomInRange(@config.minOmega, @config.maxOmega)
         p.Size.scale.width = scale
         p.Size.scale.height = scale
         p.drawIndex = 1000

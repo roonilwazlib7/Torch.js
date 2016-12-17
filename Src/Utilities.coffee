@@ -1,8 +1,9 @@
 class Utilities
+    constructor: ->
+        @Math = new MathUtility()
+
     Expose: ->
         window["T"] = @
-
-    RandomInRange: ->
 
     String: (str) ->
         return new StringUtility(str)
@@ -16,8 +17,31 @@ class Utilities
     Object: (obj) ->
         return new ObjectUtility(obj)
 
-    Math: ->
-        return new MathUtility()
+    Type: (obj) ->
+        if obj?
+            classToType = {}
+
+            types = [
+                "Boolean"
+                "Number"
+                "String"
+                "Function"
+                "Array"
+                "Date"
+                "RegExp"
+                "Undefined"
+                "Null"
+            ]
+
+            for name in types
+                classToType[ "[object #{name}]" ] = name.toLowerCase()
+
+            strType = Object::toString.call(obj)
+            return classToType[strType] or "object"
+
+        else
+            return null
+
 
 
 class StringUtility
@@ -397,4 +421,12 @@ class ObjectUtility
     Empty: ->
         return @Keys().length is 0
 
+class MathUtility
+
+    RandomInRange: (min, max) ->
+        return Math.random() * (max - min + 1) + min
+
+
+# define a local (to Torch) instance for use by the rest
+# of the library
 Util = new Utilities()

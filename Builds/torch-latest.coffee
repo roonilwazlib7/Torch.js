@@ -1,8 +1,9 @@
 class Utilities
+    constructor: ->
+        @Math = new MathUtility()
+
     Expose: ->
         window["T"] = @
-
-    RandomInRange: ->
 
     String: (str) ->
         return new StringUtility(str)
@@ -16,8 +17,31 @@ class Utilities
     Object: (obj) ->
         return new ObjectUtility(obj)
 
-    Math: ->
-        return new MathUtility()
+    Type: (obj) ->
+        if obj?
+            classToType = {}
+
+            types = [
+                "Boolean"
+                "Number"
+                "String"
+                "Function"
+                "Array"
+                "Date"
+                "RegExp"
+                "Undefined"
+                "Null"
+            ]
+
+            for name in types
+                classToType[ "[object #{name}]" ] = name.toLowerCase()
+
+            strType = Object::toString.call(obj)
+            return classToType[strType] or "object"
+
+        else
+            return null
+
 
 
 class StringUtility
@@ -397,6 +421,14 @@ class ObjectUtility
     Empty: ->
         return @Keys().length is 0
 
+class MathUtility
+
+    RandomInRange: (min, max) ->
+        return Math.random() * (max - min + 1) + min
+
+
+# define a local (to Torch) instance for use by the rest
+# of the library
 Util = new Utilities()
 
 # Catch all errors
@@ -2173,10 +2205,10 @@ class ParticleEmitter extends Sprite
         if removeEmitterWhenDone then @Trash()
 
     EmitParticle: ()->
-        angle = Torch.Util.Math().RandomInRange(@config.minAngle, @config.maxAngle)
-        scale = Torch.Util.Math().RandomInRange(@config.minScale, @config.maxScale)
-        alphaDecay = Torch.Util.Math().RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
-        radius = Torch.Util.Math().RandomInRange(@config.minRadius, @config.maxRadius)
+        angle = Util.Math.RandomInRange(@config.minAngle, @config.maxAngle)
+        scale = Util.Math.RandomInRange(@config.minScale, @config.maxScale)
+        alphaDecay = Util.Math.RandomInRange(@config.minAlphaDecay, @config.maxAlphaDecay)
+        radius = Util.Math.RandomInRange(@config.minRadius, @config.maxRadius)
         x = @position.x
         y = @position.y
 
@@ -2187,9 +2219,9 @@ class ParticleEmitter extends Sprite
             p.Bind.Texture(@particle)
 
         #p.Body.acceleration.y = @config.gravity
-        p.Body.velocity.x = Math.cos(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.velocity.y = Math.sin(angle) * Torch.Util.Math().RandomInRange(@config.minVelocity, @config.maxVelocity)
-        p.Body.omega = Torch.Util.Math().RandomInRange(@config.minOmega, @config.maxOmega)
+        p.Body.velocity.x = Math.cos(angle) * Util.Math.RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.velocity.y = Math.sin(angle) * Util.Math.RandomInRange(@config.minVelocity, @config.maxVelocity)
+        p.Body.omega = Util.Math.RandomInRange(@config.minOmega, @config.maxOmega)
         p.Size.scale.width = scale
         p.Size.scale.height = scale
         p.drawIndex = 1000
@@ -3038,4 +3070,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.48'
+Torch::version = '0.6.51'
