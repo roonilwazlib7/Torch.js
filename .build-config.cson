@@ -1,15 +1,6 @@
-Build: 55
+Build: 60
 BuildMinor: 6
 BuildMajor: 0
-TestGame:
-    Path: "Zeldroid"
-    Source: "Coffee"
-    Run: true
-    Electron: true
-    Build: false
-    CoffeeSources: [
-        "MapMaker"
-    ]
 SourceMap: [
     "Utilities"
     "Mixins/Error"

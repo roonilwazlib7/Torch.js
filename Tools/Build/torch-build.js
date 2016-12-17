@@ -1,10 +1,18 @@
 var fs = require("fs"),
+    path = require('path'),
     compressor = require('node-minify'),
     shell = require('shelljs'),
     CSON = require('cson'),
     GameRunner = require('./game-runner.js');
 
-console.log("[] Building Torch...")
+function getDirectories(srcpath)
+{
+    return fs.readdirSync(srcpath).filter(function(file) {
+        return fs.statSync(path.join(srcpath, file)).isDirectory();
+    });
+}
+
+console.log("[] Building Torch...");
 
 buildConfig = CSON.parse( fs.readFileSync(".build-config.cson").toString() );
 buildConfig.Build += 1;
@@ -53,8 +61,13 @@ compressor.minify({
     callback: function (err, min) {}
 });
 
-// run the test game, if its there
-if (buildConfig.TestGame.Run)
+var gameDirs = getDirectories("Games");
+
+for (var i = 0; i < gameDirs.length; i++)
 {
-    GameRunner(buildConfig.TestGame);
+    var dir = gameDirs[i];
+    if (dir != "Builds")
+    {
+        GameRunner(dir);
+    }
 }

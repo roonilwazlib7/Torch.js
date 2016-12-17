@@ -1,5 +1,11 @@
 bundle: false
 compress: false
+run: true
+electron: true
+
+coffeeSources: [
+    "MapMaker"
+]
 
 files:
     [

@@ -4,17 +4,22 @@ var fs = require("fs"),
     CSON = require('cson'),
     GameBundler = require('./game-bundler.js');
 
-function GameRunner(TestGame)
+function GameRunner(gamePath)
 {
-    console.log("[] Copying torch to " + TestGame.Path + "...");
+    var TestGame = CSON.parse( fs.readFileSync( "Games/" + gamePath + "/torch.cson" ).toString() );
+    if (!TestGame.run)
+    {
+        return;
+    }
+    console.log("[] Copying torch to " + gamePath + "...");
 
     var torch = fs.readFileSync("Builds/torch-latest.js");
-    fs.writeFileSync("Games/" + TestGame.Path + "/torch.js", torch);
+    fs.writeFileSync("Games/" + gamePath + "/torch.js", torch);
 
-    console.log("[] Running " + TestGame.Path + "...");
-    var windows_script = "cd Games\\" + TestGame.Path;
+    console.log("[] Running " + gamePath + "...");
+    var windows_script = "cd Games\\" + gamePath;
         windows_script += "\nnpm start";
-    var linux_script = "cd Games/" + TestGame.Path;
+    var linux_script = "cd Games/" + gamePath;
         linux_script += "\nnpm start";
 
     if (process.platform == "win32")
@@ -26,34 +31,32 @@ function GameRunner(TestGame)
         fs.writeFileSync("_tmp.sh", linux_script);
     }
 
-    if (TestGame.Source == "Coffee")
+    console.log("[] Compiling Game Coffee...");
+    shell.exec("coffee --inline-map --compile --output Games/" + gamePath + "/Core/ Games/" + gamePath + "/Src/");
+    for (var i = 0; i < TestGame.coffeeSources.length; i++)
     {
-        console.log("[] Compiling Game Coffee...");
-        shell.exec("coffee --inline-map --compile --output Games/" + TestGame.Path + "/Core/ Games/" + TestGame.Path + "/Src/")
-        for (var i = 0; i < TestGame.CoffeeSources.length; i++)
-        {
-            var cf = TestGame.CoffeeSources[i];
-            console.log("[] Compiling " + cf + " Coffee");
-            var extraPath = TestGame.Path + "/" + cf;
-            shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/");
-        }
+        var cf = TestGame.coffeeSources[i];
+        console.log("[] Compiling " + cf + " Coffee");
+        var extraPath = gamePath + "/" + cf;
+        shell.exec("coffee --compile --output Games/" + extraPath + "/Core/ Games/" + extraPath + "/Src/");
     }
 
+
     console.log("[] Bundling Game Files...");
-    GameBundler("Games/" + TestGame.Path);
+    GameBundler("Games/" + gamePath);
 
     if (TestGame.Build)
     {
         // console.log("[] Building Game Packages...");
-        // shell.exec("electron-packager Games/" + TestGame.Path + " " + TestGame.Path + " --platform=win32 --arch=all --version=1.3.1 --out=Games/" + TestGame.Path);
+        // shell.exec("electron-packager Games/" + gamePath + " " + gamePath + " --platform=win32 --arch=all --version=1.3.1 --out=Games/" + gamePath);
         // return;
     }
 
-    if (TestGame.Electron)
+    if (TestGame.electron)
     {
         console.log("[] Starting Electron...");
         //this won't work for some reason...
-        //shell.exec("electron " + "Games/" + TestGame.Path + "/main.js");
+        //shell.exec("electron " + "Games/" + gamePath + "/main.js");
         if (process.platform == "win32")
         {
             shell.exec("_tmp.bat");
@@ -67,7 +70,7 @@ function GameRunner(TestGame)
     }
     else
     {
-        var child = shell.exec("chrome " + TestGame.Path + "/index.html");
+        var child = shell.exec("chrome " + gamePath + "/index.html");
     }
 }
 module.exports = GameRunner;
