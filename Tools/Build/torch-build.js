@@ -31,7 +31,7 @@ fs.writeFileSync("Src/version.coffee", "\nTorch::version = '" + buildConfig.Buil
 
 
 var coffeeSource = [];
-var source = buildConfig.SourceMap;
+var source = buildConfig.Files;
 
 source.push("version");
 
