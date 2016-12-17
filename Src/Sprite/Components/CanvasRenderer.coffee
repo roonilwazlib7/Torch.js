@@ -65,9 +65,12 @@ class CanvasRenderer
         @game.canvas.strokeStyle = @sprite.color
         @game.canvas.lineWidth = @sprite.lineWidth
 
+        if @sprite.DrawTexture?.image?
+            @game.canvas.strokeStyle = @game.canvas.createPattern( @sprite.DrawTexture.image, "repeat" )
+
         @game.canvas.beginPath()
         @game.canvas.moveTo(drawRec.x, drawRec.y)
-        @game.canvas.lineTo( @sprite.endX + @game.Camera.position.x, @sprite.endY + @game.Camera.position.y )
+        @game.canvas.lineTo( @sprite.endPosition.x + @game.Camera.position.x, @sprite.endPosition.y + @game.Camera.position.y )
         @game.canvas.stroke()
 
         @game.canvas.restore()

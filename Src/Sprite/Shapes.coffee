@@ -91,11 +91,14 @@ class Shapes.Circle extends Sprite
 
 class Shapes.Line extends Sprite
     torch_render_type: "Line"
-    endX: 0
-    endY: 0
     color: "black"
     lineWidth: 1
 
-    constructor: (game, x, y, @endX, @endY, @color, config) ->
+    endPosition: null
+
+    constructor: (game, x, y, endX, endY, @color, config) ->
         @InitSprite(game, x, y)
+
+        @endPosition = new Point(endX, endY)
+
         Util.Object(@).Extend(config)

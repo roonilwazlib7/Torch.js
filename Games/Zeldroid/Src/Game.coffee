@@ -14,6 +14,8 @@ Load = (game) ->
     Enemy.Load(game)
 
     game.Load.Texture("Assets/Art/particle.png", "particle")
+    game.Load.Texture("Assets/Art/line.png", "line")
+    
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
@@ -37,7 +39,9 @@ Init = (game) ->
     game.circ = new Torch.Shapes.Circle(game, 50, 50, 25, color, color)
     game.circ.drawIndex = 1000
 
-    game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "orange", {lineWidth: 5})
+    game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "black", {lineWidth: 5})
+    game.lin.fixed = true
+    game.lin.Bind.Texture("line")
 
     game.mapManager.LoadMap("map-1")
     SetUpConsoleCommands(game)
@@ -46,6 +50,9 @@ Draw = (game)->
 
 Update = (game) ->
     if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
+
+    if zeldroid.player?
+        zeldroid.lin.endPosition = zeldroid.player.position.Clone()
 
 zeldroid.Start(Load, Update, Draw, Init)
 window.zeldroid = zeldroid

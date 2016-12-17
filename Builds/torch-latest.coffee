@@ -1079,9 +1079,12 @@ class CanvasRenderer
         @game.canvas.strokeStyle = @sprite.color
         @game.canvas.lineWidth = @sprite.lineWidth
 
+        if @sprite.DrawTexture?.image?
+            @game.canvas.strokeStyle = @game.canvas.createPattern( @sprite.DrawTexture.image, "repeat" )
+
         @game.canvas.beginPath()
         @game.canvas.moveTo(drawRec.x, drawRec.y)
-        @game.canvas.lineTo( @sprite.endX + @game.Camera.position.x, @sprite.endY + @game.Camera.position.y )
+        @game.canvas.lineTo( @sprite.endPosition.x + @game.Camera.position.x, @sprite.endPosition.y + @game.Camera.position.y )
         @game.canvas.stroke()
 
         @game.canvas.restore()
@@ -1380,13 +1383,16 @@ class Shapes.Circle extends Sprite
 
 class Shapes.Line extends Sprite
     torch_render_type: "Line"
-    endX: 0
-    endY: 0
     color: "black"
     lineWidth: 1
 
-    constructor: (game, x, y, @endX, @endY, @color, config) ->
+    endPosition: null
+
+    constructor: (game, x, y, endX, endY, @color, config) ->
         @InitSprite(game, x, y)
+
+        @endPosition = new Point(endX, endY)
+
         Util.Object(@).Extend(config)
 
 class SpriteGroup
@@ -3204,4 +3210,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.84'
+Torch::version = '0.6.93'
