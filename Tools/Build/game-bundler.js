@@ -8,7 +8,7 @@ function GameBundler(gameRootDirectory)
 
     var gameHtmlFile = fs.readFileSync( gameRootDirectory + "/_index.html" ).toString();
 
-    var bundle = CSON.parse( fs.readFileSync( gameRootDirectory +  "/bundle.cson" ).toString() );
+    var bundle = CSON.parse( fs.readFileSync( gameRootDirectory +  "/torch.cson" ).toString() );
 
     for (var i = 0; i < bundle.files.length; i++)
     {
