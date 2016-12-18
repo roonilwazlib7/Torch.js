@@ -169,7 +169,7 @@ class CanvasGame
     UpdateSprites: ->
         for sprite in @spriteList
             if not sprite.trash
-                if not sprite.game.paused
+                if not sprite.paused
                     sprite.Update()
             else
                 sprite.trashed = true

@@ -1155,6 +1155,7 @@ class Sprite
 
         @fixed = false
         @draw = true
+        @paused = false
 
         @drawIndex = 0
         @rotation = 0
@@ -1214,6 +1215,10 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new CollisionDetector(@, otherSprite)
+
+    Pause: (shouldPause = true) ->
+        # prevents the sprite from updating
+        @paused = shouldPause
 
 if document?
     _measureCanvas = document.createElement("CANVAS")
@@ -1692,6 +1697,7 @@ class Load
     @MixIn EventDispatcher
 
     constructor: (@game) ->
+        @InitEventDispatch()
         @game.Assets =
             game: @game
             GetTexture: (id) -> return @game.Assets.Textures[id]
@@ -2661,7 +2667,7 @@ class CanvasGame
     UpdateSprites: ->
         for sprite in @spriteList
             if not sprite.trash
-                if not sprite.game.paused
+                if not sprite.paused
                     sprite.Update()
             else
                 sprite.trashed = true
@@ -3219,4 +3225,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.108'
+Torch::version = '0.6.110'

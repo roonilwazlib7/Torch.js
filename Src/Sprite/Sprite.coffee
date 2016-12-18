@@ -33,6 +33,7 @@ class Sprite
 
         @fixed = false
         @draw = true
+        @paused = false
 
         @drawIndex = 0
         @rotation = 0
@@ -92,3 +93,7 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new CollisionDetector(@, otherSprite)
+
+    Pause: (shouldPause = true) ->
+        # prevents the sprite from updating
+        @paused = shouldPause
