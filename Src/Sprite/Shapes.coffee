@@ -102,3 +102,6 @@ class Shapes.Line extends Sprite
         @endPosition = new Point(endX, endY)
 
         Util.Object(@).Extend(config)
+
+class Shapes.Box extends Sprite
+    constructor: (game, x, y, width, height, fillColor = "black", strokeColor = "black") ->

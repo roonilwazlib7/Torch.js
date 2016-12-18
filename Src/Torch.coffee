@@ -99,7 +99,6 @@ class Torch
         @Point = Point
         @Game = Game
         @Sprite = Sprite
-        @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
         @Shapes = Shapes

@@ -90,7 +90,6 @@ class CollisionManager
 
         @sprite.Emit("NoCollision", new Torch.Event(@game, {}))
 
-
     SimpleCollisionHandle: (event, sink = 1) ->
         offset = event.collisionData
         touching = {left: false, right: false, top: false, bottom: false}
@@ -119,3 +118,6 @@ class CollisionManager
                     touching.bottom = true
 
         return touching
+
+    CastRay: ->
+        # ...

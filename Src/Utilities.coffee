@@ -2,9 +2,6 @@ class Utilities
     constructor: ->
         @Math = new MathUtility()
 
-    Expose: ->
-        window["T"] = @
-
     String: (str) ->
         return new StringUtility(str)
 

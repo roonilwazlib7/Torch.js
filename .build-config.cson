@@ -1,4 +1,4 @@
-Build: 93
+Build: 106
 BuildMinor: 6
 BuildMajor: 0
 Files: [
@@ -21,7 +21,6 @@ Files: [
     "Sprite/Text"
     "Sprite/Shapes"
     "Sprite/SpriteGroup"
-    "Sprite/SpriteGrid"
     "Sprite/Components/Collision/Collider"
     "Sprite/Components/Collision/AABB"
     "Sprite/Components/Collision/Circle"

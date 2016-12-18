@@ -15,7 +15,7 @@ Load = (game) ->
 
     game.Load.Texture("Assets/Art/particle.png", "particle")
     game.Load.Texture("Assets/Art/line.png", "line")
-    
+
     game.Load.File("Maps/test-map-2.map", "map-1")
     game.Load.File("package.json", "package")
     game.Load.Audio("Assets/Audio/shoot.wav", "shoot")
@@ -54,7 +54,12 @@ Update = (game) ->
     if zeldroid.player?
         zeldroid.lin.endPosition = zeldroid.player.position.Clone()
 
-zeldroid.Start(Load, Update, Draw, Init)
+zeldroid.Start
+    Load: Load
+    Update: Update
+    Draw: Draw
+    Init: Init
+    
 window.zeldroid = zeldroid
 
 

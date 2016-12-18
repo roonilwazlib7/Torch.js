@@ -19,6 +19,7 @@ class BodyManager
         @velocity.y += @acceleration.y * @game.Loop.updateDelta
 
         @sprite.rotation += @omega * @game.Loop.updateDelta
+        @sprite.omega += @alpha * @game.Loop.updateDelta
 
     Debug: (color = "red") ->
         @DEBUG = color

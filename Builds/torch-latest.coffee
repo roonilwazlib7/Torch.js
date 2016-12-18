@@ -2,9 +2,6 @@ class Utilities
     constructor: ->
         @Math = new MathUtility()
 
-    Expose: ->
-        window["T"] = @
-
     String: (str) ->
         return new StringUtility(str)
 
@@ -656,6 +653,7 @@ class BodyManager
         @velocity.y += @acceleration.y * @game.Loop.updateDelta
 
         @sprite.rotation += @omega * @game.Loop.updateDelta
+        @sprite.omega += @alpha * @game.Loop.updateDelta
 
     Debug: (color = "red") ->
         @DEBUG = color
@@ -761,8 +759,41 @@ class EffectManager
     mask: null
 
     constructor: (@sprite) ->
-        @tint = {color: null, opacity: 0.5}
-        @mask = {texture: null, in: false, out: false} # destination-in, destination-out
+        @tint = new EffectComponent.Tint()
+        @mask = new EffectComponent.Mask()
+
+
+# a bunch of little effects containers
+EffectComponent = {}
+
+class EffectComponent.Tint
+    _color: null
+    _opacity: 0.5
+
+    @property 'color',
+        get: -> return @_color
+        set: (value) -> @_color = value
+
+    @property 'opacity',
+        get: -> return @_opacity
+        set: (value) -> @_opacity = value
+
+class EffectComponent.Mask
+    _texture: null
+    _in: false
+    _out: false
+    # destination-in, destination-out
+    @property 'texture',
+        get: -> return @_texture
+        set: (value) -> @_texture = value
+
+    @property 'in',
+        get: -> return @_in
+        set: (value) -> @_in = value
+
+    @property 'out',
+        get: -> return @_out
+        set: (value) -> @_out = value
 
 class StateMachineManager
     constructor: (@sprite) ->
@@ -1166,10 +1197,6 @@ class Sprite
         else if @DrawTexture
             return @DrawTexture
 
-    Clone: (args...) ->
-        proto = @constructor
-        return new proto(args...)
-
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
@@ -1187,11 +1214,6 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new CollisionDetector(@, otherSprite)
-###
-gonna kill this...
-###
-class GhostSprite extends Sprite
-    GHOST_SPRITE: true
 
 if document?
     _measureCanvas = document.createElement("CANVAS")
@@ -1395,6 +1417,9 @@ class Shapes.Line extends Sprite
 
         Util.Object(@).Extend(config)
 
+class Shapes.Box extends Sprite
+    constructor: (game, x, y, width, height, fillColor = "black", strokeColor = "black") ->
+
 class SpriteGroup
     constructor: (@sprites = [], @game) ->
         for sprite in @sprites
@@ -1439,24 +1464,6 @@ class SpriteGroup
     ToggleFixed: ->
         for sprite in @sprites then sprite.ToggleFixed()
         return @
-
-class SpriteGrid
-    constructor: (@game, @gridXml) ->
-        @ParseXml()
-
-    ParseXml: ->
-        parser = new DOMParser()
-        xmlDoc = parser.parseFromString(@gridXml, "text/xml")
-
-        root = xmlDoc.getElementsByTagName("SpriteGrid")[0]
-
-        if root is null
-            @game.FatalError("Unable to parse SpriteGrid XML, no SpriteGrid tag")
-
-        sprites = root.getElementsByTagName("Sprite")
-
-        #for sprite in sprites
-            # TODO make stuff happen here
 
 class CollisionDetector
     constructor: (@sprite, @otherSprite) ->
@@ -1592,7 +1599,6 @@ class CollisionManager
 
         @sprite.Emit("NoCollision", new Torch.Event(@game, {}))
 
-
     SimpleCollisionHandle: (event, sink = 1) ->
         offset = event.collisionData
         touching = {left: false, right: false, top: false, bottom: false}
@@ -1621,6 +1627,9 @@ class CollisionManager
                     touching.bottom = true
 
         return touching
+
+    CastRay: ->
+        # ...
 
 class Loop
     constructor: (@game) ->
@@ -2555,20 +2564,19 @@ class CanvasGame
 
         return @
 
-    Start: (load, update, draw, init) ->
-        if load is undefined
-            @FatalError("Unable to start game '#{@name}' without load function")
-        if update is undefined
-            @FatalError("Unable to start game '#{@name}' without update function")
-        if draw is undefined
-            @FatalError("Unable to start game '#{@name}' without draw function")
-        if init is undefined
-            @FatalError("Unable to start game '#{@name}' without update function")
+    Start: (configObject) ->
+        defaultConfigObject =
+            Load: ->
+            Update: ->
+            Draw: ->
+            Init: ->
 
-        @load = load
-        @update = update
-        @draw = draw
-        @init = init
+        Util.Object( defaultConfigObject ).Extend(configObject)
+
+        @load = defaultConfigObject.Load
+        @update = defaultConfigObject.Update
+        @draw = defaultConfigObject.Draw
+        @init = defaultConfigObject.Init
 
         @load(@)
 
@@ -3123,7 +3131,6 @@ class Torch
         @Point = Point
         @Game = Game
         @Sprite = Sprite
-        @SpriteGrid = SpriteGrid
         @SpriteGroup = SpriteGroup
         @Text = Text
         @Shapes = Shapes
@@ -3210,4 +3217,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.93'
+Torch::version = '0.6.106'

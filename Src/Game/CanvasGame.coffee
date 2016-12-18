@@ -74,20 +74,19 @@ class CanvasGame
 
         return @
 
-    Start: (load, update, draw, init) ->
-        if load is undefined
-            @FatalError("Unable to start game '#{@name}' without load function")
-        if update is undefined
-            @FatalError("Unable to start game '#{@name}' without update function")
-        if draw is undefined
-            @FatalError("Unable to start game '#{@name}' without draw function")
-        if init is undefined
-            @FatalError("Unable to start game '#{@name}' without update function")
+    Start: (configObject) ->
+        defaultConfigObject =
+            Load: ->
+            Update: ->
+            Draw: ->
+            Init: ->
 
-        @load = load
-        @update = update
-        @draw = draw
-        @init = init
+        Util.Object( defaultConfigObject ).Extend(configObject)
+
+        @load = defaultConfigObject.Load
+        @update = defaultConfigObject.Update
+        @draw = defaultConfigObject.Draw
+        @init = defaultConfigObject.Init
 
         @load(@)
 

@@ -75,10 +75,6 @@ class Sprite
         else if @DrawTexture
             return @DrawTexture
 
-    Clone: (args...) ->
-        proto = @constructor
-        return new proto(args...)
-
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
@@ -96,8 +92,3 @@ class Sprite
 
     CollidesWith: (otherSprite) ->
         return new CollisionDetector(@, otherSprite)
-###
-gonna kill this...
-###
-class GhostSprite extends Sprite
-    GHOST_SPRITE: true
