@@ -1,5 +1,8 @@
 class Load
+    @MixIn EventDispatcher
+
     constructor: (@game) ->
+        @InitEventDispatch()
         @game.Assets =
             game: @game
             GetTexture: (id) -> return @game.Assets.Textures[id]

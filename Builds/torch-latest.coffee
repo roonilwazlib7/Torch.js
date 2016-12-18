@@ -1689,6 +1689,8 @@ class Loop
         @AdvanceFrame(0)
 
 class Load
+    @MixIn EventDispatcher
+
     constructor: (@game) ->
         @game.Assets =
             game: @game
@@ -3217,4 +3219,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.106'
+Torch::version = '0.6.108'
