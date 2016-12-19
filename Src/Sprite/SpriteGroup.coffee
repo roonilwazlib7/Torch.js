@@ -1,4 +1,4 @@
-class SpriteGroup
+TorchModule class SpriteGroup
     constructor: (@sprites = [], @game) ->
         for sprite in @sprites
             sprite.anchorX = sprite.Rectangle.x

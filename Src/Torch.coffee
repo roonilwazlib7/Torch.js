@@ -84,25 +84,11 @@ class Torch
         @Types = Util.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
         @Easing = Util.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 
-        @Event = Event
-        @EventDispatcher = EventDispatcher
-        @Trashable = Trashable
-
         @Util = Util
-
-        # all the modules we want exposed
-        @Color = Color
-        @DebugConsole = DebugConsole
-        @StateMachine = StateMachine
-        @Rectangle = Rectangle
-        @Vector = Vector
-        @Point = Point
-        @Game = Game
-        @Sprite = Sprite
-        @SpriteGroup = SpriteGroup
-        @Text = Text
-        @Shapes = Shapes
         @Electron = new Electron()
+
+        for mod in TorchModules
+            @[mod.name] = mod.mod
 
     @FatalError: (error) ->
         return if @fatal
@@ -133,53 +119,5 @@ class Torch
 
     DumpErrors: ->
         @DUMP_ERRORS = true
-
-    DisableConsoleWarnings: ->
-        console.warn = ->
-
-    Assert: (expression, errorTag = "Assertation Failed") ->
-        if not expression
-            Torch.FatalError(errorTag)
-
-    TypeOf: (obj) ->
-
-        objTypes = []
-
-        objTypes.push(obj.__torch__) if obj.__torch__ isnt undefined
-
-
-        typeString = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-
-        switch typeString
-            when "string"
-                objTypes.push(Torch.Types.String)
-            when "number"
-                objTypes.push(Torch.Types.Number)
-            when "object"
-                objTypes.push(Torch.Types.Object)
-            when "array"
-                objTypes.push(Torch.Types.Array)
-            when "function"
-                objTypes.push(Torch.Types.Function)
-            else
-                objTypes.push(Torch.Types.Null)
-
-        return objTypes
-
-    Is = (obj, torchType) ->
-        return Torch.TypeOf(obj).indexOf(torchType) isnt -1
-
-    ExtendObject: (objectToExtend, newObject) ->
-        for key,value of newObject
-            objectToExtend[key] = value
-
-    ExtendProperties: (Class, properties...) ->
-        for prop in properties
-            keyProp = prop.unCapitalize()
-            func = (arg) ->
-                return @[keyProp] if arg is undefined
-                @[keyProp] = arg
-                return @
-            Class.prototype[prop] = func
 
 exports.Torch = new Torch()

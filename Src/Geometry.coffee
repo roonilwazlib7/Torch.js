@@ -1,4 +1,4 @@
-class Rectangle
+TorchModule class Rectangle
     constructor: (@x, @y, @width, @height) ->
         @z = 0
 
@@ -44,7 +44,7 @@ class Rectangle
         @x = x
         @y = y
 
-class Vector
+TorchModule class Vector
     #__torch__: Torch.Types.Vector
     x: null
     y: null
@@ -103,8 +103,7 @@ class Vector
     IsSameDirection: (v) ->
         return @DotProduct(v) > 0
 
-
-class Point
+TorchModule class Point
     constructor: (@x, @y, @z = 0) ->
 
     Apply: (point) ->

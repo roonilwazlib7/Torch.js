@@ -41,7 +41,7 @@ class CanvasRenderer
         canvas.restore()
 
     RenderImageSprite: (drawRec) ->
-        if @sprite.DrawTexture
+        if @sprite.DrawTexture?
             frame = @sprite.DrawTexture
             params = frame.drawParams
 

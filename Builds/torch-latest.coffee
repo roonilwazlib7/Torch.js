@@ -1,3 +1,14 @@
+# Stuff used throughout Torch
+
+# this is the first file, so any special containers should be declared here
+TorchModules = [] # public pieces of torch, i.e Torch.Sprite, Torch.Game
+TorchModule = (mod, optionalName) ->
+    name = mod.name
+    if optionalName?
+        name = optionalName
+        
+    TorchModules.push({name: name, mod: mod})
+
 class Utilities
     constructor: ->
         @Math = new MathUtility()
@@ -501,7 +512,7 @@ class Trashable
         @trash = true
         return @
 
-class DebugConsole
+TorchModule class DebugConsole
     enabled: false
     console: null
     consoleInput: null
@@ -1086,7 +1097,7 @@ class CanvasRenderer
         canvas.restore()
 
     RenderImageSprite: (drawRec) ->
-        if @sprite.DrawTexture
+        if @sprite.DrawTexture?
             frame = @sprite.DrawTexture
             params = frame.drawParams
 
@@ -1120,7 +1131,7 @@ class CanvasRenderer
 
         @game.canvas.restore()
 
-class Sprite
+TorchModule class Sprite
     torch_render_type: "Image"
     Sprite.MixIn(EventDispatcher)
           .MixIn(Trashable)
@@ -1188,16 +1199,6 @@ class Sprite
     Draw: ->
         @renderer.Draw()
 
-    GetCurrentDraw: ->
-        if @TexturePack
-            return @TexturePackAnimation.GetCurrentFrame()
-
-        else if @TextureSheet
-            return @TextureSheetAnimation.GetCurrentFrame()
-
-        else if @DrawTexture
-            return @DrawTexture
-
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)
 
@@ -1228,7 +1229,7 @@ else
     _measureCanvas =
         getContext: ->
 
-class Text extends Sprite
+TorchModule class Text extends Sprite
     TEXT: true
     @measureCanvas: _measureCanvas.getContext("2d")
 
@@ -1320,7 +1321,9 @@ class Text extends Sprite
 ###
     We need to have circles, rectangles, lines, and polys
 ###
-Shapes = {}
+Shapes = {name: "Shapes"}
+
+TorchModule Shapes
 
 class Shapes.Circle extends Sprite
     _EXPERIMENTAL_OPTIMAZATION: true
@@ -1425,7 +1428,7 @@ class Shapes.Line extends Sprite
 class Shapes.Box extends Sprite
     constructor: (game, x, y, width, height, fillColor = "black", strokeColor = "black") ->
 
-class SpriteGroup
+TorchModule class SpriteGroup
     constructor: (@sprites = [], @game) ->
         for sprite in @sprites
             sprite.anchorX = sprite.Rectangle.x
@@ -2835,7 +2838,9 @@ class Game
 
 Game = CanvasGame
 
-class StateMachine
+TorchModule Game, "Game"
+
+TorchModule class StateMachine
     constructor: (@obj) ->
         @currentState = null
         @states = {}
@@ -2869,7 +2874,7 @@ class StateMachine
 class State
     constructor: (@Execute, @Start, @End) ->
 
-class Color
+TorchModule class Color
     hex: null
     r: null
     g: null
@@ -2922,7 +2927,7 @@ class Electron
         Torch.ELECTRON = true
         Torch.fs = require("fs")
 
-class Rectangle
+TorchModule class Rectangle
     constructor: (@x, @y, @width, @height) ->
         @z = 0
 
@@ -2968,7 +2973,7 @@ class Rectangle
         @x = x
         @y = y
 
-class Vector
+TorchModule class Vector
     #__torch__: Torch.Types.Vector
     x: null
     y: null
@@ -3027,8 +3032,7 @@ class Vector
     IsSameDirection: (v) ->
         return @DotProduct(v) > 0
 
-
-class Point
+TorchModule class Point
     constructor: (@x, @y, @z = 0) ->
 
     Apply: (point) ->
@@ -3124,25 +3128,11 @@ class Torch
         @Types = Util.Enum("String", "Number", "Object", "Array", "Function", "Sprite", "Game", "Null")
         @Easing = Util.Enum("Linear", "Square", "Cube", "InverseSquare", "InverseCube", "Smooth", "SmoothSquare", "SmoothCube", "Sine", "InverseSine")
 
-        @Event = Event
-        @EventDispatcher = EventDispatcher
-        @Trashable = Trashable
-
         @Util = Util
-
-        # all the modules we want exposed
-        @Color = Color
-        @DebugConsole = DebugConsole
-        @StateMachine = StateMachine
-        @Rectangle = Rectangle
-        @Vector = Vector
-        @Point = Point
-        @Game = Game
-        @Sprite = Sprite
-        @SpriteGroup = SpriteGroup
-        @Text = Text
-        @Shapes = Shapes
         @Electron = new Electron()
+
+        for mod in TorchModules
+            @[mod.name] = mod.mod
 
     @FatalError: (error) ->
         return if @fatal
@@ -3174,55 +3164,7 @@ class Torch
     DumpErrors: ->
         @DUMP_ERRORS = true
 
-    DisableConsoleWarnings: ->
-        console.warn = ->
-
-    Assert: (expression, errorTag = "Assertation Failed") ->
-        if not expression
-            Torch.FatalError(errorTag)
-
-    TypeOf: (obj) ->
-
-        objTypes = []
-
-        objTypes.push(obj.__torch__) if obj.__torch__ isnt undefined
-
-
-        typeString = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-
-        switch typeString
-            when "string"
-                objTypes.push(Torch.Types.String)
-            when "number"
-                objTypes.push(Torch.Types.Number)
-            when "object"
-                objTypes.push(Torch.Types.Object)
-            when "array"
-                objTypes.push(Torch.Types.Array)
-            when "function"
-                objTypes.push(Torch.Types.Function)
-            else
-                objTypes.push(Torch.Types.Null)
-
-        return objTypes
-
-    Is = (obj, torchType) ->
-        return Torch.TypeOf(obj).indexOf(torchType) isnt -1
-
-    ExtendObject: (objectToExtend, newObject) ->
-        for key,value of newObject
-            objectToExtend[key] = value
-
-    ExtendProperties: (Class, properties...) ->
-        for prop in properties
-            keyProp = prop.unCapitalize()
-            func = (arg) ->
-                return @[keyProp] if arg is undefined
-                @[keyProp] = arg
-                return @
-            Class.prototype[prop] = func
-
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.110'
+Torch::version = '0.6.134'

@@ -1,4 +1,4 @@
-class Sprite
+TorchModule class Sprite
     torch_render_type: "Image"
     Sprite.MixIn(EventDispatcher)
           .MixIn(Trashable)
@@ -65,16 +65,6 @@ class Sprite
 
     Draw: ->
         @renderer.Draw()
-
-    GetCurrentDraw: ->
-        if @TexturePack
-            return @TexturePackAnimation.GetCurrentFrame()
-
-        else if @TextureSheet
-            return @TextureSheetAnimation.GetCurrentFrame()
-
-        else if @DrawTexture
-            return @DrawTexture
 
     NotSelf: (otherSprite) ->
         return (otherSprite._torch_uid isnt @_torch_uid)

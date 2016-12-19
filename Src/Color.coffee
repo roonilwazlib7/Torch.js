@@ -1,4 +1,4 @@
-class Color
+TorchModule class Color
     hex: null
     r: null
     g: null

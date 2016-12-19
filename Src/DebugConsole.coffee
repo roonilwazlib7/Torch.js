@@ -1,4 +1,4 @@
-class DebugConsole
+TorchModule class DebugConsole
     enabled: false
     console: null
     consoleInput: null

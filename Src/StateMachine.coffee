@@ -1,4 +1,4 @@
-class StateMachine
+TorchModule class StateMachine
     constructor: (@obj) ->
         @currentState = null
         @states = {}

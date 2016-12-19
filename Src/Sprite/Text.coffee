@@ -6,7 +6,7 @@ else
     _measureCanvas =
         getContext: ->
 
-class Text extends Sprite
+TorchModule class Text extends Sprite
     TEXT: true
     @measureCanvas: _measureCanvas.getContext("2d")
 

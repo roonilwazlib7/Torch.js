@@ -1,6 +1,5 @@
 Torch.StrictErrors()
 Torch.DumpErrors()
-Torch.DisableConsoleWarnings()
 
 zeldroid = new Torch.Game("container", "fill", "fill", "Zeldroid", Torch.CANVAS)
 zeldroid.GetScale = ->
@@ -59,7 +58,7 @@ zeldroid.Start
     Update: Update
     Draw: Draw
     Init: Init
-    
+
 window.zeldroid = zeldroid
 
 

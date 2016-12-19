@@ -14,8 +14,8 @@ class Blob extends Enemy
     identifier: 201
 
 
-Torch.ExtendObject MapPieces,
-    Blob: Blob
+Torch.Util.Object(MapPieces).Extend(Blob: Blob)
+
 
 
 exports.Enemy = Enemy

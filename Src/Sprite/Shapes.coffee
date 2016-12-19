@@ -1,7 +1,9 @@
 ###
     We need to have circles, rectangles, lines, and polys
 ###
-Shapes = {}
+Shapes = {name: "Shapes"}
+
+TorchModule Shapes
 
 class Shapes.Circle extends Sprite
     _EXPERIMENTAL_OPTIMAZATION: true
