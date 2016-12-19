@@ -112,3 +112,19 @@ TorchModule class Point
 
     Clone: ->
         return new Point(@x, @y)
+
+    @GetCenterPoint: (points) ->
+        maxX = 0
+        maxY = 0
+
+        minY = Infinity
+        minX = Infinity
+
+        for point in points
+            if point.x > maxX then maxX = point.x
+            if point.y > maxY then maxY = point.y
+
+            if point.x < minX then minX = point.x
+            if point.y < minY then minY = point.y
+
+        return new Point( (maxX - minX) * 0.5, ( maxY - minY) * 0.5)

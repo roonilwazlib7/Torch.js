@@ -1071,12 +1071,17 @@ class CanvasRenderer
             drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
-            #return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
         switch @sprite.torch_render_type
             when "Image"
                 @RenderImageSprite(drawRec)
             when "Line"
                 @RenderLineSprite(drawRec)
+            when "Box"
+                @RenderBoxSprite(drawRec)
+            when "Circle"
+                @RenderCircleSprite(drawRec)
+            when "Polygon"
+                @RenderPolygonSprite(drawRec)
 
     PreRender: (drawRec)->
         canvas = @game.canvas
@@ -1128,6 +1133,64 @@ class CanvasRenderer
         @game.canvas.moveTo(drawRec.x, drawRec.y)
         @game.canvas.lineTo( @sprite.endPosition.x + @game.Camera.position.x, @sprite.endPosition.y + @game.Camera.position.y )
         @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderCircleSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+
+        @game.canvas.beginPath()
+
+        @game.canvas.arc(drawRec.x, drawRec.y, @sprite.radius, @sprite.startAngle, @sprite.endAngle, @sprite.drawDirection is "counterclockwise")
+
+        @game.canvas.fill()
+        @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderBoxSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+
+        @game.canvas.beginPath()
+
+        @game.canvas.rect(drawRec.x, drawRec.y, @sprite.width, @sprite.height)
+
+        @game.canvas.fill()
+        @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderPolygonSprite: (drawRec) ->
+        @game.canvas.save()
+
+        centerPoint = Point.GetCenterPoint(@sprite.points)
+
+        @game.canvas.translate(drawRec.x + centerPoint.x / 2, drawRec.y + centerPoint.y / 2)
+
+        @game.canvas.globalAlpha = @sprite.opacity
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+        @game.canvas.rotate(@sprite.rotation)
+
+        @game.canvas.beginPath()
+        @game.canvas.moveTo(0, 0)
+
+        for point in @sprite.points
+            @game.canvas.lineTo(point.x, point.y)
+
+        @game.canvas.closePath()
+        @game.canvas.stroke()
+        @game.canvas.fill()
 
         @game.canvas.restore()
 
@@ -1326,93 +1389,22 @@ Shapes = {name: "Shapes"}
 TorchModule Shapes
 
 class Shapes.Circle extends Sprite
-    _EXPERIMENTAL_OPTIMAZATION: true
-    _radius: 0
-    _fillColor: "black"
-    _strokeColor: "black"
-    _startAngle: 0
-    _endAngle: 2 * Math.PI
-    _drawDirection: "clockwise" # or counterclockwise
+    torch_render_type: "Circle"
+    radius: 0
+    fillColor: "black"
+    strokeColor: "black"
+    startAngle: 0
+    endAngle: 2 * Math.PI
+    drawDirection: "clockwise" # or counterclockwise
 
     constructor: (game, x, y, radius, fillColor = "black", strokeColor = "black")->
         @InitSprite(game, x, y)
-        @_radius = radius
-        @_fillColor = fillColor
-        @_strokeColor = strokeColor
-        @Render()
-
-    Render: ->
-        return if not @_EXPERIMENTAL_OPTIMAZATION
-        canvasNode = document.createElement("CANVAS")
-        canvas = canvasNode.getContext("2d")
-
-        canvas.strokeStyle = @_strokeColor
-        canvas.fillStyle = @_fillColor
-
-        canvas.beginPath()
-
-        canvas.arc(@_radius, @_radius, @_radius, @_startAngle, @_endAngle, @_drawDirection is "counterclockwise")
-
-        canvas.fill()
-        canvas.stroke()
-
-        image = new Image()
-        image.src = canvasNode.toDataURL()
-        image.onload = =>
-            @Bind.Texture(image)
-
-    Draw: ->
-        if @_EXPERIMENTAL_OPTIMAZATION
-            super()
-        else
-            # draw it natively
-
-    # we need properties to it re-renders everytime a property is changed
-
-    @property 'radius',
-        get: ->
-            return @_radius
-        set: (value) ->
-            @_radius = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'fillColor',
-        get: ->
-            return @_fillColor
-        set: (value) ->
-            @_fillColor = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'strokeColor',
-        get: ->
-            return @_strokeColor
-        set: (value) ->
-            @_strokeColor = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'startAngle',
-        get: ->
-            return @_startAngle
-        set: (value) ->
-            @_startAngle = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'endAngle',
-        get: ->
-            return @_endAngle
-        set: (value) ->
-            @_endAngle = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'drawDirection',
-        get: ->
-            return @_drawDirection
-        set: (value) ->
-            @_drawDirection = value
-            Util.Function( => @Render() ).Defer()
+        @radius = radius
+        @fillColor = fillColor
+        @strokeColor = strokeColor
 
 class Shapes.Line extends Sprite
-    torch_render_type: "Line"
+    torch_render_type: "Line" # render it natively
     color: "black"
     lineWidth: 1
 
@@ -1426,7 +1418,40 @@ class Shapes.Line extends Sprite
         Util.Object(@).Extend(config)
 
 class Shapes.Box extends Sprite
+    torch_render_type: "Box"
+    fillColor: "black"
+    strokeColor: "black"
+    width: 0
+    height: 0
+
     constructor: (game, x, y, width, height, fillColor = "black", strokeColor = "black") ->
+        @InitSprite(game, x, y)
+        @width = width
+        @height = height
+        @fillColor = fillColor
+        @strokeColor = strokeColor
+
+class Shapes.Polygon extends Sprite
+    torch_render_type: "Polygon"
+    constructor: (game, x, y, @points, @fillColor, @strokeColor) ->
+        @InitSprite(game, x, y)
+
+    @Regular: (game, x, y, sides, width) ->
+        angleInterval = (Math.PI * 2) / sides
+        points = []
+        angle = 0
+
+        while angle <= Math.PI * 2
+
+            px = Math.cos(angle) * width
+            py = Math.sin(angle) * width
+
+            points.push( new Point(px,py) )
+
+            angle += angleInterval
+
+
+        return new Shapes.Polygon(game, x, y, points, "black", "black")
 
 TorchModule class SpriteGroup
     constructor: (@sprites = [], @game) ->
@@ -3042,6 +3067,22 @@ TorchModule class Point
     Clone: ->
         return new Point(@x, @y)
 
+    @GetCenterPoint: (points) ->
+        maxX = 0
+        maxY = 0
+
+        minY = Infinity
+        minX = Infinity
+
+        for point in points
+            if point.x > maxX then maxX = point.x
+            if point.y > maxY then maxY = point.y
+
+            if point.x < minX then minX = point.x
+            if point.y < minY then minY = point.y
+
+        return new Point( (maxX - minX) * 0.5, ( maxY - minY) * 0.5)
+
 exports = this # this will either be 'window' for Chrome or
                # 'module' for node
 
@@ -3167,4 +3208,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.134'
+Torch::version = '0.6.191'

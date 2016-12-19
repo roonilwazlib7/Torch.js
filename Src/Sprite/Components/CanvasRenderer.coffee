@@ -15,12 +15,17 @@ class CanvasRenderer
             drawRec.x += @game.Camera.position.x + @game.Hooks.positionTransform.x
             drawRec.y += @game.Camera.position.y + @game.Hooks.positionTransform.y
 
-            #return if not drawRec.Intersects(@game.Camera.Viewport.rectangle)
         switch @sprite.torch_render_type
             when "Image"
                 @RenderImageSprite(drawRec)
             when "Line"
                 @RenderLineSprite(drawRec)
+            when "Box"
+                @RenderBoxSprite(drawRec)
+            when "Circle"
+                @RenderCircleSprite(drawRec)
+            when "Polygon"
+                @RenderPolygonSprite(drawRec)
 
     PreRender: (drawRec)->
         canvas = @game.canvas
@@ -72,5 +77,63 @@ class CanvasRenderer
         @game.canvas.moveTo(drawRec.x, drawRec.y)
         @game.canvas.lineTo( @sprite.endPosition.x + @game.Camera.position.x, @sprite.endPosition.y + @game.Camera.position.y )
         @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderCircleSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+
+        @game.canvas.beginPath()
+
+        @game.canvas.arc(drawRec.x, drawRec.y, @sprite.radius, @sprite.startAngle, @sprite.endAngle, @sprite.drawDirection is "counterclockwise")
+
+        @game.canvas.fill()
+        @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderBoxSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.globalAlpha = @sprite.opacity
+
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+
+        @game.canvas.beginPath()
+
+        @game.canvas.rect(drawRec.x, drawRec.y, @sprite.width, @sprite.height)
+
+        @game.canvas.fill()
+        @game.canvas.stroke()
+
+        @game.canvas.restore()
+
+    RenderPolygonSprite: (drawRec) ->
+        @game.canvas.save()
+
+        centerPoint = Point.GetCenterPoint(@sprite.points)
+
+        @game.canvas.translate(drawRec.x + centerPoint.x / 2, drawRec.y + centerPoint.y / 2)
+
+        @game.canvas.globalAlpha = @sprite.opacity
+        @game.canvas.strokeStyle = @sprite.strokeColor
+        @game.canvas.fillStyle = @sprite.fillColor
+        @game.canvas.rotate(@sprite.rotation)
+
+        @game.canvas.beginPath()
+        @game.canvas.moveTo(0, 0)
+
+        for point in @sprite.points
+            @game.canvas.lineTo(point.x, point.y)
+
+        @game.canvas.closePath()
+        @game.canvas.stroke()
+        @game.canvas.fill()
 
         @game.canvas.restore()

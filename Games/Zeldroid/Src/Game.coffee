@@ -32,17 +32,22 @@ Init = (game) ->
 
     game.player = new Player(game)
     game.mapManager = new MapManager(game)
-    game.hud = new HUD(game)
+    #game.hud = new HUD(game)
 
     color = Torch.Color.Random().GetHtmlString()
-    game.circ = new Torch.Shapes.Circle(game, 50, 50, 25, color, color)
+    game.circ = new Torch.Shapes.Circle(game, 50, 50, 100, color, color)
     game.circ.drawIndex = 1000
+
+    game.box = new Torch.Shapes.Box(game, 125, 50, 150, 100, color, color)
+    game.box.drawIndex = 1000
+
+    game.poly = new Torch.Shapes.Polygon.Regular(game, 500, 500, 6, 100)
 
     game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "black", {lineWidth: 5})
     game.lin.fixed = true
     game.lin.Bind.Texture("line")
 
-    game.mapManager.LoadMap("map-1")
+    #game.mapManager.LoadMap("map-1")
     SetUpConsoleCommands(game)
 
 Draw = (game)->

@@ -6,93 +6,22 @@ Shapes = {name: "Shapes"}
 TorchModule Shapes
 
 class Shapes.Circle extends Sprite
-    _EXPERIMENTAL_OPTIMAZATION: true
-    _radius: 0
-    _fillColor: "black"
-    _strokeColor: "black"
-    _startAngle: 0
-    _endAngle: 2 * Math.PI
-    _drawDirection: "clockwise" # or counterclockwise
+    torch_render_type: "Circle"
+    radius: 0
+    fillColor: "black"
+    strokeColor: "black"
+    startAngle: 0
+    endAngle: 2 * Math.PI
+    drawDirection: "clockwise" # or counterclockwise
 
     constructor: (game, x, y, radius, fillColor = "black", strokeColor = "black")->
         @InitSprite(game, x, y)
-        @_radius = radius
-        @_fillColor = fillColor
-        @_strokeColor = strokeColor
-        @Render()
-
-    Render: ->
-        return if not @_EXPERIMENTAL_OPTIMAZATION
-        canvasNode = document.createElement("CANVAS")
-        canvas = canvasNode.getContext("2d")
-
-        canvas.strokeStyle = @_strokeColor
-        canvas.fillStyle = @_fillColor
-
-        canvas.beginPath()
-
-        canvas.arc(@_radius, @_radius, @_radius, @_startAngle, @_endAngle, @_drawDirection is "counterclockwise")
-
-        canvas.fill()
-        canvas.stroke()
-
-        image = new Image()
-        image.src = canvasNode.toDataURL()
-        image.onload = =>
-            @Bind.Texture(image)
-
-    Draw: ->
-        if @_EXPERIMENTAL_OPTIMAZATION
-            super()
-        else
-            # draw it natively
-
-    # we need properties to it re-renders everytime a property is changed
-
-    @property 'radius',
-        get: ->
-            return @_radius
-        set: (value) ->
-            @_radius = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'fillColor',
-        get: ->
-            return @_fillColor
-        set: (value) ->
-            @_fillColor = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'strokeColor',
-        get: ->
-            return @_strokeColor
-        set: (value) ->
-            @_strokeColor = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'startAngle',
-        get: ->
-            return @_startAngle
-        set: (value) ->
-            @_startAngle = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'endAngle',
-        get: ->
-            return @_endAngle
-        set: (value) ->
-            @_endAngle = value
-            Util.Function( => @Render() ).Defer()
-
-    @property 'drawDirection',
-        get: ->
-            return @_drawDirection
-        set: (value) ->
-            @_drawDirection = value
-            Util.Function( => @Render() ).Defer()
+        @radius = radius
+        @fillColor = fillColor
+        @strokeColor = strokeColor
 
 class Shapes.Line extends Sprite
-    torch_render_type: "Line"
+    torch_render_type: "Line" # render it natively
     color: "black"
     lineWidth: 1
 
@@ -106,4 +35,37 @@ class Shapes.Line extends Sprite
         Util.Object(@).Extend(config)
 
 class Shapes.Box extends Sprite
+    torch_render_type: "Box"
+    fillColor: "black"
+    strokeColor: "black"
+    width: 0
+    height: 0
+
     constructor: (game, x, y, width, height, fillColor = "black", strokeColor = "black") ->
+        @InitSprite(game, x, y)
+        @width = width
+        @height = height
+        @fillColor = fillColor
+        @strokeColor = strokeColor
+
+class Shapes.Polygon extends Sprite
+    torch_render_type: "Polygon"
+    constructor: (game, x, y, @points, @fillColor, @strokeColor) ->
+        @InitSprite(game, x, y)
+
+    @Regular: (game, x, y, sides, width) ->
+        angleInterval = (Math.PI * 2) / sides
+        points = []
+        angle = 0
+
+        while angle <= Math.PI * 2
+
+            px = Math.cos(angle) * width
+            py = Math.sin(angle) * width
+
+            points.push( new Point(px,py) )
+
+            angle += angleInterval
+
+
+        return new Shapes.Polygon(game, x, y, points, "black", "black")
