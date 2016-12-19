@@ -53,7 +53,7 @@ class Shapes.Polygon extends Sprite
     constructor: (game, x, y, @points, @fillColor, @strokeColor) ->
         @InitSprite(game, x, y)
 
-    @Regular: (game, x, y, sides, width) ->
+    @Regular: (game, x, y, sides, width, fillColor, strokeColor) ->
         angleInterval = (Math.PI * 2) / sides
         points = []
         angle = 0
@@ -68,4 +68,7 @@ class Shapes.Polygon extends Sprite
             angle += angleInterval
 
 
-        return new Shapes.Polygon(game, x, y, points, "black", "black")
+        shape = new Shapes.Polygon(game, x, y, points, fillColor, strokeColor)
+        shape.rectangle.width = shape.rectangle.height = width
+
+        return shape

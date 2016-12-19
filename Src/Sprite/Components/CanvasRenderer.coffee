@@ -82,6 +82,7 @@ class CanvasRenderer
 
     RenderCircleSprite: (drawRec) ->
         @game.canvas.save()
+        @game.canvas.translate(drawRec.x + @sprite.radius / 2, drawRec.y + @sprite.radius / 2)
 
         @game.canvas.globalAlpha = @sprite.opacity
 
@@ -90,7 +91,7 @@ class CanvasRenderer
 
         @game.canvas.beginPath()
 
-        @game.canvas.arc(drawRec.x, drawRec.y, @sprite.radius, @sprite.startAngle, @sprite.endAngle, @sprite.drawDirection is "counterclockwise")
+        @game.canvas.arc(0, 0, @sprite.radius, @sprite.startAngle, @sprite.endAngle, @sprite.drawDirection is "counterclockwise")
 
         @game.canvas.fill()
         @game.canvas.stroke()
@@ -99,15 +100,16 @@ class CanvasRenderer
 
     RenderBoxSprite: (drawRec) ->
         @game.canvas.save()
+        @game.canvas.translate(drawRec.x + @sprite.width / 2, drawRec.y + @sprite.height / 2)
 
         @game.canvas.globalAlpha = @sprite.opacity
-
         @game.canvas.strokeStyle = @sprite.strokeColor
         @game.canvas.fillStyle = @sprite.fillColor
+        @game.canvas.rotate(@sprite.rotation)
 
         @game.canvas.beginPath()
 
-        @game.canvas.rect(drawRec.x, drawRec.y, @sprite.width, @sprite.height)
+        @game.canvas.rect(-@sprite.width/2, -@sprite.height/2, @sprite.width, @sprite.height)
 
         @game.canvas.fill()
         @game.canvas.stroke()

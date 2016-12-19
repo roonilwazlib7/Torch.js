@@ -35,13 +35,22 @@ Init = (game) ->
     #game.hud = new HUD(game)
 
     color = Torch.Color.Random().GetHtmlString()
-    game.circ = new Torch.Shapes.Circle(game, 50, 50, 100, color, color)
+    game.circ = new Torch.Shapes.Circle(game, 0, 0, 100, color, color)
     game.circ.drawIndex = 1000
 
-    game.box = new Torch.Shapes.Box(game, 125, 50, 150, 100, color, color)
+    game.box = new Torch.Shapes.Box(game,500, 0, 150, 100, color, color)
     game.box.drawIndex = 1000
+    game.box.Body.omega = 0.001
 
-    game.poly = new Torch.Shapes.Polygon.Regular(game, 500, 500, 6, 100)
+    game.poly = new Torch.Shapes.Polygon.Regular(game, 500, 500, 8, 200, "red", "white")
+
+    stopText = new Torch.Text game, 0, 0,
+        text: "STOP"
+        fontSize: 48
+        color: "white"
+
+    game.poly.Grid.Append(stopText)
+    stopText.Grid.Center()
 
     game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "black", {lineWidth: 5})
     game.lin.fixed = true
