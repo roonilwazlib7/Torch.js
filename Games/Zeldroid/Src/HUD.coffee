@@ -23,6 +23,12 @@ class HUD
 
         @terminal = new Terminal(@game)
 
+        @minimap = new Torch.Sprite(@game, 0, 0)
+        @minimap.Bind.Texture("minimap")
+        @minimap.Size.Scale(8,8)
+        @minimap.Grid.Margin(300, 0)
+                     .CenterVertical()
+
         @healthBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "green", "green")
         @healthBar.Grid.Align("top", "right")
         @healthBar.Grid.Margin(barLeftMargin, barTopMargin)
@@ -53,6 +59,7 @@ class HUD
                             .Append(@healthBar)
                             .Append(@psycheBar)
                             .Append(@compass)
+                            .Append(@minimap)
 
         @game.Camera.position.y += @hud_background.Size.height
 
@@ -60,6 +67,7 @@ class HUD
         game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
         game.Load.Texture("Assets/Art/terminal.png", "terminal")
         game.Load.Texture("Assets/Art/compass.png", "compass")
+        game.Load.Texture("Assets/Art/minimap_design.png", "minimap")
 
     BindEvents: ->
 
