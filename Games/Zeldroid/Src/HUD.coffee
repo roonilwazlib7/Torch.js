@@ -76,7 +76,7 @@ class Terminal extends Torch.Sprite
     constructor: (game) ->
         @InitSprite(game, 0, 0)
         @Bind.Texture("terminal")
-        @Size.Scale(2.5, 1.5)
+        @Size.Scale(3.5, 1.5)
 
         @Grid.Center()
              .CenterVertical()
