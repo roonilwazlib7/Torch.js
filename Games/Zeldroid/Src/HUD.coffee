@@ -23,11 +23,7 @@ class HUD
 
         @terminal = new Terminal(@game)
 
-        @minimap = new Torch.Sprite(@game, 0, 0)
-        @minimap.Bind.Texture("minimap")
-        @minimap.Size.Scale(8,8)
-        @minimap.Grid.Margin(300, 0)
-                     .CenterVertical()
+        @minimap = new Minimap(@game)
 
         @healthBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "green", "green")
         @healthBar.Grid.Align("top", "right")
@@ -143,6 +139,20 @@ class Compass extends Torch.Sprite
 
         # TODO:
         # Get Compass to rotate with player movement
+
+class Minimap extends Torch.Sprite
+    constructor: (game) ->
+        @InitSprite(game, 0, 0)
+        @Bind.Texture("minimap")
+        @Size.Scale(8,8)
+        @Grid.Margin(300, 0)
+            .CenterVertical()
+
+    # TODO:
+    # Pretty much everything
+    # I think every map piece (non-enemy)
+    # should define a color like minimapColor
+    # and the minimap would compose itself out of those colors
 
 
 
