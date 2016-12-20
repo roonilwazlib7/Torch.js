@@ -46,6 +46,8 @@ class GridManager
         sprite.drawIndex = @sprite.drawIndex + 1
         sprite.fixed = @sprite.fixed
 
+        return @
+
     Parent: ->
         return @parent
 

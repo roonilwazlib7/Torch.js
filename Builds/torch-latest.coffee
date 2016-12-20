@@ -875,6 +875,8 @@ class GridManager
         sprite.drawIndex = @sprite.drawIndex + 1
         sprite.fixed = @sprite.fixed
 
+        return @
+
     Parent: ->
         return @parent
 
@@ -3233,4 +3235,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.208'
+Torch::version = '0.6.211'
