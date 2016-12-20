@@ -4,7 +4,7 @@ class HUD
         barWidth = 300
         barHeight = 50
         barLeftMargin = -50
-        barTopMargin = 25
+        barTopMargin = 35
 
         @build = JSON.parse(@game.File("package"))
         @hud_background = new Torch.Sprite(@game, 0, 0)
@@ -25,14 +25,28 @@ class HUD
         @terminal.Grid.Center()
         @terminal.Grid.CenterVertical()
 
-        @healthBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "green", "white")
+        @healthBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "green", "green")
         @healthBar.Grid.Align("top", "right")
         @healthBar.Grid.Margin(barLeftMargin, barTopMargin)
 
-        @psycheBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "purple", "white")
+        @psycheBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "purple", "purple")
         @psycheBar.Grid.Align("bottom", "right")
         @psycheBar.Grid.Margin(barLeftMargin, -barTopMargin)
 
+        healthText = new Torch.Text @game, 0, 0,
+            text: "HEALTH"
+            font: "Impact"
+            fontSize: 32
+            color: "white"
+
+        psycheText = new Torch.Text @game, 0, 0,
+            text: "PSYCHE"
+            font: "Impact"
+            fontSize: 32
+            color: "white"
+
+        @healthBar.Grid.Append(healthText)
+        @psycheBar.Grid.Append(psycheText)
 
         @hud_background.Grid.Append(@build_info)
                             .Append(@terminal)
