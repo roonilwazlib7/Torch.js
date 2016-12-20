@@ -19,10 +19,7 @@ class HUD
             text: "Zeldroid-dev-build:#{@build.GameConfig.Build}"
             color: "red"
 
-        @compass = new Torch.Sprite(@game, 0, 0)
-        @compass.Bind.Texture("compass")
-        @compass.Grid.CenterVertical()
-        @compass.Size.Scale(1,1)
+        @compass = new Compass(@game)
 
         @terminal = new Terminal(@game)
 
@@ -100,6 +97,8 @@ class Terminal extends Torch.Sprite
         super()
 
     DisplayText: (text) ->
+        # TODO:
+        # Give the displayed text a blink effect
         @currentTextOutput?.Trash()
 
         @currentTextOutput = textSprite = new Torch.Text @game, 0, 0,
@@ -121,6 +120,22 @@ class Terminal extends Torch.Sprite
             opacity: 1
 
         @Grid.Append(textSprite)
+
+class Compass extends Torch.Sprite
+    constructor: (game) ->
+        @InitSprite(game, 0, 0)
+        @Bind.Texture("compass")
+        @Grid.CenterVertical()
+             .Margin(50,0)
+
+        @Body.omega = 0.0005
+
+    Update: ->
+        super()
+
+        # TODO:
+        # Get Compass to rotate with player movement
+
 
 
 exports.HUD = HUD
