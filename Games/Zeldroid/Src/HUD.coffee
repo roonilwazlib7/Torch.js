@@ -19,6 +19,11 @@ class HUD
             text: "Zeldroid-dev-build:#{@build.GameConfig.Build}"
             color: "red"
 
+        @compass = new Torch.Sprite(@game, 0, 0)
+        @compass.Bind.Texture("compass")
+        @compass.Grid.CenterVertical()
+        @compass.Size.Scale(1,1)
+
         @terminal = new Terminal(@game)
 
         @healthBar = new Torch.Shapes.Box(@game, 0, 0, barWidth, barHeight, "green", "green")
@@ -50,12 +55,14 @@ class HUD
                             .Append(@terminal)
                             .Append(@healthBar)
                             .Append(@psycheBar)
+                            .Append(@compass)
 
         @game.Camera.position.y += @hud_background.Size.height
 
     @Load: (game) ->
         game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
         game.Load.Texture("Assets/Art/terminal.png", "terminal")
+        game.Load.Texture("Assets/Art/compass.png", "compass")
 
     BindEvents: ->
 
