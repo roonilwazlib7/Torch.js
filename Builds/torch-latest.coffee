@@ -859,16 +859,20 @@ class GridManager
                     @alignTop = true
                 when "bottom"
                     @alignBottom = true
+        return @
 
     Center: (turnOn = true)->
         @centered = turnOn
+        return @
 
     CenterVertical: (turnOn = true)->
         @centerVertical = turnOn
+        return @
 
     Margin: (left = 0, top = 0) ->
         @margin.left = left
         @margin.top = top
+        return @
 
     Append: (sprite) ->
         sprite.Grid.parent = @sprite
@@ -3235,4 +3239,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.214'
+Torch::version = '0.6.222'
