@@ -77,9 +77,24 @@ class Terminal extends Torch.Sprite
         @Grid.Center()
              .CenterVertical()
 
+        # dev purposes, showing stuff on the dev console
+        c = 1
+        @DisplayText("Welcome to Zeldroid")
+
+        @game.Timer.SetScheduledEvent 5000, =>
+            if c % 2 is 0
+                @DisplayText("Welcome to Zeldroid!")
+            else
+                d = new Date()
+                @DisplayText("It is #{d.getHours()}:#{d.getMinutes()}")
+            c += 1
+
+    Update: ->
+        super()
+
     DisplayText: (text) ->
         @currentTextOutput?.Trash()
-        
+
         @currentTextOutput = textSprite = new Torch.Text @game, 0, 0,
             text: text
             font: "Impact"
