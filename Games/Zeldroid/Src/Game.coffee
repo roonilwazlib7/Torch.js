@@ -52,8 +52,9 @@ window.zeldroid = zeldroid
 
 # initialization...
 SetUpConsoleCommands = (game) ->
-    game.debugCondole = new Torch.DebugConsole(game)
-    game.debugCondole.AddCommand "SPAWN", (tConsole, piece, x, y) ->
+    game.debugConsole = new Torch.DebugConsole(game)
+
+    game.debugConsole.AddCommand "SPAWN", (tConsole, piece, x, y) ->
         p = new MapPieces[piece](game, ["0", "0"])
         p.position.x = parseInt(x)
         p.position.y = parseInt(y)
@@ -62,7 +63,7 @@ SetUpConsoleCommands = (game) ->
 
         console.log(p)
 
-    game.debugCondole.AddCommand "UCAM", (tConsole) ->
+    game.debugConsole.AddCommand "UCAM", (tConsole) ->
         camVelocity = 1
         task =
             _torch_add: "Task"
@@ -76,3 +77,7 @@ SetUpConsoleCommands = (game) ->
                 if game.Keys.DownArrow.down
                     game.Camera.position.y -= camVelocity * game.Loop.updateDelta
         game.Task(task)
+
+    game.debugConsole.AddCommand "SAY", (tConsole, thingToSay) ->
+        game.hud.terminal.DisplayText(thingToSay)
+        tConsole.Output("Said: #{thingToSay}")
