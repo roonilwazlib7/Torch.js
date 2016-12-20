@@ -2,6 +2,7 @@ class Player extends Torch.Sprite
     VELOCITY: 0.4
     stoppped: false
     touching: null
+    health: 100
     constructor: (game) ->
         @InitSprite(game, 0, 0)
         @Bind.Texture("player-right-idle")
@@ -23,6 +24,7 @@ class Player extends Torch.Sprite
 
         @game.Camera.JerkFollow(@)
 
+        # this event still triggers even when sprite is destroyed
         @game.Keys.Space.On "KeyUp", =>
             @audioPlayer.PlaySound("shoot")
             b = new PlayerBullet(@)
@@ -43,6 +45,8 @@ class Player extends Torch.Sprite
 
     Update: ->
         super()
+
+        @Trash() if @health <= 0
 
     SetUpCollisions: ->
         @Collisions.Monitor()

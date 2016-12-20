@@ -81,3 +81,7 @@ SetUpConsoleCommands = (game) ->
     game.debugConsole.AddCommand "SAY", (tConsole, thingToSay) ->
         game.hud.terminal.DisplayText(thingToSay)
         tConsole.Output("Said: #{thingToSay}")
+
+    game.debugConsole.AddCommand "HURTPLAYER", (tConsole, howMuch) ->
+        howMuch = parseInt(howMuch)
+        game.player.health -= howMuch

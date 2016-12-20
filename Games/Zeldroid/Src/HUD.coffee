@@ -1,6 +1,9 @@
 exports = this
 class HUD
     constructor: (@game) ->
+        # TODO:
+        # clean this crap up
+        
         barWidth = 300
         barHeight = 50
         barLeftMargin = -100
