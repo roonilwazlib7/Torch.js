@@ -10,9 +10,14 @@ class GridManager
     alignTop: false
     alignBottom: false
 
+    margin: null
+
     constructor: (@sprite) ->
         @position = new Point(0,0)
         @children = []
+        @margin =
+            left: 0
+            top: 0
 
     Align: (positionTags...) ->
         for tag in positionTags
@@ -31,6 +36,10 @@ class GridManager
 
     CenterVertical: (turnOn = true)->
         @centerVertical = turnOn
+
+    Margin: (left = 0, top = 0) ->
+        @margin.left = left
+        @margin.top = top
 
     Append: (sprite) ->
         sprite.Grid.parent = @sprite
@@ -103,6 +112,9 @@ class GridManager
         basePoint = @ApplyCentering(basePoint)
         basePoint = @ApplyAlignment(basePoint)
         basePoint.Apply(@position)
+
+        basePoint.x += @margin.left
+        basePoint.y += @margin.top
 
         return basePoint;
 

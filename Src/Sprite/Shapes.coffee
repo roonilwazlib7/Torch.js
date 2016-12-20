@@ -36,6 +36,7 @@ class Shapes.Line extends Sprite
 
 class Shapes.Box extends Sprite
     torch_render_type: "Box"
+    torch_shape: true
     fillColor: "black"
     strokeColor: "black"
     width: 0

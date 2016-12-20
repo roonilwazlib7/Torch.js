@@ -20,7 +20,7 @@ class HUD
         @game.Camera.position.y += @hud_background.Size.height
 
     @Load: (game) ->
-        game.Load.Texture("Assets/Art/hud-design.png", "hud_background")
+        game.Load.Texture("Assets/Art/hud_background.png", "hud_background")
 
     BindEvents: ->
 

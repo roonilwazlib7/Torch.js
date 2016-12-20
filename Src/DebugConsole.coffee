@@ -45,10 +45,12 @@ TorchModule class DebugConsole
             @console.style.display = "block"
             @consoleInput.focus()
             @enabled = true
+            Util.Array(@game.spriteList).All (sprite) -> sprite.Pause()
         else
             @console.style.display = "none"
             @consoleInput.value = ""
             @enabled = false
+            Util.Array(@game.spriteList).All (sprite) -> sprite.Pause(false)
 
     Output: (content, color = "white") ->
         content = content.replace(/\n/g, "<br>")

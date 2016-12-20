@@ -48,6 +48,7 @@ TorchModule class Sprite
         game.Add(@)
 
     UpdateSprite: ->
+        return if @paused
         @Body.Update()
         @Size.Update()
         @Events.Update()

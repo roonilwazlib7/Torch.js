@@ -32,40 +32,14 @@ Init = (game) ->
 
     game.player = new Player(game)
     game.mapManager = new MapManager(game)
-    #game.hud = new HUD(game)
-
-    color = Torch.Color.Random().GetHtmlString()
-    game.circ = new Torch.Shapes.Circle(game, 0, 0, 100, color, color)
-    game.circ.drawIndex = 1000
-
-    game.box = new Torch.Shapes.Box(game,500, 0, 150, 100, color, color)
-    game.box.drawIndex = 1000
-    game.box.Body.omega = 0.001
-
-    game.poly = new Torch.Shapes.Polygon.Regular(game, 500, 500, 8, 200, "red", "white")
-
-    stopText = new Torch.Text game, 0, 0,
-        text: "STOP"
-        fontSize: 48
-        color: "white"
-
-    game.poly.Grid.Append(stopText)
-    stopText.Grid.Center()
-
-    game.lin = new Torch.Shapes.Line(game, 0, 0, 500, 500, "black", {lineWidth: 5})
-    game.lin.fixed = true
-    game.lin.Bind.Texture("line")
-
-    #game.mapManager.LoadMap("map-1")
+    game.hud = new HUD(game)
+    game.mapManager.LoadMap("map-1")
     SetUpConsoleCommands(game)
 
 Draw = (game)->
 
 Update = (game) ->
     if game.deltaTime > 1000/50 then alert("FPS Dipped! #{game.deltaTime}")
-
-    if zeldroid.player?
-        zeldroid.lin.endPosition = zeldroid.player.position.Clone()
 
 zeldroid.Start
     Load: Load

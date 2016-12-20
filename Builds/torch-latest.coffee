@@ -559,10 +559,12 @@ TorchModule class DebugConsole
             @console.style.display = "block"
             @consoleInput.focus()
             @enabled = true
+            Util.Array(@game.spriteList).All (sprite) -> sprite.Pause()
         else
             @console.style.display = "none"
             @consoleInput.value = ""
             @enabled = false
+            Util.Array(@game.spriteList).All (sprite) -> sprite.Pause(false)
 
     Output: (content, color = "white") ->
         content = content.replace(/\n/g, "<br>")
@@ -701,6 +703,10 @@ class SizeManager
         rect.width = @width * @scale.width
         rect.height = @height * @scale.height
 
+        if @sprite.torch_shape
+            rect.width = @sprite.width
+            rect.height = @sprite.height
+
     Set: (width, height) ->
         @width = width
         @height = height
@@ -833,9 +839,14 @@ class GridManager
     alignTop: false
     alignBottom: false
 
+    margin: null
+
     constructor: (@sprite) ->
         @position = new Point(0,0)
         @children = []
+        @margin =
+            left: 0
+            top: 0
 
     Align: (positionTags...) ->
         for tag in positionTags
@@ -854,6 +865,10 @@ class GridManager
 
     CenterVertical: (turnOn = true)->
         @centerVertical = turnOn
+
+    Margin: (left = 0, top = 0) ->
+        @margin.left = left
+        @margin.top = top
 
     Append: (sprite) ->
         sprite.Grid.parent = @sprite
@@ -926,6 +941,9 @@ class GridManager
         basePoint = @ApplyCentering(basePoint)
         basePoint = @ApplyAlignment(basePoint)
         basePoint.Apply(@position)
+
+        basePoint.x += @margin.left
+        basePoint.y += @margin.top
 
         return basePoint;
 
@@ -1246,6 +1264,7 @@ TorchModule class Sprite
         game.Add(@)
 
     UpdateSprite: ->
+        return if @paused
         @Body.Update()
         @Size.Update()
         @Events.Update()
@@ -1421,6 +1440,7 @@ class Shapes.Line extends Sprite
 
 class Shapes.Box extends Sprite
     torch_render_type: "Box"
+    torch_shape: true
     fillColor: "black"
     strokeColor: "black"
     width: 0
@@ -3213,4 +3233,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.207'
+Torch::version = '0.6.208'

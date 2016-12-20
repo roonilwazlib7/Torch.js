@@ -15,6 +15,10 @@ class SizeManager
         rect.width = @width * @scale.width
         rect.height = @height * @scale.height
 
+        if @sprite.torch_shape
+            rect.width = @sprite.width
+            rect.height = @sprite.height
+
     Set: (width, height) ->
         @width = width
         @height = height
