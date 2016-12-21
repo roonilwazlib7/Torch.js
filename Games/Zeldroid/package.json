@@ -9,8 +9,8 @@
     "license": "ISC",
     "description": "",
     "GameConfig": {
-        "Map": false,
-        "Build": 1169,
+        "Map": true,
+        "Build": 1181,
         "BuildMinor": 0,
         "BuildMajor": 0
     }

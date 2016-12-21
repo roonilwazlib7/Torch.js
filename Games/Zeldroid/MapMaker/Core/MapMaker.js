@@ -18,12 +18,13 @@
       this.BindEvents();
       this.BindEvents();
       this.LoadMapOptions();
+      $("#menu").draggable();
     }
 
     MapMaker.prototype.GenerateCells = function() {
       var HEIGHT, LENGTH, i, j, results;
-      LENGTH = 36;
-      HEIGHT = 24;
+      LENGTH = 28;
+      HEIGHT = 16;
       i = 0;
       results = [];
       while (i < LENGTH) {
@@ -36,6 +37,12 @@
         results.push(i++);
       }
       return results;
+    };
+
+    MapMaker.prototype.GetMapPieceImageUrl = function(mapPiece) {
+      var url;
+      url = "../Assets/Art/map/" + mapPiece.prototype.textureId + ".png";
+      return url;
     };
 
     MapMaker.prototype.BindEvents = function() {
@@ -108,7 +115,7 @@
       if (this.SHIFT_DOWN) {
         cell.empty();
       }
-      im = $("<img src='../Assets/Art/map/" + MapPieces[this.SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>");
+      im = $("<img src='" + (this.GetMapPieceImageUrl(MapPieces[this.SELECTED_PIECE])) + "' class = 'placed-peice'/>");
       if (cell.children("img").length > 0) {
         im.css("margin-top", "-100%");
       }
@@ -163,15 +170,14 @@
     };
 
     MapMaker.prototype.LoadMapOptions = function() {
-      var img, key, option, p, piece, results, that, title;
+      var img, key, option, piece, results, that, title;
       that = this;
       results = [];
       for (key in MapPieces) {
         piece = MapPieces[key];
-        p = piece.prototype;
-        img = $("<img src='../Assets/Art/map/" + p.textureId + ".png' />");
+        img = $("<img src='" + (this.GetMapPieceImageUrl(piece)) + "' />");
         option = $("<div class='option'></div>");
-        title = $("<p>" + p.textureId + "</p>");
+        title = $("<p>" + piece.prototype.textureId + "</p>");
         option.append(img);
         option.append(title);
         option.data("piece-key", key);

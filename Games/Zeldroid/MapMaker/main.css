@@ -14,7 +14,7 @@
 
 #menu{
     width: 500px;
-    height: 500px;
+    min-height: 500px;
     background-color: white;
     border: 1px solid;
     position: absolute;
@@ -29,6 +29,7 @@
     padding: 1%;
     display: inline-block;
     margin-left: 1%;
+    height: 90px;
 }
 .option img, .placed-peice{
     width: 64px;

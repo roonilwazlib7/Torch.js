@@ -10,9 +10,11 @@ class MapMaker
         @BindEvents()
         @LoadMapOptions()
 
+        $("#menu").draggable()
+
     GenerateCells: ->
-        LENGTH = 36
-        HEIGHT = 24
+        LENGTH = 28
+        HEIGHT = 16
         i = 0
         while i < LENGTH
             j = 0
@@ -21,6 +23,10 @@ class MapMaker
                 @GenerateCell(i,j)
                 j++
             i++
+
+    GetMapPieceImageUrl: (mapPiece) ->
+        url = "../Assets/Art/map/#{mapPiece::textureId}.png"
+        return url
 
     BindEvents: ->
         $("#map-export").click =>
@@ -75,14 +81,14 @@ class MapMaker
         if @SELECTED_PIECE is null then return
         if @SHIFT_DOWN then cell.empty()
 
-        im = $("<img src='../Assets/Art/map/" + MapPieces[@SELECTED_PIECE].prototype.textureId + ".png' class = 'placed-peice'/>")
+        im = $("<img src='#{@GetMapPieceImageUrl( MapPieces[@SELECTED_PIECE] )}' class = 'placed-peice'/>")
 
         if cell.children("img").length > 0
             im.css("margin-top", "-100%")
 
         im.data("x", cell.data("x"))
         im.data("y", cell.data("y"))
-        im.data("identifier", MapPieces[@SELECTED_PIECE].prototype.identifier)
+        im.data("identifier", MapPieces[@SELECTED_PIECE]::identifier)
         cell.append(im)
 
     ExportMap: ->
@@ -135,10 +141,9 @@ class MapMaker
     LoadMapOptions: ->
         that = this
         for key,piece of MapPieces
-            p = piece.prototype
-            img = $("<img src='../Assets/Art/map/" + p.textureId + ".png' />")
+            img = $("<img src='#{@GetMapPieceImageUrl(piece)}' />")
             option = $("<div class='option'></div>")
-            title = $("<p>" + p.textureId + "</p>")
+            title = $("<p>" + piece::textureId + "</p>")
 
             option.append(img)
             option.append(title)
