@@ -2073,6 +2073,7 @@ class JerkFollow
         @boundLeft = v.width / offset
         @boundRight = v.width - @boundLeft
         @boundTop = 0
+        console.log(@Inc)
 
     Update: ->
         if @sprite.position.x >= @boundRight
@@ -3257,4 +3258,4 @@ class Torch
 exports.Torch = new Torch()
 
 
-Torch::version = '0.6.274'
+Torch::version = '0.6.286'

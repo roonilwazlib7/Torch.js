@@ -22,7 +22,14 @@ class Player extends Torch.Sprite
         @facing = "forward"
         @shootKeyWasDown = false
 
-        @game.Camera.JerkFollow(@)
+        # should set boundaries based on maps
+        # maps are 24x16
+
+        @game.Camera.JerkFollow @, 5,
+            maxLeft: 0
+            maxRight: 24 * 16 * 4 # hard coded right now
+            maxTop: 0
+            maxBottom: 16 * 16 * 4
 
         # this event still triggers even when sprite is destroyed
         @game.Keys.Space.On "KeyUp", =>

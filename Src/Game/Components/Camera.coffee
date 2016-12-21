@@ -51,6 +51,7 @@ class JerkFollow
         @boundLeft = v.width / offset
         @boundRight = v.width - @boundLeft
         @boundTop = 0
+        console.log(@Inc)
 
     Update: ->
         if @sprite.position.x >= @boundRight
