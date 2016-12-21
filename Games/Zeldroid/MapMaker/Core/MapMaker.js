@@ -97,12 +97,20 @@
       });
       $("#grid").append(cell);
       cell.click(function() {
-        return that.HandleCellClick($(this));
+        if ($("[name='action-select']:checked").val() === "place") {
+          return that.HandleCellClick($(this));
+        } else {
+          return $(this).empty();
+        }
       });
       return cell.mouseenter(function() {
         cell = $(this);
         if (that.MOUSE_DOWN && that.SHIFT_DOWN) {
-          that.HandleCellClick(cell);
+          if ($("[name='action-select']:checked").val() === "place") {
+            that.HandleCellClick(cell);
+          } else {
+            $(this).empty();
+          }
         }
         return false;
       });

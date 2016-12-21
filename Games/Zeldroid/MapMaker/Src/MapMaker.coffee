@@ -70,12 +70,18 @@ class MapMaker
         $("#grid").append(cell)
 
         cell.click ->
-            that.HandleCellClick($(this))
+            if $("[name='action-select']:checked").val() is "place"
+                that.HandleCellClick($(this))
+            else
+                $(this).empty()
 
         cell.mouseenter ->
             cell = $(this)
             if that.MOUSE_DOWN and that.SHIFT_DOWN
-                that.HandleCellClick(cell)
+                if $("[name='action-select']:checked").val() is "place"
+                    that.HandleCellClick(cell)
+                else
+                    $(this).empty()
 
             return false
 
