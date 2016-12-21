@@ -13,12 +13,15 @@ class Load
 
             GetSound: (id) ->return @game.Assets.Sounds[id].audio
 
+            GetVideo: (id) -> return @game.Assets.Video[id]
+
         @game.Files = {}
         @textures = @game.Assets.Textures = {}
         @texturePacks = @game.Assets.TexturePacks = {}
         @textureSheets = @game.Assets.TextureSheets = {}
         @sound = @game.Assets.Sounds = {}
         @audio = @game.Assets.Audio = {}
+        @video = @game.Assets.Video = {}
         @Stack = []
         @finish_stack = 0
         @progress = 0
@@ -61,6 +64,13 @@ class Load
         else
             for p,i in path
                 @Texture(path[i][0], path[i][1]);
+
+    Video: (path, id) ->
+        @Stack.push
+            _torch_asset: "video"
+            id: id
+            path: path
+        @finish_stack++
 
     PixlTexture: (pattern, pallette, id) ->
         imSrc = pixl(pattern, pallette).src
@@ -157,7 +167,8 @@ class Load
                     when "texture"
                         im = new Image()
                         im.src = stackItem.path
-
+                        # TODO:
+                        # write a wrapper around the image called Texture
                         stackItem.image = im
 
                         @textures[stackItem.id] = stackItem
@@ -171,6 +182,17 @@ class Load
                             this.loader.textures[this.stackItem.id].height = this.height
 
                             this.loader.LoadItemFinished()
+
+                    when "video"
+                        video = document.createElement("video")
+                        video.src = stackItem.path
+
+                        # TODO:
+                        # Write a wrapper around the video
+                        @video[stackItem.id] = video
+
+                        video.oncanplay = =>
+                            @LoadItemFinished()
 
                     when "sound"
                         aud = new Audio()
