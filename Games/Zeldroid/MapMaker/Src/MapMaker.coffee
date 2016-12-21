@@ -1,3 +1,6 @@
+# some node modules...
+fs = require("fs")
+
 class MapMaker
     SELECTED_PIECE: null
     SCALE: 4
@@ -19,7 +22,6 @@ class MapMaker
         while i < LENGTH
             j = 0
             while j < HEIGHT
-                console.log(i,j)
                 @GenerateCell(i,j)
                 j++
             i++
@@ -79,9 +81,11 @@ class MapMaker
 
     HandleCellClick: (cell) ->
         if @SELECTED_PIECE is null then return
-        if @SHIFT_DOWN then cell.empty()
 
-        im = $("<img src='#{@GetMapPieceImageUrl( MapPieces[@SELECTED_PIECE] )}' class = 'placed-peice'/>")
+        if cell.children().length >= 2 then return
+        if cell.children(".piece-#{MapPieces[@SELECTED_PIECE]::identifier}").length >= 1 then return
+
+        im = $("<img src='#{@GetMapPieceImageUrl( MapPieces[@SELECTED_PIECE] )}' class = 'placed-peice piece-#{MapPieces[@SELECTED_PIECE]::identifier}'/>")
 
         if cell.children("img").length > 0
             im.css("margin-top", "-100%")
@@ -119,8 +123,7 @@ class MapMaker
 
         $(".cell").empty()
 
-        while i < segments.length
-            segment = segments[i]
+        for segment in segments
             if segment is "" then break
 
             identifier = segment.split(",")[0]
@@ -128,15 +131,10 @@ class MapMaker
 
             segs = segment.split(",")
 
-            im = $("<img src='../Assets/Art/map/" + mm.Parts[identifier].prototype.textureId + ".png' class = 'placed-peice'/>")
             cell = $("#cell-" + parseInt(segs[1], 16) + parseInt(segs[2], 16))
-            cell.empty()
+            @SELECTED_PIECE = mm.Parts[identifier].name # class name
 
-            im.data("x", cell.data("x"));
-            im.data("y", cell.data("y"));
-            im.data("identifier", mm.Parts[identifier].prototype.identifier);
-            cell.append(im)
-            i++
+            @HandleCellClick(cell)
 
     LoadMapOptions: ->
         that = this
