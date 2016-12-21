@@ -19,6 +19,7 @@ Files: [
     "Sprite/Components/CanvasRenderer"
     "Sprite/Sprite"
     "Sprite/Text"
+    "Sprite/Video"
     "Sprite/Shapes"
     "Sprite/SpriteGroup"
     "Sprite/Components/Collision/Collider"

@@ -26,6 +26,8 @@ class CanvasRenderer
                 @RenderCircleSprite(drawRec)
             when "Polygon"
                 @RenderPolygonSprite(drawRec)
+            when "Video"
+                @RenderVideoSprite(drawRec)
 
     PreRender: (drawRec)->
         canvas = @game.canvas
@@ -137,5 +139,12 @@ class CanvasRenderer
         @game.canvas.closePath()
         @game.canvas.stroke()
         @game.canvas.fill()
+
+        @game.canvas.restore()
+
+    RenderVideoSprite: (drawRec) ->
+        @game.canvas.save()
+
+        @game.canvas.drawImage(@sprite.video, drawRec.x, drawRec.y)
 
         @game.canvas.restore()
